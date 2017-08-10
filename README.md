@@ -3,7 +3,7 @@ A repo to use as a starting point for ddev UI prototypes, research, and roadmaps
 
 ## Initial Roadmap
 
-Sidnote: eventually this should live here https://github.com/drud/ddev-ui/wiki/Roadmap.
+Sidenote: eventually this should live here https://github.com/drud/ddev-ui/wiki/Roadmap.
 
 ### v0.0: Research, Prototypes, Requirements, and Roadmaps
 
