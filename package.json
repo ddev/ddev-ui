@@ -26,6 +26,7 @@
     "url": "https://github.com/BlackrockDigital/startbootstrap-heroic-features.git"
   },
   "dependencies": {
+    "body-parser": "^1.17.2",
     "bootstrap": "^4.0.0-alpha.6",
     "child-process-promise": "^2.2.1",
     "express": "^4.15.4",

@@ -1,28 +1,68 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const bodyParser = require('body-parser');
 const exec = require('child-process-promise').exec;
 const port = 3000;
 
 app.use(express.static('public'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 app.get('/sites', (request, response) => {
-    getSiteNames().then((sites) => {
-            let sitePromises = [];
-            let siteInfo = [];
-            sites.forEach((site) => {
-                sitePromises.push(getSiteInformation(site)
-                    .then((siteDescription) => {
-                        siteInfo.push(siteDescription);
-                    })
-                );
-            });
-            Promise.all(sitePromises).then((result) => {
-                    response.send(siteInfo);
-                }
-            );
-        }
-    );
+    getSitesDetails().then((sites) => {
+        response.send(sites);
+    });
+});
+
+app.get('/sites/:id', (request, response) => {
+    getSiteDescription(request.params.id).then((site) => {
+       response.send(site);
+    });
+});
+
+app.post('/start', (req,res) => {
+    const siteLocation = req.body.siteLocation.replace('~','%HOMEPATH%');
+    exec('(cd '+siteLocation+' && ddev start)')
+        .then((result) => {
+            const stdout = result.stdout;
+            res.send(stdout);
+        })
+        .catch((err) => {
+            res.status(500);
+            res.send(err.stderr);
+        });
+});
+
+app.post('/stop', (req,res) => {
+    const siteID = req.body.siteID;
+    exec('ddev stop ' + siteID)
+        .then((result) => {
+            res.send(siteID + " successfully stopped.");
+        })
+        .catch((err) => {
+            res.status(500);
+            res.send(err.stderr);
+        });
+});
+
+app.post('/restart', (req,res) => {
+    const siteLocation = req.body.siteLocation.replace('~','%HOMEPATH%');
+    exec('(cd '+siteLocation+' && ddev restart)')
+        .then((result) => {
+            const stdout = result.stdout;
+            res.send(stdout);
+        })
+        .catch((err) => {
+            res.status(500);
+            res.send(err.stderr);
+        });
+});
+
+app.post('/new', (req,res) => {
+
 });
 
 app.listen(port, (err) => {
@@ -33,81 +73,77 @@ app.listen(port, (err) => {
     console.log(`server is listening on ${port}`)
 });
 
-const getSiteNames = () => {
-    const getSiteNamesPromise = new Promise((resolve, reject) => {
+const getSitesDetails = () => {
+    const getSitesDetailsPromise = new Promise((resolve, reject) => {
         exec('ddev list')
             .then((result) => {
                 const stdout = result.stdout;
-                const stderr = result.stderr;
-                let siteNames = [];
+                let sitesDetails = [];
+                let outputLines = stdout.split(/\n/);
 
-                let sites = stdout.split(/\n/);
-                sites.splice(0,2);
-                sites.splice(-3,3);
-                sites.forEach(function(site){
-                    siteArray = site.split(/\s\s+/);
-                    siteNames.push(siteArray[0]);
+                let isSiteLine = false;
+
+                outputLines.forEach(function(line){
+                    if(isSiteLine) {
+                        if(line.length > 0) {
+                            let siteArray = line.split(/\s\s+/);
+                            const siteDetails = {
+                                name: siteArray[0],
+                                type: siteArray[1],
+                                location: siteArray[2],
+                                url: siteArray[3],
+                                status: siteArray[4]
+                            };
+                            sitesDetails.push(siteDetails);
+                        } else {
+                            isSiteLine = false;
+                        }
+                    }
+                    if(line.replace(/\s/g, '') === "NAMETYPELOCATIONURLSTATUS") {
+                        isSiteLine = true;
+                    }
                 });
-                resolve(siteNames);
+
+                resolve(sitesDetails);
             })
             .catch((err) => {
                 reject('ERROR: ' + err);
             });
     });
-    return getSiteNamesPromise;
+    return getSitesDetailsPromise;
 };
 
-const getSiteInformation = (siteName) => {
-    const getSiteInformationPromise = new Promise((resolve, reject) => {
+const getSiteDescription = (siteName) => {
+    const getSiteDescriptionPromise = new Promise((resolve, reject) => {
         exec('ddev describe ' + siteName)
             .then((result) => {
                 const stdout = result.stdout;
-                const stderr = result.stderr;
-                
-                let siteInfo = stdout.split(/\n/);
-                siteInfo.splice(-3,3);
-                
-                let rawSiteDetails = siteInfo[1].split(/\s\s+/);
-                
-                let siteDetails = {
-                    name: rawSiteDetails[0],
-                    type: rawSiteDetails[1],
-                    location: rawSiteDetails[2],
-                    url: rawSiteDetails[3],
-                    status: rawSiteDetails[4]
-                };
-                
-                let databaseDetails = {
-                    username: siteInfo[5].split(/:[\s]+/)[1].trim(),
-                    password: siteInfo[6].split(/:[\s]+/)[1].trim(),
-                    databaseName: siteInfo[7].split(/:[\s]+/)[1].trim(),
-                    host: siteInfo[8].split(/:[\s]+/)[1].trim(),
-                    port: siteInfo[9].split(/:[\s]+/)[1].trim()
-                };
-                
-                siteInfo.splice(0,15);
 
-                let otherServices = {};
-                siteInfo.forEach((service) => {
-                    otherService = service.split(/:[\s]+/);
-                    otherServices[otherService[0]] = otherService[1];
-                });
-                
-                const currentSiteDetails = new SiteDetails(siteDetails, databaseDetails, otherServices);
+                let outputLines = stdout.split(/\n/);
+                let dataGroups = [];
+                let currentDataGroup = '';
 
-                resolve(currentSiteDetails);
+                for( let i = 0; i < outputLines.length; i++) {
+                    const line = outputLines[i];
+                    if(line.indexOf('----') !== -1) {
+                        currentDataGroup = outputLines[(i-1)];
+                        dataGroups[currentDataGroup] = [];
+                    }
+                    if(currentDataGroup && line.indexOf(':') !== -1 && line.indexOf('example') === -1){
+                        dataGroups[currentDataGroup].push(line);
+                    }
+                    if(line.length === 0) {
+                        currentDataGroup = '';
+                    }
+                }
+
+                console.log(dataGroups);
+
+                resolve(dataGroups);
             })
             .catch((err) => {
                 reject('ERROR: ' + err);
             });
     });
-    return getSiteInformationPromise;
+    return getSiteDescriptionPromise;
 };
-
-class SiteDetails {
-    constructor(siteDetails, databaseDetails, otherServices) {
-        this.site = siteDetails;
-        this.databaseDetails = databaseDetails;
-        this.otherServices = otherServices;
-    }
-}

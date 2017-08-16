@@ -14,6 +14,7 @@ var createCard = function(site) {
 
         return siteTitle;
     }
+
     function createSiteInformation(siteInformation) {
         var templateOpen = '<div class="site-info-container">';
         var siteUrl = '<div class="site-url">URL: <a href="'+siteInformation.url+'">' + siteInformation.url + '</a></div>';
@@ -22,6 +23,7 @@ var createCard = function(site) {
 
         return templateOpen + siteUrl + siteLocation + templateClose;
     }
+
     function createDatabaseInformation(databaseInformation) {
         var databaseInfo = '';
         for (var key in databaseInformation) {
@@ -30,8 +32,9 @@ var createCard = function(site) {
             }
         }
 
-        return "<ul class='database-information-list'>"+databaseInfo+'</ul>';
+        return "<ul class='database-information-list' style='list-style:none;-webkit-padding-start:0;'>"+databaseInfo+'</ul>';
     }
+
     function createOtherServices(otherServices) {
         var services = '';
         for (var key in otherServices) {
@@ -39,12 +42,23 @@ var createCard = function(site) {
                 services += '<li>'+key+': '+otherServices[key]+'</li>';
             }
         }
-        return "<ul class='other-services-list'>"+services+'</ul>';
+        return "<ul class='other-services-list' style='list-style:none;-webkit-padding-start:0;'>"+services+'</ul>';
     }
 
-    var action = (site.site.status === 'running') ? 'STOP' : 'START';
+    function createButtons(siteInformation) {
+        var buttons = {
+            start: "<a href=\"#\" class=\"btn btn-primary start\" data-location='"+siteInformation.location+"'>START</a>",
+            stop: "<a href=\"#\" class=\"btn btn-primary stop\" data-name='"+siteInformation.name+"'>STOP</a>",
+            restart: "<a href=\"#\" class=\"btn btn-primary restart\" data-location='"+siteInformation.location+"'>RESTART</a>"
+        };
+        if(siteInformation.status === 'running') {
+            return buttons.stop + buttons.restart;
+        } else {
+            return buttons.start;
+        }
+    }
 
-    var template = '<div class="col-lg-4 col-md-12 mb-6"><div class="card">'+createSiteLogo(site.site)+'<div class="card-block">'+createSiteTitle(site.site)+'<p class="card-text">'+createSiteInformation(site.site)+'</p><p class="card-text">'+createDatabaseInformation(site.databaseDetails)+'</p><p class="card-text">'+createOtherServices(site.otherServices)+'</p></div><div class="card-footer"><a href="#" class="btn btn-primary">'+action+'</a></div></div></div>';
+    var template = '<div class="col-lg-4 col-md-12 mb-6"><div class="card">'+createSiteLogo(site)+'<div class="card-block">'+createSiteTitle(site)+'<p class="card-text">'+createSiteInformation(site)+'</p></div><div class="card-footer">'+createButtons(site)+'</div></div></div>';
     return template;
 };
 
@@ -55,4 +69,43 @@ $.getJSON('http://localhost:3000/sites').done(function(data){
         sites.push(createCard(site));
         $('#sites').append(createCard(site));
     }
+});
+
+//bindings
+$('body').on('click','.start',function(evt){
+    $.LoadingOverlay("show");
+    $.post( "/start", { siteLocation: $(this).data('location') })
+        .done(function( data ) {
+            alert( data + ' - reloading UI.' );
+            location.reload();
+        })
+        .fail(function( data ) {
+            alert( "Start Failed! - " + data.statusText);
+            location.reload();
+        });
+});
+
+$('body').on('click','.stop',function(evt){
+    $.LoadingOverlay("show");
+    $.post( "/stop", { siteID: $(this).data('name') })
+        .done(function( data ) {
+            alert( data + ' - reloading UI.' );
+            location.reload();
+        })
+        .fail(function( data ) {
+            alert( "Stop Failed! - " + data.statusText);
+            location.reload();
+        });
+});
+$('body').on('click','.restart',function(evt){
+    $.LoadingOverlay("show");
+    $.post( "/restart", { siteLocation: $(this).data('location')})
+        .done(function( data ) {
+            alert( data + ' - reloading UI.' );
+            location.reload();
+        })
+        .fail(function( data ) {
+            alert( "Restart Failed! - " + data.statusText);
+            location.reload();
+        });
 });
