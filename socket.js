@@ -6,8 +6,9 @@ const child = require('child_process');
 const electron = require('electron');
 const electronApp = electron.app;
 const BrowserWindow = electron.BrowserWindow;
-const path = require('path')
-const url = require('url')
+const path = require('path');
+const url = require('url');
+const shellwords = require("shellwords");
 
 io.on('connection', function(socket){
 
@@ -69,7 +70,7 @@ io.on('connection', function(socket){
                 var newline = line.replace(/\s\s+/g, '!~!').replace(/\n/g, '!~!');
                 if (line.indexOf('DDEV ROUTER STATUS') !== -1) {
                     socket.emit('routerStatus', (line.indexOf('running') !== -1));
-                } else if (line.indexOf('sites found') !== -1) {
+                } else if ((line.indexOf('site') !== -1) && (line.indexOf('found') !== -1)) {
                     socket.emit('sitesCount', line.split(' ')[0]);
                 } else if (newline.indexOf('NAME!~!TYPE') !== -1) {
                     var sitesArray = newline.split('!~!');
@@ -133,9 +134,9 @@ io.on('connection', function(socket){
         });
     });
     socket.on('exec', function(cmd){
-        const command = cmd[0];
+        const command = 'exec ' + cmd[0];
         const path = cmd[1];
-        const ddevExec = ddev(['exec', command], path);
+        const ddevExec = ddev(shellwords.split(command), path);
 
         ddevExec.stdout.on('data', function(data) {
             socket.emit('exec output', data.toString());

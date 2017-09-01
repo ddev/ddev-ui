@@ -31,6 +31,7 @@
     "electron-builder": "^19.27.3",
     "electron-packager": "^9.0.0",
     "electron-spawn": "^5.0.0",
-    "gulp": "^3.9.1"
+    "gulp": "^3.9.1",
+    "shellwords": "^0.1.1"
   }
 }
