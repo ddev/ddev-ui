@@ -193,6 +193,6 @@ if(electronApp){
     });
 }
 
-http.listen(3000, function(){
-    console.log('listening on *:3000');
+http.listen(8099, function(){
+    console.log('listening on *:8099');
 });
