@@ -18,7 +18,10 @@ io.on('connection', function(socket){
 
     //TODO: wrap these stdout/err pipes into a ddev class
     const ddev = function(cmd, path = '/') {
-        cmd = cmd ? [cmd] : [];
+        var isArray = (cmd instanceof Array);
+        if(!isArray){
+            cmd = cmd ? [cmd] : [];
+        }
         path = path.replace('~', os.homedir());
         return child.spawn( 'ddev', cmd, {
             cwd: path
@@ -137,13 +140,15 @@ io.on('connection', function(socket){
     socket.on('exec', function(cmd){
         const command = cmd[0];
         const path = cmd[1];
-        const ddevExec = ddev('exec ' + command, path);
+        const ddevExec = ddev(['exec', command], path);
 
         ddevExec.stdout.on('data', function(data) {
+            socket.emit('exec output', data.toString());
             socket.emit('terminal output', data.toString());
         });
 
         ddevExec.stderr.on('data', function(data) {
+            socket.emit('exec output', data.toString());
             socket.emit('terminal output', data.toString());
         });
 

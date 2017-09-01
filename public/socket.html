@@ -94,18 +94,19 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Exec</h4>
+                <h4 class="modal-title" id="myModalLabel">Execute Shell Command in <span class="exec-site-name"></span></h4>
+                <div class="hidden exec-site-path"></div>
             </div>
             <div class="modal-body">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Exec Command...">
+                    <input type="text" class="form-control exec-command" placeholder="Exec Command...">
                     <span class="input-group-btn">
-                    <button class="btn btn-secondary" type="button">Exec</button>
+                    <button class="btn btn-secondary exec-send" type="button">Exec</button>
                   </span>
                 </div>
                 <h4>Terminal Output:</h4>
                 <div class="exec-output">
-                    <textarea style="width:100%; height: 200px;"></textarea>
+                    <textarea id="execOutput" style="width:100%; height: 200px;" readonly></textarea>
                 </div>
             </div>
         </div>
@@ -142,7 +143,7 @@
     function bar(state) {
         switch (state) {
             case "running":
-                return "<button type=\"button\" class=\"btn btn-primary stop\" data-toggle=\"modal\" data-target=\"#terminal-output-modal\">Stop</button><button type=\"button\" class=\"btn btn-primary restart\" data-toggle=\"modal\" data-target=\"#terminal-output-modal\">Restart</button><button type=\"button\" class=\"btn btn-primary\">Exec</button>";
+                return "<button type=\"button\" class=\"btn btn-primary stop\" data-toggle=\"modal\" data-target=\"#terminal-output-modal\">Stop</button><button type=\"button\" class=\"btn btn-primary restart\" data-toggle=\"modal\" data-target=\"#terminal-output-modal\">Restart</button><button type=\"button\" class=\"btn btn-primary exec\" data-toggle=\"modal\" data-target=\"#exec-modal\">Exec</button>";
                 break;
             case "stopped":
                 return "<button type=\"button\" class=\"btn btn-primary start\" data-toggle=\"modal\" data-target=\"#terminal-output-modal\">Start</button>"
@@ -156,7 +157,7 @@
         var sitePath = site[2];
         var siteURL  = site[3];
         var siteState= site[4];
-        var output = '<div class="sitecard" data-path="'+sitePath+'"><div class="card-header"><img style="width: 200px;" src="'+createSiteLogo(siteType)+'" /> <h4>'+siteName+'</h4> <div><a href="'+siteURL+'">'+siteURL+'</a></div> <div class="text-muted">'+sitePath+'</div></div><div class="footer">'+bar(siteState)+'</div></div>';
+        var output = '<div class="sitecard" data-path="'+sitePath+'"><div class="card-header"><img style="width: 200px;" src="'+createSiteLogo(siteType)+'" /> <h4 class="sitename">'+siteName+'</h4> <div><a href="'+siteURL+'" target="_blank">'+siteURL+'</a></div> <div class="text-muted">'+sitePath+'</div></div><div class="footer">'+bar(siteState)+'</div></div>';
         return output;
     };
     $(function () {
@@ -214,6 +215,29 @@
                 location.reload();
             }else{
                 alert("Something went wrong! Check raw terminal output for more information.");
+            }
+        });
+
+        socket.on('exec output', function(msg){
+            $('#execOutput').val($('#execOutput').val() + msg);
+            var textarea = document.getElementById('execOutput');
+            textarea.scrollTop = textarea.scrollHeight;
+        });
+
+        $(document).on('click', '.exec', function(evt) {
+            var sitePath = $(evt.target).closest('.sitecard').data('path');
+            var siteName = $(evt.target).closest('.sitecard').find('.sitename').text();
+            $('.exec-site-name').text(siteName);
+            $('.exec-site-path').text(sitePath);
+            $('.exec-output textarea').val('');
+            $('#exec-modal input').val('');
+        });
+
+        $(document).on('click', '.exec-send', function(evt) {
+            var command = $('.exec-command').val();
+            var path = $('.exec-site-path').text();
+            if(command){
+                socket.emit('exec', [command, path])
             }
         });
 
