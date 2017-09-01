@@ -1,8 +1,8 @@
 {
-  "title": "Heroic Features",
-  "name": "startbootstrap-heroic-features",
-  "version": "4.0.0-alpha",
-  "description": "An HTML template with a hero heading and feature cards built with Bootstrap",
+  "title": "DDEV UI",
+  "name": "ddev-ui",
+  "version": "0.0.1",
+  "description": "A prototype UI for DDEV",
   "keywords": [
     "css",
     "sass",
@@ -11,26 +11,14 @@
     "theme",
     "template"
   ],
-  "homepage": "http://startbootstrap.com/template-overviews/heroic-features",
-  "bugs": {
-    "url": "https://github.com/BlackrockDigital/startbootstrap-heroic-features/issues",
-    "email": "feedback@startbootstrap.com"
-  },
-  "license": "MIT",
-  "author": "Start Bootstrap",
-  "contributors": [
-    "David Miller (http://davidmiller.io/)"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/BlackrockDigital/startbootstrap-heroic-features.git"
-  },
+  "main": "socket.js",
   "dependencies": {
     "body-parser": "^1.17.2",
     "bootstrap": "^4.0.0-alpha.6",
     "child-process-promise": "^2.2.1",
     "express": "^4.15.4",
     "jquery": "^3.2.1",
+    "socket.io": "^2.0.3",
     "tether": "^1.4.0"
   },
   "devDependencies": {

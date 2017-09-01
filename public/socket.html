@@ -1,0 +1,271 @@
+<!doctype html>
+<html>
+<head>
+    <title>Socket.IO DDEV build</title>
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+            crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .navbar {
+            border-radius: 0;
+            background-color: #23282B;
+        }
+        .card-header{
+            height: 175px;
+        }
+        .sitecard {
+            border: 1px solid #dedede;
+            padding: 10px;
+        }
+        .running {
+            color: #5cb85c;
+        }
+        .stopped {
+            color: #c9302c;
+        }
+        .sticky-footer {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            height: 60px;
+            background-color: #23282B;
+            padding: 5px;
+        }
+        .sticky-footer .footer-container {
+            line-height: 50px;
+            color: #ffffff;
+        }
+        .main {
+            margin-bottom: 60px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse" style="padding: 5px;">
+    <div style="float: left;">
+        <img src="http://i.imgur.com/BN5ZAwx.png" style="height: 50px;"/>
+    </div>
+    <div style="float: right; margin-top: 8px;">
+        <form class="form-inline mt-2 mt-md-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+
+<div class="container-fluid main">
+    <div class="row">
+        <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" id="exec" href="#" data-toggle="modal" data-target="#terminal-output-modal">View Raw Terminal Output</a>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+            <div style="border-bottom: 1px solid #dedede;" class="clearfix">
+                <div style="float: left;">
+                    <h4><span id="sitesCount">0</span> sites found:</h4>
+                </div>
+            </div>
+            <section id="cards" style="margin-top: 5px;" class="row text-center placeholders">
+
+            </section>
+        </main>
+    </div>
+</div>
+
+<div class="sticky-footer">
+    <div class="footer-container">
+        <div style="float: right">
+            DDEV Router Status:
+            <span id="routerStatus">STOPPED</span>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exec-modal" tabindex="-1" role="dialog" aria-labelledby="Execute Shell Command">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Exec</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Exec Command...">
+                    <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button">Exec</button>
+                  </span>
+                </div>
+                <h4>Terminal Output:</h4>
+                <div class="exec-output">
+                    <textarea style="width:100%; height: 200px;"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="terminal-output-modal" tabindex="-1" role="dialog" aria-labelledby="Terminal Output">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="terminalOutputLabel">All Terminal Output</h4>
+            </div>
+            <div class="modal-body">
+                <div class="terminal-output">
+                    <textarea readonly id="terminalOutput" style="width:100%; height: 200px;"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    function createSiteLogo(siteType) {
+        var logos = [];
+        logos['drupal7'] = '//i.imgur.com/nLEW1wQ.png';
+        logos['drupal8'] = '//i.imgur.com/holIwcH.png';
+        logos['wordpress'] = '//i.imgur.com/OknhHdH.png';
+
+        return logos[siteType];
+    }
+    function bar(state) {
+        switch (state) {
+            case "running":
+                return "<button type=\"button\" class=\"btn btn-primary stop\" data-toggle=\"modal\" data-target=\"#terminal-output-modal\">Stop</button><button type=\"button\" class=\"btn btn-primary restart\" data-toggle=\"modal\" data-target=\"#terminal-output-modal\">Restart</button><button type=\"button\" class=\"btn btn-primary\">Exec</button>";
+                break;
+            case "stopped":
+                return "<button type=\"button\" class=\"btn btn-primary start\" data-toggle=\"modal\" data-target=\"#terminal-output-modal\">Start</button>"
+                break;
+        }
+        return 'broken';
+    }
+    var generateCard = function(site) {
+        var siteName = site[0];
+        var siteType = site[1];
+        var sitePath = site[2];
+        var siteURL  = site[3];
+        var siteState= site[4];
+        var output = '<div class="sitecard" data-path="'+sitePath+'"><div class="card-header"><img style="width: 200px;" src="'+createSiteLogo(siteType)+'" /> <h4>'+siteName+'</h4> <div><a href="'+siteURL+'">'+siteURL+'</a></div> <div class="text-muted">'+sitePath+'</div></div><div class="footer">'+bar(siteState)+'</div></div>';
+        return output;
+    };
+    $(function () {
+        var socket = io();
+
+        // BUTTON BINDINGS
+        $(document).on('click', '.start', function(evt) {
+           var path = $(evt.target).closest('.sitecard').data('path');
+           if(path){
+               socket.emit('start', path);
+               $('#exec').click();
+           } else {
+               alert('couldn\'t find site path!');
+           }
+        });
+        socket.on('start finished', function(code) {
+           if(code.toString() === '0') {
+               alert("Site Successfully Started. Reloading UI.");
+               location.reload();
+           }else{
+               alert("Something went wrong! Check raw terminal output for more information.");
+           }
+        });
+
+        $(document).on('click', '.stop', function(evt) {
+            var path = $(evt.target).closest('.sitecard').data('path');
+            if(path){
+                socket.emit('stop', path);
+                $('#exec').click();
+            } else {
+                alert('couldn\'t find site path!');
+            }
+        });
+        socket.on('stop finished', function(code) {
+            if(code.toString() === '0') {
+                alert("Site Successfully Stopped. Reloading UI.");
+                location.reload();
+            }else{
+                alert("Something went wrong! Check raw terminal output for more information.");
+            }
+        });
+
+        $(document).on('click', '.restart', function(evt) {
+            var path = $(evt.target).closest('.sitecard').data('path');
+            if(path){
+                socket.emit('restart', path);
+                $('#exec').click();
+            } else {
+                alert('couldn\'t find site path!');
+            }
+        });
+        socket.on('restart finished', function(code) {
+            if(code.toString() === '0') {
+                alert("Site Successfully Restarted. Reloading UI.");
+                location.reload();
+            }else{
+                alert("Something went wrong! Check raw terminal output for more information.");
+            }
+        });
+
+        socket.emit('list');
+        socket.on('terminal output', function(msg){
+            $('#terminalOutput').val($('#terminalOutput').val() + msg);
+            var textarea = document.getElementById('terminalOutput');
+            textarea.scrollTop = textarea.scrollHeight;
+        });
+
+        socket.on('routerStatus', function(msg){
+            var state = msg ? 'RUNNING' : 'STOPPED';
+            if(state === 'RUNNING') {
+                $('#routerStatus').removeClass('stopped').addClass('running').text(state);
+            } else {
+                $('#routerStatus').addClass('stopped').removeClass('running').text(state);
+            }
+        });
+
+        socket.on('sitesCount', function(msg){
+            $('#sitesCount').text(msg);
+        });
+
+        socket.on('siteList', function(sitesArray){
+            var arrays = [], size = 4;
+
+            if(sitesArray.length > size) {
+                while (sitesArray.length > 0)
+                    arrays.push(sitesArray.splice(0, size));
+
+                for(var i = 0; i < arrays.length; i++){
+                    var row = arrays[i];
+                    var output = '<div class="col-6 col-sm-3 placeholder">';
+                    for(var x=0; x < row.length; x++){
+                        var currentSite = row[x];
+                        output += generateCard(currentSite);
+                    }
+                    output += '</div>';
+                    $('#cards').append(output);
+                }
+            } else {
+                for(var i = 0; i < sitesArray.length; i++) {
+                    var site = sitesArray[i];
+                    var output = '<div class="col-6 col-sm-3 placeholder">';
+                    output += generateCard(site);
+                    output += '</div>';
+                    $('#cards').append(output);
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
