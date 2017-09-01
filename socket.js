@@ -61,6 +61,12 @@ io.on('connection', function(socket){
             socket.emit('stop finished', code);
         });
     });
+
+    socket.on('open path', function(path){
+        path = path.replace('~', os.homedir());
+        electron.shell.showItemInFolder(path + '/');
+    });
+
     socket.on('list', function(){
         const ddevList = ddev('list');
 
@@ -192,6 +198,33 @@ if(electronApp){
     app.get('/', function(request, response){
         response.sendFile(__dirname + '/public/socket.html');
     });
+}
+
+function fileManagerCommandForPath(pathToOpen, isFile) {
+    let command;
+    switch (process.platform) {
+        case 'darwin':
+            return {
+                command: 'open',
+                label: 'Finder',
+                args: ['-R', pathToOpen]
+            };
+        case 'win32':
+            var args = [`/select,${pathToOpen}`];
+
+            if (process.env.SystemRoot) {
+                command = path.join(process.env.SystemRoot, 'explorer.exe');
+            } else {
+                command = 'explorer.exe';
+            }
+
+            return {
+                command,
+                label: 'Explorer',
+                args
+            };
+        default:
+    }
 }
 
 http.listen(8099, function(){

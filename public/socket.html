@@ -181,10 +181,11 @@
         var sitePath = site[2];
         var siteURL  = site[3];
         var siteState= site[4];
-        var output = '<div class="sitecard" data-path="'+sitePath+'"><div class="card-header"><img style="width: 200px;" src="'+createSiteLogo(siteType)+'" /> <h4 class="sitename">'+siteName+'</h4> <div><a class="open-in-browser" href="'+siteURL+'" target="_blank">'+siteURL+'</a></div> <div class="text-muted">'+sitePath+'</div></div><div class="footer">'+bar(siteState)+'</div></div>';
+        var output = '<div class="sitecard" data-path="'+sitePath+'"><div class="card-header"><img style="width: 200px;" src="'+createSiteLogo(siteType)+'" /> <h4 class="sitename">'+siteName+'</h4> <div><a class="open-in-browser" href="'+siteURL+'" target="_blank">'+siteURL+'</a></div> <div class="text-muted site-path">'+sitePath+'</div></div><div class="footer">'+bar(siteState)+'</div></div>';
         return output;
     };
     $(function () {
+        var socket = io('http://localhost:8099');
         const shell = require('electron').shell;
         $(document).on('click', '.open-in-browser', function(event) {
             console.log('linky');
@@ -192,7 +193,9 @@
             shell.openExternal(event.target.href);
         });
 
-        var socket = io('http://localhost:8099');
+        $(document).on('click', '.site-path', function(evt) {
+            socket.emit('open path', $(evt.target).text());
+        });
 
         // BUTTON BINDINGS
         $(document).on('click', '.start', function(evt) {
