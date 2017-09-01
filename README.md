@@ -6,7 +6,7 @@ A repo to use as a starting point for ddev UI prototypes, research, and roadmaps
 * Download and install Node.js (http://www.nodejs.org)
 * CD into root directory of this project
 * in a terminal, run `npm install`
-* after your node dependencies have been installed, run `node index.js`
+* after your node dependencies have been installed, run `node socket.js`
 * you should see confirmation that the server has been started on port 3000.
 * open a browser and go to http://localhost:3000
 
