@@ -2,17 +2,12 @@ const app = require('express')();
 const http = require('http').Server(app);
 const os = require('os');
 const io = require('socket.io')(http);
-const bodyParser = require('body-parser');
 const child = require('child_process');
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-
-app.get('/', function(request, response){
-    response.sendFile(__dirname + '/public/socket.html');
-});
+const electron = require('electron');
+const electronApp = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const path = require('path')
+const url = require('url')
 
 io.on('connection', function(socket){
 
@@ -39,7 +34,7 @@ io.on('connection', function(socket){
         });
 
         ddevStart.stdout.on('data', function(data) {
-           socket.emit('terminal output', data.toString());
+            socket.emit('terminal output', data.toString());
         });
 
         ddevStart.stderr.on('data', function(data) {
@@ -157,6 +152,46 @@ io.on('connection', function(socket){
         });
     });
 });
+
+if(electronApp){
+    // Keep a global reference of the window object, if you don't, the window will
+// be closed automatically when the JavaScript object is garbage collected.
+    let mainWindow;
+
+    function createWindow () {
+        mainWindow = new BrowserWindow({width: 800, height: 600});
+
+        mainWindow.loadURL(url.format({
+            pathname: path.join(__dirname, '/public/socket.html'),
+            protocol: 'file:',
+            slashes: true
+        }));
+
+        mainWindow.webContents.openDevTools();
+
+        mainWindow.on('closed', function () {
+            mainWindow = null
+        })
+    }
+
+    electronApp.on('ready', createWindow);
+
+    electronApp.on('window-all-closed', function () {
+        if (process.platform !== 'darwin') {
+            electronApp.quit()
+        }
+    });
+
+    electronApp.on('activate', function () {
+        if (mainWindow === null) {
+            createWindow()
+        }
+    });
+} else {
+    app.get('/', function(request, response){
+        response.sendFile(__dirname + '/public/socket.html');
+    });
+}
 
 http.listen(3000, function(){
     console.log('listening on *:3000');
