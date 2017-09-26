@@ -26,3 +26,7 @@
 .card {
     text-align: center;
 }
+.modal-body td {
+    padding: 0 20px;
+    width: 50%;
+}

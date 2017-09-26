@@ -115,7 +115,7 @@ const add = (path, name, docroot) => {
 const describe = (siteName) => {
     var promise = new Promise((resolve, reject) => {
         function parseDesribeLines (shellOutput) {
-            var siteDetails = [];
+            var siteDetails = {};
             var linesArray = shellOutput.replace(/\n/g, '!~!').split('!~!');
             var inSection = false;
             var currentSection = '';
@@ -131,21 +131,23 @@ const describe = (siteName) => {
                     if(results.length > 1){
                         siteDetails[currentSection][results[0]] = results[1];
                     } else if (results.length === 1 && results[0]){
+                        if(siteDetails[currentSection]['notes'] === undefined){
+                            siteDetails[currentSection]['notes'] = [];
+                        }
                         siteDetails[currentSection]['notes'].push(results[0]);
                     }
                 }
 
                 if(currentLine.indexOf('-----') != -1){
                     currentSection = linesArray[i-1];
-                    siteDetails[currentSection] = {
-                        notes: []
-                    };
+                    siteDetails[currentSection] = {};
                     inSection = true;
                 }else if(!currentLine){
                     currentSection = '';
                     inSection = false;
                 }
             }
+            console.log(siteDetails);
             resolve(siteDetails);
         }
         ddevShell('describe', [siteName], null, parseDesribeLines, false);
