@@ -9,15 +9,15 @@
   },
   "author": "Andrew C Tran",
   "devDependencies": {
-    "electron": "1.7.8"
+    "electron-builder": "^19.31.1"
   },
   "build": {
-    "appId": "your.id",
+    "appId": "ddev.ui",
     "mac": {
       "category": "public.app-category.utilities"
     }
   },
-  "devDependencies": {
-    "electron-builder": "^19.31.1"
+  "dependencies": {
+    "fix-path": "^2.1.0"
   }
 }
