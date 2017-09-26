@@ -1,0 +1,28 @@
+.container {
+    margin: 70px 5px 5px 5px;
+    max-width: 100%;
+}
+.navbar {
+    background-color: #000;
+}
+.footer {
+    position: fixed;
+}
+.ddev-logo {
+    height: 50px;
+}
+.running .startbtn{
+    display: none;
+}
+.stopped .stopbtn{
+    display: none;
+}
+.stopped .restartbtn{
+    display: none;
+}
+.card .btn {
+    margin: 5px;
+}
+.card {
+    text-align: center;
+}
