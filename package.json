@@ -1,0 +1,12 @@
+{
+  "name": "DDEV-UI",
+  "version": "0.1.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Andrew C Tran",
+  "dependencies": {
+    "electron": "1.7.8"
+  }
+}
