@@ -3,10 +3,21 @@
   "version": "0.1.0",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "author": "Andrew C Tran",
-  "dependencies": {
+  "devDependencies": {
     "electron": "1.7.8"
+  },
+  "build": {
+    "appId": "your.id",
+    "mac": {
+      "category": "public.app-category.utilities"
+    }
+  },
+  "devDependencies": {
+    "electron-builder": "^19.31.1"
   }
 }
