@@ -1,5 +1,8 @@
 const childProcess = require('child_process');
 const os = require('os');
+const fixPath = require('fix-path');
+
+fixPath();
 
 const ddevShell = (command, args, path, callback, stream) => {
     var opts = {};
