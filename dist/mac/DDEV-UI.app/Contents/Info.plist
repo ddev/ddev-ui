@@ -45,6 +45,6 @@
     <key>NSHumanReadableCopyright</key>
     <string>Copyright © 2017 Andrew C Tran</string>
     <key>AsarIntegrity</key>
-    <string>{"checksums":{"app.asar":"UeIokfCtTdscwd3KLUq5fPmBaFDUTmHma1pxSECx5TMsSwdb1exLDy8/LcH8eKWwhEu5dSLOsDVYvyMaPsH/uA==","electron.asar":"nvUkrfPU3ZDXayFHRSC39fIgRlJYldemZCY/Q7coEEVu9Cut3nP5YRL7/azYp3lkIxlUNUijIuS7n4UnvJf2gg=="}}</string>
+    <string>{"checksums":{"app.asar":"Bdv1Fhc9IO61oaCwLBRYBkTjiB5M056K7XgRFDn290ME52wElEA9ePu+N8J9JXSm23k6j8iWbXsCFn90pK/rJA==","electron.asar":"nvUkrfPU3ZDXayFHRSC39fIgRlJYldemZCY/Q7coEEVu9Cut3nP5YRL7/azYp3lkIxlUNUijIuS7n4UnvJf2gg=="}}</string>
   </dict>
 </plist>
