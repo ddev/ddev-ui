@@ -18,6 +18,7 @@
     }
   },
   "dependencies": {
-    "fix-path": "^2.1.0"
+    "fix-path": "^2.1.0",
+    "tarball-extract": "0.0.6"
   }
 }
