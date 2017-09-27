@@ -24,6 +24,10 @@
             <div class="row card-container">
             </div>
         </div>
+
+        <footer class="footer">
+            <div class="router-status">DDEV Router Status: <span class="router-status-text">RUNNING</span></div>
+        </footer>
         <script src="js/ui.js"></script>
         <script>
             init();
@@ -39,7 +43,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="modalBody">
                     ...
                 </div>
             </div>
@@ -50,24 +54,46 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title" id="modalLabel">Select a platform for your new site</h2>
+                    <h2 class="modal-title" id="distroModalLabel">Create a New Site</h2>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
+                    <h3 class="add-modal-section-header">Application Type</h3>
                     <div class="tile-container">
                         <div class="tile">
-                            <img src="img/drupal7.jpeg" />
+                            <img class="drupal7" src="img/drupal7.png" data-type="drupal7"/>
                         </div>
                         <div class="tile">
-                            <img src="img/drupal8.png" />
+                            <img class="drupal8" src="img/drupal8.png" data-type="drupal8"/>
                         </div>
                         <div class="tile">
-                            <img src="img/wordpress.png" />
+                            <img class="wordpress" src="img/wordpress.png" data-type="wordpress"/>
                         </div>
                     </div>
+                    <h3 class="add-modal-section-header">Project Name</h3>
+                    <div class="site-name-container add-site-segment">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="site-name">
+                        </div>
+                    </div>
+                    <h3 class="add-modal-section-header">Installation Directory</h3>
+                    <div class="select-folder-container add-site-segment">
+                        <div class="input-group">
+                            <span class="input-group-addon select-path-folder" id="basic-addon1"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
+                            <input type="text" class="selected-path-text form-control" placeholder="Path To Install Site" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                    <div class="hidden">
+                        <input type="hidden" id="appType">
+                        <input type="hidden" id="appName">
+                        <input type="hidden" id="appPath">
+                    </div>
                 </div>
+                <footer class="modal-footer">
+                    <div class="btn btn-primary">Create Site</div>
+                </footer>
             </div>
         </div>
     </div>
