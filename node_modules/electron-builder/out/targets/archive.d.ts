@@ -1,0 +1,20 @@
+import { CompressionLevel } from "../core";
+export interface ArchiveOptions {
+    /**
+     * @default false
+     */
+    withoutDir?: boolean;
+    /**
+     * @default true
+     */
+    solid?: boolean;
+    /**
+     * @default true
+     */
+    isArchiveHeaderCompressed?: boolean;
+    listFile?: string;
+    dictSize?: number;
+    excluded?: Array<string>;
+    method?: "Copy" | "LZMA" | "Deflate";
+}
+export declare function compute7zCompressArgs(compression: CompressionLevel | any | any, format: string, options?: ArchiveOptions): string[];
