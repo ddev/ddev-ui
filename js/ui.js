@@ -39,11 +39,26 @@ function renderUI(list) {
 
 function createCard(site){
     var localPath = site.path.replace('~', os.homedir());
-    var markup = `<div class="col-lg-3 col-md-4 col-sm-4 card `+site.state+`" data-path="`+localPath+`" data-sitename="`+site.name+`">
-        <h2>`+site.name+`</h2>
-        <div>`+site.state+`</div>
-        <p><a class="btn btn-secondary" href="#" onclick='electron.shell.openExternal("`+site.url+`")'><i class="fa fa-chrome" aria-hidden="true"></i></a><a class="btn btn-secondary" href='#' onclick='electron.shell.showItemInFolder("`+localPath+`")'><i class="fa fa-folder-open-o" aria-hidden="true"></i></a><a class="btn btn-secondary infobtn" href='#'><i class="fa fa-info" aria-hidden="true"></i></a></p>
-        <p><a class="btn btn-primary startbtn" href="#" role="button"><i class="fa fa-play" aria-hidden="true"></i></a><a class="btn btn-primary stopbtn" href="#" role="button"><i class="fa fa-stop" aria-hidden="true"></i></a><a class="btn btn-primary restartbtn" href="#" role="button"><i class="fa fa-refresh" aria-hidden="true"></i></a><a class="btn btn-primary removebtn" href="#" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a></p>
+    var markup = `<div class="column col-lg-3 col-md-4 col-sm-4 `+site.state+`" data-path="`+localPath+`" data-sitename="`+site.name+`">
+        <div class="card">
+            <div class="card-header">
+                <h2>`+site.name+`</h2>
+            </div>
+            <div class="card-body">
+                <div>`+site.state+`</div>
+                <div>
+                    <a class="btn btn-secondary" href="#" onclick='electron.shell.openExternal("`+site.url+`")'><i class="fa fa-chrome" aria-hidden="true"></i></a>
+                    <a class="btn btn-secondary" href='#' onclick='electron.shell.showItemInFolder("`+localPath+`")'><i class="fa fa-folder-open-o" aria-hidden="true"></i></a>
+                    <a class="btn btn-secondary infobtn" href='#'><i class="fa fa-info" aria-hidden="true"></i></a>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-primary startbtn" href="#" role="button"><i class="fa fa-play" aria-hidden="true"></i></a>
+                <a class="btn btn-primary stopbtn" href="#" role="button"><i class="fa fa-stop" aria-hidden="true"></i></a>
+                <a class="btn btn-primary restartbtn" href="#" role="button"><i class="fa fa-refresh" aria-hidden="true"></i></a>
+                <a class="btn btn-primary removebtn" href="#" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            </div>
+        </div>
     </div>`;
 
     return markup;
@@ -74,46 +89,70 @@ function createDetails(details){
     return output;
 }
 
+function unpackDistro(distro, path){
+    tarball.extractTarball(distro, path, function(err){
+        if(err) {
+            return err
+        } else {
+            return "finished"
+        }
+    });
+}
+
+function resetAddModal() {
+    $('#site-name').val('');
+    $('.selected-path-text').val('');
+    $('.modal-footer .btn').removeClass('btn-primary').addClass('btn-secondary');
+}
+
 function updateModal(title, body){
-    $('.modal-title').text(title);
-    $('.modal-body').html(body);
+    $('#modalLabel').text(title);
+    $('#modalBody').html(body);
     $('#ddevModal').modal();
 }
 
 function bindButtons(){
     $(document).on('click', '.infobtn', function() {
         console.log('describe');
-        var siteName = $(this).closest('.card').data('sitename');
+        var siteName = $(this).closest('.column').data('sitename');
         getDescribe(siteName).then(function(data){
             updateModal('Additional Info For ' + siteName, createDetails(data));
         });
     });
     $(document).on('click', '.startbtn', function(){
         console.log('starting');
-        ddevShell.start($(this).closest('.card').data('path'), function(data){console.log(data)});
+        ddevShell.start($(this).closest('.column').data('path'), function(data){console.log(data)});
     });
     $(document).on('click', '.stopbtn', function(){
         console.log('stopping');
-        ddevShell.stop($(this).closest('.card').data('path'), function(data){console.log(data)});
+        ddevShell.stop($(this).closest('.column').data('path'), function(data){console.log(data)});
     });
     $(document).on('click', '.restartbtn', function(){
         console.log('restarting');
-        ddevShell.restart($(this).closest('.card').data('path'), function(data){console.log(data)});
+        ddevShell.restart($(this).closest('.column').data('path'), function(data){console.log(data)});
     });
     $(document).on('click', '.removebtn', function(){
         console.log('removing');
-        ddevShell.remove($(this).closest('.card').data('path'), function(data){console.log(data)});
+        ddevShell.remove($(this).closest('.column').data('path'), function(data){console.log(data)});
     });
     $(document).on('click', '.add', function(){
+        resetAddModal();
+        $('#distroModal').modal();
+    });
+    $(document).on('click', '.select-path-folder', function(){
         var path = dialog.showOpenDialog({
             properties: ['openDirectory']
         });
-        tarball.extractTarball('distros/wordpress/wordpress-4.8.2.tar.gz', path[0], function(err){
-            if(err) {
-                console.log(err)
-            } else {
+        if(path){
+            $('.selected-path-text').val(path[0]);
+        }
+    });
 
-            }
-        });
+    $(document).on('click', '.tile img', function(){
+       $('#appType').val($(this).data('type')).trigger('change');
+    });
+    $(document).on('change', '#appType', function(){
+        $('.tile img').removeClass('active');
+        $('.'+$(this).val()).addClass('active');
     });
 }
