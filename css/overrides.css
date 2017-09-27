@@ -40,18 +40,37 @@ h3 {
 /* END Style Guide Overrides */
 /*****************************/
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 .container {
-    margin: 70px 5px 5px 5px;
+    margin: 70px 5px 70px 5px;
     max-width: 100%;
 }
 .navbar {
     background-color: #23282b;
 }
+.modal-header {
+    background-color: #23282b;
+}
+.modal-footer {
+    background-color: #23282b;
+}
 .footer {
+    height: 66px;
+    background-color: #23282b;
+    bottom: 0;
     position: fixed;
+    width: 100%;
 }
 .ddev-logo {
     height: 50px;
+}
+.router-status {
+    line-height: 66px;
+    color: #ffffff;
+    float: right;
 }
 .running .startbtn{
     display: none;
@@ -68,6 +87,12 @@ h3 {
 .card {
     text-align: center;
     color: #23282b;
+}
+.card-header, .card-footer {
+    background-color: #23282b;
+}
+.column {
+    margin: 15px 0;
 }
 .modal-body td {
     padding: 0 20px;
@@ -87,7 +112,15 @@ h3 {
     float: left;
     padding: 10px;
 }
-.tile img {
+.tile img{
     width: 100%;
+}
+.tile .active {
     border: 1px solid #000;
+}
+.add-site-segment {
+    margin: 10px;
+}
+.add-modal-section-header{
+    border-bottom: 1px solid;
 }
