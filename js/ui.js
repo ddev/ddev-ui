@@ -3,6 +3,8 @@ var state = {};
 var ddevShell = require('./js/ddev-shell');
 var electron = require('electron');
 var os = require('os');
+var dialog = require('electron').remote.dialog;
+var tarball = require('tarball-extract');
 
 function init() {
     setInterval(fetchState,1000);
@@ -101,5 +103,17 @@ function bindButtons(){
     $(document).on('click', '.removebtn', function(){
         console.log('removing');
         ddevShell.remove($(this).closest('.card').data('path'), function(data){console.log(data)});
+    });
+    $(document).on('click', '.add', function(){
+        var path = dialog.showOpenDialog({
+            properties: ['openDirectory']
+        });
+        tarball.extractTarball('distros/wordpress/wordpress-4.8.2.tar.gz', path[0], function(err){
+            if(err) {
+                console.log(err)
+            } else {
+
+            }
+        });
     });
 }

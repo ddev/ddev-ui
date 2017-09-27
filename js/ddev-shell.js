@@ -113,6 +113,14 @@ const add = (path, name, docroot) => {
 };
 
 const describe = (siteName) => {
+    var pwd = childProcess.spawn('pwd');
+    var ls = childProcess.spawn('ls');
+    pwd.stdout.on('data', function(output) {
+        console.log(output.toString());
+    });
+    ls.stdout.on('data', function(output) {
+        console.log(output.toString());
+    });
     var promise = new Promise((resolve, reject) => {
         function parseDesribeLines (shellOutput) {
             var siteDetails = {};
