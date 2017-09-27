@@ -1,9 +1,51 @@
+/*************************/
+/* Style Guide Overrides */
+/*************************/
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-ExtraLight.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2, h3 {
+    color: #28bde4;
+}
+
+h1 {
+    font-size: 24pt;
+}
+
+h2 {
+    font-size: 18pt;
+}
+
+h3 {
+    font-size: 14pt;
+}
+
+.btn-primary {
+    background-color:#28bde4;
+    border-color: #28bde4;
+}
+.btn-secondary {
+    background-color:#878787;
+    border-color: #878787;
+}
+/*****************************/
+/* END Style Guide Overrides */
+/*****************************/
+
 .container {
     margin: 70px 5px 5px 5px;
     max-width: 100%;
 }
 .navbar {
-    background-color: #000;
+    background-color: #23282b;
 }
 .footer {
     position: fixed;
@@ -25,8 +67,27 @@
 }
 .card {
     text-align: center;
+    color: #23282b;
 }
 .modal-body td {
     padding: 0 20px;
     width: 50%;
+}
+.add {
+    float: right;
+}
+.directory-select {
+    display: none;
+}
+.tile-container {
+    width: 100%;
+}
+.tile {
+    width: 33.333333%;
+    float: left;
+    padding: 10px;
+}
+.tile img {
+    width: 100%;
+    border: 1px solid #000;
 }
