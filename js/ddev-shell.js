@@ -108,8 +108,24 @@ const remove = (path, callback) => {
     ddevShell('remove', null, path, callback, true);
 };
 
-const add = (path, name, docroot) => {
+const config = (path, name, docroot, callback) => {
+    var opts = {};
+    if (path) {
+        path = path.replace('~', os.homedir());
+        opts = {
+            cwd: path
+        }
+    }
 
+    var configCommand = childProcess.spawn('ddev', ['config'], opts);
+    configCommand.stdout.on('data', function(output) {
+        var outputStr = output.toString();
+        if(outputStr.indexOf('Project name') !== -1){
+            console.log('project name', name);
+        }
+        console.log(outputStr);
+    });
+    configCommand.stdin.write(name);
 };
 
 const describe = (siteName) => {
@@ -169,5 +185,5 @@ module.exports.start = start;
 module.exports.stop = stop;
 module.exports.restart = restart;
 module.exports.remove = remove;
-module.exports.add = add;
+module.exports.config = config;
 module.exports.describe = describe;
