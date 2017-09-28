@@ -6,6 +6,7 @@ var os = require('os');
 var dialog = require('electron').remote.dialog;
 var tarball = require('tarball-extract');
 
+
 function init() {
     setInterval(fetchState,1000);
     bindButtons();
@@ -100,15 +101,40 @@ function unpackDistro(distro, path){
 }
 
 function resetAddModal() {
+    $('#appType').val('').trigger('change');
     $('#site-name').val('');
     $('.selected-path-text').val('');
-    $('.modal-footer .btn').removeClass('btn-primary').addClass('btn-secondary');
+
 }
 
 function updateModal(title, body){
     $('#modalLabel').text(title);
     $('#modalBody').html(body);
     $('#ddevModal').modal();
+}
+
+function displayPrompt(){
+    var dialog = bootbox.dialog({
+        title: 'A custom dialog with buttons and callbacks',
+        message: "<p>Remove Local Development Environment</p>",
+        buttons: {
+            remove: {
+                label: "Remove the site and leave the database",
+                className: 'btn-info',
+                callback: function(){
+                    alert('remove');
+                }
+            },
+            all: {
+                label: "Delete the local site AND the database.",
+                className: 'btn-warning',
+                callback: function(){
+                    alert('remove db');
+                    return false;
+                }
+            }
+        }
+    });
 }
 
 function bindButtons(){
@@ -132,8 +158,9 @@ function bindButtons(){
         ddevShell.restart($(this).closest('.column').data('path'), function(data){console.log(data)});
     });
     $(document).on('click', '.removebtn', function(){
+        displayPrompt();
         console.log('removing');
-        ddevShell.remove($(this).closest('.column').data('path'), function(data){console.log(data)});
+        //ddevShell.remove($(this).closest('.column').data('path'), function(data){console.log(data)});
     });
     $(document).on('click', '.add', function(){
         resetAddModal();
@@ -153,6 +180,31 @@ function bindButtons(){
     });
     $(document).on('change', '#appType', function(){
         $('.tile img').removeClass('active');
-        $('.'+$(this).val()).addClass('active');
+        if($(this).val()){
+            $('.'+$(this).val()).addClass('active');
+        }
+    });
+
+    $(document).on('click', '.create-site', function(){
+        var distros = {
+          drupal7: 'distros/drupal7/drupal-7.56.tar.gz',
+          drupal8: 'distros/drupal8/drupal-8.3.6.tar.gz',
+          wordpress: 'distros/wordpress/wordpress-4.8.2.tar.gz'
+        };
+        var type = $('#appType').val();
+        var path = $('.selected-path-text').val();
+        var name = $('#site-name').val();
+        var unpackedDirectory = (path+"/"+distros[type].split('/')[2]).replace('.tar.gz','');
+        if(type === 'wordpress'){
+            unpackedDirectory = (path+"/"+type);
+        }
+        unpackDistro(distros[type],path);
+        ddevShell.config(unpackedDirectory,name,'',createFinished);
+        function createFinished(success){
+            if(success) {
+                resetAddModal();
+                $('#distroModal').modal('hide');
+            }
+        }
     });
 }
