@@ -12,8 +12,8 @@ stages:
       - run:
           name: Update npm
           command: |
-            sudo npm install -g npm@latest
-            apt-get -qq install wine wine-mono
+            curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+            sudo apt-get -qq install -y build-essential nodejs npm wine wine-mono
 
       - checkout
 
