@@ -13,8 +13,9 @@ stages:
       - run:
           name: Update npm
           command: |
-            curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-            sudo apt-get -qq install -y build-essential nodejs npm wine wine-mono
+            # the sudo -E bash - here seems to fail with a 130 even though it apparently succeeded.
+            curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - || true
+            sudo apt-get -qq install -y build-essential nodejs wine wine-mono
 
       - checkout
 
