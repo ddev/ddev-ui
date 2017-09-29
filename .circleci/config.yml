@@ -1,7 +1,8 @@
 version: 2
 stages:
   build:
-    machine: true
+    machine:
+      image: circleci/classic:201708-01
 
 #    environment:
 #      GOPATH: /home/circleci/go
