@@ -72,19 +72,16 @@ all: linux
 # - wine and mono must be available to build Windows on another platform (brew install wine mono )
 
 linux darwin: npminstall
-	@echo "Building $<"
-	electron-packager . --overwrite --platform=$@ --arch=x64 --icon=build/icon.icns --prune=true --out=release-builds --electronVersion=$(ELECTRON_VERSION)
+	@echo "Building $@"
+	PATH=$$PATH:./node_modules/.bin electron-packager . --overwrite --platform=$@ --arch=x64 --icon=build/icon.icns --prune=true --out=release-builds --electronVersion=$(ELECTRON_VERSION)
 
 windows: npminstall
-	@echo "Building $<"
-	electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=build/icon.ico --prune=true --out=release-builds --version-string.CompanyName=$(COMPANY_NAME) --version-string.FileDescription=$(PRODUCT_NAME) --version-string.ProductName='$(PRODUCT_NAME)' --electronVersion=$(ELECTRON_VERSION)
+	@echo "Building $@"
+	PATH=$$PATH:./node_modules/.bin electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=build/icon.ico --prune=true --out=release-builds --version-string.CompanyName=$(COMPANY_NAME) --version-string.FileDescription=$(PRODUCT_NAME) --version-string.ProductName='$(PRODUCT_NAME)' --electronVersion=$(ELECTRON_VERSION)
 
 
 npminstall: package.json
 	npm install
-
-#checkpackager:
-#	$(shell npm show electron-packager version)
 
 # Preprocess package.json.in into package.json so we can replace key variables like versions.
 package.json: package.json.in
