@@ -15,12 +15,15 @@ stages:
           name: VM setup
           command: |
             # instructions from http://ubuntuhandbook.org/index.php/2017/01/install-wine-2-0-ubuntu-16-04-14-04-16-10/
-            sudo add-apt-repository ppa:wine/wine-builds && sudo dpkg --add-architecture i386
 
             # Instructions from https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
             # the sudo -E bash - here seems to fail with a 130 even though it apparently succeeded.
             curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - || true
-            sudo apt-get -qq install --install-recommends -y build-essential nodejs wine-staging
+            sudo apt-get -qq install --install-recommends -y build-essential nodejs
+
+            # Instructions https://askubuntu.com/a/25614/18314 to install without manual EULA acceptance
+            echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
+            sudo apt-get install ttf-mscorefonts-installer wine
 
       - run: make linux
 
