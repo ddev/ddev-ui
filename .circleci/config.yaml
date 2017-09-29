@@ -1,0 +1,14 @@
+version: 2
+stages:
+  build:
+    machine: true
+
+#    environment:
+#      GOPATH: /home/circleci/go
+
+    steps:
+
+      - checkout
+
+      - run: make linux
+
