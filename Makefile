@@ -3,12 +3,11 @@
 ##### These variables need to be adjusted in most repositories #####
 
 ELECTRON_VERSION := 1.7.6
-PACKAGER_VERSION := 9.1.0
+ELECTRON_PACKAGER_VERSION := 9.1.0
 DDEV_UI_VERSION := $(VERSION)
 
 COMPANY_NAME=Drudtech
 PRODUCT_NAME=ddev-ui
-PACKAGER_VERSION_FOUND := $(shell npm show electron-packager version)
 
 
 # This repo's root import path (under GOPATH).
@@ -82,6 +81,7 @@ windows: npminstall
 
 npminstall: package.json
 	npm install
+	npm install electron-packager@$(ELECTRON_PACKAGER_VERSION)
 
 # Preprocess package.json.in into package.json so we can replace key variables like versions.
 package.json: package.json.in

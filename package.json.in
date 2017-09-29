@@ -5,13 +5,13 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=build/icon.png --prune=true --out=release-builds --electronVersion=$DDEV_ELECTRON_VERSION",
-    "build-windows": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=build/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='DDEV-UI' --electronVersion=$DDEV_ELECTRON_VERSION",
-    "build-darwin": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=build/icon.icns --prune=true --out=release-builds --electronVersion=$DDEV_ELECTRON_VERSION"
+    "build-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=build/icon.png --prune=true --out=release-builds --electronVersion=$ELECTRON_VERSION",
+    "build-windows": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=build/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='DDEV-UI' --electronVersion=$ELECTRON_VERSION",
+    "build-darwin": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=build/icon.icns --prune=true --out=release-builds --electronVersion=$ELECTRON_VERSION"
   },
   "author": "Andrew C Tran",
   "devDependencies": {
-    "electron-packager": "^9.1.0"
+    "electron-packager": "^$ELECTRON_PACKAGER_VERSION"
   },
   "dependencies": {
     "fix-path": "^2.1.0",
