@@ -4,7 +4,13 @@ const fixPath = require('fix-path');
 
 fixPath();
 
-const ddevShell = (command, args, path, callback, stream) => {
+const ddevShell = (command, args, path, callback, stream, complete) => {
+    if(!complete){
+        complete = {
+            success: function(){},
+            fail: function(){}
+        }
+    }
     var opts = {};
 
     if(!Array.isArray(command)) {
@@ -43,10 +49,11 @@ const ddevShell = (command, args, path, callback, stream) => {
     });
 
     currentCommand.on('close', function(code) {
-        if(stream){
-            callback('Process Exited With Code ' + code);
-        } else {
+        if(code === 0) {
             callback(outputBuffer);
+            complete.success();
+        } else{
+            complete.fail(code);
         }
     });
 };
@@ -92,20 +99,24 @@ const list = () => {
     return promise;
 };
 
-const start = (path, callback) => {
-    ddevShell('start', null, path, callback, true);
+const start = (path, callback, complete) => {
+    ddevShell('start', null, path, callback, true, complete);
 };
 
-const stop = (path, callback) => {
-    ddevShell('stop', null, path, callback, true);
+const stop = (path, callback, complete) => {
+    ddevShell('stop', null, path, callback, true, complete);
 };
 
-const restart = (path, callback) => {
-    ddevShell('restart', null, path, callback, true);
+const restart = (path, callback, complete) => {
+    ddevShell('restart', null, path, callback, true, complete);
 };
 
-const remove = (path, callback) => {
-    ddevShell('remove', null, path, callback, true);
+const remove = (path, preserveData, callback, complete) => {
+    var args = '';
+    if(!preserveData){
+        args = ['--remove-data'];
+    }
+    ddevShell('remove', args, path, callback, true, complete);
 };
 
 const config = (path, name, docroot, callback) => {
