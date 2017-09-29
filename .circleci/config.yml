@@ -14,6 +14,11 @@ stages:
       - run:
           name: VM setup
           command: |
+            # instructions from http://ubuntuhandbook.org/index.php/2017/01/install-wine-2-0-ubuntu-16-04-14-04-16-10/
+            # However the ppa is deprecated, see https://www.winehq.org/pipermail/wine-devel/2017-March/117104.html
+            # But I didn't succeed in getting the other one to give me a wine.
+            sudo add-apt-repository ppa:wine/wine-builds && sudo dpkg --add-architecture i386
+            
             # Instructions from https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
             # the sudo -E bash - here seems to fail with a 130 even though it apparently succeeded.
             curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - || true
