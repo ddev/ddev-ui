@@ -6,9 +6,8 @@ ELECTRON_VERSION := 1.7.6
 ELECTRON_PACKAGER_VERSION := 9.1.0
 DDEV_UI_VERSION := $(VERSION)
 
-COMPANY_NAME=Drudtech
-PRODUCT_NAME=ddev-ui
-
+COMPANY_NAME := Drudtech
+PRODUCT_NAME := ddevui
 
 # This repo's root import path (under GOPATH).
 PKG := github.com/drud/ddev-ui
@@ -62,12 +61,9 @@ include build-tools/makefile_components/base_test_python.mak
 
 .PHONY: build clean
 
-#all: darwin linux windows
-all: linux
-
+all: darwin linux windows
 
 # Build requirements
-# - electron-packager must already be installed to use this Makefile: npm install electron-packager@$(DDEV_ELECTRON_PACKAGER_VERSION) -g
 # - wine and mono must be available to build Windows on another platform (brew install wine mono )
 
 linux darwin: npminstall
@@ -85,7 +81,7 @@ npminstall: package.json
 
 # Preprocess package.json.in into package.json so we can replace key variables like versions.
 package.json: package.json.in
-	awk '{ gsub( /\$$DDEV_UI_VERSION/, "$(VERSION)"); gsub( /\$$ELECTRON_VERSION/, "$(ELECTRON_VERSION)"); gsub( /\$$PACKAGER_VERSION/, "$(PACKAGER_VERSION)"); print } ' <package.json.in > package.json
+	awk '{ gsub( /\$$DDEV_UI_VERSION/, "$(VERSION)"); gsub( /\$$ELECTRON_VERSION/, "$(ELECTRON_VERSION)"); gsub( /\$$ELECTRON_PACKAGER_VERSION/, "$(ELECTRON_PACKAGER_VERSION)"); print } ' <package.json.in > package.json
 
 clean:
 	@rm -rf package.json release_builds/*
