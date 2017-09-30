@@ -12,7 +12,6 @@ export VERSION=$(git describe --tags --always --dirty)
 for item in release-builds/DDEV*; do
 	pushd $item
 	filebase=$(basename $item)
-	pwd && ls -a
 	tar -czf $ARTIFACTS/${filebase}.tar.gz .
 	zip $ARTIFACTS/${filebase}.zip *
 	popd
