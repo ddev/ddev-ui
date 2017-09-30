@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -o errexit
+
+ARTIFACTS=$1
+BASE_DIR=$PWD
+
+sudo mkdir $ARTIFACTS && sudo chmod 777 $ARTIFACTS
+export VERSION=$(git describe --tags --always --dirty)
+
+for item in release-builds/DDEV*; do
+	cd $item
+	tar -czf $ARTIFACTS/${item}.tar.gz .
+	zip $ARTIFACTS/${item}.zip .
+done
+
+# Create the sha256 files
+cd $ARTIFACTS
+for item in *.tar.gz *.zip; do
+  sha256sum $item > $item.sha256.txt
+done

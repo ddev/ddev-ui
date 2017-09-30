@@ -4,8 +4,9 @@ stages:
     machine:
       image: circleci/classic:201708-01
 
-#    environment:
-#      GOPATH: /home/circleci/go
+    environment:
+      ARTIFACTS: /artifacts
+
     working_directory: ~/ddev-ui
 
     steps:
@@ -18,7 +19,7 @@ stages:
             # However the ppa is deprecated, see https://www.winehq.org/pipermail/wine-devel/2017-March/117104.html
             # But I didn't succeed in getting the other one to give me a wine.
             sudo add-apt-repository ppa:wine/wine-builds && sudo dpkg --add-architecture i386
-            
+
             # Instructions from https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
             # the sudo -E bash - here seems to fail with a 130 even though it apparently succeeded.
             curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - || true
@@ -30,3 +31,10 @@ stages:
 
       - run: make clean all
 
+      - run:
+          command: ./.circleci/generate_artifacts.sh $ARTIFACTS
+          name: tar/zip up artifacts and make hashes
+
+      - store_artifacts:
+          path: /artifacts
+          name: Artifact storage
