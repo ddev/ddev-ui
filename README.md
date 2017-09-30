@@ -1,20 +1,18 @@
 # ddev-ui
-A Graphical User Interface to compliment the DDEV CLI (https://github.com/drud/ddev)
+A Graphical User Interface for the DDEV CLI (https://github.com/drud/ddev)
 
 ## Prerequisites
 * DDEV CLI is installed and properly working.
-* Node.js is installed and NPM is working (http://www.nodejs.org)
 
 ## Run Instructions
 * Ensure DDEV is installed and properly working via CLI and you have valid projects installed.
-* Before first run, install Node dependencies by running `npm install`
-* Launch the GUI by running `npm run start`
 
 ## Build Instructions
-DDEV UI has been tested on OS X, Win7/8/10, Ubuntu 16.04+ and Fedora 25+. The following commands will output the compiled binary to /release-builds .
-* OS X: `npm run build-osx`
-* Linux: `npm run build-linux`
-* Windows: `npm run build-win`
+DDEV UI has been tested on macOS, Win7/8/10, Ubuntu 16.04+ and Fedora 25+. The following commands will output the compiled binary to /release-builds .
+
+* macOS: `make darwin` 
+* windows: `make windows`
+* linux: `make linux`
 
 ## Initial Roadmap
 The planned roadmap can be found at 
