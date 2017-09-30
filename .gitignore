@@ -3,3 +3,18 @@ node_modules/
 dist/
 release-builds/
 .idea/
+
+
+# Temporary build-tools artifacts to be ignored
+/.go/
+/.gotmp/
+/bin/
+/.container*
+/.push*
+/linux
+/darwin
+/windows
+/.dockerfile
+/VERSION.txt
+/.docker_image
+/package.json
