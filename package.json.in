@@ -1,6 +1,6 @@
 {
   "name": "DDEV-UI",
-  "description": "A GUI to compliment the DDEV CLI",
+  "description": "A GUI to complement the DDEV CLI",
   "version": "$DDEV_UI_VERSION",
   "main": "main.js",
   "scripts": {

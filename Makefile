@@ -84,4 +84,4 @@ package.json: package.json.in
 	awk '{ gsub( /\$$DDEV_UI_VERSION/, "$(VERSION)"); gsub( /\$$ELECTRON_VERSION/, "$(ELECTRON_VERSION)"); gsub( /\$$ELECTRON_PACKAGER_VERSION/, "$(ELECTRON_PACKAGER_VERSION)"); print } ' <package.json.in > package.json
 
 clean:
-	@rm -rf package.json release_builds/*
+	rm -rf package.json release-builds node_modules
