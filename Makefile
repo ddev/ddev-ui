@@ -71,7 +71,7 @@ linux: npminstall
 
 darwin: npminstall
 	@echo "Building $@"
-	PATH=$$PATH:./node_modules/.bin electron-builder --mac
+	PATH=$$PATH:./node_modules/.bin electron-builder --mac zip
 
 windows: npminstall
 	@echo "Building $@"
