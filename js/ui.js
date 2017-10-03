@@ -40,7 +40,7 @@ function renderUI(list) {
 
 function createCard(site){
     var localPath = site.path.replace('~', os.homedir());
-    var markup = `<div class="column `+site.name+` col-lg-3 col-md-4 col-sm-4 `+site.state+`" data-path="`+localPath+`" data-sitename="`+site.name+`">
+    var markup = `<div class="column col-lg-3 col-md-4 col-sm-4 `+site.state+`" data-path="`+localPath+`" data-sitename="`+site.name+`">
         <div class="card">
             <div class="card-header">
                 <h2>`+site.name+`</h2>
@@ -113,6 +113,30 @@ function updateModal(title, body){
     $('#ddevModal').modal();
 }
 
+function displayPrompt(){
+    var dialog = bootbox.dialog({
+        title: 'A custom dialog with buttons and callbacks',
+        message: "<p>Remove Local Development Environment</p>",
+        buttons: {
+            remove: {
+                label: "Remove the site and leave the database",
+                className: 'btn-info',
+                callback: function(){
+                    alert('remove');
+                }
+            },
+            all: {
+                label: "Delete the local site AND the database.",
+                className: 'btn-warning',
+                callback: function(){
+                    alert('remove db');
+                    return false;
+                }
+            }
+        }
+    });
+}
+
 function bindButtons(){
     $(document).on('click', '.infobtn', function() {
         console.log('describe');
@@ -122,66 +146,21 @@ function bindButtons(){
         });
     });
     $(document).on('click', '.startbtn', function(){
-        var path = $(this).closest('.column').data('path');
-        var name = $(this).closest('.column').data('sitename');
-        var complete = {
-            success: function () {
-                new Notification(name + " has been started successfully.");
-            },
-            fail: function (code) {
-                new Notification(name + " could not be started. Exited with error code " + code);
-            }
-        };
-        ddevShell.start(path, function(data){console.log(data)}, complete);
+        console.log('starting');
+        ddevShell.start($(this).closest('.column').data('path'), function(data){console.log(data)});
     });
     $(document).on('click', '.stopbtn', function(){
-        var path = $(this).closest('.column').data('path');
-        var name = $(this).closest('.column').data('sitename');
-        var complete = {
-            success: function () {
-                new Notification(name + " has been stopped successfully.");
-            },
-            fail: function (code) {
-                new Notification(name + " could not be stopped. Exited with error code " + code);
-            }
-        };
-        ddevShell.stop(path, function(data){console.log(data)}, complete);
+        console.log('stopping');
+        ddevShell.stop($(this).closest('.column').data('path'), function(data){console.log(data)});
     });
     $(document).on('click', '.restartbtn', function(){
-        var path = $(this).closest('.column').data('path');
-        var name = $(this).closest('.column').data('sitename');
-        var complete = {
-            success: function () {
-                new Notification(name + " has been restarted successfully.");
-            },
-            fail: function (code) {
-                new Notification(name + " could not be restarted. Exited with error code " + code);
-            }
-        };
-        ddevShell.restart(path, function(data){console.log(data)}, complete);
+        console.log('restarting');
+        ddevShell.restart($(this).closest('.column').data('path'), function(data){console.log(data)});
     });
     $(document).on('click', '.removebtn', function(){
-        var path = $(this).closest('.column').data('path');
-        var name = $(this).closest('.column').data('sitename');
-        var complete = {
-            success: function () {
-                new Notification(name + " has been removed successfully.");
-            },
-            fail: function (code) {
-                new Notification(name + " could not be removed. Exited with error code " + code);
-            }
-        };
-        dialog.showMessageBox({
-            type: 'question',
-            buttons: ['Keep the Database, remove just the Site','Delete both the Database and the Site'],
-            message: 'Would you like to delete the Site\'s Database as well?',
-        }, resp => {
-            if (resp === 0) {
-                ddevShell.remove(path, true, function(data){console.log(data)}, complete);
-            } else {
-                ddevShell.remove(path, false, function(data){console.log(data)}, complete);
-            }
-        });
+        displayPrompt();
+        console.log('removing');
+        //ddevShell.remove($(this).closest('.column').data('path'), function(data){console.log(data)});
     });
     $(document).on('click', '.add', function(){
         resetAddModal();
