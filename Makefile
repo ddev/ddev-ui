@@ -67,7 +67,7 @@ all: darwin linux windows
 
 linux: npminstall
 	@echo "Building $@"
-	PATH=$$PATH:./node_modules/.bin electron-builder --linux --ia32 --x64
+	PATH=$$PATH:./node_modules/.bin electron-builder --linux --x64
 
 darwin: npminstall
 	@echo "Building $@"
@@ -79,7 +79,7 @@ windows: npminstall
 
 
 npminstall: package.json
-	npm install --force
+	npm install --no-optional
 	npm install electron-builder@$(ELECTRON_BUILDER_VERSION)
 
 # Preprocess package.json.in into package.json so we can replace key variables like versions.
