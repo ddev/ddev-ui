@@ -2,8 +2,7 @@
 
 ##### These variables need to be adjusted in most repositories #####
 
-ELECTRON_VERSION := 1.7.6
-ELECTRON_PACKAGER_VERSION := 9.1.0
+ELECTRON_BUILDER_VERSION := 19.33.0
 DDEV_UI_VERSION := $(VERSION)
 
 COMPANY_NAME := Drudtech
@@ -66,22 +65,26 @@ all: darwin linux windows
 # Build requirements
 # - wine and mono must be available to build Windows on another platform (brew install wine mono )
 
-linux darwin: npminstall
+linux: npminstall
 	@echo "Building $@"
-	PATH=$$PATH:./node_modules/.bin electron-packager . --overwrite --platform=$@ --arch=x64 --icon=build/icon.icns --prune=true --out=release-builds --electronVersion=$(ELECTRON_VERSION)
+	PATH=$$PATH:./node_modules/.bin electron-builder --linux --ia32 --x64
+
+darwin: npminstall
+	@echo "Building $@"
+	PATH=$$PATH:./node_modules/.bin electron-builder --mac
 
 windows: npminstall
 	@echo "Building $@"
-	PATH=$$PATH:./node_modules/.bin electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=build/icon.ico --prune=true --out=release-builds --version-string.CompanyName=$(COMPANY_NAME) --version-string.FileDescription=$(PRODUCT_NAME) --version-string.ProductName='$(PRODUCT_NAME)' --electronVersion=$(ELECTRON_VERSION)
+	PATH=$$PATH:./node_modules/.bin electron-builder --win
 
 
 npminstall: package.json
-	npm install
-	npm install electron-packager@$(ELECTRON_PACKAGER_VERSION)
+	npm install --force
+	npm install electron-builder@$(ELECTRON_BUILDER_VERSION)
 
 # Preprocess package.json.in into package.json so we can replace key variables like versions.
 package.json: package.json.in
-	awk '{ gsub( /\$$DDEV_UI_VERSION/, "$(VERSION)"); gsub( /\$$ELECTRON_VERSION/, "$(ELECTRON_VERSION)"); gsub( /\$$ELECTRON_PACKAGER_VERSION/, "$(ELECTRON_PACKAGER_VERSION)"); print } ' <package.json.in > package.json
+	awk '{ gsub( /\$$DDEV_UI_VERSION/, "$(VERSION)"); gsub( /\$$ELECTRON_BUILDER_VERSION/, "$(ELECTRON_BUILDER_VERSION)"); print } ' <package.json.in > package.json
 
 clean:
 	rm -rf package.json release-builds node_modules
