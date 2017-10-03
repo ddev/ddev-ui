@@ -1,17 +1,20 @@
 {
-  "name": "DDEV-UI",
+  "name": "ddev-ui",
   "description": "A GUI to complement the DDEV CLI",
   "version": "$DDEV_UI_VERSION",
   "main": "main.js",
-  "scripts": {
-    "start": "electron .",
-    "build-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=build/icon.png --prune=true --out=release-builds --electronVersion=$ELECTRON_VERSION",
-    "build-windows": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=build/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='DDEV-UI' --electronVersion=$ELECTRON_VERSION",
-    "build-darwin": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=build/icon.icns --prune=true --out=release-builds --electronVersion=$ELECTRON_VERSION"
-  },
-  "author": "Andrew C Tran",
+    "scripts": {
+      "start": "electron .",
+      "build-linux": "electron-builder --linux --ia32 --x64",
+      "build-windows": "electron-builder --win",
+      "build-darwin": "electron-builder --mac"
+    },
+    "author": {
+      "name": "Andrew C Tran",
+      "email" : "atran@drud.com"
+    },
   "devDependencies": {
-    "electron-packager": "^$ELECTRON_PACKAGER_VERSION"
+    "electron-builder": "^$ELECTRON_BUILDER_VERSION"
   },
   "dependencies": {
     "fix-path": "^2.1.0",
