@@ -9,9 +9,7 @@
       "build-windows": "electron-builder --win",
       "build-darwin": "electron-builder --mac"
     },
-    "author": {
-      "name": "Andrew C Tran",
-      "email" : "atran@drud.com"
+    "author": "drudtech"
     },
   "devDependencies": {
     "electron-builder": "^$ELECTRON_BUILDER_VERSION"
