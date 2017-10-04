@@ -17,9 +17,10 @@ stages:
           command: |
             # Instructions from http://www.omgubuntu.co.uk/2017/04/how-to-add-wine-repository-ubuntu
             sudo dpkg --add-architecture i386
-            sudo apt-add-repository 'https://dl.winehq.org/wine-builds/ubuntu/'
             wget https://dl.winehq.org/wine-builds/Release.key && sudo apt-key add Release.key
-            sudo apt update && sudo apt install winehq-stable
+            sudo apt-add-repository 'https://dl.winehq.org/wine-builds/ubuntu/'
+            sudo apt update
+            sudo apt-get install --install-recommends winehq-stable=2.0.2~trusty
 
             # Instructions from https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
             # the sudo -E bash - here seems to fail with a 130 even though it apparently succeeded.
