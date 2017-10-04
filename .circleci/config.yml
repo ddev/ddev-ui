@@ -27,9 +27,6 @@ stages:
             curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - || true
             sudo apt-get -qq install --install-recommends -y build-essential nodejs
 
-            # Print Wine Version
-            wine --version
-
             # Electron-Builder dependency to create icons
             sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils
 
