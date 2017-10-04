@@ -15,13 +15,11 @@ stages:
       - run:
           name: VM setup
           command: |
-            # Instructions from http://www.omgubuntu.co.uk/2017/04/how-to-add-wine-repository-ubuntu
-            sudo apt-get update && sudo apt-get install -y ppa-purge
-            sudo ppa-purge ppa:openjdk-r/ppa
+            # Install wine 2.0.2
             sudo dpkg --add-architecture i386
             wget https://dl.winehq.org/wine-builds/Release.key && sudo apt-key add Release.key
             sudo apt-add-repository 'https://dl.winehq.org/wine-builds/ubuntu/'
-            sudo apt-get update
+            sudo apt-get -qq update
             sudo apt-get install --install-recommends winehq-stable=2.0.2~trusty
 
             # Instructions from https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
@@ -29,10 +27,10 @@ stages:
             curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - || true
             sudo apt-get -qq install --install-recommends -y build-essential nodejs
 
-            # Instructions https://askubuntu.com/a/25614/18314 to install without manual EULA acceptance
-            echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
-            sudo apt-get install ttf-mscorefonts-installer wine
+            # Print Wine Version
+            wine --version
 
+            # Electron-Builder dependency to create icons
             sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils
 
       - run: make clean all
