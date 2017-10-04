@@ -9,8 +9,7 @@
       "build-windows": "electron-builder --win",
       "build-darwin": "electron-builder --mac"
     },
-    "author": "drudtech"
-    },
+    "author": "drudtech",
   "devDependencies": {
     "electron-builder": "^$ELECTRON_BUILDER_VERSION"
   },
