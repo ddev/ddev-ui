@@ -16,10 +16,13 @@ stages:
           name: VM setup
           command: |
             # Instructions from http://www.omgubuntu.co.uk/2017/04/how-to-add-wine-repository-ubuntu
+            sudo apt-get install ppa-purge
+            find /etc/apt/sources.list.d -type f -name "*.list" -print0 | \
+                while read -d $'\0' file; do awk -F/ '/deb / && /ppa\.launchpad\.net/ {system("sudo ppa-purge ppa:"$4"/"$5)}' "$file"; done
             sudo dpkg --add-architecture i386
             wget https://dl.winehq.org/wine-builds/Release.key && sudo apt-key add Release.key
             sudo apt-add-repository 'https://dl.winehq.org/wine-builds/ubuntu/'
-            sudo apt update
+            sudo apt-get update
             sudo apt-get install --install-recommends winehq-stable=2.0.2~trusty
 
             # Instructions from https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
