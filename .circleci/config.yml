@@ -16,6 +16,7 @@ stages:
           name: VM setup
           command: |
             # Instructions from http://www.omgubuntu.co.uk/2017/04/how-to-add-wine-repository-ubuntu
+            sudo apt-get update
             sudo apt-get install ppa-purge
             sudo ppa-purge ppa:openjdk-r/ppa
             sudo dpkg --add-architecture i386
