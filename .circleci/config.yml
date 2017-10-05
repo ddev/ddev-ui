@@ -1,8 +1,8 @@
 version: 2
 stages:
   build:
-    machine:
-      image: circleci/classic:201708-01
+    macos:
+      xcode: "8.3.3"
 
     environment:
       ARTIFACTS: /artifacts
@@ -15,20 +15,16 @@ stages:
       - run:
           name: VM setup
           command: |
-            # Install wine 2.0.2
-            sudo dpkg --add-architecture i386
-            wget https://dl.winehq.org/wine-builds/Release.key && sudo apt-key add Release.key
-            sudo apt-add-repository 'https://dl.winehq.org/wine-builds/ubuntu/'
-            sudo apt-get -qq update
-            sudo apt-get install --install-recommends winehq-stable=2.0.2~trusty
+            brew cask install xquartz  # A dependency of wine
+            brew install node wine
 
-            # Instructions from https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
-            # the sudo -E bash - here seems to fail with a 130 even though it apparently succeeded.
-            curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - || true
-            sudo apt-get -qq install --install-recommends -y build-essential nodejs
-
-            # Electron-Builder dependency to create icons
-            sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils
+      - run:
+          name: Tool versions
+          command: |
+            make version
+            node --version
+            npm --version
+            wine --version
 
       - run: make clean all
 
