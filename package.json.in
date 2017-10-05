@@ -6,8 +6,8 @@
     "scripts": {
       "start": "electron .",
       "build-linux": "electron-builder --linux --x64",
-      "build-windows": "electron-builder --win portable",
-      "build-darwin": "electron-builder --mac zip"
+      "build-windows": "electron-builder --win",
+      "build-darwin": "electron-builder --mac"
     },
     "author": "drudtech",
   "devDependencies": {
