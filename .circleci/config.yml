@@ -19,12 +19,8 @@ stages:
             brew install node wine
 
       - run:
-          name: Tool versions
-          command: |
-            make version
-            node --version
-            npm --version
-            wine --version
+          name: Installed tool versions
+          command: echo "git commit=$(make version) node version=$(node --version) npm version=$(npm --version) wine version=$(wine --version) HOME=$HOME USER=$(whoami) PWD=$PWD"
 
       - run: make clean all
 
