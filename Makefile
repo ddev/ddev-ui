@@ -75,7 +75,7 @@ darwin: npminstall
 
 windows: npminstall
 	@echo "Building $@"
-	PATH=$$PATH:./node_modules/.bin electron-builder --win portable
+	PATH=$$PATH:./node_modules/.bin electron-builder --win
 
 
 npminstall: package.json
