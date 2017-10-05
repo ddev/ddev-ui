@@ -1,8 +1,8 @@
 version: 2
 stages:
   build:
-    machine:
-      image: circleci/classic:201708-01
+    macos:
+      xcode: "8.3.3"
 
     environment:
       ARTIFACTS: /artifacts
@@ -15,19 +15,12 @@ stages:
       - run:
           name: VM setup
           command: |
-            # instructions from http://ubuntuhandbook.org/index.php/2017/01/install-wine-2-0-ubuntu-16-04-14-04-16-10/
-            # However the ppa is deprecated, see https://www.winehq.org/pipermail/wine-devel/2017-March/117104.html
-            # But I didn't succeed in getting the other one to give me a wine.
-            sudo add-apt-repository ppa:wine/wine-builds && sudo dpkg --add-architecture i386
+            brew cask install xquartz  # A dependency of wine
+            brew install node wine
 
-            # Instructions from https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
-            # the sudo -E bash - here seems to fail with a 130 even though it apparently succeeded.
-            curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - || true
-            sudo apt-get -qq install --install-recommends -y build-essential nodejs
-
-            # Instructions https://askubuntu.com/a/25614/18314 to install without manual EULA acceptance
-            echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
-            sudo apt-get install ttf-mscorefonts-installer wine
+      - run:
+          name: Installed tool versions
+          command: echo "git commit=$(make version) node version=$(node --version) npm version=$(npm --version) wine version=$(wine --version) HOME=$HOME USER=$(whoami) PWD=$PWD"
 
       - run: make clean all
 
