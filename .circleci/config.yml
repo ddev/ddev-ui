@@ -15,6 +15,7 @@ stages:
       - run:
           name: VM setup
           command: |
+            brew update  # added for https://discuss.circleci.com/t/homebrew-must-be-run-under-ruby-2-3-runtimeerror/17232/5
             brew cask install xquartz  # A dependency of wine
             brew install node wine
 
