@@ -25,6 +25,8 @@ stages:
 
       - run: make clean all
 
+      - run: make test
+
       - run:
           command: ./.circleci/generate_artifacts.sh $ARTIFACTS
           name: tar/zip up artifacts and make hashes

@@ -89,3 +89,5 @@ package.json: package.json.in
 clean:
 	rm -rf package.json dist node_modules
 
+test:
+	npm test
