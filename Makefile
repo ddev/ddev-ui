@@ -55,11 +55,6 @@ include build-tools/makefile_components/base_build_python-docker.mak
 include build-tools/makefile_components/base_test_python.mak
 
 
-# Run Tests Before Building Binaries
-test:
-    @npm test
-.PHONY: test
-
 # Additional targets can be added here
 # Also, existing targets can be overridden by copying and customizing them.
 
@@ -76,7 +71,7 @@ linux: npminstall
 
 darwin: npminstall
 	@echo "Building $@"
-	PATH=$$PATH:./node_modules/.bin electron-builder --mac zip
+	PATH=$$PATH:./node_modules/.bin electron-builder --mac
 
 windows: npminstall
 	@echo "Building $@"
@@ -92,4 +87,5 @@ package.json: package.json.in
 	awk '{ gsub( /\$$DDEV_UI_VERSION/, "$(VERSION)"); gsub( /\$$ELECTRON_BUILDER_VERSION/, "$(ELECTRON_BUILDER_VERSION)"); print } ' <package.json.in > package.json
 
 clean:
-	rm -rf package.json release-builds node_modules
+	rm -rf package.json dist node_modules
+
