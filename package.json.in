@@ -11,12 +11,13 @@
       "build-darwin": "electron-builder --mac"
     },
     "author": {
-      "name": "Andrew C Tran",
+      "name": "DRUDTECH",
       "email" : "atran@drud.com"
     },
   "devDependencies": {
     "electron-builder": "^$ELECTRON_BUILDER_VERSION",
-    "mocha": "^4.0.1"
+    "mocha": "^4.0.1",
+    "stub-spawn-once": "^2.3.0"
   },
   "dependencies": {
     "fix-path": "^2.1.0",
