@@ -4,6 +4,7 @@
   "version": "$DDEV_UI_VERSION",
   "main": "main.js",
     "scripts": {
+      "test": "mocha",
       "start": "electron .",
       "build-linux": "electron-builder --linux --x64",
       "build-windows": "electron-builder --win",
@@ -14,7 +15,8 @@
       "email" : "atran@drud.com"
     },
   "devDependencies": {
-    "electron-builder": "^$ELECTRON_BUILDER_VERSION"
+    "electron-builder": "^$ELECTRON_BUILDER_VERSION",
+    "mocha": "^4.0.1"
   },
   "dependencies": {
     "fix-path": "^2.1.0",
