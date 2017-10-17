@@ -4,20 +4,14 @@
   "version": "$DDEV_UI_VERSION",
   "main": "main.js",
     "scripts": {
-      "test": "mocha",
       "start": "electron .",
       "build-linux": "electron-builder --linux --x64",
       "build-windows": "electron-builder --win",
       "build-darwin": "electron-builder --mac"
     },
-    "author": {
-      "name": "DRUDTECH",
-      "email" : "atran@drud.com"
-    },
+    "author": "drudtech",
   "devDependencies": {
-    "electron-builder": "^$ELECTRON_BUILDER_VERSION",
-    "mocha": "^4.0.1",
-    "stub-spawn-once": "^2.3.0"
+    "electron-builder": "^$ELECTRON_BUILDER_VERSION"
   },
   "dependencies": {
     "fix-path": "^2.1.0",
