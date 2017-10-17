@@ -42,7 +42,7 @@ const ddevShell = (command, args, path, callback, stream) => {
         appendBuffer(output);
     });
 
-    currentCommand.on('close', function(code) {
+    currentCommand.on('exit', function(code) {
         if(stream){
             callback('Process Exited With Code ' + code);
         } else {

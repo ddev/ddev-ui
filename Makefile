@@ -55,6 +55,11 @@ include build-tools/makefile_components/base_build_python-docker.mak
 include build-tools/makefile_components/base_test_python.mak
 
 
+# Run Tests Before Building Binaries
+test:
+    @npm test
+.PHONY: test
+
 # Additional targets can be added here
 # Also, existing targets can be overridden by copying and customizing them.
 
