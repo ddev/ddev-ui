@@ -7,7 +7,7 @@ const config = {
     context: __dirname,
     entry: [
         'babel-polyfill',
-        path.resolve(__dirname, './renderer.js'),
+        path.resolve(__dirname, './renderer.jsx'),
         `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr`,
     ],
     target: 'electron-renderer',
@@ -17,13 +17,16 @@ const config = {
         publicPath: `http://localhost:${port}/bundle/`,
         libraryTarget: 'commonjs2'
     },
+    resolve: {
+        extensions: ['.js', '.jsx']
+    },
     module: {
         loaders: [
-            { test: /\.js$/,
+            { test: /\.(js|jsx)$/,
                 loaders: ['babel-loader?presets[]=es2015,presets[]=react,presets[]=react-hmre','eslint-loader'],
                 include: [
                     path.join(__dirname, 'src'),
-                    path.join(__dirname, 'renderer.js')
+                    path.join(__dirname, 'renderer.jsx')
                 ],
                 exclude: /node_modules/
             }, {

@@ -22,7 +22,7 @@ app.on('ready', function () {
     mainWindow = new BrowserWindow({width: 900, height: 600});
 
     // and load the indexold.html of the app.
-    mainWindow.loadURL('file://' + __dirname + '/index.html');
+    mainWindow.loadURL('file://' + __dirname + '/indexreact.html');
 
     // Open the DevTools.
     mainWindow.openDevTools();    // requires a height 410px
