@@ -21,11 +21,11 @@ app.on('ready', function () {
     // Create the browser window.
     mainWindow = new BrowserWindow({width: 900, height: 600});
 
-    // and load the index.html of the app.
+    // and load the indexold.html of the app.
     mainWindow.loadURL('file://' + __dirname + '/index.html');
 
     // Open the DevTools.
-    //mainWindow.openDevTools();    // requires a height 410px
+    mainWindow.openDevTools();    // requires a height 410px
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>DDEV-UI</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/overrides.css">
+    <script src="js/ui.js"></script>
+</head>
+<body>
+<div id="app">
+    Loading...
+</div>
+
+<script>
+    // You can also require other files to run in this process
+    // install babel hooks in the main process
+
+    var bundlePath = './bundle/renderer.bundle.js';
+
+    if (typeof process !== 'undefined' && process.env.NODE_ENV === 'DEV') {
+        const port = process.env.PORT || 8080;
+        bundlePath = `http://127.0.0.1:${port}/bundle/renderer.bundle.js`;
+        var bundleScriptEl = document.createElement('script');
+        bundleScriptEl.src = bundlePath;
+        bundleScriptEl.async = true;
+        document.currentScript.parentNode.insertBefore(bundleScriptEl, document.currentScript);
+    } else {
+        require(bundlePath);
+    }
+
+</script>
+<script>
+    if (process && process.env.NODE_ENV === 'DEV') {
+        document.title += ' (DEV MODE)';
+    }
+</script>
+</body>
+</html>
