@@ -1,39 +1,67 @@
+const fixtures = require('./ddev-shell-fixtures');
+
 const ddevShell = require('../js/ddev-shell');
 const {stubSpawnOnce} = require('stub-spawn-once');
 const assert = require('assert');
 
-const sitesList = `
-1 local site found.
-NAME        TYPE     LOCATION            URL                           STATUS          
-fakedrupal  drupal7  ~/Downloads/drupal  http://fakedrupal.ddev.local  running
-fakewordpress  wordpress  ~/Downloads/wordpress  http://wordpress.ddev.local  running
-
-DDEV ROUTER STATUS: running
-        
-`;
 
 describe('ddev-shell', function () {
-    const expectedSitesList = [
-        {
-            name: 'fakedrupal',
-            type: 'drupal7',
-            path: '~/Downloads/drupal',
-            url: 'http://fakedrupal.ddev.local',
-            state: 'running'
-        }, {
-            name: 'fakewordpress',
-            type: 'wordpress',
-            path: '~/Downloads/wordpress',
-            url: 'http://wordpress.ddev.local',
-            state: 'running'
-        }
-    ];
     describe('#list()', function () {
-        stubSpawnOnce('ddev list', 0, sitesList);
+        stubSpawnOnce('ddev list', 0, fixtures.validListOutput);
         it('should parse `ddev list` shell output and return an array of site objects', function () {
             return ddevShell.list().then(function fulfilled(result) {
-                assert.equal(JSON.stringify(expectedSitesList), JSON.stringify(result));
+                assert.equal(JSON.stringify(fixtures.expectedSitesArray), JSON.stringify(result));
             });
         });
     });
-}); 
+    describe('#start()', function () {
+        stubSpawnOnce('ddev start', 0, fixtures.validStartOutput);
+        it('should call the success callback if process exits with no issue', function (done) {
+            ddevShell.start('~/', function(msg){
+                if(msg.toString() === fixtures.validStartOutput) {
+                    done();
+                    stubSpawnOnce('ddev start', 1, fixtures.invalidStartOutput);
+                }
+            },function(){});
+        });
+        it('should call the error callback if process exits with a non 0 code', function(done) {
+            ddevShell.start('~/', function(){},function(err){
+                if(err === fixtures.invalidStartOutput) {
+                    done();
+                }
+            });
+        });
+    });
+    describe('#stop()', function () {
+        stubSpawnOnce('ddev stop', 0, fixtures.validStopOutput);
+        it('should call the success callback if process exits with no issue', function (done) {
+            ddevShell.stop('~/', function(msg){
+                if(msg.toString() === fixtures.validStopOutput) {
+                    done();
+                    stubSpawnOnce('ddev stop', 1, fixtures.invalidStopOutput);
+                }
+            },function(){});
+        });
+        it('should call the error callback if process exits with a non 0 code', function(done) {
+            ddevShell.stop('~/', function(){},function(err){
+                if(err === fixtures.invalidStopOutput) {
+                    done();
+                }
+            });
+        });
+    });
+    describe('#restart()', function () {
+        stubSpawnOnce('ddev restart', 0, fixtures.validRestartOutput);
+        it('should call the success callback if process exits with no issue', function (done) {
+            ddevShell.restart('~/', function(msg){
+                if(msg === "Process Exited With Code 0") {
+                    done();
+                    stubSpawnOnce('ddev restart', 1, fixtures.validStartOutput);
+                }
+            },function(){});
+        });
+        it('should call the error callback if process exits with a non 0 code', function(done) {
+            ddevShell.restart('~/', function(){},function(){done()});
+        });
+    });
+});

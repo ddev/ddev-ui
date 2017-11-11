@@ -21,9 +21,9 @@ function fetchState() {
     });
 }
 
-function getDescribe(siteName) {
+function getDescribe(siteName, errorCallback) {
     var promise = new Promise(function(resolve, reject) {
-        ddevShell.describe(siteName).then(function(data){
+        ddevShell.describe(siteName, errorCallback).then(function(data){
             resolve(data);
         })
     });
@@ -147,15 +147,15 @@ function bindButtons(){
     });
     $(document).on('click', '.startbtn', function(){
         console.log('starting');
-        ddevShell.start($(this).closest('.column').data('path'), function(data){console.log(data)});
+        ddevShell.start($(this).closest('.column').data('path'), function(data){console.log(data)}, function(error){console.log(error)});
     });
     $(document).on('click', '.stopbtn', function(){
         console.log('stopping');
-        ddevShell.stop($(this).closest('.column').data('path'), function(data){console.log(data)});
+        ddevShell.stop($(this).closest('.column').data('path'), function(data){console.log(data)}, function(error){console.log(error)});
     });
     $(document).on('click', '.restartbtn', function(){
         console.log('restarting');
-        ddevShell.restart($(this).closest('.column').data('path'), function(data){console.log(data)});
+        ddevShell.restart($(this).closest('.column').data('path'), function(data){console.log(data)}, function(error){console.log(error)});
     });
     $(document).on('click', '.removebtn', function(){
         displayPrompt();

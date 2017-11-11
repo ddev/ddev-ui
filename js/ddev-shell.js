@@ -4,7 +4,7 @@ const fixPath = require('fix-path');
 
 fixPath();
 
-const ddevShell = (command, args, path, callback, stream) => {
+const ddevShell = (command, args, path, callback, errorCallback, stream) => {
     var opts = {};
 
     if(!Array.isArray(command)) {
@@ -27,10 +27,9 @@ const ddevShell = (command, args, path, callback, stream) => {
     var outputBuffer = '';
 
     var appendBuffer = function(data) {
+        outputBuffer += data;
         if(stream) {
             callback(data);
-        } else {
-            outputBuffer += data;
         }
     };
 
@@ -43,6 +42,9 @@ const ddevShell = (command, args, path, callback, stream) => {
     });
 
     currentCommand.on('exit', function(code) {
+        if(code !== 0) {
+            errorCallback(outputBuffer);
+        }
         if(stream){
             callback('Process Exited With Code ' + code);
         } else {
@@ -92,23 +94,23 @@ const list = () => {
     return promise;
 };
 
-const start = (path, callback) => {
-    ddevShell('start', null, path, callback, true);
+const start = (path, callback, errorCallback) => {
+    ddevShell('start', null, path, callback, errorCallback, true);
 };
 
-const stop = (path, callback) => {
-    ddevShell('stop', null, path, callback, true);
+const stop = (path, callback, errorCallback) => {
+    ddevShell('stop', null, path, callback, errorCallback, true);
 };
 
-const restart = (path, callback) => {
-    ddevShell('restart', null, path, callback, true);
+const restart = (path, callback, errorCallback) => {
+    ddevShell('restart', null, path, callback, errorCallback, true);
 };
 
 const remove = (path, callback) => {
-    ddevShell('remove', null, path, callback, true);
+    ddevShell('remove', null, path, callback, errorCallback, true);
 };
 
-const config = (path, name, docroot, callback) => {
+const config = (path, name, docroot, callback, errorCallback) => {
     var opts = {};
     if (path) {
         path = path.replace('~', os.homedir());
@@ -128,7 +130,7 @@ const config = (path, name, docroot, callback) => {
     configCommand.stdin.write(name);
 };
 
-const describe = (siteName) => {
+const describe = (siteName, errorCallback) => {
     var pwd = childProcess.spawn('pwd');
     var ls = childProcess.spawn('ls');
     pwd.stdout.on('data', function(output) {
@@ -171,10 +173,9 @@ const describe = (siteName) => {
                     inSection = false;
                 }
             }
-            console.log(siteDetails);
             resolve(siteDetails);
         }
-        ddevShell('describe', [siteName], null, parseDesribeLines, false);
+        ddevShell('describe', [siteName], null, parseDesribeLines, errorCallback, false);
     });
 
     return promise;
