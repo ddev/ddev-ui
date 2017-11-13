@@ -16,4 +16,3 @@ dist/
 /.dockerfile
 /VERSION.txt
 /.docker_image
-/package.json
