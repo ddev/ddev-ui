@@ -77,13 +77,12 @@ windows: npminstall
 	@echo "Building $@"
 	PATH=$$PATH:./node_modules/.bin electron-builder --win
 
-
 npminstall: package.json
 	npm install --no-optional
 	npm install electron-builder@$(ELECTRON_BUILDER_VERSION)
 
 clean:
-	rm -rf package.json dist node_modules
+	rm -rf dist node_modules
 
 test:
 	npm test
