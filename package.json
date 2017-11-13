@@ -1,0 +1,23 @@
+{
+  "name": "ddev-ui",
+  "description": "A GUI to complement the DDEV CLI",
+  "version": "v0.2.0-dev",
+  "main": "main.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "electron .",
+    "build-linux": "electron-builder --linux --x64",
+    "build-windows": "electron-builder --win",
+    "build-darwin": "electron-builder --mac"
+  },
+  "author": "drudtech",
+  "devDependencies": {
+    "electron-builder": "^19.33.0",
+    "mocha": "^4.0.1",
+    "stub-spawn-once": "^2.3.0"
+  },
+  "dependencies": {
+    "fix-path": "^2.1.0",
+    "tarball-extract": "0.0.6"
+  }
+}

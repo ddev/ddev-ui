@@ -82,10 +82,6 @@ npminstall: package.json
 	npm install --no-optional
 	npm install electron-builder@$(ELECTRON_BUILDER_VERSION)
 
-# Preprocess package.json.in into package.json so we can replace key variables like versions.
-package.json: package.json.in
-	awk '{ gsub( /\$$DDEV_UI_VERSION/, "$(VERSION)"); gsub( /\$$ELECTRON_BUILDER_VERSION/, "$(ELECTRON_BUILDER_VERSION)"); print } ' <package.json.in > package.json
-
 clean:
 	rm -rf package.json dist node_modules
 
