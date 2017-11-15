@@ -8,6 +8,42 @@ DDEV ROUTER STATUS: running
         
 `;
 
+const validDescribeOutputNoCreds = `
+NAME        TYPE     LOCATION            URL                           STATUS          
+drupaltest  drupal8  ~/Downloads/drupal  http://drupaltest.ddev.local  running
+
+Other Services
+--------------
+MailHog:        http://drupaltest.ddev.local:8025
+phpMyAdmin:     http://drupaltest.ddev.local:8036
+
+DDEV ROUTER STATUS: running
+
+`;
+
+const validDescribeOutputWithCreds = `
+NAME        TYPE     LOCATION            URL                           STATUS          
+drupaltest  drupal8  ~/Downloads/drupal  http://drupaltest.ddev.local  running
+
+MySQL Credentials
+-----------------
+Username:       db  
+Password:       db  
+Database name:  db  
+Host:           db  
+Port:           3306
+To connect to mysql from your host machine, use port 32768 on 127.0.0.1.
+For example: mysql --host=127.0.0.1 --port=32768 --user=db --password=db --database=db
+
+Other Services
+--------------
+MailHog:        http://drupaltest.ddev.local:8025
+phpMyAdmin:     http://drupaltest.ddev.local:8036
+
+DDEV ROUTER STATUS: running
+
+`;
+
 const expectedSitesArray = [
     {
         name: 'fakedrupal',
@@ -24,12 +60,15 @@ const expectedSitesArray = [
     }
 ];
 
+const expectedDescribeObject = {"Other Services":{"MailHog":"<a onclick=\"electron.shell.openExternal('http://drupaltest.ddev.local:8025')\" href=\"http://drupaltest.ddev.local:8025\">http://drupaltest.ddev.local:8025</a>","phpMyAdmin":"<a onclick=\"electron.shell.openExternal('http://drupaltest.ddev.local:8036')\" href=\"http://drupaltest.ddev.local:8036\">http://drupaltest.ddev.local:8036</a>"}};
+
 const validStartOutput = "Successfully started drupaltest";
 const invalidStartOutput = "Unable to start drupaltest";
 const validStopOutput = "Application has been stopped.";
 const invalidStopOutput = "Unable to stop drupaltest";
 const validRestartOutput = "Successfully restarted drupaltest";
 const invalidRestartOutput = "Unable to restart drupaltest";
+const invalidDescribeOutput = "Unable to get site info";
 
 module.exports.validListOutput = validListOutput;
 module.exports.expectedSitesArray = expectedSitesArray;
@@ -39,3 +78,7 @@ module.exports.validStopOutput = validStopOutput;
 module.exports.invalidStopOutput = invalidStopOutput;
 module.exports.validRestartOutput = validRestartOutput;
 module.exports.invalidRestartOutput = invalidRestartOutput;
+module.exports.validDescribeOutputNoCreds = validDescribeOutputNoCreds;
+module.exports.validDescribeOutputWithCreds = validDescribeOutputWithCreds;
+module.exports.expectedDescribeObject = expectedDescribeObject;
+module.exports.invalidDescribeOutput = invalidDescribeOutput;

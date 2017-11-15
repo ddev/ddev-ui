@@ -4,6 +4,13 @@ const ddevShell = require('../js/ddev-shell');
 const {stubSpawnOnce} = require('stub-spawn-once');
 const assert = require('assert');
 
+// Required to test promises expected to reject
+function isError(e) {
+    if (typeof e === 'string') {
+        return Promise.reject(new Error(e));
+    }
+    return Promise.resolve(e);
+}
 
 describe('ddev-shell', function () {
     describe('#list()', function () {
@@ -62,6 +69,29 @@ describe('ddev-shell', function () {
         });
         it('should call the error callback if process exits with a non 0 code', function(done) {
             ddevShell.restart('~/', function(){},function(){done()});
+        });
+    });
+    describe('#list()', function () {
+        stubSpawnOnce('ddev describe drupaltest', 0, fixtures.validDescribeOutputNoCreds);
+        it('should parse `ddev describe drupaltest` shell output and return an object of site information', function () {
+            return ddevShell.describe('drupaltest',function(){}).then(function fulfilled(result) {
+                assert.equal(JSON.stringify(fixtures.expectedDescribeObject), JSON.stringify(result));
+                stubSpawnOnce('ddev describe drupaltest', 0, fixtures.validDescribeOutputWithCreds);
+            });
+        });
+        it('should parse `ddev describe drupaltest` shell output and return an object of site information and strip command line info (mysql creds)', function () {
+            return ddevShell.describe('drupaltest',function(){}).then(function fulfilled(result) {
+                assert.equal(JSON.stringify(fixtures.expectedDescribeObject), JSON.stringify(result));
+                stubSpawnOnce('ddev describe drupaltest', 1, fixtures.invalidDescribeOutput);
+            });
+        });
+        it('should throw an error on error of ddev describe (expecting non 0 exit code)', function () {
+            return ddevShell.describe('drupaltest')
+                .then(function fulfilled(result) {
+                    throw new Error('Promise was unexpectedly fulfilled. Result: ' + result);
+                }, function rejected(error) {
+                    assert(error === fixtures.invalidDescribeOutput);
+                });
         });
     });
 });

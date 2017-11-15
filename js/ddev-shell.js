@@ -130,15 +130,7 @@ const config = (path, name, docroot, callback, errorCallback) => {
     configCommand.stdin.write(name);
 };
 
-const describe = (siteName, errorCallback) => {
-    var pwd = childProcess.spawn('pwd');
-    var ls = childProcess.spawn('ls');
-    pwd.stdout.on('data', function(output) {
-        console.log(output.toString());
-    });
-    ls.stdout.on('data', function(output) {
-        console.log(output.toString());
-    });
+const describe = (siteName) => {
     var promise = new Promise((resolve, reject) => {
         function parseDesribeLines (shellOutput) {
             var siteDetails = {};
@@ -155,7 +147,11 @@ const describe = (siteName, errorCallback) => {
                         results[index] = line.trim();
                     });
                     if(results.length > 1){
-                        siteDetails[currentSection][results[0]] = results[1];
+                        var lineData = results[1];
+                        if(lineData.indexOf('http') != -1){
+                            lineData = `<a onclick="electron.shell.openExternal('`+lineData+`')" href="`+lineData+`">`+lineData+`</a>`;
+                        }
+                        siteDetails[currentSection][results[0]] = lineData;
                     } else if (results.length === 1 && results[0]){
                         if(siteDetails[currentSection]['notes'] === undefined){
                             siteDetails[currentSection]['notes'] = [];
@@ -166,8 +162,10 @@ const describe = (siteName, errorCallback) => {
 
                 if(currentLine.indexOf('-----') != -1){
                     currentSection = linesArray[i-1];
-                    siteDetails[currentSection] = {};
-                    inSection = true;
+                    if(currentSection != "MySQL Credentials") {
+                        siteDetails[currentSection] = {};
+                        inSection = true;
+                    }
                 }else if(!currentLine){
                     currentSection = '';
                     inSection = false;
@@ -175,7 +173,7 @@ const describe = (siteName, errorCallback) => {
             }
             resolve(siteDetails);
         }
-        ddevShell('describe', [siteName], null, parseDesribeLines, errorCallback, false);
+        ddevShell('describe', [siteName], null, parseDesribeLines, reject, false);
     });
 
     return promise;

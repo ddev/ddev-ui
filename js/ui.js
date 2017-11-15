@@ -21,9 +21,9 @@ function fetchState() {
     });
 }
 
-function getDescribe(siteName, errorCallback) {
+function getDescribe(siteName) {
     var promise = new Promise(function(resolve, reject) {
-        ddevShell.describe(siteName, errorCallback).then(function(data){
+        ddevShell.describe(siteName).then(function(data){
             resolve(data);
         })
     });
