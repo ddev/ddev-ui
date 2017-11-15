@@ -59,8 +59,17 @@ function createCard(site) {
                 <a class="btn btn-primary startbtn" href="#" role="button"><i class="fa fa-play" aria-hidden="true"></i></a>
                 <a class="btn btn-primary stopbtn" href="#" role="button"><i class="fa fa-stop" aria-hidden="true"></i></a>
                 <a class="btn btn-primary infobtn" href='#'><i class="fa fa-info" aria-hidden="true"></i></a>
-                <a class="btn btn-primary" href='#'><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-            </div>
+              <button class="btn btn-primary" style="cursor: pointer;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Remove</a>
+                <a class="dropdown-item" href="#">Restart</a>
+                <a class="dropdown-item" href="#">Exec</a>
+                <a class="dropdown-item" href="#">Browse</a>
+                <a class="dropdown-item" href="#">Edit</a>
+              </div>
+        </div>
         </div>
     </div>`;
 
