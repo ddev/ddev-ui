@@ -4,14 +4,6 @@ const ddevShell = require('../js/ddev-shell');
 const {stubSpawnOnce} = require('stub-spawn-once');
 const assert = require('assert');
 
-// Required to test promises expected to reject
-function isError(e) {
-    if (typeof e === 'string') {
-        return Promise.reject(new Error(e));
-    }
-    return Promise.resolve(e);
-}
-
 describe('ddev-shell', function () {
     describe('#list()', function () {
         stubSpawnOnce('ddev list', 0, fixtures.validListOutput);
