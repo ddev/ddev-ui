@@ -149,7 +149,7 @@ const describe = (siteName) => {
                     if(results.length > 1){
                         var lineData = results[1];
                         if(lineData.indexOf('http') != -1){
-                            lineData = `<a onclick="electron.shell.openExternal('`+lineData+`')" href="`+lineData+`">`+lineData+`</a>`;
+                            lineData = `<a onclick="electron.shell.openExternal('`+lineData+`')" href="#">`+lineData+`</a>`;
                         }
                         siteDetails[currentSection][results[0]] = lineData;
                     } else if (results.length === 1 && results[0]){
