@@ -3,6 +3,7 @@ var parseXMLString = require('xml2js').parseString;
 var fs = require('fs');
 var compareVersions = require('compare-versions');
 
+// Remote read actions - fetch latest version information from remote endpoints
 function getNewestDrupalVersion(majorVersion) {
     var promise = new Promise(function(resolve, reject) {
         var options = {
@@ -30,7 +31,6 @@ function getNewestDrupalVersion(majorVersion) {
     });
     return promise;
 }
-
 function getNewestWordpressVersion() {
     var promise = new Promise(function(resolve, reject) {
         var options = {
@@ -57,6 +57,7 @@ function getNewestWordpressVersion() {
     return promise;
 }
 
+// Local read actions - read filesystem and local version info
 function getLocalDistros(localPath){
     var promise = new Promise(function(resolve, reject) {
 
@@ -74,37 +75,6 @@ function getLocalDistros(localPath){
     });
     return promise;
 }
-
-function downloadFile(url, path) {
-    var promise = new Promise(function(resolve, reject) {
-        request({uri: url})
-            .pipe(fs.createWriteStream(path))
-            .on('close', function () {
-                resolve();
-            })
-            .on('error', function () {
-                reject();
-            });
-    });
-
-    return promise;
-}
-
-function deleteFile(filePath) {
-    var promise = new Promise(function(resolve, reject) {
-        filePath = filePath.replace('~', os.homedir());
-        fs.unlink(filePath, (err) => {
-            if (err) {
-                reject();
-            } else {
-                resolve();
-            }
-        });
-    });
-
-    return promise;
-}
-
 function getLocalVersion(distro, path, majorVersion = null){
     var promise = new Promise(function(resolve, reject) {
         getLocalDistros(path)
@@ -134,6 +104,37 @@ function getLocalVersion(distro, path, majorVersion = null){
     return promise;
 }
 
+// Filesystem read/write actions - delete outdated repo and download/save new files
+function downloadFile(url, path) {
+    var promise = new Promise(function(resolve, reject) {
+        request({uri: url})
+            .pipe(fs.createWriteStream(path))
+            .on('close', function () {
+                resolve();
+            })
+            .on('error', function () {
+                reject();
+            });
+    });
+
+    return promise;
+}
+function deleteFile(filePath) {
+    var promise = new Promise(function(resolve, reject) {
+        filePath = filePath.replace('~', os.homedir());
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                reject();
+            } else {
+                resolve();
+            }
+        });
+    });
+
+    return promise;
+}
+
+// public function, handles checking remote, comparing local, and downloading new/deleting old files.
 const updateDistros = function() {
     var promise = new Promise(function(resolve, reject) {
         var cmsPath = "~/.ddev/CMS";

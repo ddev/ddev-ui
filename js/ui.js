@@ -5,7 +5,7 @@ var electron = require('electron');
 var os = require('os');
 var dialog = require('electron').remote.dialog;
 var tarball = require('tarball-extract');
-var updater = require('./js/distroupdater');
+var updater = require('./js/distro-updater');
 
 
 function init() {
