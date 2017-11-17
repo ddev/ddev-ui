@@ -63,18 +63,12 @@ describe('ddev-shell', function () {
             ddevShell.restart('~/', function(){},function(){done()});
         });
     });
-    describe('#list()', function () {
-        stubSpawnOnce('ddev describe drupaltest', 0, fixtures.validDescribeOutputNoCreds);
+    describe('#describe()', function () {
+        stubSpawnOnce('ddev describe drupaltest -j', 0, JSON.stringify(fixtures.validDescribeJSON));
         it('should parse `ddev describe drupaltest` shell output and return an object of site information', function () {
             return ddevShell.describe('drupaltest',function(){}).then(function fulfilled(result) {
                 assert.equal(JSON.stringify(fixtures.expectedDescribeObject), JSON.stringify(result));
-                stubSpawnOnce('ddev describe drupaltest', 0, fixtures.validDescribeOutputWithCreds);
-            });
-        });
-        it('should parse `ddev describe drupaltest` shell output and return an object of site information and strip command line info (mysql creds)', function () {
-            return ddevShell.describe('drupaltest',function(){}).then(function fulfilled(result) {
-                assert.equal(JSON.stringify(fixtures.expectedDescribeObject), JSON.stringify(result));
-                stubSpawnOnce('ddev describe drupaltest', 1, fixtures.invalidDescribeOutput);
+                stubSpawnOnce('ddev describe drupaltest -j', 1, fixtures.invalidDescribeOutput);
             });
         });
         it('should throw an error on error of ddev describe (expecting non 0 exit code)', function () {

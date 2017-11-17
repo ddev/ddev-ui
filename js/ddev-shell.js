@@ -44,11 +44,12 @@ const ddevShell = (command, args, path, callback, errorCallback, stream) => {
     currentCommand.on('exit', function(code) {
         if(code !== 0) {
             errorCallback(outputBuffer);
-        }
-        if(stream){
-            callback('Process Exited With Code ' + code);
         } else {
-            callback(outputBuffer);
+            if(stream){
+                callback('Process Exited With Code ' + code);
+            } else {
+                callback(outputBuffer);
+            }
         }
     });
 };
@@ -132,48 +133,25 @@ const config = (path, name, docroot, callback, errorCallback) => {
 
 const describe = (siteName) => {
     var promise = new Promise((resolve, reject) => {
-        function parseDesribeLines (shellOutput) {
-            var siteDetails = {};
-            var linesArray = shellOutput.replace(/\n/g, '!~!').split('!~!');
-            var inSection = false;
-            var currentSection = '';
-            for(var i = 0; i < linesArray.length; i++){
-                var currentLine = linesArray[i];
-
-                if(inSection){
-                    currentLine = currentLine.replace(/For example:\s/, 'For example:');
-                    var results = currentLine.replace(/:\s/g,'!~!').split('!~!');
-                    results.forEach(function(line,index){
-                        results[index] = line.trim();
-                    });
-                    if(results.length > 1){
-                        var lineData = results[1];
-                        if(lineData.indexOf('http') != -1){
-                            lineData = `<a onclick="electron.shell.openExternal('`+lineData+`')" href="#">`+lineData+`</a>`;
-                        }
-                        siteDetails[currentSection][results[0]] = lineData;
-                    } else if (results.length === 1 && results[0]){
-                        if(siteDetails[currentSection]['notes'] === undefined){
-                            siteDetails[currentSection]['notes'] = [];
-                        }
-                        siteDetails[currentSection]['notes'].push(results[0]);
-                    }
+        function parseJSONOutput (describeJSON) {
+            var rawData = JSON.parse(describeJSON);
+            var siteDetails = rawData.raw;
+            var modalData = {};
+            if(siteDetails.dbinfo) {
+                modalData['MySQL Credentials'] = siteDetails.dbinfo;
+            }
+            if(siteDetails.mailhog_url || siteDetails.phpmyadmin_url) {
+                modalData['Other Services'] = {};
+                if(siteDetails.mailhog_url) {
+                    modalData['Other Services']['MailHog'] = "<a onclick=\"electron.shell.openExternal('"+siteDetails.mailhog_url+"')\" href=\"#\">"+siteDetails.mailhog_url+"</a>"
                 }
-
-                if(currentLine.indexOf('-----') != -1){
-                    currentSection = linesArray[i-1];
-                    if(currentSection != "MySQL Credentials") {
-                        siteDetails[currentSection] = {};
-                        inSection = true;
-                    }
-                }else if(!currentLine){
-                    currentSection = '';
-                    inSection = false;
+                if(siteDetails.phpmyadmin_url) {
+                    modalData['Other Services']['phpMyAdmin'] = "<a onclick=\"electron.shell.openExternal('"+siteDetails.phpmyadmin_url+"')\" href=\"#\">"+siteDetails.phpmyadmin_url+"</a>"
                 }
             }
-            resolve(siteDetails);
+            resolve(modalData);
         }
-        ddevShell('describe', [siteName], null, parseDesribeLines, reject, false);
+        ddevShell('describe', [siteName, "-j"], null, parseJSONOutput, reject, false);
     });
 
     return promise;
