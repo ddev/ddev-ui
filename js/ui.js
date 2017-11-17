@@ -59,17 +59,14 @@ function createCard(site) {
                 <a class="btn btn-primary startbtn" href="#" role="button"><i class="fa fa-play" aria-hidden="true"></i></a>
                 <a class="btn btn-primary stopbtn" href="#" role="button"><i class="fa fa-stop" aria-hidden="true"></i></a>
                 <a class="btn btn-primary infobtn" href='#'><i class="fa fa-info" aria-hidden="true"></i></a>
-              <button class="btn btn-primary" style="cursor: pointer;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button class="btn btn-primary dropdown-toggle" style="cursor: pointer;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Remove</a>
-                <a class="dropdown-item" href="#">Restart</a>
-                <a class="dropdown-item" href="#">Exec</a>
-                <a class="dropdown-item" href="#">Browse</a>
-                <a class="dropdown-item" href="#">Edit</a>
+                <a class="dropdown-item restartbtn" href="#">Restart</a>
+                <a class="dropdown-item" onclick='electron.shell.showItemInFolder("\` + localPath + \`")' href="#">Browse Local Files</a>
               </div>
-        </div>
+            </div>
         </div>
     </div>`;
 
@@ -158,15 +155,27 @@ function bindButtons() {
     });
     $(document).on('click', '.startbtn', function () {
         console.log('starting');
-        ddevShell.start($(this).closest('.column').data('path'), function(data){console.log(data)}, function(error){console.log(error)});
+        ddevShell.start($(this).closest('.column').data('path'), function (data) {
+            console.log(data)
+        }, function (error) {
+            console.log(error)
+        });
     });
     $(document).on('click', '.stopbtn', function () {
         console.log('stopping');
-        ddevShell.stop($(this).closest('.column').data('path'), function(data){console.log(data)}, function(error){console.log(error)});
+        ddevShell.stop($(this).closest('.column').data('path'), function (data) {
+            console.log(data)
+        }, function (error) {
+            console.log(error)
+        });
     });
     $(document).on('click', '.restartbtn', function () {
         console.log('restarting');
-        ddevShell.restart($(this).closest('.column').data('path'), function(data){console.log(data)}, function(error){console.log(error)});
+        ddevShell.restart($(this).closest('.column').data('path'), function (data) {
+            console.log(data)
+        }, function (error) {
+            console.log(error)
+        });
     });
     $(document).on('click', '.removebtn', function () {
         displayPrompt();
@@ -211,6 +220,7 @@ function bindButtons() {
         }
         unpackDistro(distros[type], path);
         ddevShell.config(unpackedDirectory, name, '', createFinished);
+
         function createFinished(success) {
             if (success) {
                 resetAddModal();
