@@ -5,12 +5,12 @@ var electron = require('electron');
 var os = require('os');
 var dialog = require('electron').remote.dialog;
 var tarball = require('tarball-extract');
+var updater = require('./js/distroupdater');
 
 
 function init() {
-    setInterval(fetchState, 1000);
-    bindButtons();
-}
+    updater.updateDistros;
+    setInterval(fetchState,1000);
 
 function fetchState() {
     ddevShell.list().then(function (data) {

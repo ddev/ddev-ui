@@ -17,7 +17,10 @@
     "stub-spawn-once": "^2.3.0"
   },
   "dependencies": {
+    "compare-versions": "^3.1.0",
     "fix-path": "^2.1.0",
-    "tarball-extract": "0.0.6"
+    "request": "^2.83.0",
+    "tarball-extract": "0.0.6",
+    "xml2js": "^0.4.19"
   }
 }
