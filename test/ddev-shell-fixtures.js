@@ -8,29 +8,7 @@ DDEV ROUTER STATUS: running
         
 `;
 
-const validDescribeJSON = {
-    "level":"info",
-    "msg":"NAME TYPE LOCATION URL STATUS \ndrupaltest drupal8 ~/Downloads/drupal http://drupaltest.ddev.local running\n\nMySQL Credentials\n-----------------\nUsername: \tdb \nPassword: \tdb \nDatabase name:\tdb \nHost: \tdb \nPort: \t3306\nTo connect to mysql from your host machine, use port 32768 on 127.0.0.1.\nFor example: mysql --host=127.0.0.1 --port=32768 --user=db --password=db --database=db\n\nOther Services\n--------------\nMailHog: \thttp://drupaltest.ddev.local:8025\nphpMyAdmin:\thttp://drupaltest.ddev.local:8036\n\nDDEV ROUTER STATUS: healthy",
-    "raw":{
-        "approot":"~/Downloads/drupal",
-        "dbinfo":{
-            "dbname":"db",
-            "host":"db",
-            "password":"db",
-            "port":"3306",
-            "published_port":"32768",
-            "username":"db"
-        },
-        "mailhog_url":"http://drupaltest.ddev.local:8025",
-        "name":"drupaltest",
-        "phpmyadmin_url":"http://drupaltest.ddev.local:8036",
-        "router_status":"healthy",
-        "status":"running",
-        "type":"drupal8",
-        "url":"http://drupaltest.ddev.local"
-    },
-    "time":"2017-11-16T17:49:24-07:00"
-};
+const validDescribeJSON = {"level":"info","msg":"NAME        TYPE     LOCATION            URL                           STATUS \ndrupaltest  drupal8  ~/Downloads/drupal  http://drupaltest.ddev.local  running\n\nMySQL Credentials\n-----------------\nUsername:     \tdb  \nPassword:     \tdb  \nDatabase name:\tdb  \nHost:         \tdb  \nPort:         \t3306\nTo connect to mysql from your host machine, use port 32772 on 127.0.0.1.\nFor example: mysql --host=127.0.0.1 --port=32772 --user=db --password=db --database=db\n\nOther Services\n--------------\nMailHog:   \thttp://drupaltest.ddev.local:8025\nphpMyAdmin:\thttp://drupaltest.ddev.local:8036\n\nDDEV ROUTER STATUS: healthy","raw":{"approot":"~/Downloads/drupal","dbinfo":{"dbname":"db","host":"db","password":"db","port":"3306","published_port":"32772","username":"db"},"mailhog_url":"http://drupaltest.ddev.local:8025","name":"drupaltest","phpmyadmin_url":"http://drupaltest.ddev.local:8036","router_status":"healthy","status":"running","type":"drupal8","url":"http://drupaltest.ddev.local"},"time":"2017-11-20T14:41:13-07:00"};
 
 const expectedSitesArray = [
     {
