@@ -1,32 +1,9 @@
-const validListOutput = `
-1 local site found.
-NAME        TYPE     LOCATION            URL                           STATUS          
-fakedrupal  drupal7  ~/Downloads/drupal  http://fakedrupal.ddev.local  running
-fakewordpress  wordpress  ~/Downloads/wordpress  http://wordpress.ddev.local  running
+const validListOutput = {"level":"info","msg":"NAME        TYPE     LOCATION            URL(s)                        STATUS \ndrupaltest  drupal8  ~/Downloads/drupal  http://drupaltest.ddev.local  running\n\nDDEV ROUTER STATUS: healthy","raw":[{"approot":"/Users/atran/Downloads/drupal","dbinfo":{"dbname":"db","host":"db","password":"db","port":"3306","published_port":"32772","username":"db"},"httpsurl":"","httpurl":"http://drupaltest.ddev.local","mailhog_url":"http://drupaltest.ddev.local:8025","name":"drupaltest","phpmyadmin_url":"http://drupaltest.ddev.local:8036","router_status":"healthy","shortroot":"~/Downloads/drupal","status":"running","type":"drupal8"}],"time":"2017-11-20T16:28:36-07:00"};
+const validDescribeJSON = {"raw":{"approot":"/Users/atran/Downloads/drupal","dbinfo":{"dbname":"db","host":"db","password":"db","port":"3306","published_port":"32772","username":"db"},"httpsurl":"","httpurl":"http://drupaltest.ddev.local","mailhog_url":"http://drupaltest.ddev.local:8025","name":"drupaltest","phpmyadmin_url":"http://drupaltest.ddev.local:8036","router_status":"healthy","shortroot":"~/Downloads/drupal","status":"running","type":"drupal8"},"time":"2017-11-20T16:08:27-07:00"};
 
-DDEV ROUTER STATUS: running
-        
-`;
+const expectedSitesArray = [{"approot":"/Users/atran/Downloads/drupal","dbinfo":{"dbname":"db","host":"db","password":"db","port":"3306","published_port":"32772","username":"db"},"httpsurl":"","httpurl":"http://drupaltest.ddev.local","mailhog_url":"http://drupaltest.ddev.local:8025","name":"drupaltest","phpmyadmin_url":"http://drupaltest.ddev.local:8036","router_status":"healthy","shortroot":"~/Downloads/drupal","status":"running","type":"drupal8"}];
+const expectedDescribeObject = {"MySQL Credentials":{"dbname":"db","host":"db","password":"db","port":"3306","published_port":"32772","username":"db"},"Other Services":{"MailHog":"<a onclick=\"electron.shell.openExternal('http://drupaltest.ddev.local:8025')\" href=\"#\">http://drupaltest.ddev.local:8025</a>","phpMyAdmin":"<a onclick=\"electron.shell.openExternal('http://drupaltest.ddev.local:8036')\" href=\"#\">http://drupaltest.ddev.local:8036</a>"}}
 
-const validDescribeJSON = {"level":"info","msg":"NAME        TYPE     LOCATION            URL                           STATUS \ndrupaltest  drupal8  ~/Downloads/drupal  http://drupaltest.ddev.local  running\n\nMySQL Credentials\n-----------------\nUsername:     \tdb  \nPassword:     \tdb  \nDatabase name:\tdb  \nHost:         \tdb  \nPort:         \t3306\nTo connect to mysql from your host machine, use port 32772 on 127.0.0.1.\nFor example: mysql --host=127.0.0.1 --port=32772 --user=db --password=db --database=db\n\nOther Services\n--------------\nMailHog:   \thttp://drupaltest.ddev.local:8025\nphpMyAdmin:\thttp://drupaltest.ddev.local:8036\n\nDDEV ROUTER STATUS: healthy","raw":{"approot":"~/Downloads/drupal","dbinfo":{"dbname":"db","host":"db","password":"db","port":"3306","published_port":"32772","username":"db"},"mailhog_url":"http://drupaltest.ddev.local:8025","name":"drupaltest","phpmyadmin_url":"http://drupaltest.ddev.local:8036","router_status":"healthy","status":"running","type":"drupal8","url":"http://drupaltest.ddev.local"},"time":"2017-11-20T14:41:13-07:00"};
-
-const expectedSitesArray = [
-    {
-        name: 'fakedrupal',
-        type: 'drupal7',
-        path: '~/Downloads/drupal',
-        url: 'http://fakedrupal.ddev.local',
-        state: 'running'
-    }, {
-        name: 'fakewordpress',
-        type: 'wordpress',
-        path: '~/Downloads/wordpress',
-        url: 'http://wordpress.ddev.local',
-        state: 'running'
-    }
-];
-
-const expectedDescribeObject = {"MySQL Credentials":{"dbname":"db","host":"db","password":"db","port":"3306","published_port":"32768","username":"db"},"Other Services":{"MailHog":"<a onclick=\"electron.shell.openExternal('http://drupaltest.ddev.local:8025')\" href=\"#\">http://drupaltest.ddev.local:8025</a>","phpMyAdmin":"<a onclick=\"electron.shell.openExternal('http://drupaltest.ddev.local:8036')\" href=\"#\">http://drupaltest.ddev.local:8036</a>"}};
 
 const validStartOutput = "Successfully started drupaltest";
 const invalidStartOutput = "Unable to start drupaltest";

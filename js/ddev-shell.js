@@ -56,41 +56,15 @@ const ddevShell = (command, args, path, callback, errorCallback, stream) => {
 
 const list = () => {
     var promise = new Promise((resolve, reject) => {
-        function createSiteFromLine(lineText){
-            var lineArray = lineText.replace(/\s\s+/g,'!~!').split('!~!');
-            var site = {
-                name:  lineArray[0],
-                type:  lineArray[1],
-                path:  lineArray[2],
-                url:   lineArray[3],
-                state: lineArray[4]
-            };
-            return site;
-        }
-
-        function parseLines(shellOutput) {
-            var sitesList = [];
-            var linesArray = shellOutput.replace(/\n/g, '!~!').split('!~!');
-            var loopInSitesBlock = false;
-            linesArray.forEach(function(line) {
-                if(loopInSitesBlock && line){
-                    sitesList.push(createSiteFromLine(line));
-                }
-
-                if(line.replace(/\s\s+/g,'').indexOf('NAMETYPELOCATIONURLSTATUS') != -1){
-                    loopInSitesBlock = true;
-                }else if(!line){
-                    loopInSitesBlock = false;
-                }
-            });
-            if(sitesList){
-                resolve(sitesList);
-            }else{
-                reject('No Sites Found.');
+        function getRaw(output) {
+            var outputObject = JSON.parse(output);
+            if(Array.isArray(outputObject.raw)){
+                resolve(outputObject.raw)
+            } else {
+                reject(output);
             }
         }
-
-        ddevShell('list', null, null, parseLines, false);
+        ddevShell('list', ['-j'], null, getRaw, reject);
     });
     return promise;
 };

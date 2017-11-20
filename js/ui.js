@@ -39,16 +39,16 @@ function renderUI(list) {
 }
 
 function createCard(site){
-    var localPath = site.path.replace('~', os.homedir());
-    var markup = `<div class="column col-lg-3 col-md-4 col-sm-4 `+site.state+`" data-path="`+localPath+`" data-sitename="`+site.name+`">
+    var localPath = site.approot;
+    var markup = `<div class="column col-lg-3 col-md-4 col-sm-4 `+site.status+`" data-path="`+localPath+`" data-sitename="`+site.name+`">
         <div class="card">
             <div class="card-header">
                 <h2>`+site.name+`</h2>
             </div>
             <div class="card-body">
-                <div>`+site.state+`</div>
+                <div>`+site.status+`</div>
                 <div>
-                    <a class="btn btn-secondary" href="#" onclick='electron.shell.openExternal("`+site.url+`")'><i class="fa fa-chrome" aria-hidden="true"></i></a>
+                    <a class="btn btn-secondary" href="#" onclick='electron.shell.openExternal("`+site.httpurl+`")'><i class="fa fa-chrome" aria-hidden="true"></i></a>
                     <a class="btn btn-secondary" href='#' onclick='electron.shell.showItemInFolder("`+localPath+`")'><i class="fa fa-folder-open-o" aria-hidden="true"></i></a>
                     <a class="btn btn-secondary infobtn" href='#'><i class="fa fa-info" aria-hidden="true"></i></a>
                 </div>
