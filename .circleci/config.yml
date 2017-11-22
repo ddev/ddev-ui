@@ -12,9 +12,12 @@ stages:
     steps:
       - checkout
 
+      - run: brew update && brew info --json=v1 node >/tmp/info.txt && brew info --json=v1 wine >>/tmp/info.txt
+
       - restore_cache:
           keys:
-            - homebrew
+            - homebrew-{{ checksum "/tmp/info.txt" }}
+            - homebrew-
 
       - run:
           name: VM setup
@@ -23,8 +26,9 @@ stages:
             brew upgrade node
             brew install wine
 
+
       - save-cache:
-          key: homebrew
+          key: homebrew-{{ checksum "/tmp/info.txt" }}
           paths:
             - /usr/local
             - /opt/X11
