@@ -12,29 +12,47 @@ stages:
     steps:
       - checkout
 
+      - run:
+          name: xquartz setup
+          command: brew cask install xquartz  # dependency of wine
+
       - run: brew update && brew info --json=v1 node >/tmp/info.txt && brew info --json=v1 wine >>/tmp/info.txt
 
       - restore_cache:
           keys:
-            - homebrew-{{ checksum "/tmp/info.txt" }}
-            - homebrew-
+            - homebrew-v2-{{ checksum "/tmp/info.txt" }}
+            - homebrew-v2-
 
       - run:
-          name: VM setup
+          name: Homebrew install of node/wine
           command: |
-            brew cask install xquartz  # A dependency of wine
-            brew upgrade node
-            brew install wine
-
+            brew upgrade node || true
+            brew install wine || true
+            brew link wine || true
 
       - save-cache:
-          key: homebrew-{{ checksum "/tmp/info.txt" }}
+          key: homebrew-v2-{{ checksum "/tmp/info.txt" }}
           paths:
             - /usr/local/Cellar/node
             - /usr/local/Cellar/wine
             - /usr/local/bin/node
             - /usr/local/bin/npm
-            - /usr/local/bin/wine*
+            - /usr/local/bin/wine
+            - /usr/local/bin/wine64
+            - /usr/local/bin/wineboot
+            - /usr/local/bin/winebuild
+            - /usr/local/bin/winecfg
+            - /usr/local/bin/wineconsole
+            - /usr/local/bin/winecpp
+            - /usr/local/bin/winedbg
+            - /usr/local/bin/winedump
+            - /usr/local/bin/winefile
+            - /usr/local/bin/wineg++
+            - /usr/local/bin/winegcc
+            - /usr/local/bin/winemaker
+            - /usr/local/bin/winemine
+            - /usr/local/bin/winepath
+            - /usr/local/bin/wineserver
 
       - run:
           name: Installed tool versions
