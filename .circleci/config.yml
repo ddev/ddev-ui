@@ -30,8 +30,11 @@ stages:
       - save-cache:
           key: homebrew-{{ checksum "/tmp/info.txt" }}
           paths:
-            - /usr/local
-            - /opt/X11
+            - /usr/local/Cellar/node
+            - /usr/local/Cellar/wine
+            - /usr/local/bin/node
+            - /usr/local/bin/npm
+            - /usr/local/bin/wine*
 
       - run:
           name: Installed tool versions
