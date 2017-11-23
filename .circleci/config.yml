@@ -20,39 +20,22 @@ stages:
 
       - restore_cache:
           keys:
-            - homebrew-v2-{{ checksum "/tmp/info.txt" }}
-            - homebrew-v2-
+            - homebrew-v3-{{ checksum "/tmp/info.txt" }}
+            - homebrew-v3-
 
       - run:
           name: Homebrew install of node/wine
           command: |
             brew upgrade node || true
             brew install wine || true
-            brew link wine || true
+            brew unlink wine && brew link --overwrite wine
+            brew unlink node && brew link --overwrite node
 
       - save-cache:
-          key: homebrew-v2-{{ checksum "/tmp/info.txt" }}
+          key: homebrew-v3-{{ checksum "/tmp/info.txt" }}
           paths:
             - /usr/local/Cellar/node
             - /usr/local/Cellar/wine
-            - /usr/local/bin/node
-            - /usr/local/bin/npm
-            - /usr/local/bin/wine
-            - /usr/local/bin/wine64
-            - /usr/local/bin/wineboot
-            - /usr/local/bin/winebuild
-            - /usr/local/bin/winecfg
-            - /usr/local/bin/wineconsole
-            - /usr/local/bin/winecpp
-            - /usr/local/bin/winedbg
-            - /usr/local/bin/winedump
-            - /usr/local/bin/winefile
-            - /usr/local/bin/wineg++
-            - /usr/local/bin/winegcc
-            - /usr/local/bin/winemaker
-            - /usr/local/bin/winemine
-            - /usr/local/bin/winepath
-            - /usr/local/bin/wineserver
 
       - run:
           name: Installed tool versions
