@@ -250,6 +250,7 @@ var mockCurrentFilesystem = {
 var expectedOutdatedFilesystem = [ 'drupal-7.0.tar.gz', 'drupal-8.0.tar.gz', 'wordpress-7.0.0.tar.gz' ];
 var expectedDeletedFilesystem = ["drupal-8.0.tar.gz","wordpress-7.0.0.tar.gz"];
 
+var mockDownloadBinary = "IAmABinaryFile";
 
 module.exports.drupal7ApiResponse = drupal7ApiResponse;
 module.exports.drupal8ApiResponse = drupal8ApiResponse;
@@ -264,3 +265,5 @@ module.exports.mockCurrentFilesystem = mockCurrentFilesystem;
 
 module.exports.expectedOutdatedFilesystem = expectedOutdatedFilesystem;
 module.exports.expectedDeletedFilesystem = expectedDeletedFilesystem;
+
+module.exports.mockDownloadBinary = mockDownloadBinary;

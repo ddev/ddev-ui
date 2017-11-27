@@ -78,8 +78,6 @@ describe('distro-updater', function () {
     });
     describe('#Filesystem Read/Write Actions', function () {
         mockFS(fixtures.mockOutdatedFilesystem);
-        it('should download a file from remote URI and save it to a specified path', function () {
-        });
         it('should delete a local file by filename', function () {
             distroUpdater.deleteFile('~/.ddev/CMS/drupal-7.0.tar.gz').then(function(){
                 distroUpdater.getLocalDistros('~/.ddev/CMS').then(function(result){

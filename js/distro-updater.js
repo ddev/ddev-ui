@@ -110,10 +110,10 @@ function downloadFile(url, path) {
         request({uri: url})
             .pipe(fs.createWriteStream(path))
             .on('close', function () {
-                resolve();
+                resolve('written successfully');
             })
-            .on('error', function () {
-                reject();
+            .on('error', function (err) {
+                reject(err);
             });
     });
 

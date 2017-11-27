@@ -9,7 +9,7 @@ var updater = require('./js/distro-updater');
 
 
 function init() {
-    updater.updateDistros;
+    updater.updateDistros();
     setInterval(fetchState,1000);
 
 function fetchState() {
