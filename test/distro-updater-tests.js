@@ -78,6 +78,24 @@ describe('distro-updater', function () {
     });
     describe('#Filesystem Read/Write Actions', function () {
         mockFS(fixtures.mockOutdatedFilesystem);
+        it('should resolve a promise if a path exists and is writable', function (done) {
+            distroUpdater.canReadAndWrite('~/.ddev/CMS/')
+                .then(function() {
+                    done();
+                })
+                .catch(function(err) {
+                    console.log(err);
+                })
+        });
+        it('should throw an error if a path does not exist or is not writable', function (done) {
+            distroUpdater.canReadAndWrite('~/.ddev/CMSnotfound/')
+                .then(function() {
+                    console.log('Unexpected resolve - canReadAndWrite should fail')
+                })
+                .catch(function(err) {
+                    done();
+                })
+        });
         it('should delete a local file by filename', function () {
             distroUpdater.deleteFile('~/.ddev/CMS/drupal-7.0.tar.gz').then(function(){
                 distroUpdater.getLocalDistros('~/.ddev/CMS').then(function(result){

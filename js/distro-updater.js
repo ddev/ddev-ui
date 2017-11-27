@@ -105,6 +105,23 @@ function getLocalVersion(distro, path, majorVersion = null){
 }
 
 // Filesystem read/write actions - delete outdated repo and download/save new files
+function canReadAndWrite(targetPath) {
+    return new Promise(function (resolve, reject) {
+        fs.stat(targetPath, function (err) {
+            if (err) { reject(err); return; }
+            fs.access(targetPath, fs.W_OK | fs.R_OK, (err) => {
+                if (err) {
+                    const dir = path.dirname(targetPath);
+                    fs.access(dir, fs.W_OK | fs.R_OK, (err) => {
+                        if (err) { reject(err); return; }
+                        resolve(false);
+                    });
+                }
+                resolve(true);
+            })
+        })
+    });
+}
 function downloadFile(url, path) {
     var promise = new Promise(function(resolve, reject) {
         request({uri: url})
@@ -139,42 +156,51 @@ const updateDistros = function() {
         var cmsPath = "~/.ddev/CMS";
         cmsPath = cmsPath.replace('~', os.homedir());
 
-        var drupal7Promise = getLocalVersion('drupal', cmsPath, 7);
-        var drupal8Promise = getLocalVersion('drupal', cmsPath, 8);
-        var wordpressPromise = getLocalVersion('wordpress', cmsPath);
+        if (!fs.existsSync(cmsPath)){
+            fs.mkdirSync(cmsPath);
+        }
 
-        Promise.all([drupal7Promise, drupal8Promise, wordpressPromise]).then(function(localVersions) {
-            var drupal7Promise = getNewestDrupalVersion(7);
-            var drupal8Promise = getNewestDrupalVersion(8);
-            var wordpressPromise = getNewestWordpressVersion();
+        canReadAndWrite(cmsPath).then(function(directoryContents){
+            var drupal7Promise = getLocalVersion('drupal', cmsPath, 7);
+            var drupal8Promise = getLocalVersion('drupal', cmsPath, 8);
+            var wordpressPromise = getLocalVersion('wordpress', cmsPath);
 
-            Promise.all([drupal7Promise, drupal8Promise, wordpressPromise]).then(function(newestVersions) {
-                if(compareVersions(localVersions[0], newestVersions[0].version) < 0){
-                    var currentVersion = localVersions[0];
-                    var newVersion = newestVersions[0];
-                    downloadFile(newVersion.uri, cmsPath + '/drupal-' + newVersion.version + '.tar.gz');
-                    if(currentVersion !== '0.0') {
-                        deleteFile(cmsPath + "/drupal-" + currentVersion + '.tar.gz');
+            Promise.all([drupal7Promise, drupal8Promise, wordpressPromise]).then(function(localVersions) {
+                var drupal7Promise = getNewestDrupalVersion(7);
+                var drupal8Promise = getNewestDrupalVersion(8);
+                var wordpressPromise = getNewestWordpressVersion();
+
+                Promise.all([drupal7Promise, drupal8Promise, wordpressPromise]).then(function(newestVersions) {
+                    if(compareVersions(localVersions[0], newestVersions[0].version) < 0){
+                        var currentVersion = localVersions[0];
+                        var newVersion = newestVersions[0];
+                        downloadFile(newVersion.uri, cmsPath + '/drupal-' + newVersion.version + '.tar.gz');
+                        if(currentVersion !== '0.0') {
+                            deleteFile(cmsPath + "/drupal-" + currentVersion + '.tar.gz');
+                        }
                     }
-                }
-                if(compareVersions(localVersions[1], newestVersions[1].version) < 0){
-                    var currentVersion = localVersions[1];
-                    var newVersion = newestVersions[1];
-                    downloadFile(newVersion.uri, cmsPath + '/drupal-' + newVersion.version + '.tar.gz');
-                    if(currentVersion !== '0.0') {
-                        deleteFile(cmsPath + "/drupal-" + currentVersion + '.tar.gz');
+                    if(compareVersions(localVersions[1], newestVersions[1].version) < 0){
+                        var currentVersion = localVersions[1];
+                        var newVersion = newestVersions[1];
+                        downloadFile(newVersion.uri, cmsPath + '/drupal-' + newVersion.version + '.tar.gz');
+                        if(currentVersion !== '0.0') {
+                            deleteFile(cmsPath + "/drupal-" + currentVersion + '.tar.gz');
+                        }
                     }
-                }
-                if(compareVersions(localVersions[2], newestVersions[2].version) < 0){
-                    var currentVersion = localVersions[2];
-                    var newVersion = newestVersions[2];
-                    downloadFile(newVersion.uri, cmsPath + '/wordpress-' + newVersion.version + '.tar.gz');
-                    if(currentVersion !== '0.0') {
-                        deleteFile(cmsPath + "/wordpress-" + currentVersion +'.tar.gz');
+                    if(compareVersions(localVersions[2], newestVersions[2].version) < 0){
+                        var currentVersion = localVersions[2];
+                        var newVersion = newestVersions[2];
+                        downloadFile(newVersion.uri, cmsPath + '/wordpress-' + newVersion.version + '.tar.gz');
+                        if(currentVersion !== '0.0') {
+                            deleteFile(cmsPath + "/wordpress-" + currentVersion +'.tar.gz');
+                        }
                     }
-                }
-                resolve();
+                    resolve();
+                });
             });
+        })
+        .catch(function(error){
+            reject(error);
         });
     });
 
@@ -187,5 +213,6 @@ module.exports.getNewestDrupalVersion = getNewestDrupalVersion;
 module.exports.getNewestWordpressVersion = getNewestWordpressVersion;
 module.exports.getLocalDistros = getLocalDistros;
 module.exports.getLocalVersion = getLocalVersion;
+module.exports.canReadAndWrite = canReadAndWrite;
 module.exports.downloadFile = downloadFile;
 module.exports.deleteFile = deleteFile;

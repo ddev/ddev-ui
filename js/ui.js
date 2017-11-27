@@ -9,7 +9,13 @@ var updater = require('./js/distro-updater');
 
 
 function init() {
-    updater.updateDistros();
+    updater.updateDistros()
+        .then(function(response){
+            console.log('done updating distros',response);
+        })
+        .catch(function(error){
+            console.log('fail', error);
+        });
     setInterval(fetchState,1000);
 
 function fetchState() {
