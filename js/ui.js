@@ -39,19 +39,18 @@ function renderUI(list) {
 }
 
 function createCard(site) {
-    var localPath = site.path.replace('~', os.homedir());
-    var markup = `<div class="column col-lg-3 col-md-4 col-sm-4 ` + site.state + `" data-path="` + localPath + `" data-sitename="` + site.name + `">
+    var markup = `<div class="column col-lg-3 col-md-4 col-sm-4 ` + site.status + `" data-path="` + site.approot + `" data-sitename="` + site.name + `">
         <div class="card">
             <div class="card-header">
-                <h2><a href="#" onclick='electron.shell.openExternal("` + site.url + `")'>` + site.name + `</a></h2>
+                <h2><a href="#" onclick='electron.shell.openExternal("` + site.httpurl + `")'>` + site.name + `</a></h2>
             </div>
             <div class="card-body">
-                <a href="#" onclick='electron.shell.openExternal("` + site.url + `")'>
+                <a href="#" onclick='electron.shell.openExternal("` + site.httpurl + `")'>
                     <div>
                         <img style="width: 50%" src="img/` + site.type + `.png" /> 
                     </div>
                     <div class="card-status">
-                        <div>` + site.state + `</div>
+                        <div>` + site.status + `</div>
                     </div>
                 </a>
             </div>
@@ -64,7 +63,7 @@ function createCard(site) {
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item restartbtn" href="#">Restart</a>
-                <a class="dropdown-item" onclick='electron.shell.showItemInFolder("\` + localPath + \`")' href="#">Browse Local Files</a>
+                <a class="dropdown-item" onclick='electron.shell.showItemInFolder("\` + site.approot + \`")' href="#">Browse Local Files</a>
               </div>
             </div>
         </div>
