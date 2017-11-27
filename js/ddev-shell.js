@@ -44,52 +44,27 @@ const ddevShell = (command, args, path, callback, errorCallback, stream) => {
     currentCommand.on('exit', function(code) {
         if(code !== 0) {
             errorCallback(outputBuffer);
-        }
-        if(stream){
-            callback('Process Exited With Code ' + code);
         } else {
-            callback(outputBuffer);
+            if(stream){
+                callback('Process Exited With Code ' + code);
+            } else {
+                callback(outputBuffer);
+            }
         }
     });
 };
 
 const list = () => {
     var promise = new Promise((resolve, reject) => {
-        function createSiteFromLine(lineText){
-            var lineArray = lineText.replace(/\s\s+/g,'!~!').split('!~!');
-            var site = {
-                name:  lineArray[0],
-                type:  lineArray[1],
-                path:  lineArray[2],
-                url:   lineArray[3],
-                state: lineArray[4]
-            };
-            return site;
-        }
-
-        function parseLines(shellOutput) {
-            var sitesList = [];
-            var linesArray = shellOutput.replace(/\n/g, '!~!').split('!~!');
-            var loopInSitesBlock = false;
-            linesArray.forEach(function(line) {
-                if(loopInSitesBlock && line){
-                    sitesList.push(createSiteFromLine(line));
-                }
-
-                if(line.replace(/\s\s+/g,'').indexOf('NAMETYPELOCATIONURLSTATUS') != -1){
-                    loopInSitesBlock = true;
-                }else if(!line){
-                    loopInSitesBlock = false;
-                }
-            });
-            if(sitesList){
-                resolve(sitesList);
-            }else{
-                reject('No Sites Found.');
+        function getRaw(output) {
+            var outputObject = JSON.parse(output);
+            if(Array.isArray(outputObject.raw)){
+                resolve(outputObject.raw)
+            } else {
+                reject(output);
             }
         }
-
-        ddevShell('list', null, null, parseLines, false);
+        ddevShell('list', ['-j'], null, getRaw, reject);
     });
     return promise;
 };
@@ -130,52 +105,27 @@ const config = (path, name, docroot, callback, errorCallback) => {
     configCommand.stdin.write(name);
 };
 
-const describe = (siteName, errorCallback) => {
-    var pwd = childProcess.spawn('pwd');
-    var ls = childProcess.spawn('ls');
-    pwd.stdout.on('data', function(output) {
-        console.log(output.toString());
-    });
-    ls.stdout.on('data', function(output) {
-        console.log(output.toString());
-    });
+const describe = (siteName) => {
     var promise = new Promise((resolve, reject) => {
-        function parseDesribeLines (shellOutput) {
-            var siteDetails = {};
-            var linesArray = shellOutput.replace(/\n/g, '!~!').split('!~!');
-            var inSection = false;
-            var currentSection = '';
-            for(var i = 0; i < linesArray.length; i++){
-                var currentLine = linesArray[i];
-
-                if(inSection){
-                    currentLine = currentLine.replace(/For example:\s/, 'For example:');
-                    var results = currentLine.replace(/:\s/g,'!~!').split('!~!');
-                    results.forEach(function(line,index){
-                        results[index] = line.trim();
-                    });
-                    if(results.length > 1){
-                        siteDetails[currentSection][results[0]] = results[1];
-                    } else if (results.length === 1 && results[0]){
-                        if(siteDetails[currentSection]['notes'] === undefined){
-                            siteDetails[currentSection]['notes'] = [];
-                        }
-                        siteDetails[currentSection]['notes'].push(results[0]);
-                    }
+        function parseJSONOutput (describeJSON) {
+            var rawData = JSON.parse(describeJSON);
+            var siteDetails = rawData.raw;
+            var modalData = {};
+            if(siteDetails.dbinfo) {
+                modalData['MySQL Credentials'] = siteDetails.dbinfo;
+            }
+            if(siteDetails.mailhog_url || siteDetails.phpmyadmin_url) {
+                modalData['Other Services'] = {};
+                if(siteDetails.mailhog_url) {
+                    modalData['Other Services']['MailHog'] = "<a onclick=\"electron.shell.openExternal('"+siteDetails.mailhog_url+"')\" href=\"#\">"+siteDetails.mailhog_url+"</a>"
                 }
-
-                if(currentLine.indexOf('-----') != -1){
-                    currentSection = linesArray[i-1];
-                    siteDetails[currentSection] = {};
-                    inSection = true;
-                }else if(!currentLine){
-                    currentSection = '';
-                    inSection = false;
+                if(siteDetails.phpmyadmin_url) {
+                    modalData['Other Services']['phpMyAdmin'] = "<a onclick=\"electron.shell.openExternal('"+siteDetails.phpmyadmin_url+"')\" href=\"#\">"+siteDetails.phpmyadmin_url+"</a>"
                 }
             }
-            resolve(siteDetails);
+            resolve(modalData);
         }
-        ddevShell('describe', [siteName], null, parseDesribeLines, errorCallback, false);
+        ddevShell('describe', [siteName, "-j"], null, parseJSONOutput, reject, false);
     });
 
     return promise;

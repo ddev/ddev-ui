@@ -4,10 +4,9 @@ const ddevShell = require('../js/ddev-shell');
 const {stubSpawnOnce} = require('stub-spawn-once');
 const assert = require('assert');
 
-
 describe('ddev-shell', function () {
     describe('#list()', function () {
-        stubSpawnOnce('ddev list', 0, fixtures.validListOutput);
+        stubSpawnOnce('ddev list -j', 0, JSON.stringify(fixtures.validListOutput));
         it('should parse `ddev list` shell output and return an array of site objects', function () {
             return ddevShell.list().then(function fulfilled(result) {
                 assert.equal(JSON.stringify(fixtures.expectedSitesArray), JSON.stringify(result));
@@ -62,6 +61,23 @@ describe('ddev-shell', function () {
         });
         it('should call the error callback if process exits with a non 0 code', function(done) {
             ddevShell.restart('~/', function(){},function(){done()});
+        });
+    });
+    describe('#describe()', function () {
+        stubSpawnOnce('ddev describe drupaltest -j', 0, JSON.stringify(fixtures.validDescribeJSON));
+        it('should parse `ddev describe drupaltest` shell output and return an object of site information', function () {
+            return ddevShell.describe('drupaltest',function(){}).then(function fulfilled(result) {
+                assert.equal(JSON.stringify(fixtures.expectedDescribeObject), JSON.stringify(result));
+                stubSpawnOnce('ddev describe drupaltest -j', 1, fixtures.invalidDescribeOutput);
+            });
+        });
+        it('should throw an error on error of ddev describe (expecting non 0 exit code)', function () {
+            return ddevShell.describe('drupaltest')
+                .then(function fulfilled(result) {
+                    throw new Error('Promise was unexpectedly fulfilled. Result: ' + result);
+                }, function rejected(error) {
+                    assert(error === fixtures.invalidDescribeOutput);
+                });
         });
     });
 });
