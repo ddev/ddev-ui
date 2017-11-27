@@ -2,7 +2,7 @@ version: 2
 stages:
   build:
     macos:
-      xcode: "8.3.3"
+      xcode: "9.0"
 
     environment:
       ARTIFACTS: /artifacts
@@ -13,11 +13,29 @@ stages:
       - checkout
 
       - run:
-          name: VM setup
+          name: xquartz setup
+          command: brew cask install xquartz  # dependency of wine
+
+      - run: brew update && brew info --json=v1 node >/tmp/info.txt && brew info --json=v1 wine >>/tmp/info.txt
+
+      - restore_cache:
+          keys:
+            - homebrew-v3-{{ checksum "/tmp/info.txt" }}
+            - homebrew-v3-
+
+      - run:
+          name: Homebrew install of node/wine
           command: |
-            brew update  # added for https://discuss.circleci.com/t/homebrew-must-be-run-under-ruby-2-3-runtimeerror/17232/5
-            brew cask install xquartz  # A dependency of wine
-            brew install node wine
+            brew upgrade node || true
+            brew install wine || true
+            brew unlink wine && brew link --overwrite wine
+            brew unlink node && brew link --overwrite node
+
+      - save-cache:
+          key: homebrew-v3-{{ checksum "/tmp/info.txt" }}
+          paths:
+            - /usr/local/Cellar/node
+            - /usr/local/Cellar/wine
 
       - run:
           name: Installed tool versions
