@@ -6,7 +6,7 @@ const assert = require('assert');
 
 describe('ddev-shell', function () {
     describe('#list()', function () {
-        stubSpawnOnce('ddev list', 0, fixtures.validListOutput);
+        stubSpawnOnce('ddev list -j', 0, JSON.stringify(fixtures.validListOutput));
         it('should parse `ddev list` shell output and return an array of site objects', function () {
             return ddevShell.list().then(function fulfilled(result) {
                 assert.equal(JSON.stringify(fixtures.expectedSitesArray), JSON.stringify(result));
