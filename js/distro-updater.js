@@ -121,10 +121,9 @@ function downloadFile(url, path) {
 }
 function deleteFile(filePath) {
     var promise = new Promise(function(resolve, reject) {
-        filePath = filePath.replace('~', os.homedir());
         fs.unlink(filePath, (err) => {
             if (err) {
-                reject();
+                reject(err);
             } else {
                 resolve();
             }
@@ -182,4 +181,11 @@ const updateDistros = function() {
     return promise;
 };
 
-module.exports.updateDistros = updateDistros();
+module.exports.updateDistros = updateDistros;
+
+module.exports.getNewestDrupalVersion = getNewestDrupalVersion;
+module.exports.getNewestWordpressVersion = getNewestWordpressVersion;
+module.exports.getLocalDistros = getLocalDistros;
+module.exports.getLocalVersion = getLocalVersion;
+module.exports.downloadFile = downloadFile;
+module.exports.deleteFile = deleteFile;
