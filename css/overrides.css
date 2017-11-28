@@ -124,3 +124,13 @@ h3 {
 .add-modal-section-header{
     border-bottom: 1px solid;
 }
+.card-body {
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+.card-status {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
