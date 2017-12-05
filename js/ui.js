@@ -10,13 +10,14 @@ var updater = require('./js/distro-updater');
 
 function init() {
     updater.updateDistros()
-        .then(function(response){
-            console.log('done updating distros',response);
+        .then(function (response) {
+            console.log('done updating distros', response);
         })
-        .catch(function(error){
+        .catch(function (error) {
             console.log('fail', error);
         });
-    setInterval(fetchState,1000);
+    setInterval(fetchState, 1000);
+}
 
 function fetchState() {
     ddevShell.list().then(function (data) {
