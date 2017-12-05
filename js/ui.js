@@ -18,6 +18,7 @@ function init() {
         });
     setInterval(fetchState,1000);
     bindButtons();
+}
 
 function fetchState() {
     ddevShell.list().then(function (data) {
