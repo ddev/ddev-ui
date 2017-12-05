@@ -17,6 +17,7 @@ function init() {
             console.log('fail', error);
         });
     setInterval(fetchState, 1000);
+    bindButtons();
 }
 
 function fetchState() {
