@@ -7,7 +7,7 @@ const mockFS = require('mock-fs');
 describe('distro-updater', function () {
     describe('#Remote Read Actions', function () {
         it('should fetch most recent drupal version for v7', function (done) {
-            var mockRequest = nock('http://updates.drupal.org')
+            var mockRequest = nock('https://updates.drupal.org')
                 .get('/release-history/drupal/7.x')
                 .reply(200, fixtures.drupal7ApiResponse, {
                         'Content-Type': 'application/xml'
@@ -20,7 +20,7 @@ describe('distro-updater', function () {
             })
         });
         it('should fetch most recent drupal version for v8', function (done) {
-            var mockRequest = nock('http://updates.drupal.org')
+            var mockRequest = nock('https://updates.drupal.org')
                 .get('/release-history/drupal/8.x')
                 .reply(200, fixtures.drupal8ApiResponse, {
                         'Content-Type': 'application/xml'
@@ -34,7 +34,7 @@ describe('distro-updater', function () {
                 });
         });
         it('should fetch most recent wordpress version', function (done) {
-            var mockRequest = nock('http://api.github.com')
+            var mockRequest = nock('https://api.github.com')
                 .get('/repos/wordpress/wordpress/tags')
                 .reply(200, fixtures.wordpressApiResponse);
             distroUpdater.getNewestWordpressVersion()

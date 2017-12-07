@@ -206,9 +206,9 @@ var drupal8ApiResponse = `<?xml version="1.0" encoding="utf-8"?>
 
 var wordpressApiResponse = `[
     {
-        "name": "7.7.777",
-        "zipball_url": "https://api.github.com/repos/WordPress/WordPress/zipball/7.7.777",
-        "tarball_url": "https://api.github.com/repos/WordPress/WordPress/tarball/7.7.777",
+        "name": "9.9.9",
+        "zipball_url": "https://api.github.com/repos/WordPress/WordPress/zipball/9.9.9",
+        "tarball_url": "https://api.github.com/repos/WordPress/WordPress/tarball/9.9.9",
         "commit": {
             "sha": "29ffbff370968ae48a1b7a34e35c8b8e75cf0f91",
             "url": "https://api.github.com/repos/WordPress/WordPress/commits/29ffbff370968ae48a1b7a34e35c8b8e75cf0f91"
@@ -228,7 +228,7 @@ var wordpressApiResponse = `[
 
 var drupal7ExpectedLatestVersion = `{"version":"7.12345","uri":"https://ftp.drupal.org/files/projects/drupal-7.12345.tar.gz"}`;
 var drupal8ExpectedLatestVersion = `{"version":"8.88888","uri":"https://ftp.drupal.org/files/projects/drupal-8.88888.tar.gz"}`;
-var wordpressExpectedLatestVersion = `{"version":"7.7.777","uri":"http://wordpress.org/latest.tar.gz"}`;
+var wordpressExpectedLatestVersion = `{"version":"9.9.9","uri":"https://wordpress.org/wordpress-9.9.9.tar.gz"}`;
 
 
 var mockOutdatedFilesystem = {

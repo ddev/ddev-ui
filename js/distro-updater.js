@@ -56,7 +56,7 @@ function getNewestWordpressVersion() {
                 var responseJSON = JSON.parse(body);
                 resolve({
                     "version": responseJSON[0].name,
-                    "uri": "https://wordpress.org/latest.tar.gz"
+                    "uri": "https://wordpress.org/wordpress-"+responseJSON[0].name+".tar.gz"
                 });
             } else {
                 reject(error);
