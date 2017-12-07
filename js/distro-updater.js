@@ -4,10 +4,16 @@ var fs = require('fs');
 var compareVersions = require('compare-versions');
 
 // Remote read actions - fetch latest version information from remote endpoints
+
+/**
+ * Get newest version of drupal by major version and the URI that the tarball can be found
+ * @param majorVersion {number} major version number i.e. 7 or 8
+ * @return {promise} an object containing the latest version and URI at which the tarball can be downloaded
+ */
 function getNewestDrupalVersion(majorVersion) {
     var promise = new Promise(function(resolve, reject) {
         var options = {
-            url: "http://updates.drupal.org/release-history/drupal/" + majorVersion + ".x",
+            url: "https://updates.drupal.org/release-history/drupal/" + majorVersion + ".x",
             headers: {
                 'User-Agent': 'request'
             }
@@ -31,10 +37,15 @@ function getNewestDrupalVersion(majorVersion) {
     });
     return promise;
 }
+
+/**
+ * Get newest version of wordpress and the URI that the tarball can be found
+ * @return {promise/object} an object containing the latest version and URI at which the tarball can be downloaded
+ */
 function getNewestWordpressVersion() {
     var promise = new Promise(function(resolve, reject) {
         var options = {
-            url: 'http://api.github.com/repos/wordpress/wordpress/tags',
+            url: 'https://api.github.com/repos/wordpress/wordpress/tags',
             headers: {
                 'User-Agent': 'request'
             }
@@ -45,7 +56,7 @@ function getNewestWordpressVersion() {
                 var responseJSON = JSON.parse(body);
                 resolve({
                     "version": responseJSON[0].name,
-                    "uri": "http://wordpress.org/latest.tar.gz"
+                    "uri": "https://wordpress.org/latest.tar.gz"
                 });
             } else {
                 reject(error);
@@ -58,6 +69,11 @@ function getNewestWordpressVersion() {
 }
 
 // Local read actions - read filesystem and local version info
+/**
+ * Get a list of files in a given directory
+ * @param localPath {string} path on local filesystem to retrieve file listing of
+ * @return {promise/array} an array containing strings of filenames in the target directory
+ */
 function getLocalDistros(localPath){
     var promise = new Promise(function(resolve, reject) {
 
@@ -75,6 +91,14 @@ function getLocalDistros(localPath){
     });
     return promise;
 }
+
+/**
+ * Get the local version of a target CMS Distro within a target path
+ * @param distro {string} name of CMS to be version checked i.e. wordpress or drupal
+ * @param path {string} path to check for CMS files
+ * @param majorVersion {number} optional - the major version number to check for drupal
+ * @return {promise} an object containing the version number for local CMS distro tarballs, or 0.0 if not found.
+ */
 function getLocalVersion(distro, path, majorVersion = null){
     var promise = new Promise(function(resolve, reject) {
         getLocalDistros(path)
@@ -105,6 +129,11 @@ function getLocalVersion(distro, path, majorVersion = null){
 }
 
 // Filesystem read/write actions - delete outdated repo and download/save new files
+/**
+ * Check if a target directory exists and can be written to
+ * @param targetPath {string} path to determine existence and write permissions
+ * @return {promise/boolean} returns true if path both exists and is writable
+ */
 function canReadAndWrite(targetPath) {
     return new Promise(function (resolve, reject) {
         fs.stat(targetPath, function (err) {
@@ -122,6 +151,13 @@ function canReadAndWrite(targetPath) {
         })
     });
 }
+
+/**
+ * downloads a file from target URL and saves it to a target path
+ * @param url {string} URL to file to be downloaded
+ * @param path {string} path to save downloaded file
+ * @return {promise} resolves if file is successfully downloaded and written
+ */
 function downloadFile(url, path) {
     var promise = new Promise(function(resolve, reject) {
         request({uri: url})
@@ -136,6 +172,12 @@ function downloadFile(url, path) {
 
     return promise;
 }
+
+/**
+ * Deletes file from local filesystem
+ * @param filePath {string} path of file to delete
+ * @return {promise} resolves if file deletion is successful
+ */
 function deleteFile(filePath) {
     var promise = new Promise(function(resolve, reject) {
         fs.unlink(filePath, (err) => {
@@ -151,6 +193,12 @@ function deleteFile(filePath) {
 }
 
 // public function, handles checking remote, comparing local, and downloading new/deleting old files.
+/**
+ * Gets versions of locally existing CMSes, compares them to latest versions. If newer found on remote or
+ * if not found locally, newest version is downloaded to CMS path. Outdated local versions are deleted upon
+ * successful updated file download.
+ * @return {promise} resolves upon successful update or no change needed.
+ */
 const updateDistros = function() {
     var promise = new Promise(function(resolve, reject) {
         var cmsPath = "~/.ddev/CMS";
