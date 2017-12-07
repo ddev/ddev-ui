@@ -5,9 +5,17 @@ var electron = require('electron');
 var os = require('os');
 var dialog = require('electron').remote.dialog;
 var tarball = require('tarball-extract');
+var updater = require('./js/distro-updater');
 
 
 function init() {
+    updater.updateDistros()
+        .then(function (response) {
+            console.log('done updating distros', response);
+        })
+        .catch(function (error) {
+            console.log('fail', error);
+        });
     setInterval(fetchState, 1000);
     bindButtons();
 }
