@@ -3,6 +3,11 @@
   "description": "A GUI to complement the DDEV CLI",
   "version": "v0.2.0-dev",
   "main": "main.js",
+  "homepage": "https://github.com/drud/ddev",
+  "author": {
+    "name": "foo",
+    "email": "test@test.com"
+  },
   "scripts": {
     "test": "mocha",
     "start": "electron .",
@@ -10,7 +15,37 @@
     "build-windows": "electron-builder --win",
     "build-darwin": "electron-builder --mac"
   },
-  "author": "drudtech",
+  "build": {
+    "appId": "ddev-ui",
+    "dmg": {
+      "window": {
+        "width": 600,
+        "height": 360
+      },
+      "contents": [
+        {
+          "x": 150,
+          "y": 135
+        },
+        {
+          "x": 450,
+          "y": 135,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "development"
+    },
+    "win": {
+      "target": "squirrel",
+      "icon": "build/icon.ico"
+    }
+  },
   "devDependencies": {
     "electron-builder": "^19.33.0",
     "mocha": "^4.0.1",

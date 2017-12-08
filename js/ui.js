@@ -71,7 +71,7 @@ function createCard(site) {
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item restartbtn" href="#">Restart</a>
-                <a class="dropdown-item" onclick='electron.shell.showItemInFolder("\` + site.approot + \`")' href="#">Browse Local Files</a>
+                <a class="dropdown-item" onclick='electron.shell.showItemInFolder("` + site.approot + `")' href="#">Browse Local Files</a>
               </div>
             </div>
         </div>

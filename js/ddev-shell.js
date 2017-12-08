@@ -94,14 +94,15 @@ const hostname = (siteName) => {
     var promise = new Promise(function(resolve, reject){
         var options = {
             name: 'DDEV UI',
-            icns: 'build/icon.icns',
         };
+
         var command = 'ddev hostname '+siteName+'.ddev.local 127.0.0.1 -j';
         sudo.exec(command, options,
             function(error, stdout, stderr) {
                 if (error) {
                     reject(error);
                 }else{
+                    console.log(stdout);
                     resolve(stdout);
                 }
             }

@@ -67,19 +67,18 @@ all: darwin linux windows
 
 linux: npminstall
 	@echo "Building $@"
-	PATH=$$PATH:./node_modules/.bin electron-builder --linux --x64
+	npm run build-linux
 
 darwin: npminstall
 	@echo "Building $@"
-	PATH=$$PATH:./node_modules/.bin electron-builder --mac
+	npm run build-darwin
 
 windows: npminstall
 	@echo "Building $@"
-	PATH=$$PATH:./node_modules/.bin electron-builder --win
+	npm run build-windows
 
 npminstall: package.json
 	npm install --no-optional
-	npm install electron-builder@$(ELECTRON_BUILDER_VERSION)
 
 clean:
 	rm -rf dist node_modules
