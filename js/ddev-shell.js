@@ -1,6 +1,7 @@
 const childProcess = require('child_process');
 const os = require('os');
 const fixPath = require('fix-path');
+const sudo = require('sudo-prompt');
 
 fixPath();
 
@@ -86,23 +87,27 @@ const remove = (path, callback) => {
 };
 
 const config = (path, name, docroot, callback, errorCallback) => {
-    var opts = {};
-    if (path) {
-        path = path.replace('~', os.homedir());
-        opts = {
-            cwd: path
-        }
-    }
+    ddevShell('config', ['-j','--sitename', name, '--docroot', docroot], path, callback, errorCallback);
+};
 
-    var configCommand = childProcess.spawn('ddev', ['config'], opts);
-    configCommand.stdout.on('data', function(output) {
-        var outputStr = output.toString();
-        if(outputStr.indexOf('Project name') !== -1){
-            console.log('project name', name);
-        }
-        console.log(outputStr);
+const hostname = (siteName) => {
+    var promise = new Promise(function(resolve, reject){
+        var options = {
+            name: 'DDEV UI',
+            icns: 'build/icon.icns',
+        };
+        var command = 'ddev hostname '+siteName+'.ddev.local 127.0.0.1 -j';
+        sudo.exec(command, options,
+            function(error, stdout, stderr) {
+                if (error) {
+                    reject(error);
+                }else{
+                    resolve(stdout);
+                }
+            }
+        );
     });
-    configCommand.stdin.write(name);
+    return promise;
 };
 
 const describe = (siteName) => {
@@ -133,6 +138,7 @@ const describe = (siteName) => {
 
 module.exports.list = list;
 module.exports.start = start;
+module.exports.hostname = hostname;
 module.exports.stop = stop;
 module.exports.restart = restart;
 module.exports.remove = remove;

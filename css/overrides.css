@@ -134,3 +134,26 @@ h3 {
     bottom: 0;
     width: 100%;
 }
+.loading-overlay {
+    display: none;
+    z-index: 3;
+    margin-top: -15px;
+    margin-left: -15px;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(100,100,100,0.8);
+    align-items: center;
+    justify-content: center
+}
+.loading-spinner {
+    font-size: 150px !important;
+    color: #28bde4;
+}
+.loading-text {
+    width: 55%;
+    margin-left: 20px;
+    color: #28bde4;
+    font-weight: bold;
+    font-size: 20px;
+}

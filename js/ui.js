@@ -106,13 +106,16 @@ function createDetails(details) {
 }
 
 function unpackDistro(distro, path) {
-    tarball.extractTarball(distro, path, function (err) {
-        if (err) {
-            return err
-        } else {
-            return "finished"
-        }
+    var promise = new Promise(function(resolve,reject){
+        tarball.extractTarball(distro, path, function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve('success');
+            }
+        });
     });
+    return promise;
 }
 
 function resetAddModal() {
@@ -213,26 +216,57 @@ function bindButtons() {
     });
 
     $(document).on('click', '.create-site', function () {
-        var distros = {
-            drupal7: 'distros/drupal7/drupal-7.56.tar.gz',
-            drupal8: 'distros/drupal8/drupal-8.3.6.tar.gz',
-            wordpress: 'distros/wordpress/wordpress-4.8.2.tar.gz'
-        };
         var type = $('#appType').val();
-        var path = $('.selected-path-text').val();
+        var targetCMS = [];
+        var targetPath = $('.selected-path-text').val();
         var name = $('#site-name').val();
-        var unpackedDirectory = (path + "/" + distros[type].split('/')[2]).replace('.tar.gz', '');
-        if (type === 'wordpress') {
-            unpackedDirectory = (path + "/" + type);
-        }
-        unpackDistro(distros[type], path);
-        ddevShell.config(unpackedDirectory, name, '', createFinished);
 
-        function createFinished(success) {
-            if (success) {
+        switch(type) {
+            case 'wordpress':
+                targetCMS = ['wordpress',''];
+                break;
+            case 'drupal7':
+                targetCMS = ['drupal',7];
+                break;
+            case 'drupal8':
+                targetCMS = ['drupal',8];
+                break;
+            default:
+                throw 'No CMS selected';
+        }
+
+        updater.getCMSTarballPath(targetCMS[0],targetCMS[1]).then(function(CMSTarballPath){
+            var installDirectory = targetPath + "/" + name;
+            var CMSWorkingPath = (targetCMS.indexOf('wordpress') !== -1) ? 'wordpress' : CMSTarballPath.split('/').pop().replace('.tar.gz','');
+            var fullDocrootPath = installDirectory+'/'+CMSWorkingPath;
+            $('.loading-overlay').css('display','flex');
+            updateLoadingSpinner('unzipping...');
+            unpackDistro(CMSTarballPath, installDirectory).then(function(){
+                updateLoadingSpinner('configuring site...');
+                ddevShell.config(fullDocrootPath, name, '', createFinished, console.log('broke'));
+            });
+
+            function createFinished() {
+                updateLoadingSpinner('updating hosts file...');
+                ddevShell.hostname(name).then(function(){
+                    updateLoadingSpinner('starting site...');
+                    ddevShell.start(fullDocrootPath, updateLoadingSpinner);
+                });
+            };
+
+            function updateLoadingSpinner(text){
+                if(text.indexOf('Process Exited With Code') != -1){
+                    $('.loading-overlay').css('display','none');
+                    clearModal();
+                } else {
+                    $('.loading-text').text(text.toString());
+                }
+            }
+
+            function clearModal() {
                 resetAddModal();
                 $('#distroModal').modal('hide');
             }
-        }
+        });
     });
 }

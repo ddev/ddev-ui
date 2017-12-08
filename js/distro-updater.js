@@ -93,6 +93,33 @@ function getLocalDistros(localPath){
 }
 
 /**
+ * Get the full path of a locally downloaded CMS base tarball
+ * @param CMS {string} name of CMS to be version checked i.e. wordpress or drupal
+ * @param majorVersion {number} optional - the major version number to check for drupal
+ * @return {promise} an object containing the full path of a found tarball
+ */
+function getCMSTarballPath(CMS, majorVersion = false) {
+    var cmsPath = '~/.ddev/CMS';
+    var searchString = CMS;
+    cmsPath = cmsPath.replace('~', os.homedir());
+
+    var promise = new Promise(function (resolve, reject) {
+        if(majorVersion) {
+            searchString = CMS + '-' + majorVersion;
+        }
+        getLocalDistros(cmsPath).then(function(files){
+            files.forEach(function(fileName) {
+                if (fileName.indexOf(searchString) != -1) {
+                    resolve(cmsPath + '/' + fileName);
+                }
+            });
+            reject('CMS tarball not found');
+        });
+    });
+    return promise;
+}
+
+/**
  * Get the local version of a target CMS Distro within a target path
  * @param distro {string} name of CMS to be version checked i.e. wordpress or drupal
  * @param path {string} path to check for CMS files
@@ -260,6 +287,7 @@ module.exports.updateDistros = updateDistros;
 module.exports.getNewestDrupalVersion = getNewestDrupalVersion;
 module.exports.getNewestWordpressVersion = getNewestWordpressVersion;
 module.exports.getLocalDistros = getLocalDistros;
+module.exports.getCMSTarballPath = getCMSTarballPath;
 module.exports.getLocalVersion = getLocalVersion;
 module.exports.canReadAndWrite = canReadAndWrite;
 module.exports.downloadFile = downloadFile;
