@@ -10,6 +10,7 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
+    background-color: #c5c5c5;
 }
 
 h1, h2, h3 {
@@ -98,9 +99,6 @@ h3 {
     padding: 0 20px;
     width: 50%;
 }
-.add {
-    float: right;
-}
 .directory-select {
     display: none;
 }
@@ -133,6 +131,7 @@ h3 {
     position: absolute;
     bottom: 0;
     width: 100%;
+    background-color: rgba(100,100,100,0.3);
 }
 .loading-overlay {
     display: none;
@@ -156,4 +155,17 @@ h3 {
     color: #28bde4;
     font-weight: bold;
     font-size: 20px;
+}
+.start-button-option-container {
+    display: inline-block;
+    height: 100px;
+    width: 100px;
+    line-height: 100px;
+}
+.option-container {
+    text-align: center;
+}
+
+.second-option {
+    border-left: 1px solid #878787;
 }

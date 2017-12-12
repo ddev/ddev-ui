@@ -42,7 +42,7 @@
       "category": "development"
     },
     "win": {
-      "target": "squirrel",
+      "target": "nsis",
       "icon": "build/icon.ico"
     }
   },

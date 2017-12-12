@@ -40,10 +40,32 @@ function getDescribe(siteName, errorCallback) {
 
 function renderUI(list) {
     $('.card-container').empty();
+    $('.card-container').append(createAddCard());
     list.forEach(function (site) {
         var card = createCard(site);
         $('.card-container').append(card);
     });
+}
+
+function createAddCard(){
+    var markup = `<div class="column col-lg-3 col-md-4 col-sm-4">
+        <div class="card add">
+            <div class="card-header">
+                <h2><a href="#">Add/Create Site</a></h2>
+            </div>
+            <div class="card-body">
+                <a href="#">
+                    <div style="height: 155px; line-height: 155px; font-size: 75px;" >
+                        <i class="fa fa-plus-circle" />
+                    </div>
+                </a>
+            </div>
+            <div style="height:73px;" class="card-footer">
+            </div>
+        </div>
+    </div>`;
+
+    return markup;
 }
 
 function createCard(site) {
@@ -54,7 +76,7 @@ function createCard(site) {
             </div>
             <div class="card-body">
                 <a href="#" onclick='electron.shell.openExternal("` + site.httpurl + `")'>
-                    <div>
+                    <div style="padding-bottom: 20px;">
                         <img style="width: 50%" src="img/` + site.type + `.png" /> 
                     </div>
                     <div class="card-status">
@@ -194,7 +216,15 @@ function bindButtons() {
     });
     $(document).on('click', '.add', function () {
         resetAddModal();
+        $('#addOptionsDialog').modal();
+    });
+    $(document).on('click', '.start-from-template', function () {
+        resetAddModal();
+        $('#addOptionsDialog').modal('hide');
         $('#distroModal').modal();
+    });
+    $(document).on('click', '.start-from-directory', function () {
+        alert('WIP...');
     });
     $(document).on('click', '.select-path-folder', function () {
         var path = dialog.showOpenDialog({

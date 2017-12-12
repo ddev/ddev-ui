@@ -14,7 +14,6 @@
     <body>
         <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
             <img src="img/ddev_last.png" class="ddev-logo" />
-            <div class="btn btn-primary add"><i class="fa fa-plus" aria-hidden="true"></i></div>
             <input class='directory-select' type="file"
                    webkitdirectory />
         </nav>
@@ -26,7 +25,6 @@
         </div>
 
         <footer class="footer">
-            <div class="router-status">DDEV Router Status: <span class="router-status-text">RUNNING</span></div>
         </footer>
         <script src="js/ui.js"></script>
         <script>
@@ -50,6 +48,35 @@
         </div>
     </div>
 
+    <div class="modal fade" id="addOptionsDialog" tabindex="-1" role="dialog" aria-labelledby="addOptionsDialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="addOptionsDialogTitle">Choose A Starting Point</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body add-modal-body">
+                    <div class="row">
+                        <div class="option-container column col-lg-6 col-md-6 col-sm-6 start-from-directory">
+                            <div class="btn btn-primary start-button-option-container">
+                                <i class="fa fa-folder-open-o" style="font-size: 50px"></i>
+                            </div>
+                            <div>Start from an existing directory</div>
+                        </div>
+                        <div class="option-container second-option column col-lg-6 col-md-6 col-sm-6 start-from-template">
+                            <div class="btn btn-primary start-button-option-container">
+                                <i class="fa fa-file-archive-o" style="font-size: 50px"></i>
+                            </div>
+                            <div>Start fresh from a CMS template</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="distroModal" tabindex="-1" role="dialog" aria-labelledby="mainDistroModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -61,9 +88,6 @@
                 </div>
                 <div class="modal-body">
                     <div class="loading-overlay">
-                        <div>
-                            <i class="fa fa-spinner fa-spin loading-spinner" style="font-size:150px"></i>
-                        </div>
                         <div class="loading-text">Working...</div>
                     </div>
                     <h3 class="add-modal-section-header">Application Type</h3>
