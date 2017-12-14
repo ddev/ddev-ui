@@ -102,7 +102,6 @@ const hostname = (siteName) => {
                 if (error) {
                     reject(error);
                 }else{
-                    console.log(stdout);
                     resolve(stdout);
                 }
             }

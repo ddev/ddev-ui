@@ -4,8 +4,8 @@ var ddevShell = require('./js/ddev-shell');
 var electron = require('electron');
 var os = require('os');
 var dialog = require('electron').remote.dialog;
-var tarball = require('tarball-extract');
 var updater = require('./js/distro-updater');
+var siteCreator = require('./js/site-creator');
 
 
 function init() {
@@ -127,24 +127,10 @@ function createDetails(details) {
     return output;
 }
 
-function unpackDistro(distro, path) {
-    var promise = new Promise(function(resolve,reject){
-        tarball.extractTarball(distro, path, function (err) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve('success');
-            }
-        });
-    });
-    return promise;
-}
-
 function resetAddModal() {
     $('#appType').val('').trigger('change');
     $('#site-name').val('');
     $('.selected-path-text').val('');
-
 }
 
 function updateModal(title, body) {
@@ -250,53 +236,6 @@ function bindButtons() {
         var targetCMS = [];
         var targetPath = $('.selected-path-text').val();
         var name = $('#site-name').val();
-
-        switch(type) {
-            case 'wordpress':
-                targetCMS = ['wordpress',''];
-                break;
-            case 'drupal7':
-                targetCMS = ['drupal',7];
-                break;
-            case 'drupal8':
-                targetCMS = ['drupal',8];
-                break;
-            default:
-                throw 'No CMS selected';
-        }
-
-        updater.getCMSTarballPath(targetCMS[0],targetCMS[1]).then(function(CMSTarballPath){
-            var installDirectory = targetPath + "/" + name;
-            var CMSWorkingPath = (targetCMS.indexOf('wordpress') !== -1) ? 'wordpress' : CMSTarballPath.split('/').pop().replace('.tar.gz','');
-            var fullDocrootPath = installDirectory+'/'+CMSWorkingPath;
-            $('.loading-overlay').css('display','flex');
-            updateLoadingSpinner('unzipping...');
-            unpackDistro(CMSTarballPath, installDirectory).then(function(){
-                updateLoadingSpinner('configuring site...');
-                ddevShell.config(fullDocrootPath, name, '', createFinished, console.log('broke'));
-            });
-
-            function createFinished() {
-                updateLoadingSpinner('updating hosts file...');
-                ddevShell.hostname(name).then(function(){
-                    updateLoadingSpinner('starting site...');
-                    ddevShell.start(fullDocrootPath, updateLoadingSpinner);
-                });
-            };
-
-            function updateLoadingSpinner(text){
-                if(text.indexOf('Process Exited With Code') != -1){
-                    $('.loading-overlay').css('display','none');
-                    clearModal();
-                } else {
-                    $('.loading-text').text(text.toString());
-                }
-            }
-
-            function clearModal() {
-                resetAddModal();
-                $('#distroModal').modal('hide');
-            }
-        });
+        siteCreator.addCMS(name,type,targetPath);
     });
 }

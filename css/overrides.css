@@ -133,7 +133,7 @@ h3 {
     width: 100%;
     background-color: rgba(100,100,100,0.3);
 }
-.loading-overlay {
+.loading-overlay, .error-overlay {
     display: none;
     z-index: 3;
     margin-top: -15px;
@@ -149,10 +149,20 @@ h3 {
     font-size: 150px !important;
     color: #28bde4;
 }
+.error-icon {
+    color: #d80000;
+}
 .loading-text {
     width: 55%;
     margin-left: 20px;
     color: #28bde4;
+    font-weight: bold;
+    font-size: 20px;
+}
+.error-text {
+    width: 55%;
+    margin-left: 20px;
+    color: #d80000;
     font-weight: bold;
     font-size: 20px;
 }
