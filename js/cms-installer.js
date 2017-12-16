@@ -1,6 +1,7 @@
 var distroUpdater = require('./distro-updater');
 var tarball = require('tarball-extract');
 var ddevShell = require('./ddev-shell');
+var os = require('os');
 
 /**
  * Basic validation of a hostname based on RFC 2396 Section 3.2.2
@@ -52,22 +53,32 @@ function validateInstallPath(path){
  * @param cmsType {string} the name of the target CMS
  * @return {promise} resolves with tarball path if found, rejects with system error if not found
  */
-function getCMSPath(cmsType){
-    var targetCMS;
-    switch(cmsType) {
-        case 'wordpress':
-            targetCMS = ['wordpress',''];
-            break;
-        case 'drupal7':
-            targetCMS = ['drupal',7];
-            break;
-        case 'drupal8':
-            targetCMS = ['drupal',8];
-            break;
-        default:
-            throw 'No CMS selected';
-    }
-    return distroUpdater.getCMSTarballPath(targetCMS[0],targetCMS[1]);
+function getCMSTarballPath(cmsType, cmsPath){
+    var promise = new Promise(function(resolve, reject) {
+        var targetCMS;
+        switch(cmsType) {
+            case 'wordpress':
+                targetCMS = 'wordpress';
+                break;
+            case 'drupal7':
+                targetCMS = 'drupal-7';
+                break;
+            case 'drupal8':
+                targetCMS = 'drupal-8';
+                break;
+            default:
+                throw 'No CMS selected';
+        }
+        distroUpdater.getLocalDistros(cmsPath).then(function(files){
+            files.forEach(function(fileName) {
+                if (fileName.indexOf(targetCMS) != -1) {
+                    resolve(cmsPath + '/' + fileName);
+                }
+            });
+            reject('CMS tarball not found');
+        })
+    });
+    return promise;
 }
 
 /**
@@ -111,9 +122,9 @@ function validateInputs(name, type, targetPath){
  * @param targetFolder {string} target folder to extract to
  * @return {promise} resolves with path to new site docroot, rejects with error returned from any failed called function
  */
-function createFiles(siteName, cmsType, targetFolder){
+function createFiles(siteName, cmsType, cmsPath, targetFolder){
     var promise = new Promise(function(resolve, reject){
-        getCMSPath(cmsType).then(function(CMSTarballPath){
+        getCMSTarballPath(cmsType,cmsPath).then(function(CMSTarballPath){
             targetFolder = targetFolder + "/" + siteName;
             unpackCMSTarball(CMSTarballPath,targetFolder).then(function(unzippedPath){
                 var CMSWorkingPath = (cmsType.indexOf('wordpress') !== -1) ? 'wordpress' : CMSTarballPath.split('/').pop().replace('.tar.gz','');
@@ -126,7 +137,6 @@ function createFiles(siteName, cmsType, targetFolder){
     });
     return promise;
 }
-
 
 /**
  * wrapper for ddev config
@@ -169,11 +179,13 @@ function startSite(workingPath) {
  * @param targetPath {string} path to unpack CMS and install site
  */
 function addCMS(name, type, targetPath) {
+    var cmsPath = "~/.ddev/CMS";
+    cmsPath = cmsPath.replace('~', os.homedir());
     showLoadingScreen(true);
     validateInputs(name,type,targetPath)
         .then(function(){
             updateLoadingText('Unzipping files');
-            createFiles(name, type, targetPath)
+            createFiles(name, type, cmsPath, targetPath)
                 .then(function(workingPath){
                     updateLoadingText('Configuring Site');
                     configureSite(name, workingPath)
@@ -208,7 +220,7 @@ function showLoadingScreen(display){
     $('.loading-overlay').css('display', displayType);
 }
 
-function showErrorScreen(display, error){
+function showErrorScreen(display, error='Something Went Wrong'){
     $('.error-overlay').click(function(){
         showErrorScreen(false, '');
     });

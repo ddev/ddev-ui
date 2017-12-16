@@ -5,7 +5,8 @@ var electron = require('electron');
 var os = require('os');
 var dialog = require('electron').remote.dialog;
 var updater = require('./js/distro-updater');
-var siteCreator = require('./js/site-creator');
+var siteCreator = require('./js/cms-installer');
+var sudo = require('sudo-prompt');
 
 
 function init() {
@@ -202,7 +203,20 @@ function bindButtons() {
     });
     $(document).on('click', '.add', function () {
         resetAddModal();
-        $('#addOptionsDialog').modal();
+        alert('In order to add a new site, DDEV requires elevated permissions to modify your Hosts file. You may be prompted for your username and password to continue.');
+        var options = {
+            name: 'DDEV UI',
+        };
+        var command = 'ls';
+        sudo.exec(command, options,
+            function(error, stdout, stderr) {
+                if (error) {
+                    alert('Unable to escalate permissions.');
+                }else{
+                    $('#addOptionsDialog').modal();
+                }
+            }
+        );
     });
     $(document).on('click', '.start-from-template', function () {
         resetAddModal();

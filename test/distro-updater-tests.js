@@ -46,7 +46,16 @@ describe('distro-updater', function () {
         });
     });
     describe('#Local Read Actions', function () {
-        mockFS(fixtures.mockOutdatedFilesystem);
+        beforeEach(function(done) {
+            mockFS(fixtures.mockOutdatedFilesystem);
+            done();
+        });
+
+        afterEach(function(done) {
+            mockFS.restore();
+            done();
+        });
+
         it('should fetch all files in the ~/.ddev/CMS directory', function (done) {
             distroUpdater.getLocalDistros('~/.ddev/CMS').then(function(result){
                 if(JSON.stringify(result) === JSON.stringify(fixtures.expectedOutdatedFilesystem)) {
@@ -77,7 +86,15 @@ describe('distro-updater', function () {
         });
     });
     describe('#Filesystem Read/Write Actions', function () {
-        mockFS(fixtures.mockOutdatedFilesystem);
+        beforeEach(function(done) {
+            mockFS(fixtures.mockOutdatedFilesystem);
+            done();
+        });
+
+        afterEach(function(done) {
+            mockFS.restore();
+            done();
+        });
         it('should resolve a promise if a path exists and is writable', function (done) {
             distroUpdater.canReadAndWrite('~/.ddev/CMS/')
                 .then(function() {
