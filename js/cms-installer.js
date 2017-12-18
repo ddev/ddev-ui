@@ -46,7 +46,17 @@ function validateCMSType(cmsType){
  * @return {promise} resolves if path is read/writable, rejects with system error if not
  */
 function validateInstallPath(path){
-    return distroUpdater.canReadAndWrite(path);
+    var promise = new Promise(function(resolve,reject){
+        distroUpdater.canReadAndWrite(path)
+            .then(function(output){
+                resolve(output);
+            })
+            .catch(function(err){
+                err = err.toString().includes('no such file') ? "Cannot find or write to the selected directory." : err;
+                reject(err);
+            });
+    });
+    return promise;
 }
 
 /**
@@ -213,8 +223,8 @@ function addCMS(name, type, targetPath) {
                             startSite(workingPath)
                                 .then(function(stdout){
                                     if(stdout.toString().indexOf('Starting environment') != -1){
-                                        updateLoadingText('Start Process Initiated.' + stdout);
                                         resetAddModal();
+                                        alert('Start Process Initiated. It may take a few seconds for the new site card to appear.');
                                     }
                                 })
                                 .catch((err) => {
