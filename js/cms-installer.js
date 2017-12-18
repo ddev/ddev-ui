@@ -1,8 +1,8 @@
 var distroUpdater = require('./distro-updater');
-var tarball = require('tarball-extract');
+var tar = require('tar');
 var ddevShell = require('./ddev-shell');
 var os = require('os');
-var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
 
 /**
  * Basic validation of a hostname based on RFC 2396 Section 3.2.2
@@ -92,11 +92,24 @@ function getCMSTarballPath(cmsType, cmsPath){
  */
 function unpackCMSTarball(tarballPath, outputPath) {
     var promise = new Promise(function(resolve,reject){
-        tarball.extractTarball(tarballPath, outputPath, function (err) {
-            if (err) {
+        exec('mkdir '+outputPath, function(err, stdout, stderr) {
+            if (err){
                 reject(err);
-            } else {
-                resolve(outputPath);
+            }
+            else {
+                try{
+                    tar.x(
+                        {
+                            file: tarballPath,
+                            C: outputPath,
+                            strip: 1
+                        },'',function(){
+                            resolve(outputPath);
+                        }
+                    )
+                } catch (err){
+                    reject('Cannot extract base CMS file in `~/.ddev/CMS`. Restarting the UI will attempt to redownload them.');
+                }
             }
         });
     });
@@ -130,9 +143,6 @@ function createFiles(siteName, cmsType, cmsPath, targetFolder){
         getCMSTarballPath(cmsType,cmsPath).then(function(CMSTarballPath){
             targetFolder = targetFolder + "/" + siteName;
             unpackCMSTarball(CMSTarballPath,targetFolder).then(function(unzippedPath){
-                var unzippedDistroPath = unzippedPath+'/'+CMSTarballPath.split('/').pop().replace('.tar.gz','');
-                console.log(unzippedDistroPath);
-                spawn('mv', [unzippedDistroPath+'*',unzippedPath]);
                 resolve(unzippedPath);
             });
         })
