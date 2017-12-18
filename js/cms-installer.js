@@ -2,6 +2,7 @@ var distroUpdater = require('./distro-updater');
 var tarball = require('tarball-extract');
 var ddevShell = require('./ddev-shell');
 var os = require('os');
+var spawn = require('child_process').spawn;
 
 /**
  * Basic validation of a hostname based on RFC 2396 Section 3.2.2
@@ -76,6 +77,8 @@ function getCMSTarballPath(cmsType, cmsPath){
                 }
             });
             reject('CMS tarball not found');
+        }).catch(function(){
+            reject('CMS tarball not found in `~/.ddev/CMS`. Restarting the UI will attempt to redownload these files.');
         })
     });
     return promise;
@@ -127,8 +130,10 @@ function createFiles(siteName, cmsType, cmsPath, targetFolder){
         getCMSTarballPath(cmsType,cmsPath).then(function(CMSTarballPath){
             targetFolder = targetFolder + "/" + siteName;
             unpackCMSTarball(CMSTarballPath,targetFolder).then(function(unzippedPath){
-                var CMSWorkingPath = (cmsType.indexOf('wordpress') !== -1) ? 'wordpress' : CMSTarballPath.split('/').pop().replace('.tar.gz','');
-                resolve(unzippedPath + "/" + CMSWorkingPath);
+                var unzippedDistroPath = unzippedPath+'/'+CMSTarballPath.split('/').pop().replace('.tar.gz','');
+                console.log(unzippedDistroPath);
+                spawn('mv', [unzippedDistroPath+'*',unzippedPath]);
+                resolve(unzippedPath);
             });
         })
         .catch(function(err){
@@ -202,7 +207,16 @@ function addCMS(name, type, targetPath) {
                                         resetAddModal();
                                     }
                                 })
+                                .catch((err) => {
+                                    showErrorScreen(true, err.toString());
+                                })
                         })
+                        .catch((err) => {
+                            showErrorScreen(true, err.toString());
+                        })
+                })
+                .catch((err) => {
+                    showErrorScreen(true, err.toString());
                 })
         })
         .catch((err) => {
