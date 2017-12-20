@@ -80,4 +80,26 @@ describe('ddev-shell', function () {
                 });
         });
     });
+    describe('#remove()', function () {
+        stubSpawnOnce('ddev remove -j', 0, fixtures.validRemoveOutput);
+        it('should call the success callback if process exits with no issue', function (done) {
+            ddevShell.remove('~/', false, function(msg){
+                if(msg === "Process Exited With Code 0") {
+                    done();
+                    stubSpawnOnce('ddev remove -j --remove-data', 1, fixtures.validRemoveDBOutput);
+                }
+            },function(){});
+        });
+        it('should pass the --remove-data flag to ddev cli if passed in', function (done) {
+            ddevShell.remove('~/', true, function(msg){},function(msg){
+                if(msg === fixtures.validRemoveDBOutput){
+                    done();
+                }
+                stubSpawnOnce('ddev remove -j', 1, fixtures.invalidRemoveOutput);
+            });
+        });
+        it('should call the error callback if process exits with a non 0 code', function(done) {
+            ddevShell.remove('~/', false, function(){},function(){done()});
+        });
+    });
 });

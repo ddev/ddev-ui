@@ -212,3 +212,6 @@ h3 {
 .site-icon {
     width: 50%;
 }
+.remove-button-container {
+    display: none;
+}
