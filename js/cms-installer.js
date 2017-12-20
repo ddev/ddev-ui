@@ -258,7 +258,7 @@ function showErrorScreen(display, error='Something Went Wrong'){
     $('.error-overlay').click(function(){
         showErrorScreen(false, '');
     });
-    var displayType = display ? "flex" : "none";
+    var displayType = display ? "block" : "none";
     showLoadingScreen(false);
     $('.error-text').text(error.toString());
     $('.error-overlay').css('display', displayType);
@@ -277,4 +277,5 @@ function resetAddModal() {
     $('#distroModal').modal('hide');
 }
 
+module.exports.resetAddModal = resetAddModal;
 module.exports.addCMS = addCMS;

@@ -25,6 +25,10 @@
         </div>
 
         <footer class="footer">
+            <div class="router-status-container">
+                <div class="router-status-label">
+                </div>
+            </div>
         </footer>
         <script src="js/ui.js"></script>
         <script>
@@ -89,9 +93,10 @@
                     </div>
                     <div class="error-overlay">
                         <div>
-                            <i class="fa fa-exclamation-triangle error-icon" style="font-size:150px"></i>
+                            <i class="fa fa-exclamation-triangle error-icon" style="font-size:50px"></i>
                         </div>
                         <div class="error-text">Something Went Wrong</div>
+                        <div class="btn btn-primary">OK</div>
                     </div>
                     <h3 class="add-modal-section-header">Application Type</h3>
                     <div class="tile-container">
@@ -113,9 +118,9 @@
                     </div>
                     <h3 class="add-modal-section-header">Installation Directory</h3>
                     <div class="select-folder-container add-site-segment">
-                        <div class="input-group">
-                            <span class="input-group-addon select-path-folder" id="basic-addon1"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
-                            <input type="text" class="selected-path-text form-control" placeholder="Path To Install Site" aria-describedby="basic-addon1">
+                        <div class="input-group select-path-folder">
+                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
+                            <input type="text" readonly class="selected-path-text form-control" placeholder="Path To Install Site" aria-describedby="basic-addon1">
                         </div>
                     </div>
                     <div class="hidden">

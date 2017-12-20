@@ -40,12 +40,18 @@ function getDescribe(siteName, errorCallback) {
 }
 
 function renderUI(list) {
+    var routerStatusText = "DDEV Router Not Running - No Running DDEV Applications.";
     $('.card-container').empty();
     $('.card-container').append(createAddCard());
-    list.forEach(function (site) {
-        var card = createCard(site);
-        $('.card-container').append(card);
-    });
+    if(list.length !== 0){
+        list.forEach(function (site) {
+            var card = createCard(site);
+            $('.card-container').append(card);
+        });
+        routerStatusText = list.router_status;
+    }
+    routerStatusText = routerStatusText === 'healthy' ? '' : routerStatusText;
+    $('.router-status-label').text(routerStatusText);
 }
 
 function createAddCard(){
@@ -219,6 +225,7 @@ function bindButtons() {
         );
     });
     $(document).on('click', '.start-from-template', function () {
+        siteCreator.resetAddModal();
         resetAddModal();
         $('#addOptionsDialog').modal('hide');
         $('#distroModal').modal();
