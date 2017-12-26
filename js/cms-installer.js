@@ -261,43 +261,36 @@ function startSite(workingPath) {
  */
 function addCMS(name, type, targetPath) {
     var cmsPath = "~/.ddev/CMS";
+    var workingPath = cmsPath;
     cmsPath = cmsPath.replace('~', os.homedir());
     showLoadingScreen(true);
     validateInputs(name,type,targetPath)
-        .then(function(){
-            updateLoadingText('Unzipping files');
-            createFiles(name, type, cmsPath, targetPath)
-                .then(function(workingPath){
-                    updateLoadingText('Configuring Site');
-                    configureSite(name, workingPath)
-                        .then(function(){
-                            updateLoadingText('Updating Hosts File');
-                            ddevShell.hostname(name);
-                        })
-                        .then(function(){
-                            updateLoadingText('Starting Site');
-                            startSite(workingPath)
-                                .then(function(stdout){
-                                    if(stdout.toString().indexOf('Starting environment') != -1){
-                                        resetAddModal();
-                                        alert('Start Process Initiated. It may take a few seconds for the new site card to appear.');
-                                    }
-                                })
-                                .catch((err) => {
-                                    showErrorScreen(true, err.toString());
-                                })
-                        })
-                        .catch((err) => {
-                            showErrorScreen(true, err.toString());
-                        })
-                })
-                .catch((err) => {
-                    showErrorScreen(true, err.toString());
-                })
-        })
-        .catch((err) => {
-            showErrorScreen(true, err.toString());
-        });
+    .then(() => {
+        updateLoadingText('Unzipping files');
+        return createFiles(name, type,cmsPath, targetPath);
+    })
+    .then((newWorkingPath) => {
+        updateLoadingText('Configuring Site');
+        workingPath = newWorkingPath;
+        return configureSite(name, workingPath);
+    })
+    .then(() => {
+        updateLoadingText('Updating Hosts File');
+        return ddevShell.hostname(name);
+    })
+    .then(() => {
+        updateLoadingText('Starting Site');
+        return startSite(workingPath)
+    })
+    .then((stdout) => {
+        if(stdout.toString().indexOf('Starting environment') != -1){
+            resetAddModal();
+            alert('Start Process Initiated. It may take a few seconds for the new site card to appear.');
+        }
+    })
+    .catch((err) => {
+        showErrorScreen(true, err.toString());
+    });
 }
 
 /**

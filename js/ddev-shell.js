@@ -102,7 +102,7 @@ const hostname = (siteName, domain = 'ddev.local') => {
         };
 
         var command = 'ddev hostname '+siteName+'.'+domain+' 127.0.0.1 -j';
-        sudo.exec(command, options,
+        sudoPrompt.exec(command, options,
             function(error, stdout, stderr) {
                 if (error) {
                     reject(error);
