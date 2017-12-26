@@ -126,7 +126,7 @@ function createModal(id, title, body, footer) {
                     `+body+`
                 </div>
                 <footer class="modal-footer">
-                    <div class="btn btn-primary create-site">`+footer+`</div>
+                    `+footer+`
                 </footer>
             </div>
         </div>

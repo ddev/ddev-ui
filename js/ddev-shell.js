@@ -59,7 +59,7 @@ const list = () => {
     var promise = new Promise((resolve, reject) => {
         function getRaw(output) {
             var outputObject = JSON.parse(output);
-            if(outputObject.msg === 'There are no running ddev applications.') {
+            if(outputObject.level === 'info' && !outputObject.raw) {
                 outputObject = {
                     raw: []
                 }
