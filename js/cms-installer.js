@@ -1,5 +1,6 @@
 var distroUpdater = require('./distro-updater');
 var tar = require('tar');
+var fs = require('fs');
 var ddevShell = require('./ddev-shell');
 var os = require('os');
 var exec = require('child_process').exec;
@@ -167,8 +168,8 @@ function getCMSTarballPath(cmsType, cmsPath){
  */
 function unpackCMSTarball(tarballPath, outputPath) {
     var promise = new Promise(function(resolve,reject){
-        exec('mkdir '+outputPath, function(err, stdout, stderr) {
-            if (err){
+        fs.mkdir(outputPath,function(err){
+            if (err) {
                 reject(err);
             }
             else {
