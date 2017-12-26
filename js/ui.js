@@ -6,7 +6,6 @@ var os = require('os');
 var dialog = require('electron').remote.dialog;
 var updater = require('./js/distro-updater');
 var siteCreator = require('./js/cms-installer');
-var sudo = require('sudo-prompt');
 
 
 function init() {
@@ -19,6 +18,7 @@ function init() {
         });
     setInterval(fetchState, 1000);
     bindButtons();
+    siteCreator.init();
 }
 
 function fetchState() {
@@ -40,6 +40,10 @@ function getDescribe(siteName, errorCallback) {
 }
 
 function renderUI(list) {
+    var validRouterStates = [
+        "starting",
+        "healthy"
+    ];
     var routerStatusText = "DDEV Router Not Running - No Running DDEV Applications.";
     $('.card-container').empty();
     $('.card-container').append(createAddCard());
@@ -48,9 +52,8 @@ function renderUI(list) {
             var card = createCard(site);
             $('.card-container').append(card);
         });
-        routerStatusText = list.router_status;
+        routerStatusText = (validRouterStates.indexOf(list[0].router_status) != -1) ? '' : routerStatusText;
     }
-    routerStatusText = routerStatusText === 'healthy' ? '' : routerStatusText;
     $('.router-status-label').text(routerStatusText);
 }
 
@@ -62,12 +65,12 @@ function createAddCard(){
             </div>
             <div class="card-body">
                 <a href="#">
-                    <div style="height: 155px; line-height: 155px; font-size: 75px;" >
+                    <div class="add-site-icon" >
                         <i class="fa fa-plus-circle" />
                     </div>
                 </a>
             </div>
-            <div style="height:73px;" class="card-footer">
+            <div class="card-footer">
             </div>
         </div>
     </div>`;
@@ -83,8 +86,8 @@ function createCard(site) {
             </div>
             <div class="card-body">
                 <a href="#" onclick='electron.shell.openExternal("` + site.httpurl + `")'>
-                    <div style="padding-bottom: 20px;">
-                        <img style="width: 50%" src="img/` + site.type + `.png" /> 
+                    <div class="site-icon-container">
+                        <img class="site-icon" src="img/` + site.type + `.png" /> 
                     </div>
                     <div class="card-status">
                         <div>` + site.status + `</div>
@@ -95,13 +98,36 @@ function createCard(site) {
                 <a class="btn btn-primary startbtn" href="#" role="button"><i class="fa fa-play" aria-hidden="true"></i></a>
                 <a class="btn btn-primary stopbtn" href="#" role="button"><i class="fa fa-stop" aria-hidden="true"></i></a>
                 <a class="btn btn-primary infobtn" href='#'><i class="fa fa-info" aria-hidden="true"></i></a>
-              <button class="btn btn-primary dropdown-toggle" style="cursor: pointer;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item restartbtn" href="#">Restart</a>
                 <a class="dropdown-item" onclick='electron.shell.showItemInFolder("` + site.approot + `")' href="#">Browse Local Files</a>
               </div>
+            </div>
+        </div>
+    </div>`;
+
+    return markup;
+}
+
+function createModal(id, title, body, footer) {
+    var markup = `<div class="modal fade" id="`+id+`" tabindex="-1" role="dialog" aria-labelledby="`+id+`Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalLabel">`+title+`</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    `+body+`
+                </div>
+                <footer class="modal-footer">
+                    <div class="btn btn-primary create-site">`+footer+`</div>
+                </footer>
             </div>
         </div>
     </div>`;
@@ -210,28 +236,20 @@ function bindButtons() {
     $(document).on('click', '.add', function () {
         resetAddModal();
         alert('In order to add a new site, DDEV requires elevated permissions to modify your Hosts file. You may be prompted for your username and password to continue.');
-        var options = {
-            name: 'DDEV UI',
-        };
-        var command = 'ls';
-        sudo.exec(command, options,
-            function(error, stdout, stderr) {
-                if (error) {
-                    alert('Unable to escalate permissions.');
-                }else{
-                    $('#addOptionsDialog').modal();
-                }
-            }
-        );
+        var command = 'version';
+        ddevShell.sudo(command)
+            .then(function(){
+                $('#addOptionsDialog').modal();
+            })
+            .catch(function(err){
+                alert(err);
+            });
     });
     $(document).on('click', '.start-from-template', function () {
         siteCreator.resetAddModal();
         resetAddModal();
         $('#addOptionsDialog').modal('hide');
         $('#distroModal').modal();
-    });
-    $(document).on('click', '.start-from-directory', function () {
-        alert('WIP...');
     });
     $(document).on('click', '.select-path-folder', function () {
         var path = dialog.showOpenDialog({
@@ -258,5 +276,6 @@ function bindButtons() {
         var targetPath = $('.selected-path-text').val();
         var name = $('#site-name').val();
         siteCreator.addCMS(name,type,targetPath);
+        return false;
     });
 }

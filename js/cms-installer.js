@@ -4,6 +4,71 @@ var ddevShell = require('./ddev-shell');
 var os = require('os');
 var exec = require('child_process').exec;
 
+var addSiteOptionsModalBody =
+    `<div class="row">
+        <div class="option-container second-option column col-lg-12 col-md-12 col-sm-12 start-from-template">
+            <div class="btn btn-primary start-button-option-container">
+                <i class="fa fa-file-archive-o" style="font-size: 50px"></i>
+            </div>
+            <div>Start fresh from a CMS template</div>
+        </div>
+    </div>`;
+
+var createSiteModalBody =
+    `<div class="modal-body">
+        <div class="loading-overlay">
+            <div>
+                <i class="fa fa-spinner fa-spin loading-spinner" style="font-size:150px"></i>
+            </div>
+            <div class="loading-text">Working...</div>
+        </div>
+        <div class="error-overlay">
+            <div>
+                <i class="fa fa-exclamation-triangle error-icon" style="font-size:50px"></i>
+            </div>
+            <div class="error-text">Something Went Wrong</div>
+            <div class="btn btn-primary">OK</div>
+        </div>
+        <h3 class="add-modal-section-header">Application Type</h3>
+        <div class="tile-container">
+            <div class="tile">
+                <img class="drupal7" src="img/drupal7.png" data-type="drupal7"/>
+            </div>
+            <div class="tile">
+                <img class="drupal8" src="img/drupal8.png" data-type="drupal8"/>
+            </div>
+            <div class="tile">
+                <img class="wordpress" src="img/wordpress.png" data-type="wordpress"/>
+            </div>
+        </div>
+        <h3 class="add-modal-section-header">Project Name</h3>
+        <div class="site-name-container add-site-segment">
+            <div class="input-group">
+                <input type="text" class="form-control" id="site-name">
+            </div>
+        </div>
+        <h3 class="add-modal-section-header">Installation Directory</h3>
+        <div class="select-folder-container add-site-segment">
+            <div class="input-group select-path-folder">
+                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
+                <input type="text" readonly class="selected-path-text form-control" placeholder="Path To Install Site" aria-describedby="basic-addon1">
+            </div>
+        </div>
+        <div class="hidden">
+            <input type="hidden" id="appType">
+        </div>
+    </div>`;
+
+var createSiteModalFooter =
+    `<div class="btn btn-primary create-site">Create Site</div>`;
+/**
+ * Initialization - hook UI and generate markup.
+ */
+function init(){
+    $('body').append(createModal('addOptionsDialog','Choose a Starting Point', addSiteOptionsModalBody));
+    $('body').append(createModal('distroModal','Create a New Site',createSiteModalBody, createSiteModalFooter));
+}
+
 /**
  * Basic validation of a hostname based on RFC 2396 Section 3.2.2
  * @param hostname {string} a hostname to validate
@@ -177,15 +242,6 @@ function configureSite(siteName, workingPath){
 }
 
 /**
- * wrapper for ddev hostname
- * @param siteName {string} name of site to create hosts file entry
- * @return {promise} resolves with a successful terminal output from ddev hostname, rejects with ddev error output
- */
-function updateHostsFile(siteName) {
-    return ddevShell.hostname(siteName);
-}
-
-/**
  * wrapper for ddev start
  * @param workingPath {string} the path of the extracted files to run ddev start in
  * @return {promise} resolves with a successful terminal output from ddev start, rejects with ddev error output
@@ -216,7 +272,7 @@ function addCMS(name, type, targetPath) {
                     configureSite(name, workingPath)
                         .then(function(){
                             updateLoadingText('Updating Hosts File');
-                            updateHostsFile(name)
+                            ddevShell.hostname(name);
                         })
                         .then(function(){
                             updateLoadingText('Starting Site');
@@ -277,5 +333,6 @@ function resetAddModal() {
     $('#distroModal').modal('hide');
 }
 
+module.exports.init = init;
 module.exports.resetAddModal = resetAddModal;
 module.exports.addCMS = addCMS;

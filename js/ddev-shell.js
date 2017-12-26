@@ -1,7 +1,7 @@
 const childProcess = require('child_process');
 const os = require('os');
 const fixPath = require('fix-path');
-const sudo = require('sudo-prompt');
+const sudoPrompt = require('sudo-prompt');
 
 fixPath();
 
@@ -95,13 +95,13 @@ const config = (path, name, docroot, callback, errorCallback) => {
     ddevShell('config', ['-j','--sitename', name, '--docroot', docroot], path, callback, errorCallback);
 };
 
-const hostname = (siteName) => {
+const hostname = (siteName, domain = 'ddev.local') => {
     var promise = new Promise(function(resolve, reject){
         var options = {
             name: 'DDEV UI',
         };
 
-        var command = 'ddev hostname '+siteName+'.ddev.local 127.0.0.1 -j';
+        var command = 'ddev hostname '+siteName+'.'+domain+' 127.0.0.1 -j';
         sudo.exec(command, options,
             function(error, stdout, stderr) {
                 if (error) {
@@ -141,6 +141,35 @@ const describe = (siteName) => {
     return promise;
 };
 
+const sudo = (command, options = {name: 'DDEV UI'}) => {
+    var bannedCharacters = [';','|','&'];
+    var whitelistedCommands = ['version'];
+    if(whitelistedCommands.indexOf(command) != -1){
+        bannedCharacters.forEach(function(character){
+            if(command.includes(character)){
+                return Promise.reject(character + ' is not an allowed character in privilege escalation requests.');
+            }
+        });
+        command = 'ddev ' + command;
+        var promise = new Promise((resolve, reject) => {
+            sudoPrompt.exec(command, options,
+                function(error, stdout, stderr) {
+                    if (error) {
+
+                        reject('Unable to escalate permissions.');
+                    }else{
+                        resolve(stdout);
+                    }
+                }
+            );
+        });
+
+        return promise;
+    } else {
+        return Promise.reject(command + ' is not allowed to be run as sudo');
+    }
+};
+
 module.exports.list = list;
 module.exports.start = start;
 module.exports.hostname = hostname;
@@ -149,3 +178,4 @@ module.exports.restart = restart;
 module.exports.remove = remove;
 module.exports.config = config;
 module.exports.describe = describe;
+module.exports.sudo = sudo;

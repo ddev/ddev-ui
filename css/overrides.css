@@ -82,6 +82,9 @@ h3 {
 .stopped .restartbtn{
     display: none;
 }
+.btn {
+    cursor: pointer;
+}
 .card .btn {
     margin: 5px;
 }
@@ -190,4 +193,22 @@ h3 {
     float: right;
     padding: 0 10px;
     line-height: 66px;
+}
+
+.add-site-icon {
+    height: 155px;
+    line-height: 155px;
+    font-size: 75px;
+}
+
+.add .card-footer {
+    height:73px;
+}
+
+.site-icon-container {
+    padding-bottom: 20px;
+}
+
+.site-icon {
+    width: 50%;
 }
