@@ -1,10 +1,9 @@
 var distroUpdater = require('./distro-updater');
+var bootstrapModal = require('./bootstrap-modal');
 var tar = require('tar');
 var fs = require('fs');
 var ddevShell = require('./ddev-shell');
 var os = require('os');
-var exec = require('child_process').exec;
-
 
 /**
  *
@@ -95,14 +94,6 @@ var createSiteModalBody =
 
 var createSiteModalFooter =
     `<div class="btn btn-primary create-site">Create Site</div>`;
-
-/**
- * Initialization - hook UI and generate markup.
- */
-function init(){
-    $('body').append(createModal('addOptionsDialog','Choose a Starting Point', addSiteOptionsModalBody));
-    $('body').append(createModal('distroModal','Create a New Site',createSiteModalBody, createSiteModalFooter));
-}
 
 /**
  * Basic validation of a hostname based on RFC 2396 Section 3.2.2
@@ -328,6 +319,56 @@ function addCMS(name, type, targetPath) {
     });
 }
 
+/**
+ * Initialization - hook UI and generate markup.
+ */
+function init(){
+    $('body').append(bootstrapModal.createModal('addOptionsDialog','Choose a Starting Point', addSiteOptionsModalBody));
+    $('body').append(bootstrapModal.createModal('distroModal','Create a New Site',createSiteModalBody, createSiteModalFooter));
+    $(document).on('click', '.add', function () {
+        resetAddModal();
+        alert('In order to add a new site, DDEV requires elevated permissions to modify your Hosts file. You may be prompted for your username and password to continue.');
+        var command = 'version';
+        ddevShell.sudo(command)
+            .then(function(){
+                $('#addOptionsDialog').modal();
+            })
+            .catch(function(err){
+                alert(err);
+            });
+    });
+    $(document).on('click', '.start-from-template', function () {
+        resetAddModal();
+        $('#addOptionsDialog').modal('hide');
+        $('#distroModal').modal();
+    });
+    $(document).on('click', '.select-path-folder', function () {
+        var path = dialog.showOpenDialog({
+            properties: ['openDirectory']
+        });
+        if (path) {
+            $('.selected-path-text').val(path[0]);
+        }
+    });
+
+    $(document).on('click', '.tile img', function () {
+        $('#appType').val($(this).data('type')).trigger('change');
+    });
+    $(document).on('change', '#appType', function () {
+        $('.tile img').removeClass('active');
+        if ($(this).val()) {
+            $('.' + $(this).val()).addClass('active');
+        }
+    });
+
+    $(document).on('click', '.create-site', function () {
+        var type = $('#appType').val();
+        var targetCMS = [];
+        var targetPath = $('.selected-path-text').val();
+        var name = $('#site-name').val();
+        addCMS(name,type,targetPath);
+        return false;
+    });
+}
+
 module.exports.init = init;
-module.exports.resetAddModal = resetAddModal;
-module.exports.addCMS = addCMS;

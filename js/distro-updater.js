@@ -2,6 +2,7 @@ var request = require('request');
 var parseXMLString = require('xml2js').parseString;
 var fs = require('fs');
 var compareVersions = require('compare-versions');
+var os = require('os');
 
 // Remote read actions - fetch latest version information from remote endpoints
 

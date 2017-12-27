@@ -47,6 +47,7 @@
     }
   },
   "devDependencies": {
+    "electron": "^1.7.10",
     "electron-builder": "^19.33.0",
     "mocha": "^4.0.1",
     "mock-fs": "^4.4.2",
