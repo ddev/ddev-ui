@@ -9,7 +9,7 @@ var siteCard = require('./js/site-cards');
 var describeSite = require('./js/describe-site');
 
 /**
- * bootstraps application by initializing modules, downloading distros, starting ddev list polling, binding ui
+ * bootstraps application by initializing modules, downloading distros, starting ddev list polling
  */
 function init() {
     siteCard.init();
