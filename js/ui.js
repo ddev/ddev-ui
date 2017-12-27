@@ -30,15 +30,6 @@ function fetchState() {
     });
 }
 
-function getDescribe(siteName, errorCallback) {
-    var promise = new Promise(function (resolve, reject) {
-        ddevShell.describe(siteName, errorCallback).then(function (data) {
-            resolve(data);
-        })
-    });
-    return promise;
-}
-
 function renderUI(list) {
     var validRouterStates = [
         "starting",
@@ -172,35 +163,11 @@ function updateModal(title, body) {
     $('#ddevModal').modal();
 }
 
-function displayPrompt() {
-    var dialog = bootbox.dialog({
-        title: 'A custom dialog with buttons and callbacks',
-        message: "<p>Remove Local Development Environment</p>",
-        buttons: {
-            remove: {
-                label: "Remove the site and leave the database",
-                className: 'btn-info',
-                callback: function () {
-                    alert('remove');
-                }
-            },
-            all: {
-                label: "Delete the local site AND the database.",
-                className: 'btn-warning',
-                callback: function () {
-                    alert('remove db');
-                    return false;
-                }
-            }
-        }
-    });
-}
-
 function bindButtons() {
     $(document).on('click', '.infobtn', function () {
         console.log('describe');
         var siteName = $(this).closest('.column').data('sitename');
-        getDescribe(siteName).then(function (data) {
+        ddevShell.describe(siteName).then(function (data) {
             updateModal('Additional Info For ' + siteName, createDetails(data));
         });
     });
@@ -227,11 +194,6 @@ function bindButtons() {
         }, function (error) {
             console.log(error)
         });
-    });
-    $(document).on('click', '.removebtn', function () {
-        displayPrompt();
-        console.log('removing');
-        //ddevShell.remove($(this).closest('.column').data('path'), function(data){console.log(data)});
     });
     $(document).on('click', '.add', function () {
         resetAddModal();

@@ -5,6 +5,39 @@ var ddevShell = require('./ddev-shell');
 var os = require('os');
 var exec = require('child_process').exec;
 
+
+/**
+ *
+ * Markup Templates and DOM Bindings
+ *
+ */
+function showLoadingScreen(display){
+    var displayType = display ? "flex" : "none";
+    $('.loading-overlay').css('display', displayType);
+}
+
+function showErrorScreen(display, error='Something Went Wrong'){
+    $('.error-overlay').click(function(){
+        showErrorScreen(false, '');
+    });
+    var displayType = display ? "block" : "none";
+    showLoadingScreen(false);
+    $('.error-text').text(error.toString());
+    $('.error-overlay').css('display', displayType);
+}
+
+function updateLoadingText(text){
+    $('.loading-text').text(text.toString());
+}
+
+function resetAddModal() {
+    $('#appType').val('').trigger('change');
+    $('#site-name').val('');
+    $('.selected-path-text').val('');
+    showLoadingScreen(false);
+    showErrorScreen(false);
+    $('#distroModal').modal('hide');
+}
 var addSiteOptionsModalBody =
     `<div class="row">
         <div class="option-container second-option column col-lg-12 col-md-12 col-sm-12 start-from-template">
@@ -62,6 +95,7 @@ var createSiteModalBody =
 
 var createSiteModalFooter =
     `<div class="btn btn-primary create-site">Create Site</div>`;
+
 /**
  * Initialization - hook UI and generate markup.
  */
@@ -292,39 +326,6 @@ function addCMS(name, type, targetPath) {
     .catch((err) => {
         showErrorScreen(true, err.toString());
     });
-}
-
-/**
- *
- * Markup and DOM Bindings
- *
- */
-function showLoadingScreen(display){
-    var displayType = display ? "flex" : "none";
-    $('.loading-overlay').css('display', displayType);
-}
-
-function showErrorScreen(display, error='Something Went Wrong'){
-    $('.error-overlay').click(function(){
-        showErrorScreen(false, '');
-    });
-    var displayType = display ? "block" : "none";
-    showLoadingScreen(false);
-    $('.error-text').text(error.toString());
-    $('.error-overlay').css('display', displayType);
-}
-
-function updateLoadingText(text){
-    $('.loading-text').text(text.toString());
-}
-
-function resetAddModal() {
-    $('#appType').val('').trigger('change');
-    $('#site-name').val('');
-    $('.selected-path-text').val('');
-    showLoadingScreen(false);
-    showErrorScreen(false);
-    $('#distroModal').modal('hide');
 }
 
 module.exports.init = init;
