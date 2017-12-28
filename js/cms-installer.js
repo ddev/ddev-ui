@@ -10,11 +10,23 @@ var os = require('os');
  * Markup Templates and DOM Bindings
  *
  */
-function showLoadingScreen(display){
+
+/**
+ * Display or hide a loading screen over the modal
+ * @param display {boolean} - if the screen is to be displayed or hidden
+ * @param message {string} - optional - the text to display on the loading screen
+ */
+function showLoadingScreen(display, message='Working...'){
     var displayType = display ? "flex" : "none";
+    $('.loading-text').text(message.toString());
     $('.loading-overlay').css('display', displayType);
 }
 
+/**
+ * Display or hide an error screen over the modal. When displayed, loading screens are dismissed
+ * @param display {boolean} - if the screen is to be displayed or hidden
+ * @param message {string} - optional - the text to display on the loading screen
+ */
 function showErrorScreen(display, error='Something Went Wrong'){
     $('.error-overlay').click(function(){
         showErrorScreen(false, '');
@@ -25,10 +37,9 @@ function showErrorScreen(display, error='Something Went Wrong'){
     $('.error-overlay').css('display', displayType);
 }
 
-function updateLoadingText(text){
-    $('.loading-text').text(text.toString());
-}
-
+/**
+ * resets the add site modal to an empty/default state.
+ */
 function resetAddModal() {
     $('#appType').val('').trigger('change');
     $('#site-name').val('');
@@ -106,7 +117,7 @@ function validateHostname(hostname){
         if(hostnameRegex.test(hostname.toLowerCase())){
             resolve(true);
         } else {
-            var error = hostname ? 'Hostname is Invalid.' : 'Hostname Cannot Be Blank.';
+            var error = hostname ? 'Project Name is Invalid.' : 'Project Name Cannot Be Blank.';
             reject(error);
         }
     });
@@ -124,7 +135,7 @@ function validateCMSType(cmsType){
         if(cmsString === 'wordpress' || cmsString === 'drupal7' || cmsString === 'drupal8'){
             resolve(true);
         } else {
-            var error = cmsType ? 'CMS Type is Invalid.' : 'CMS Type Cannot Be Blank.';
+            var error = cmsType ? 'CMS Type is Invalid.' : 'Please select a CMS type.';
             reject(error);
         }
     });
@@ -177,9 +188,7 @@ function getCMSTarballPath(cmsType, cmsPath){
                     resolve(cmsPath + '/' + fileName);
                 }
             });
-            reject('CMS tarball not found');
-        }).catch(function(){
-            reject('CMS tarball not found in `~/.ddev/CMS`. Restarting the UI will attempt to redownload these files.');
+            reject('CMS archive not found in `~/.ddev/CMS`. Restarting the UI will attempt to redownload these files.');
         })
     });
     return promise;
@@ -193,26 +202,30 @@ function getCMSTarballPath(cmsType, cmsPath){
  */
 function unpackCMSTarball(tarballPath, outputPath) {
     var promise = new Promise(function(resolve,reject){
-        fs.mkdir(outputPath,function(err){
-            if (err) {
-                reject(err);
-            }
-            else {
-                try{
-                    tar.x(
-                        {
-                            file: tarballPath,
-                            C: outputPath,
-                            strip: 1
-                        },'',function(){
-                            resolve(outputPath);
-                        }
-                    )
-                } catch (err){
-                    reject('Cannot extract base CMS file in `~/.ddev/CMS`. Restarting the UI will attempt to redownload them.');
-                }
+        fs.readdir(outputPath, function(err, items){
+            if(err && err.toString().includes('ENOENT')){
+                fs.mkdir(outputPath,function(err){
+                    if (err) {
+                        reject(err);
+                    }
+                });
+            } else if(items.length > 0) {
+                reject('The path '+outputPath+' already exists and is not empty. Please select a new path or try a different project name');
             }
         });
+        try{
+            tar.x(
+                {
+                    file: tarballPath,
+                    C: outputPath,
+                    strip: 1
+                },'',function(){
+                    resolve(outputPath);
+                }
+            )
+        } catch (err){
+            reject('Cannot extract base CMS file in `~/.ddev/CMS`. Restarting the UI will attempt to redownload them.');
+        }
     });
     return promise;
 }
@@ -239,12 +252,14 @@ function validateInputs(name, type, targetPath){
  * @param targetFolder {string} target folder to extract to
  * @return {promise} resolves with path to new site docroot, rejects with error returned from any failed called function
  */
-function createFiles(siteName, cmsType, cmsPath, targetFolder){
+function extractCMSImageToTargetPath(siteName, cmsType, cmsPath, targetFolder){
     var promise = new Promise(function(resolve, reject){
         getCMSTarballPath(cmsType,cmsPath).then(function(CMSTarballPath){
             targetFolder = targetFolder + "/" + siteName;
             unpackCMSTarball(CMSTarballPath,targetFolder).then(function(unzippedPath){
                 resolve(unzippedPath);
+            }).catch(function(err){
+                reject(err);
             });
         })
         .catch(function(err){
@@ -292,26 +307,26 @@ function addCMS(name, type, targetPath) {
     showLoadingScreen(true);
     validateInputs(name,type,targetPath)
     .then(() => {
-        updateLoadingText('Unzipping files');
-        return createFiles(name, type,cmsPath, targetPath);
+        showLoadingScreen(true,'Unzipping files');
+        return extractCMSImageToTargetPath(name, type,cmsPath, targetPath);
     })
     .then((newWorkingPath) => {
-        updateLoadingText('Configuring Site');
+        showLoadingScreen(true,'Configuring Site');
         workingPath = newWorkingPath;
         return configureSite(name, workingPath);
     })
     .then(() => {
-        updateLoadingText('Updating Hosts File');
+        showLoadingScreen(true,'Updating Hosts File');
         return ddevShell.hostname(name);
     })
     .then(() => {
-        updateLoadingText('Starting Site');
+        showLoadingScreen(true,'Starting Site');
         return startSite(workingPath)
     })
     .then((stdout) => {
         if(stdout.toString().indexOf('Starting environment') != -1){
             resetAddModal();
-            alert('Start Process Initiated. It may take a few seconds for the new site card to appear.');
+            alert('Start Process Initiated. It may take a few seconds for the new site to appear on your dashboard.');
         }
     })
     .catch((err) => {
