@@ -53,6 +53,8 @@ describe('cms-installer', function () {
         });
 
         //validateInstallPath is a wrapper for distroUpdater.canReadAndWrite, tests included in that module
+
+        //getCMSTarballPath is a wrapper for distroUpdater.getLocalDistros, tests included in that module
     });
 
     describe('#Filesystem Operations', function () {
