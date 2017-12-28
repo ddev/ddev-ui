@@ -19,7 +19,7 @@ describe('cms-installer', function () {
                 .then(function () {
                     return Promise.reject('Expected method to reject.');
                 }).catch(function (err) {
-                    assert(err === 'Hostname is Invalid.')
+                    assert(err === 'Project Name is Invalid.')
                 });
         });
         it('should reject empty hostnames', function () {
@@ -27,7 +27,7 @@ describe('cms-installer', function () {
                 .then(function () {
                     return Promise.reject('Expected method to reject.');
                 }).catch(function (err) {
-                    assert(err === 'Hostname Cannot Be Blank.')
+                    assert(err === 'Project Name Cannot Be Blank.')
                 });
         });
         it('should validate supported CMS types', function () {
@@ -48,7 +48,7 @@ describe('cms-installer', function () {
                 .then(function () {
                     return Promise.reject('Expected method to reject.');
                 }).catch(function (err) {
-                    assert(err === 'CMS Type Cannot Be Blank.')
+                    assert(err === 'Please select a CMS type.')
                 });
         });
 
@@ -83,7 +83,7 @@ describe('cms-installer', function () {
                .then(function (response) {
                    return Promise.reject('Expected method to reject.');
                }).catch(function (err) {
-                   assert(err === 'CMS tarball not found')
+                   assert(err === 'CMS archive not found in `~/.ddev/CMS`. Restarting the UI will attempt to redownload these files.')
                });
         });
 
