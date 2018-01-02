@@ -14,7 +14,6 @@
     <body>
         <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
             <img src="img/ddev_last.png" class="ddev-logo" />
-            <div class="btn btn-primary add"><i class="fa fa-plus" aria-hidden="true"></i></div>
             <input class='directory-select' type="file"
                    webkitdirectory />
         </nav>
@@ -26,73 +25,14 @@
         </div>
 
         <footer class="footer">
-            <div class="router-status">DDEV Router Status: <span class="router-status-text">RUNNING</span></div>
+            <div class="router-status-container">
+                <div class="router-status-label">
+                </div>
+            </div>
         </footer>
         <script src="js/ui.js"></script>
         <script>
             init();
         </script>
     </body>
-
-    <div class="modal fade" id="ddevModal" tabindex="-1" role="dialog" aria-labelledby="mainDdevModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title" id="modalLabel">Modal title</h2>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="modalBody">
-                    ...
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="distroModal" tabindex="-1" role="dialog" aria-labelledby="mainDistroModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title" id="distroModalLabel">Create a New Site</h2>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h3 class="add-modal-section-header">Application Type</h3>
-                    <div class="tile-container">
-                        <div class="tile">
-                            <img class="drupal7" src="img/drupal7.png" data-type="drupal7"/>
-                        </div>
-                        <div class="tile">
-                            <img class="drupal8" src="img/drupal8.png" data-type="drupal8"/>
-                        </div>
-                        <div class="tile">
-                            <img class="wordpress" src="img/wordpress.png" data-type="wordpress"/>
-                        </div>
-                    </div>
-                    <h3 class="add-modal-section-header">Project Name</h3>
-                    <div class="site-name-container add-site-segment">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="site-name">
-                        </div>
-                    </div>
-                    <h3 class="add-modal-section-header">Installation Directory</h3>
-                    <div class="select-folder-container add-site-segment">
-                        <div class="input-group">
-                            <span class="input-group-addon select-path-folder" id="basic-addon1"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
-                            <input type="text" class="selected-path-text form-control" placeholder="Path To Install Site" aria-describedby="basic-addon1">
-                        </div>
-                    </div>
-                    <div class="hidden">
-                        <input type="hidden" id="appType">
-                    </div>
-                </div>
-                <footer class="modal-footer">
-                    <div class="btn btn-primary create-site">Create Site</div>
-                </footer>
-            </div>
-        </div>
-    </div>
 </html>

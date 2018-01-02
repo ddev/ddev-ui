@@ -10,6 +10,7 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
+    background-color: #c5c5c5;
 }
 
 h1, h2, h3 {
@@ -81,6 +82,9 @@ h3 {
 .stopped .restartbtn{
     display: none;
 }
+.btn {
+    cursor: pointer;
+}
 .card .btn {
     margin: 5px;
 }
@@ -97,9 +101,6 @@ h3 {
 .modal-body td {
     padding: 0 20px;
     width: 50%;
-}
-.add {
-    float: right;
 }
 .directory-select {
     display: none;
@@ -133,4 +134,81 @@ h3 {
     position: absolute;
     bottom: 0;
     width: 100%;
+    background-color: rgba(100,100,100,0.3);
+}
+.loading-overlay, .error-overlay {
+    text-align: center;
+    display: none;
+    z-index: 3;
+    margin-top: -15px;
+    margin-left: -15px;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(100,100,100,.8);
+    align-items: center;
+    justify-content: center
+}
+.error-overlay {
+    padding: 50px;
+}
+.error-overlay div {
+    margin: 10px 0;
+}
+.loading-spinner {
+    font-size: 150px !important;
+    color: #28bde4;
+}
+.error-icon {
+    color: #d80000;
+}
+.loading-text {
+    width: 55%;
+    margin-left: 20px;
+    color: #28bde4;
+    font-weight: bold;
+    font-size: 20px;
+}
+.error-text {
+    color: #28bde4;
+    font-weight: bold;
+    font-size: 20px;
+}
+.start-button-option-container {
+    display: inline-block;
+    height: 100px;
+    width: 100px;
+    line-height: 100px;
+}
+.option-container {
+    text-align: center;
+}
+
+.second-option {
+    border-left: 1px solid #878787;
+}
+
+.router-status-label {
+    color: #c5c5c5;
+    float: right;
+    padding: 0 10px;
+    line-height: 66px;
+}
+
+.add-site-icon {
+    height: 155px;
+    line-height: 155px;
+    font-size: 75px;
+}
+
+.add .card-footer {
+    height:73px;
+}
+
+.site-icon-container {
+    padding-bottom: 20px;
+}
+
+.site-icon {
+    width: 50%;
 }

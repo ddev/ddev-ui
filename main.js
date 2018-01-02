@@ -1,6 +1,7 @@
 var electron = require('electron');
 var app = electron.app;
 var BrowserWindow = electron.BrowserWindow;
+var isDev = require('electron-is-dev');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -24,8 +25,10 @@ app.on('ready', function () {
     // and load the index.html of the app.
     mainWindow.loadURL('file://' + __dirname + '/index.html');
 
-    // Open the DevTools.
-    mainWindow.openDevTools();    // requires a height 410px
+    if(isDev) {
+        // Open the DevTools.
+        mainWindow.openDevTools();    // requires a height 410px
+    }
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {

@@ -1,8 +1,13 @@
 {
   "name": "ddev-ui",
   "description": "A GUI to complement the DDEV CLI",
-  "version": "v0.2.0-dev",
+  "version": "v0.1.0-pr",
   "main": "main.js",
+  "homepage": "https://github.com/drud/ddev",
+  "author": {
+    "name": "DRUD Tech",
+    "email": "support@drud.com"
+  },
   "scripts": {
     "test": "mocha",
     "start": "electron .",
@@ -10,18 +15,53 @@
     "build-windows": "electron-builder --win",
     "build-darwin": "electron-builder --mac"
   },
-  "author": "drudtech",
+  "build": {
+    "appId": "ddev-ui",
+    "dmg": {
+      "window": {
+        "width": 600,
+        "height": 360
+      },
+      "contents": [
+        {
+          "x": 150,
+          "y": 135
+        },
+        {
+          "x": 450,
+          "y": 135,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "development"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    }
+  },
   "devDependencies": {
+    "electron": "^1.7.10",
     "electron-builder": "^19.33.0",
     "mocha": "^4.0.1",
     "mock-fs": "^4.4.2",
     "nock": "^9.1.3",
+    "rewire": "^3.0.2",
     "stub-spawn-once": "^2.3.0"
   },
   "dependencies": {
     "compare-versions": "^3.1.0",
+    "electron-is-dev": "^0.3.0",
     "fix-path": "^2.1.0",
     "request": "^2.83.0",
+    "sudo-prompt": "^8.0.0",
+    "tar": "^4.1.1",
     "tarball-extract": "0.0.6",
     "xml2js": "^0.4.19"
   }
