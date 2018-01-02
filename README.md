@@ -14,7 +14,12 @@ DDEV UI has been tested on macOS, Win7/8/10, Ubuntu 16.04+ and Fedora 25+. The f
 * windows: `make windows`
 * linux: `make linux`
 
-While developing and testing locally, you may wish to skip building the full binary by simply running `electron .` from within the git repository. This will launch the electron app without requiring building disk images and closing/reopening the binary.
+While developing and testing locally, you may wish to skip building the full binary by
+
+* Globally installing electron (one-time) with `npm install -g electron`
+* then start ddev-ui with `npm install && electron .` in the main ddev-ui directory.
+
+This will launch the electron app without requiring building disk images and closing/reopening the binary.
 
 ## Initial Roadmap
 The planned roadmap can be found at 
