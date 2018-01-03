@@ -8,7 +8,7 @@ describe('ddev-sudo', function () {
             assert.equal(typeof(ddevSudo.exec), 'function');
         });
         it('should not expose the unfiltered sudo-prompt library', function(){
-            let protected = (typeof(ddevSudo.sudoPrompt) === 'undefined' || (typeof(sudoPrompt) === 'undefined'));
+            let protected = (typeof(ddevSudo.sudoPrompt) === 'undefined' && (typeof(sudoPrompt) === 'undefined'));
             assert.equal(protected, true);
         });
         it('should reject any commands that are not whitelisted before attempting to execute', function (done) {
