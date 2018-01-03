@@ -1,7 +1,7 @@
 const childProcess = require('child_process');
 const os = require('os');
 const fixPath = require('fix-path');
-const sudoPrompt = require('sudo-prompt');
+const ddevSudo = require('./ddev-sudo');
 
 // quirk with electron's pathing. without this, / is symlinked to application working directory root
 fixPath();
@@ -152,24 +152,10 @@ const config = (path, name, docroot, callback, errorCallback) => {
  * @param domain - optional - domain to create sitename subdomain
  * @returns {Promise} - resolves on successful execution with stdout text
  */
-const hostname = (siteName, domain = 'ddev.local') => {
-    var promise = new Promise(function(resolve, reject){
-        var options = {
-            name: 'DDEV UI',
-        };
-
-        var command = 'ddev hostname '+siteName+'.'+domain+' 127.0.0.1 -j';
-        sudoPrompt.exec(command, options,
-            function(error, stdout, stderr) {
-                if (error) {
-                    reject(error);
-                }else{
-                    resolve(stdout);
-                }
-            }
-        );
-    });
-    return promise;
+const hostname = (siteName, domain = 'ddev.local', domainUrl = '127.0.0.1') => {
+    var fullDomain = siteName + '.' + domain;
+    var args = [fullDomain + ' ' + domainUrl, '-j'];
+    return ddevSudo.exec('hostname', args);
 };
 
 /**
@@ -203,40 +189,6 @@ const describe = (siteName) => {
     return promise;
 };
 
-/**
- * priv escalation - only allows whitelisted commands to be run as sudo, and bans dangerous characters
- * @param command {string} - ddev command to run
- * @param promptOptions {object} - sudo prompt options such as application name and prompt icon
- * @returns {promise} - resolves if escalation is successful with stdout text
- */
-const sudo = (command, promptOptions = {name: 'DDEV UI'}) => {
-    var bannedCharacters = [';','|','&'];
-    var whitelistedCommands = ['version'];
-    if(whitelistedCommands.indexOf(command) != -1){
-        bannedCharacters.forEach(function(character){
-            if(command.includes(character)){
-                return Promise.reject(character + ' is not an allowed character in privilege escalation requests.');
-            }
-        });
-        command = 'ddev ' + command;
-        var promise = new Promise((resolve, reject) => {
-            sudoPrompt.exec(command, promptOptions,
-                function(error, stdout, stderr) {
-                    if (error) {
-                        reject('Unable to escalate permissions.');
-                    }else{
-                        resolve(stdout);
-                    }
-                }
-            );
-        });
-
-        return promise;
-    } else {
-        return Promise.reject(command + ' is not allowed to be run as sudo');
-    }
-};
-
 module.exports.list = list;
 module.exports.start = start;
 module.exports.hostname = hostname;
@@ -245,4 +197,3 @@ module.exports.restart = restart;
 module.exports.remove = remove;
 module.exports.config = config;
 module.exports.describe = describe;
-module.exports.sudo = sudo;

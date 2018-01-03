@@ -2,7 +2,7 @@ var distroUpdater = require('./distro-updater');
 var bootstrapModal = require('./bootstrap-modal');
 var tar = require('tar');
 var fs = require('fs');
-var ddevShell = require('./ddev-shell');
+var ddevSudo = require('./ddev-sudo');
 var os = require('os');
 var electron = require('electron');
 var remote = electron.remote ? electron.remote : electron;
@@ -515,15 +515,8 @@ function init(){
     $('body').append(bootstrapModal.createModal('existingFilesModal','Create a Project From Existing Files', createSiteExistingModalBody, createSiteExistingModalFooter));
     $(document).on('click', '.add', function () {
         resetAddModal();
-        alert('In order to add a new project, DDEV requires elevated permissions to modify your Hosts file. You may be prompted for your username and password to continue.');
-        var command = 'version';
-        ddevShell.sudo(command)
-            .then(function(){
-                $('#addOptionsDialog').modal();
-            })
-            .catch(function(err){
-                alert(err);
-            });
+        alert('In order to add a new site, DDEV requires elevated permissions to modify your Hosts file. You may be prompted for your username and password to continue.');
+        $('#addOptionsDialog').modal();
     });
     $(document).on('click', '.start-from-template', function () {
         resetAddModal();
