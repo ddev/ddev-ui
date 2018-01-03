@@ -126,9 +126,12 @@ const restart = (path, callback, errorCallback) => {
  * @param callback {function} - function called on stdout update
  * @param errorCallback {function} - function called on error
  */
-const remove = (path, db, callback, errorCallback) => {
+const remove = (path, db) => {
     var args = db ? ['-j', '--remove-data'] : ['-j'];
-    ddevShell('remove', args, path, callback, errorCallback, true);
+    var promise = new Promise(function(resolve, reject) {
+        ddevShell('remove', args, path, resolve, reject, false);
+    });
+    return promise;
 };
 
 /**
