@@ -1,4 +1,5 @@
 var ddevShell = require('./ddev-shell');
+var bootstrapModal = require('./bootstrap-modal');
 
 /**
  * TEMPLATE - generates markup for the placeholder "add/create site" card
@@ -55,6 +56,7 @@ function createCard(site) {
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item restartbtn" href="#">Restart</a>
+                <a class="dropdown-item" onclick='removeSiteModal("\`+site.approot+\`")' href="#">Remove Site</a>
                 <a class="dropdown-item" onclick='electron.shell.showItemInFolder("` + site.approot + `")' href="#">Browse Local Files</a>
               </div>
             </div>
@@ -64,10 +66,33 @@ function createCard(site) {
     return markup;
 }
 
+var removeSiteModalBody =
+    `<h2>Please select a removal option</h2>
+    <div>The project files will *not* be removed from your harddrive.</div>
+    <hr/>
+    <form class="remove-options">
+        <div class="remove-option">
+            <input type="radio" name="removeOptions" id="removeContainers" value="Site Containers"/>
+            <label for="removeContainers">Site Containers</label>
+        </div>
+        <div class="remove-option">
+            <input type="radio" name="removeOptions" id="removeContainersAndData" value="Site Containers And Site Database"/>
+            <label for="removeContainersAndData">Site Containers AND Site Database</label>
+        </div>
+    </form>
+    <hr/>
+    `;
+
+var removeSiteModalFooter =
+    `<div class="remove-button-container">
+        <div class="btn btn-danger pull-right remove-site-button" data-path="" data-db="false">Remove <span class="removal-items"></span></div>
+    </div>`;
+
 /**
  * Initialization - hook UI and generate markup.
  */
 function init(){
+    bootstrapModal.createModal('removeModal','Remove Site', removeSiteModalBody, removeSiteModalFooter);
     $(document).on('click', '.startbtn', function () {
         console.log('starting');
         ddevShell.start($(this).closest('.column').data('path'), function (data) {
