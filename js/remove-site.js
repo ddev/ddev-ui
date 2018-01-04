@@ -16,7 +16,10 @@ function removeSite(formData){
     $('.loading-overlay', '#removeModal').css('display','flex');
     $('.remove-site-button').addClass('btn-secondary').removeClass('btn-danger');
 
-    ddevShell.remove(path[0].value, data[0].value)
+    var removeData = data[0].value.includes('Database');
+    var removePath = path[0].value;
+
+    return ddevShell.remove(removePath, removeData)
     .then(function(){
         alert('Site Successfully Removed.');
         $('#removeModal').modal('hide');

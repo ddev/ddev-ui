@@ -34,6 +34,8 @@ const ddevShell = (command, args, path, callback, errorCallback, stream) => {
         }
     }
 
+    console.log(command, opts);
+
     var currentCommand = childProcess.spawn('ddev', command, opts);
 
     var outputBuffer = '';
