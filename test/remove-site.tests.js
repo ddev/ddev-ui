@@ -1,32 +1,86 @@
 const fixtures = require('./remove-site-fixtures');
 const rewire = require('rewire');
-const chai = require('chai');
-const spies = require('chai-spies');
-require('jsdom-global')();
+const remove_site = rewire('../js/remove-site');
 
-/*describe('remove-site', function () {
-    chai.use(spies);
-    const expect = chai.expect;
-    let remove_site = rewire('../js/remove-site');
-    let mockRemove = function(){
-        var promise = new Promise((resolve, reject) => {
-
-        });
-        return promise;
-    };
-    let ddevShellMock = {
-        remove: mockRemove
-    };
-    remove_site.__set__('ddevShell', ddevShellMock);
-    var removeSite = remove_site.__get__('removeSite');
-
+describe('remove-site', function () {
     describe('#removeSite()', function () {
-        it('should call ddevShell module and attempt to exec `ddev remove` from path with no remove flag', function () {
-            removeSite(fixtures.removeProjectArray);
+        var removeSite = remove_site.__get__('removeSite');
+        remove_site.__set__('displayLoadingState', function(){});
+        remove_site.__set__('removeCompleted', function(){});
 
-            expect(ddevShellMock.ddevShell).to.be.spy;
-            expect(ddevShellMock.ddevShell).to.have.been.called();
+        beforeEach(function() {
+            remove_site.__set__('removeCompleted', function(){});
+        });
+
+        it('should call ddevShell module and attempt to exec `ddev remove` from path with no remove flag', function (done) {
+            const mockShell = {
+                remove: function(path,db){
+                    return new Promise(function(resolve, reject){
+                        if(path === '/Users/testguy777/Desktop/d7test1234' && db === false){
+                            done();
+                        } else{
+                            console.log('Fail - Path and DB Removal flag did not get passed as expected!');
+                        }
+                        resolve();
+                    });
+                }
+            };
+            remove_site.__set__('ddevShell', mockShell);
+            removeSite(fixtures.removeProjectArray);
+        });
+        it('should call ddevShell module and attempt to exec `ddev remove` from path with the remove db flag', function (done) {
+            const mockShell = {
+                remove: function(path,db){
+                    return new Promise(function(resolve, reject){
+                        if(path === '/Users/testguy777/Desktop/d87loihasd' && db === true){
+                            done();
+                        } else{
+                            console.log('Fail - Path and DB Removal flag did not get passed as expected!');
+                        }
+                        resolve();
+                    });
+                }
+            };
+            remove_site.__set__('ddevShell', mockShell);
+            removeSite(fixtures.removeProjectDataArray);
+        });
+
+        it('should throw an error if valid called with valid arguments, but remove is unsuccessful', function(done){
+            const mockShell = {
+                remove: function(path,db){
+                    return new Promise(function(resolve, reject){
+                        reject('ERROR THROWN');
+                    });
+                }
+            };
+            remove_site.__set__('removeCompleted', function(msg){
+                if(msg === 'Could Not Remove Site (ERROR THROWN)'){
+                    done();
+                } else {
+                    console.log('Fail - expected error message, instead received ' + msg);
+                }
+            });
+            remove_site.__set__('ddevShell', mockShell);
+            removeSite(fixtures.removeProjectDataArray);
+        });
+
+        it('should throw an error if called with invalid arguments', function(done){
+            const mockShell = {
+                remove: function(path,db){
+                    return new Promise(function(resolve, reject){
+                        resolve('ERROR THROWN');
+                    });
+                }
+            };
+            remove_site.__set__('removeCompleted', function(msg){
+                if(msg === 'Invalid Input Passed To Remove'){
+                    done();
+                } else {
+                    console.log('Fail - expected error message, instead received ' + msg);
+                }
+            });
+            remove_site.__set__('ddevShell', mockShell);
+            removeSite(fixtures.brokenProjectArrayProjectDataArray);
         });
     });
 });
-*/

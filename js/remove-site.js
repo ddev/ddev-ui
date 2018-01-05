@@ -6,28 +6,46 @@ var ddevShell = require('./ddev-shell');
  * @formData {object} - serialzed formdata containing path and data removal option
  */
 function removeSite(formData){
-    var path = formData.filter(function(input){
-        return input.name === 'sitePath'
-    });
-    var data = formData.filter(function(input){
-        return input.name === 'removeOptions'
-    });
+    try {
+        var path = formData.filter(function(input){
+            return input.name === 'sitePath'
+        });
+        var data = formData.filter(function(input){
+            return input.name === 'removeOptions'
+        });
 
+        displayLoadingState();
+
+        var removePath = path[0].value;
+        var removeData = data[0].value.includes('Database');
+
+        return  ddevShell.remove(removePath, removeData)
+            .then(function(){
+                removeCompleted('Site Successfully Removed.');
+            })
+            .catch(function(err){
+                removeCompleted('Could Not Remove Site ('+err+')');
+            });
+    } catch(e) {
+        removeCompleted('Invalid Input Passed To Remove');
+    }
+}
+
+/**
+ * display loading spinner while waiting for promise to fulfill
+ */
+function displayLoadingState(){
     $('.loading-overlay', '#removeModal').css('display','flex');
     $('.remove-site-button').addClass('btn-secondary').removeClass('btn-danger');
+}
 
-    var removeData = data[0].value.includes('Database');
-    var removePath = path[0].value;
-
-    return ddevShell.remove(removePath, removeData)
-    .then(function(){
-        alert('Site Successfully Removed.');
-        $('#removeModal').modal('hide');
-    })
-    .catch(function(err){
-        alert('Could Not Remove Site ('+err+')');
-        $('#removeModal').modal('hide');
-    })
+/**
+ * Dismiss modal and show success or error result
+ * @param message
+ */
+function removeCompleted(message){
+    alert(message);
+    $('#removeModal').modal('hide');
 }
 
 /**
