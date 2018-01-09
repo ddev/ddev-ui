@@ -1,5 +1,6 @@
 const fixtures = require('./ddev-sudo-fixtures');
-const ddevSudo = require('../js/ddev-sudo');
+const rewire = require('rewire');
+const ddevSudo = rewire('../js/ddev-sudo');
 const assert = require('assert');
 
 describe('ddev-sudo', function () {
@@ -32,13 +33,10 @@ describe('ddev-sudo', function () {
                 })
         });
         it('should validate the hostname and succeed if it conforms to RFC 2396 Section 3.2.2', function(done){
-            ddevSudo.sudoHostname(fixtures.validHostname)
-                .then(function(){
-                    done();
-                })
-                .catch(function(err){
-                    console.log('Failed - rejected with message ' + err);
-                })
+            ddevSudo.__set__('executeSudo', function(hostname){
+                done();
+            });
+            ddevSudo.sudoHostname(fixtures.validHostname);
         });
     });
 });
