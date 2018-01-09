@@ -1,14 +1,12 @@
-const whitelist = ['hostname'];
-const badCommands = ['mv','wget','curl','rm','cp','command'];
-const badArguments = ['&& ls', '| wc -c', '; pwd'];
+const invalidHostname = 'not a valid hostname';
+const validHostname = 'valid.hostname.local';
 
-const rejectCommandErrorMessage = ' is not allowed to be run as sudo';
-const rejectArgumentsErrorMessage = 'arguments contain banned characters';
+const rejectInvalidHostnameMessage = ' is an invalid hostname';
+const rejectBlankHostnameMessage = 'hostname cannot be blank';
 
-module.exports.whitelist = whitelist;
 
-module.exports.badCommands = badCommands;
-module.exports.rejectCommandErrorMessage = rejectCommandErrorMessage;
+module.exports.invalidHostname = invalidHostname;
+module.exports.validHostname = validHostname;
 
-module.exports.badArguments = badArguments;
-module.exports.rejectArgumentsErrorMessage = rejectArgumentsErrorMessage;
+module.exports.rejectInvalidHostnameMessage = rejectInvalidHostnameMessage;
+module.exports.rejectBlankHostnameMessage = rejectBlankHostnameMessage;

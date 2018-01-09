@@ -588,4 +588,5 @@ function init(){
     });
 }
 
+module.exports.validateHostname = validateHostname;
 module.exports.init = init;

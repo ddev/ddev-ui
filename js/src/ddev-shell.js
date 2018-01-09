@@ -152,10 +152,9 @@ const config = (path, name, docroot, callback, errorCallback) => {
  * @param domain - optional - domain to create sitename subdomain
  * @returns {Promise} - resolves on successful execution with stdout text
  */
-const hostname = (siteName, domain = 'ddev.local', domainUrl = '127.0.0.1') => {
+const hostname = (siteName, domain = 'ddev.local') => {
     var fullDomain = siteName + '.' + domain;
-    var args = [fullDomain + ' ' + domainUrl, '-j'];
-    return ddevSudo.exec('hostname', args);
+    return ddevSudo.sudoHostname(fullDomain);
 };
 
 /**
