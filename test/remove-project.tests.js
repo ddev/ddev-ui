@@ -1,15 +1,15 @@
-const fixtures = require('./remove-site-fixtures');
+const fixtures = require('./remove-project-fixtures');
 const rewire = require('rewire');
-const remove_site = rewire('../js/remove-site');
+const remove_project = rewire('../js/remove-project');
 
-describe('remove-site', function () {
-    describe('#removeSite()', function () {
-        var removeSite = remove_site.__get__('removeSite');
-        remove_site.__set__('displayLoadingState', function(){});
-        remove_site.__set__('removeCompleted', function(){});
+describe('remove-project', function () {
+    describe('#removeProject()', function () {
+        var removeProject = remove_project.__get__('removeProject');
+        remove_project.__set__('displayLoadingState', function(){});
+        remove_project.__set__('removeCompleted', function(){});
 
         beforeEach(function() {
-            remove_site.__set__('removeCompleted', function(){});
+            remove_project.__set__('removeCompleted', function(){});
         });
 
         it('should call ddevShell module and attempt to exec `ddev remove` from path with no remove flag', function (done) {
@@ -25,8 +25,8 @@ describe('remove-site', function () {
                     });
                 }
             };
-            remove_site.__set__('ddevShell', mockShell);
-            removeSite(fixtures.removeProjectArray);
+            remove_project.__set__('ddevShell', mockShell);
+            removeProject(fixtures.removeProjectArray);
         });
         it('should call ddevShell module and attempt to exec `ddev remove` from path with the remove db flag', function (done) {
             const mockShell = {
@@ -41,8 +41,8 @@ describe('remove-site', function () {
                     });
                 }
             };
-            remove_site.__set__('ddevShell', mockShell);
-            removeSite(fixtures.removeProjectDataArray);
+            remove_project.__set__('ddevShell', mockShell);
+            removeProject(fixtures.removeProjectDataArray);
         });
 
         it('should throw an error if valid called with valid arguments, but remove is unsuccessful', function(done){
@@ -53,15 +53,15 @@ describe('remove-site', function () {
                     });
                 }
             };
-            remove_site.__set__('removeCompleted', function(msg){
-                if(msg === 'Could Not Remove Site (ERROR THROWN)'){
+            remove_project.__set__('removeCompleted', function(msg){
+                if(msg === 'Could Not Remove Project (ERROR THROWN)'){
                     done();
                 } else {
                     console.log('Fail - expected error message, instead received ' + msg);
                 }
             });
-            remove_site.__set__('ddevShell', mockShell);
-            removeSite(fixtures.removeProjectDataArray);
+            remove_project.__set__('ddevShell', mockShell);
+            removeProject(fixtures.removeProjectDataArray);
         });
 
         it('should throw an error if called with invalid arguments', function(done){
@@ -72,15 +72,15 @@ describe('remove-site', function () {
                     });
                 }
             };
-            remove_site.__set__('removeCompleted', function(msg){
+            remove_project.__set__('removeCompleted', function(msg){
                 if(msg === 'Invalid Input Passed To Remove'){
                     done();
                 } else {
                     console.log('Fail - expected error message, instead received ' + msg);
                 }
             });
-            remove_site.__set__('ddevShell', mockShell);
-            removeSite(fixtures.brokenProjectArrayProjectDataArray);
+            remove_project.__set__('ddevShell', mockShell);
+            removeProject(fixtures.brokenProjectArrayProjectDataArray);
         });
     });
 });

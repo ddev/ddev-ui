@@ -55,7 +55,7 @@ function createCard(site) {
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item restartbtn" href="#">Restart</a>
-                <a class="dropdown-item removebtn" href="#" data-site-path="` + site.approot + `">Remove Site</a>
+                <a class="dropdown-item removebtn" href="#" data-project-name="`+site.name+`" data-project-path="` + site.approot + `">Remove Project</a>
                 <a class="dropdown-item" onclick='electron.shell.showItemInFolder("` + site.approot + `")' href="#">Browse Local Files</a>
               </div>
             </div>
@@ -80,7 +80,6 @@ function init(){
     $(document).on('click', '.stopbtn', function () {
         console.log('stopping');
         ddevShell.stop($(this).closest('.column').data('path'), function (data) {
-            console.log(data)
         }, function (error) {
             console.log(error)
         });
