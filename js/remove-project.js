@@ -26,8 +26,8 @@ function removeProject(formData){
             .catch(function(err){
                 removeCompleted('Could Not Remove Project ('+err+')');
             });
-    } catch(e) {
-        removeCompleted('Invalid Input Passed To Remove');
+    } catch(err) {
+        removeCompleted('Invalid Input Passed To Remove ('+err+') payload:'+ JSON.stringify(formData) );
     }
 }
 

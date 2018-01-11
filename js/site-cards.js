@@ -56,7 +56,7 @@ function createCard(site) {
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item restartbtn" href="#">Restart</a>
                 <a class="dropdown-item removebtn" href="#" data-project-name="`+site.name+`" data-project-path="` + site.approot + `">Remove Project</a>
-                <a class="dropdown-item" onclick='electron.shell.showItemInFolder("` + site.approot + `")' href="#">Browse Local Files</a>
+                <a class="dropdown-item showfilesbtn" data-app-path="`+site.approot+`" href="#">Browse Local Files</a>
               </div>
             </div>
         </div>
@@ -91,6 +91,10 @@ function init(){
         }, function (error) {
             console.log(error)
         });
+    });
+    $(document).on('click', '.showfilesbtn', function () {
+        console.log($(this).data('appPath'));
+        electron.shell.showItemInFolder($(this).data('appPath'));
     });
 }
 
