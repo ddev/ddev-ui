@@ -73,14 +73,14 @@ describe('remove-project', function () {
                 }
             };
             remove_project.__set__('removeCompleted', function(msg){
-                if(msg === 'Invalid Input Passed To Remove'){
+                if(msg === fixtures.brokenErrorMessage){
                     done();
                 } else {
                     console.log('Fail - expected error message, instead received ' + msg);
                 }
             });
             remove_project.__set__('ddevShell', mockShell);
-            removeProject(fixtures.brokenProjectArrayProjectDataArray);
+            removeProject(fixtures.brokenProjectArray);
         });
     });
 });
