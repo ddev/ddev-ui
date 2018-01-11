@@ -47,13 +47,23 @@ function resetAddModal() {
     $('#appType').val('').trigger('change');
     $('#site-name').val('');
     $('.selected-path-text').val('');
+    $('#existing-project-name').val('');
+    $('#existing-project-path').val('');
+    $('#existing-project-docroot').val('');
     showLoadingScreen(false);
     showErrorScreen(false);
+    $('#existingFilesModal').modal('hide');
     $('#distroModal').modal('hide');
 }
 var addSiteOptionsModalBody =
     `<div class="row">
-        <div class="option-container second-option column col-lg-12 col-md-12 col-sm-12 start-from-template">
+        <div class="option-container column col-lg-6 col-md-6 col-sm-6 start-from-files">
+            <div class="btn btn-primary start-button-option-container">
+                <i class="fa fa-file-archive-o" style="font-size: 50px"></i>
+            </div>
+            <div>Start from existing project files</div>
+        </div>
+        <div class="option-container second-option column col-lg-6 col-md-6 col-sm-6 start-from-template">
             <div class="btn btn-primary start-button-option-container">
                 <i class="fa fa-file-archive-o" style="font-size: 50px"></i>
             </div>
@@ -98,7 +108,7 @@ var createSiteModalBody =
         <div class="select-folder-container add-site-segment">
             <div class="input-group select-path-folder">
                 <span class="input-group-addon" id="basic-addon1"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
-                <input type="text" readonly class="selected-path-text form-control" placeholder="Path To Install Site" aria-describedby="basic-addon1">
+                <input type="text" readonly class="selected-path-text form-control" placeholder="Path To Install Project" aria-describedby="basic-addon1">
             </div>
         </div>
         <div class="hidden">
@@ -106,8 +116,47 @@ var createSiteModalBody =
         </div>
     </div>`;
 
+var createSiteExistingModalBody =
+    `<div class="modal-body">
+        <div class="loading-overlay">
+            <div>
+                <i class="fa fa-spinner fa-spin loading-spinner" style="font-size:150px"></i>
+            </div>
+            <div class="loading-text">Working...</div>
+        </div>
+        <div class="error-overlay">
+            <div>
+                <i class="fa fa-exclamation-triangle error-icon" style="font-size:50px"></i>
+            </div>
+            <div class="error-text">Something Went Wrong</div>
+            <div class="btn btn-primary">OK</div>
+        </div>
+        <h3 class="add-modal-section-header">Project Name</h3>
+        <div class="site-name-container add-site-segment">
+            <div class="input-group">
+                <input type="text" class="form-control" id="existing-project-name">
+            </div>
+        </div>
+        <h3 class="add-modal-section-header">Project Files</h3>
+        <div class="select-folder-container add-site-segment">
+            <div class="input-group select-path-folder">
+                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
+                <input type="text" id="existing-project-path" readonly class="selected-path-text form-control" placeholder="Path To Install Project" aria-describedby="basic-addon1">
+            </div>
+        </div>
+        <h3 class="add-modal-section-header">Project Docroot (optional)</h3>
+        <div class="docroot-container add-site-segment">
+            <div class="input-group">
+                <input type="text" class="form-control" id="existing-project-docroot">
+            </div>
+        </div>
+    </div>`;
+
 var createSiteModalFooter =
-    `<div class="btn btn-primary create-site">Create Site</div>`;
+    `<div class="btn btn-primary create-site">Create Project</div>`;
+
+var createSiteExistingModalFooter =
+    `<div class="btn btn-primary create-site-from-existing">Create Project</div>`;
 
 /**
  * Basic validation of a hostname based on RFC 2396 Section 3.2.2
@@ -146,6 +195,32 @@ function validateCMSType(cmsType){
 }
 
 /**
+ * Checks if site has an existing configuration
+ */
+function checkIfExistingConfig(path) {
+    var promise = new Promise(function(resolve, reject){
+        try {
+            function checkMessages(messages){
+                if(messages.includes('existing configuration')){
+                    var proceed = confirm("An existing DDEV configuration was found in " + path + ". By proceeding, the existing configuration will be updated and replaced.");
+                    if(proceed){
+                        resolve(true);
+                    } else {
+                        reject('User Canceled');
+                    }
+                } else {
+                    resolve(false);
+                }
+            }
+            ddevShell.config(path, 'validName', 'totally invalid docroot that does not exist',null,checkMessages);
+        } catch(err) {
+            reject(err);
+        }
+    });
+    return promise;
+}
+
+/**
  * Validates that the chosen install path is both valid and can be written to by the UI process
  * @param path {string} path to test for read/write access
  * @return {promise} resolves if path is read/writable, rejects with system error if not
@@ -158,6 +233,29 @@ function validateInstallPath(path){
             })
             .catch(function(err){
                 err = err.toString().includes('no such file') ? "Cannot find or write to the selected directory." : err;
+                reject(err);
+            });
+    });
+    return promise;
+}
+
+/**
+ * Validates that the docroot specified for a particular project folder exists and is read/writeable
+ * @param path {string} - project folder path
+ * @param docroot {string} - relative docroot path
+ * @return {promise} resolves if full docroot path is read/writable, rejects with system error if not
+ */
+function validateDocroot(path, docroot){
+    if(docroot[0] !== '/'){
+        docroot = '/'+docroot;
+    }
+    var promise = new Promise(function(resolve,reject){
+        distroUpdater.canReadAndWrite(path+docroot)
+            .then(function(output){
+                resolve(output);
+            })
+            .catch(function(err){
+                err = err.toString().includes('no such file') ? "Cannot find or write to specified docroot directory." : err;
                 reject(err);
             });
     });
@@ -234,17 +332,32 @@ function unpackCMSTarball(tarballPath, outputPath) {
 }
 
 /**
- * wrapper that runs all validations
+ * wrapper that runs all validations for new projects from CMS
  * @param name {string} hostname to be validated
  * @param type {string} cms type to be validated
  * @param type {string} target install path to have read/write permissions validated
  * @return {promise} resolves if ALL validations pass, rejects with message of failed validations of any do not pass
  */
-function validateInputs(name, type, targetPath){
+function validateNewProjectInputs(name, type, targetPath){
     return Promise.all([
         validateHostname(name),
         validateCMSType(type),
         validateInstallPath(targetPath)
+    ]);
+}
+
+/**
+ * wrapper that runs all validations for new projects from existing files
+ * @param name {string} hostname to be validated
+ * @param path {string} target install path to have read/write permissions validated
+ * @param docroot {string} - optional - docroot path
+ * @return {promise} resolves if ALL validations pass, rejects with message of failed validations of any do not pass
+ */
+function validateExistingFilesInputs(name, path, docroot){
+    return Promise.all([
+        validateHostname(name),
+        validateInstallPath(path),
+        validateDocroot(path,docroot)
     ]);
 }
 
@@ -308,13 +421,13 @@ function addCMS(name, type, targetPath) {
     var workingPath = cmsPath;
     cmsPath = cmsPath.replace('~', os.homedir());
     showLoadingScreen(true);
-    validateInputs(name,type,targetPath)
+    validateNewProjectInputs(name,type,targetPath)
     .then(() => {
         showLoadingScreen(true,'Unzipping files');
         return extractCMSImageToTargetPath(name, type,cmsPath, targetPath);
     })
     .then((newWorkingPath) => {
-        showLoadingScreen(true,'Configuring Site');
+        showLoadingScreen(true,'Configuring Project');
         workingPath = newWorkingPath;
         return configureSite(name, workingPath);
     })
@@ -323,13 +436,13 @@ function addCMS(name, type, targetPath) {
         return ddevShell.hostname(name);
     })
     .then(() => {
-        showLoadingScreen(true,'Starting Site');
+        showLoadingScreen(true,'Starting Project');
         return startSite(workingPath)
     })
     .then((stdout) => {
         if(stdout.toString().indexOf('Starting environment') != -1){
             resetAddModal();
-            alert('Start Process Initiated. It may take a few seconds for the new site to appear on your dashboard.');
+            alert('Start Process Initiated. It may take a few seconds for the new project to appear on your dashboard.');
         }
     })
     .catch((err) => {
@@ -338,14 +451,49 @@ function addCMS(name, type, targetPath) {
 }
 
 /**
+ * public function - calls private functions to validate inputs, runs ddev config from existing project directory
+ * @param name {string} name of site to create
+ * @param targetPath {string} path to existing project files
+ */
+function addCMSFromExisting(name, targetPath, docroot = '/') {
+    showLoadingScreen(true);
+    validateExistingFilesInputs(name,targetPath, docroot)
+        .then(() => {
+            return checkIfExistingConfig(targetPath);
+        })
+        .then(() => {
+            showLoadingScreen(true,'Configuring Project');
+            return configureSite(name, targetPath);
+        })
+        .then(() => {
+            showLoadingScreen(true,'Updating Hosts File');
+            return ddevShell.hostname(name);
+        })
+        .then(() => {
+            showLoadingScreen(true,'Starting Project');
+            return startSite(targetPath)
+        })
+        .then((stdout) => {
+            if(stdout.toString().indexOf('Starting environment') != -1){
+                resetAddModal();
+                alert('Start Process Initiated. It may take a few seconds for the new project to appear on your dashboard.');
+            }
+        })
+        .catch((err) => {
+            showErrorScreen(true, err.toString());
+        });
+}
+
+/**
  * Initialization - hook UI and generate markup.
  */
 function init(){
     $('body').append(bootstrapModal.createModal('addOptionsDialog','Choose a Starting Point', addSiteOptionsModalBody));
-    $('body').append(bootstrapModal.createModal('distroModal','Create a New Site',createSiteModalBody, createSiteModalFooter));
+    $('body').append(bootstrapModal.createModal('distroModal','Create a New Project',createSiteModalBody, createSiteModalFooter));
+    $('body').append(bootstrapModal.createModal('existingFilesModal','Create a Project From Existing Files', createSiteExistingModalBody, createSiteExistingModalFooter));
     $(document).on('click', '.add', function () {
         resetAddModal();
-        alert('In order to add a new site, DDEV requires elevated permissions to modify your Hosts file. You may be prompted for your username and password to continue.');
+        alert('In order to add a new project, DDEV requires elevated permissions to modify your Hosts file. You may be prompted for your username and password to continue.');
         var command = 'version';
         ddevShell.sudo(command)
             .then(function(){
@@ -360,6 +508,13 @@ function init(){
         $('#addOptionsDialog').modal('hide');
         $('#distroModal').modal();
     });
+
+    $(document).on('click', '.start-from-files', function () {
+        resetAddModal();
+        $('#addOptionsDialog').modal('hide');
+        $('#existingFilesModal').modal();
+    });
+
     $(document).on('click', '.select-path-folder', function () {
         var path = dialog.showOpenDialog({
             properties: ['openDirectory']
@@ -381,11 +536,17 @@ function init(){
 
     $(document).on('click', '.create-site', function () {
         var type = $('#appType').val();
-        var targetCMS = [];
         var targetPath = $('.selected-path-text').val();
         var name = $('#site-name').val();
         addCMS(name,type,targetPath);
         return false;
+    });
+
+    $(document).on('click', '.create-site-from-existing', function() {
+        var name = $('#existing-project-name').val();
+        var path = $('#existing-project-path').val();
+        var docroot = $('#existing-project-docroot').val();
+        addCMSFromExisting(name,path,docroot);
     });
 }
 

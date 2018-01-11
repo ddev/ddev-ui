@@ -9,7 +9,7 @@ function createAddCard(){
     var markup = `<div class="column col-lg-3 col-md-4 col-sm-4">
         <div class="card add">
             <div class="card-header">
-                <h2><a href="#">Add/Create Site</a></h2>
+                <h2><a href="#">Add/Create Project</a></h2>
             </div>
             <div class="card-body">
                 <a href="#">
