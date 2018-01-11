@@ -28,7 +28,7 @@ function showLoadingScreen(display, message='Working...'){
 /**
  * Display or hide an error screen over the modal. When displayed, loading screens are dismissed
  * @param display {boolean} - if the screen is to be displayed or hidden
- * @param message {string} - optional - the text to display on the loading screen
+ * @param error {string} - optional - the text to display on the loading screen
  */
 function showErrorScreen(display, error='Something Went Wrong'){
     $('.error-overlay').click(function(){
@@ -265,6 +265,7 @@ function validateDocroot(path, docroot){
 /**
  * Gets the file location of the CMS image tarball pre-downloaded by the UI
  * @param cmsType {string} the name of the target CMS
+ * @param cmsPath {string} the path that the CMS tarballs are saved
  * @return {promise} resolves with tarball path if found, rejects with system error if not found
  */
 function getCMSTarballPath(cmsType, cmsPath){
@@ -335,7 +336,7 @@ function unpackCMSTarball(tarballPath, outputPath) {
  * wrapper that runs all validations for new projects from CMS
  * @param name {string} hostname to be validated
  * @param type {string} cms type to be validated
- * @param type {string} target install path to have read/write permissions validated
+ * @param targetPath {string} target install path to have read/write permissions validated
  * @return {promise} resolves if ALL validations pass, rejects with message of failed validations of any do not pass
  */
 function validateNewProjectInputs(name, type, targetPath){
@@ -454,6 +455,7 @@ function addCMS(name, type, targetPath) {
  * public function - calls private functions to validate inputs, runs ddev config from existing project directory
  * @param name {string} name of site to create
  * @param targetPath {string} path to existing project files
+ * @param docroot {string} - optional - application docroot relative to targetPath
  */
 function addCMSFromExisting(name, targetPath, docroot = '/') {
     showLoadingScreen(true);
