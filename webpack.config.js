@@ -1,10 +1,10 @@
 const path = require('path');
 
 module.exports = {
-    entry: './js/ui.js',
+    entry: './js/src/ui.js',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'js/dist')
     },
     target: 'electron',
     module: {
@@ -12,7 +12,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 include: [
-                    path.resolve(__dirname, './js')
+                    path.resolve(__dirname, './js/src')
                 ],
                 loader: 'eslint-loader',
                 exclude: /node_modules/

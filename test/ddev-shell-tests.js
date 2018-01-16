@@ -1,6 +1,6 @@
 const fixtures = require('./ddev-shell-fixtures');
 
-const ddevShell = require('../js/ddev-shell');
+const ddevShell = require('../js/src/ddev-shell');
 const {stubSpawnOnce} = require('stub-spawn-once');
 const assert = require('assert');
 
