@@ -1,4 +1,5 @@
 var bootstrapModal = require('./bootstrap-modal');
+var ddevShell = require('./ddev-shell');
 
 /**
  * Updates describe modal content with current site data and shows modal

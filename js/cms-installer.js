@@ -4,7 +4,9 @@ var tar = require('tar');
 var fs = require('fs');
 var ddevShell = require('./ddev-shell');
 var os = require('os');
-var {dialog} = require('electron').remote;
+var electron = require('electron');
+var remote = electron.remote ? electron.remote : electron;
+var dialog = remote.dialog;
 
 /**
  *
