@@ -212,3 +212,12 @@ h3 {
 .site-icon {
     width: 50%;
 }
+
+.remove-option label {
+    white-space: pre-wrap;
+}
+
+.remove-option input {
+    position: relative;
+    top: -1.5rem;
+}

@@ -7,6 +7,7 @@ var updater = require('./js/distro-updater');
 var siteCreator = require('./js/cms-installer');
 var siteCard = require('./js/site-cards');
 var describeSite = require('./js/describe-site');
+var removeProject = require('./js/remove-project');
 
 /**
  * bootstraps application by initializing modules, downloading distros, starting ddev list polling
@@ -15,6 +16,7 @@ function init() {
     siteCard.init();
     siteCreator.init();
     describeSite.init();
+    removeProject.init();
     updater.updateDistros();
     setInterval(fetchState, 1000);
 }

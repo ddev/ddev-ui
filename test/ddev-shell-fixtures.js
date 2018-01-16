@@ -13,6 +13,9 @@ const invalidStopOutput = "Unable to stop drupaltest";
 const validRestartOutput = "Successfully restarted drupaltest";
 const invalidRestartOutput = "Unable to restart drupaltest";
 const invalidDescribeOutput = "Unable to get site info";
+const validRemoveOutput = "Successfully Removed Site";
+const validRemoveDBOutput = "Successfully Removed Site and DB";
+const invalidRemoveOutput = "Unable to remove site";
 
 module.exports.validListOutput = validListOutput;
 module.exports.expectedSitesArray = expectedSitesArray;
@@ -25,3 +28,6 @@ module.exports.invalidRestartOutput = invalidRestartOutput;
 module.exports.validDescribeJSON = validDescribeJSON;
 module.exports.expectedDescribeObject = expectedDescribeObject;
 module.exports.invalidDescribeOutput = invalidDescribeOutput;
+module.exports.validRemoveOutput = validRemoveOutput;
+module.exports.validRemoveDBOutput = validRemoveDBOutput;
+module.exports.invalidRemoveOutput = invalidRemoveOutput;

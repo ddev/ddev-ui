@@ -80,4 +80,38 @@ describe('ddev-shell', function () {
                 });
         });
     });
+    describe('#remove()', function () {
+        stubSpawnOnce('ddev remove -j', 0, fixtures.validRemoveOutput);
+        it('should resolve the promise if it exits with no issue', function (done) {
+            ddevShell.remove('~/', false)
+                .then(function(){
+                    stubSpawnOnce('ddev remove -j --remove-data', 0, fixtures.validRemoveDBOutput);
+                    done();
+                })
+                .catch(function(err){
+                    throw new Error('Promise rejected. error: ' + err);
+                })
+        });
+        it('should pass the --remove-data flag to ddev cli if passed in', function (done) {
+            ddevShell.remove('~/', true)
+                .then(function(msg){
+                    if(msg === fixtures.validRemoveDBOutput){
+                        stubSpawnOnce('ddev remove -j', 1, fixtures.invalidRemoveOutput);
+                        done();
+                    }
+                })
+                .catch(function(err){
+                    throw new Error('Promise rejected. error: ' + err);
+                })
+        });
+        it('should call the error callback if process exits with a non 0 code', function(done) {
+            ddevShell.remove('~/', false)
+                .then(function (result) {
+                    throw new Error('Promise was unexpectedly fulfilled. Result: ' + result);
+                })
+                .catch(function () {
+                    done()
+                })
+        });
+    });
 });
