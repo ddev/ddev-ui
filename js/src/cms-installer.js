@@ -136,7 +136,7 @@ var createSiteExistingModalBody =
         <div class="select-folder-container add-site-segment">
             <div class="input-group select-path-folder">
                 <span class="input-group-addon" id="basic-addon1"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
-                <input type="text" id="existing-project-path" readonly class="selected-path-text form-control" placeholder="Path To Install Project" aria-describedby="basic-addon1">
+                <input type="text" id="existing-project-path" readonly class="selected-path-text form-control" placeholder="Path To Project Files" aria-describedby="basic-addon1">
             </div>
         </div>
         <h3 class="add-modal-section-header">Project Name</h3>
