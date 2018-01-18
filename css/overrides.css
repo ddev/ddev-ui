@@ -22,8 +22,7 @@ h1 {
 }
 
 h2 {
-    font-size: 18pt;
-}
+    font-size: 18pt;}
 
 h3 {
     font-size: 14pt;
@@ -220,4 +219,8 @@ h3 {
 .remove-option input {
     position: relative;
     top: -1.5rem;
+}
+
+.section-description {
+    font-size: 14px;
 }

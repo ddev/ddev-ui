@@ -98,17 +98,17 @@ var createSiteModalBody =
                 <img class="wordpress" src="img/wordpress.png" data-type="wordpress"/>
             </div>
         </div>
-        <h3 class="add-modal-section-header">Project Name</h3>
-        <div class="site-name-container add-site-segment">
-            <div class="input-group">
-                <input type="text" class="form-control" id="site-name">
-            </div>
-        </div>
-        <h3 class="add-modal-section-header">Installation Directory</h3>
+				<h3 class="add-modal-section-header">Installation Directory</h3>
         <div class="select-folder-container add-site-segment">
             <div class="input-group select-path-folder">
                 <span class="input-group-addon" id="basic-addon1"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
                 <input type="text" readonly class="selected-path-text form-control" placeholder="Path To Install Project" aria-describedby="basic-addon1">
+            </div>
+        </div>
+        <h3 class="add-modal-section-header">Project Name</h3>
+        <div class="site-name-container add-site-segment">
+            <div class="input-group">
+                <input type="text" class="form-control" id="site-name">
             </div>
         </div>
         <div class="hidden">
@@ -131,23 +131,27 @@ var createSiteExistingModalBody =
             <div class="error-text">Something Went Wrong</div>
             <div class="btn btn-primary">OK</div>
         </div>
-        <h3 class="add-modal-section-header">Project Name</h3>
-        <div class="site-name-container add-site-segment">
-            <div class="input-group">
-                <input type="text" class="form-control" id="existing-project-name">
-            </div>
-        </div>
-        <h3 class="add-modal-section-header">Project Files</h3>
+				<h3 class="add-modal-section-header">Project Files</h3>
+				<div class="section-description">Select the folder that contains your project's files.</div>
         <div class="select-folder-container add-site-segment">
             <div class="input-group select-path-folder">
                 <span class="input-group-addon" id="basic-addon1"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
                 <input type="text" id="existing-project-path" readonly class="selected-path-text form-control" placeholder="Path To Install Project" aria-describedby="basic-addon1">
             </div>
         </div>
-        <h3 class="add-modal-section-header">Project Docroot (optional)</h3>
-        <div class="docroot-container add-site-segment">
+        <h3 class="add-modal-section-header">Project Name</h3>
+        <div class="section-description">Enter a name for your project.</div>
+        <div class="site-name-container add-site-segment">
             <div class="input-group">
-                <input type="text" class="form-control" id="existing-project-docroot">
+                <input type="text" class="form-control" id="existing-project-name">
+            </div>
+        </div>
+        <h3 class="add-modal-section-header">Project Docroot (optional)</h3>
+        <div class="section-description">Select the directory from which your site is served. You may skip this field if your site files are in the application root.</div>
+        <div class="docroot-container add-site-segment">
+            <div class="input-group select-docroot-folder">
+                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
+                <input type="text" id="existing-project-docroot" readonly class="selected-docroot-text form-control" placeholder="Project Docroot Path" aria-describedby="basic-addon1">
             </div>
         </div>
     </div>`;
@@ -411,6 +415,16 @@ function startSite(workingPath) {
     return promise;
 }
 
+function prepopulateProjectName(projectPath) {
+	var folderName = projectPath.split('/').pop();
+	if(validateHostname(folderName).then(function(){
+			$('#existing-project-name').val(folderName);
+		}).catch(function(err){
+			//silently fail, to be consistent with CLI, we simply do not prepoulate if invalid hostname
+			console.log(err);
+		}));
+}
+
 /**
  * public function - calls private functions to validate inputs, unpack files, and configure/start site
  * @param name {string} name of site to create
@@ -518,13 +532,34 @@ function init(){
     });
 
     $(document).on('click', '.select-path-folder', function () {
+    		var alreadyHasPath = $('.selected-path-text').val();
         var path = dialog.showOpenDialog({
             properties: ['openDirectory']
         });
         if (path) {
             $('.selected-path-text').val(path[0]);
+            if(!$('#existing-project-name').val() || alreadyHasPath){
+							prepopulateProjectName(path[0]);
+						}
         }
     });
+
+	$(document).on('click', '.select-docroot-folder', function () {
+		var projectRoot = $('.selected-path-text').val();
+		var path = dialog.showOpenDialog({
+			defaultPath: projectRoot,
+			properties: ['openDirectory']
+		});
+		if (path) {
+			if(path[0].includes(projectRoot)){
+				$('.selected-docroot-text').val(path[0]);
+			}
+			else{
+				document.activeElement.blur();
+				showErrorScreen(true, "Docroot must be in the selected project folder.");
+			}
+		}
+	});
 
     $(document).on('click', '.tile img', function () {
         $('#appType').val($(this).data('type')).trigger('change');
@@ -548,6 +583,7 @@ function init(){
         var name = $('#existing-project-name').val();
         var path = $('#existing-project-path').val();
         var docroot = $('#existing-project-docroot').val();
+        docroot = docroot.replace(path,'');
         addCMSFromExisting(name,path,docroot);
     });
 }
