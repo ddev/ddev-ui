@@ -66,14 +66,17 @@ all: darwin linux windows
 # - wine and mono must be available to build Windows on another platform (brew install wine mono )
 
 linux: npminstall
+	npm run webpack
 	@echo "Building $@"
 	npm run build-linux
 
 darwin: npminstall
+	npm run webpack
 	@echo "Building $@"
 	npm run build-darwin
 
 windows: npminstall
+	npm run webpack
 	@echo "Building $@"
 	npm run build-windows
 
@@ -85,4 +88,3 @@ clean:
 
 test:
 	npm test
-

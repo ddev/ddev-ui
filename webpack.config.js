@@ -7,7 +7,7 @@ module.exports = {
         path: path.resolve(__dirname, 'js/dist')
     },
     target: 'electron',
-    module: {
+    /*module: {
         loaders: [
             {
                 test: /\.js$/,
@@ -18,6 +18,6 @@ module.exports = {
                 exclude: /node_modules/
             },
         ]
-    },
+    },*/
 };
 

@@ -54,3 +54,6 @@ function renderUI(list) {
     }
     $('.router-status-label').text(routerStatusText);
 }
+
+// main entry point of application
+init();
