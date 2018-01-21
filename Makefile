@@ -65,26 +65,28 @@ all: darwin linux windows
 # Build requirements
 # - wine and mono must be available to build Windows on another platform (brew install wine mono )
 
-linux: npminstall
-	npm run webpack
+npmstart: npmsetup
+	npm start
+
+
+linux: npmsetup
 	@echo "Building $@"
 	npm run build-linux
 
-darwin: npminstall
-	npm run webpack
+darwin: npmsetup
 	@echo "Building $@"
 	npm run build-darwin
 
-windows: npminstall
-	npm run webpack
+windows: npmsetup
 	@echo "Building $@"
 	npm run build-windows
 
-npminstall: package.json
+npmsetup: package.json
 	npm install --no-optional
+	npm run webpack
 
 clean:
-	rm -rf dist node_modules
+	rm -rf js/dist node_modules
 
 test:
 	npm test
