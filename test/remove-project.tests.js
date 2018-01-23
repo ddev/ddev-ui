@@ -14,7 +14,7 @@ describe('remove-project', function () {
 
         it('should call ddevShell module and attempt to exec `ddev remove` from path with no remove flag', function (done) {
             const mockShell = {
-                remove: function(path,db){
+                remove: function(path,db,name){
                     return new Promise(function(resolve, reject){
                         if(path === '/Users/testguy777/Desktop/d7test1234' && db === false){
                             done();
@@ -30,7 +30,7 @@ describe('remove-project', function () {
         });
         it('should call ddevShell module and attempt to exec `ddev remove` from path with the remove db flag', function (done) {
             const mockShell = {
-                remove: function(path,db){
+                remove: function(path,db,name){
                     return new Promise(function(resolve, reject){
                         if(path === '/Users/testguy777/Desktop/d87loihasd' && db === true){
                             done();
