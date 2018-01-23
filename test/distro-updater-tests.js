@@ -1,5 +1,5 @@
 const fixtures = require('./distro-updater-fixtures');
-const distroUpdater = require('../js/distro-updater');
+const distroUpdater = require('../js/src/distro-updater');
 const nock = require('nock');
 const mockFS = require('mock-fs');
 

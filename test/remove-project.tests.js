@@ -1,6 +1,6 @@
 const fixtures = require('./remove-project-fixtures');
 const rewire = require('rewire');
-const remove_project = rewire('../js/remove-project');
+const remove_project = rewire('../js/src/remove-project');
 
 describe('remove-project', function () {
     describe('#removeProject()', function () {

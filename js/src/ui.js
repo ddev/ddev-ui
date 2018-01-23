@@ -2,12 +2,12 @@
 var state = {};
 var electron = require('electron');
 var dialog = require('electron').remote.dialog;
-var ddevShell = require('./js/ddev-shell');
-var updater = require('./js/distro-updater');
-var siteCreator = require('./js/cms-installer');
-var siteCard = require('./js/site-cards');
-var describeSite = require('./js/describe-site');
-var removeProject = require('./js/remove-project');
+var ddevShell = require('./ddev-shell');
+var updater = require('./distro-updater');
+var siteCreator = require('./cms-installer');
+var siteCard = require('./site-cards');
+var describeSite = require('./describe-site');
+var removeProject = require('./remove-project');
 
 /**
  * bootstraps application by initializing modules, downloading distros, starting ddev list polling
@@ -54,3 +54,6 @@ function renderUI(list) {
     }
     $('.router-status-label').text(routerStatusText);
 }
+
+// main entry point of application
+init();

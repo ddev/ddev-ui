@@ -1,6 +1,6 @@
 const rewire = require('rewire');
 const cmsInstallerFixtures = require('./cms-installer-fixtures');
-const cmsInstaller = rewire('../js/cms-installer');
+const cmsInstaller = rewire('../js/src/cms-installer');
 const assert = require('assert');
 const mockFS = require('mock-fs');
 
