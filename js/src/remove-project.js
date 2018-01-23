@@ -13,13 +13,17 @@ function removeProject(formData){
         var data = formData.filter(function(input){
             return input.name === 'removeOptions'
         });
+        var name = formData.filter(function(input){
+					  return input.name === 'projectName'
+				});
 
         displayLoadingState();
 
         var removePath = path[0].value;
+        var removeName = name[0].value;
         var removeData = data[0].value.includes('Database');
 
-        return  ddevShell.remove(removePath, removeData)
+        return  ddevShell.remove(removePath, removeData, removeName)
             .then(function(){
                 removeCompleted('Project Successfully Removed.');
             })
@@ -67,6 +71,7 @@ function showRemoveModal(projectPath, projectName) {;
     resetRemoveModal();
     $('#removeName').text(projectName);
     $('#projectPath, #removeModal').val(projectPath);
+    $('#projectName, #removeModal').val(projectName);
     $('#removeModal').modal();
 }
 
@@ -89,6 +94,7 @@ var removeProjectModalBody =
     <hr/>
     <form class="remove-options">
         <input id='projectPath' name="projectPath" type="hidden">
+        <input id='projectName' name="projectName" type="hidden">
         <div class="remove-option">
             <input type="radio" name="removeOptions" id="removeContainers" value="Project from Dashboard" checked/>
             <label for="removeContainers">Remove Project

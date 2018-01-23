@@ -146,8 +146,8 @@ var createSiteExistingModalBody =
                 <input type="text" class="form-control" id="existing-project-name">
             </div>
         </div>
-        <h3 class="add-modal-section-header">Project Docroot (optional)</h3>
-        <div class="section-description">Select the directory from which your site is served. You may skip this field if your site files are in the application root.</div>
+        <h3 class="add-modal-section-header">Project Docroot</h3>
+        <div class="section-description">Select the directory from which your site is served. You may skip this field if your site files are in the project root.</div>
         <div class="docroot-container add-site-segment">
             <div class="input-group select-docroot-folder">
                 <span class="input-group-addon" id="basic-addon1"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
@@ -394,11 +394,12 @@ function extractCMSImageToTargetPath(siteName, cmsType, cmsPath, targetFolder){
  * wrapper for ddev config
  * @param siteName {string} name of site to configure
  * @param workingPath {string} the path of the extracted files to run ddev config in
+ * @param docroot {string} path to the working directory of project
  * @return {promise} resolves with a successful terminal output from ddev config, rejects with ddev error output
  */
-function configureSite(siteName, workingPath){
+function configureSite(siteName, workingPath, docroot){
     var promise = new Promise(function(resolve, reject){
-        ddevShell.config(workingPath, siteName, '', resolve, reject);
+        ddevShell.config(workingPath, siteName, docroot, resolve, reject);
     });
     return promise;
 }
@@ -444,7 +445,7 @@ function addCMS(name, type, targetPath) {
     .then((newWorkingPath) => {
         showLoadingScreen(true,'Configuring Project');
         workingPath = newWorkingPath;
-        return configureSite(name, workingPath);
+        return configureSite(name, workingPath, '');
     })
     .then(() => {
         showLoadingScreen(true,'Updating Hosts File');
@@ -471,15 +472,15 @@ function addCMS(name, type, targetPath) {
  * @param targetPath {string} path to existing project files
  * @param docroot {string} - optional - application docroot relative to targetPath
  */
-function addCMSFromExisting(name, targetPath, docroot = '/') {
+function addCMSFromExisting(name, targetPath, docroot = '') {
     showLoadingScreen(true);
-    validateExistingFilesInputs(name,targetPath, docroot)
+    validateExistingFilesInputs(name, targetPath, docroot)
         .then(() => {
             return checkIfExistingConfig(targetPath);
         })
         .then(() => {
             showLoadingScreen(true,'Configuring Project');
-            return configureSite(name, targetPath);
+            return configureSite(name, targetPath, docroot);
         })
         .then(() => {
             showLoadingScreen(true,'Updating Hosts File');
@@ -532,15 +533,13 @@ function init(){
     });
 
     $(document).on('click', '.select-path-folder', function () {
-    		var alreadyHasPath = $('.selected-path-text').val();
         var path = dialog.showOpenDialog({
             properties: ['openDirectory']
         });
         if (path) {
             $('.selected-path-text').val(path[0]);
-            if(!$('#existing-project-name').val() || alreadyHasPath){
-							prepopulateProjectName(path[0]);
-						}
+						$('.selected-docroot-text').val(path[0]);
+					  prepopulateProjectName(path[0]);
         }
     });
 
@@ -584,6 +583,9 @@ function init(){
         var path = $('#existing-project-path').val();
         var docroot = $('#existing-project-docroot').val();
         docroot = docroot.replace(path,'');
+        if(docroot[0] === '/') {
+					docroot = docroot.substr(1);
+				}
         addCMSFromExisting(name,path,docroot);
     });
 }
