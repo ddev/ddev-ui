@@ -132,7 +132,7 @@ const remove = (path, shouldRemoveData, name='') => {
 		}
     var promise = new Promise(function(resolve, reject) {
         ddevShell('remove', args, '', resolve, reject, false);
-    });˚
+    });
     return promise;
 };
 
