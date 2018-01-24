@@ -236,7 +236,7 @@ function validateInstallPath(path){
                 resolve(output);
             })
             .catch(function(err){
-                err = err.toString().includes('no such file') ? "Cannot find or write to the selected directory." : err;
+                err = err.toString().includes('ENOENT') ? "Cannot find or write to the selected directory." : err;
                 reject(err);
             });
     });
@@ -259,7 +259,7 @@ function validateDocroot(path, docroot){
                 resolve(output);
             })
             .catch(function(err){
-                err = err.toString().includes('no such file') ? "Cannot find or write to specified docroot directory." : err;
+                err = err.toString().includes('ENOENT') ? "Cannot find or write to specified docroot directory." : err;
                 reject(err);
             });
     });
