@@ -7,9 +7,6 @@ var ddevShell = require('./ddev-shell');
  */
 function removeProject(formData){
     try {
-        var path = formData.filter(function(input){
-            return input.name === 'projectPath'
-        });
         var data = formData.filter(function(input){
             return input.name === 'removeOptions'
         });
@@ -19,11 +16,10 @@ function removeProject(formData){
 
         displayLoadingState();
 
-        var removePath = path[0].value;
         var removeName = name[0].value;
         var removeData = data[0].value.includes('Database');
 
-        return  ddevShell.remove(removePath, removeData, removeName)
+        return  ddevShell.remove(removeName, removeData)
             .then(function(){
                 removeCompleted('Project Successfully Removed.');
             })

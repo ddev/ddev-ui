@@ -122,14 +122,12 @@ const restart = (path, callback, errorCallback) => {
 
 /**
  * wrapper for `ddev remove`
- * @param path {string} - path to execute command in
+ * @param name {string} - name of site to remove
  * @param shouldRemoveData {boolean} - if data should be removed as well as project containers
  */
-const remove = (path, shouldRemoveData, name='') => {
+const remove = (name, shouldRemoveData) => {
 		var args = shouldRemoveData ? ['-j', '--remove-data'] : ['-j'];
-		if(name){
-			args.push(name);
-		}
+		args.push(name);
     var promise = new Promise(function(resolve, reject) {
         ddevShell('remove', args, '', resolve, reject, false);
     });

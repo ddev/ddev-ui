@@ -416,6 +416,11 @@ function startSite(workingPath) {
     return promise;
 }
 
+/**
+ * prepopulates project name based on name of folder containing project files.
+ * NOTE: fails silently if invalid hostname (i.e. has spaces or illegal chars)
+ * @param {string} projectPath
+ */
 function prepopulateProjectName(projectPath) {
 	var folderName = projectPath.split('/').pop();
 	if(validateHostname(folderName).then(function(){
