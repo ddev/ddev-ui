@@ -18,7 +18,7 @@ function init() {
     describeSite.init();
     removeProject.init();
     updater.updateDistros();
-    setInterval(fetchState, 1000);
+    fetchState();
 }
 
 /**
@@ -30,7 +30,10 @@ function fetchState() {
             state = data;
             renderUI(state);
         }
-    });
+        fetchState();
+    }).catch(function(){
+    	fetchState();
+		});
 }
 
 /**

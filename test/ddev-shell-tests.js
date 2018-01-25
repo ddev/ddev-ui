@@ -81,11 +81,11 @@ describe('ddev-shell', function () {
         });
     });
     describe('#remove()', function () {
-        stubSpawnOnce('ddev remove -j', 0, fixtures.validRemoveOutput);
+        stubSpawnOnce('ddev remove -j testyMcTestProject', 0, fixtures.validRemoveOutput);
         it('should resolve the promise if it exits with no issue', function (done) {
-            ddevShell.remove('~/', false)
+            ddevShell.remove('testyMcTestProject', false)
                 .then(function(){
-                    stubSpawnOnce('ddev remove -j --remove-data', 0, fixtures.validRemoveDBOutput);
+                    stubSpawnOnce('ddev remove -j --remove-data testyMcTestProject', 0, fixtures.validRemoveDBOutput);
                     done();
                 })
                 .catch(function(err){
@@ -93,10 +93,10 @@ describe('ddev-shell', function () {
                 })
         });
         it('should pass the --remove-data flag to ddev cli if passed in', function (done) {
-            ddevShell.remove('~/', true)
+            ddevShell.remove('testyMcTestProject', true)
                 .then(function(msg){
                     if(msg === fixtures.validRemoveDBOutput){
-                        stubSpawnOnce('ddev remove -j', 1, fixtures.invalidRemoveOutput);
+                        stubSpawnOnce('ddev remove -j testyMcTestProject', 1, fixtures.invalidRemoveOutput);
                         done();
                     }
                 })
@@ -105,7 +105,7 @@ describe('ddev-shell', function () {
                 })
         });
         it('should call the error callback if process exits with a non 0 code', function(done) {
-            ddevShell.remove('~/', false)
+            ddevShell.remove('testyMcTestProject', false)
                 .then(function (result) {
                     throw new Error('Promise was unexpectedly fulfilled. Result: ' + result);
                 })

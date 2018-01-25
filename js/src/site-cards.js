@@ -9,7 +9,7 @@ function createAddCard(){
     var markup = `<div class="column col-lg-3 col-md-4 col-sm-4">
         <div class="card add">
             <div class="card-header">
-                <h2><a href="#">Add/Create Site</a></h2>
+                <h2><a href="#">Add/Create Project</a></h2>
             </div>
             <div class="card-body">
                 <a href="#">
@@ -35,10 +35,10 @@ function createCard(site) {
     var markup = `<div class="column col-lg-3 col-md-4 col-sm-4 ` + site.status + `" data-path="` + site.approot + `" data-sitename="` + site.name + `">
         <div class="card">
             <div class="card-header">
-                <h2><a href="#" onclick='electron.shell.openExternal("` + site.httpurl + `")'>` + site.name + `</a></h2>
+                <h2><a href="#" class="open-site" data-url="` + site.httpurl + `">` + site.name + `</a></h2>
             </div>
             <div class="card-body">
-                <a href="#" onclick='electron.shell.openExternal("` + site.httpurl + `")'>
+                <a href="#" class="open-site" data-url="` + site.httpurl + `">
                     <div class="site-icon-container">
                         <img class="site-icon" src="img/` + site.type + `.png" /> 
                     </div>
@@ -94,9 +94,11 @@ function init(){
         });
     });
     $(document).on('click', '.showfilesbtn', function () {
-        console.log($(this).data('appPath'));
         electron.shell.showItemInFolder($(this).data('appPath'));
     });
+		$(document).on('click', '.open-site', function () {
+			electron.shell.openExternal($(this).data('url'));
+		});
 }
 
 module.exports.init = init;
