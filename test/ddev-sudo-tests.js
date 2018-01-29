@@ -1,6 +1,6 @@
 const fixtures = require('./ddev-sudo-fixtures');
 const rewire = require('rewire');
-const ddevSudo = rewire('../js/ddev-sudo');
+const ddevSudo = rewire('../js/src/ddev-sudo');
 const assert = require('assert');
 
 describe('ddev-sudo', function () {
