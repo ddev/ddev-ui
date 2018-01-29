@@ -3,7 +3,7 @@ const validDescribeJSON = {"level":"info","msg":"NAME        TYPE     LOCATION  
 
 
 const expectedSitesArray = [{"approot":"/Users/fakeuser/Downloads/drupal","dbinfo":{"dbname":"db","host":"db","password":"db","port":"3306","published_port":"32772","username":"db"},"httpsurl":"","httpurl":"http://drupaltest.ddev.local","mailhog_url":"http://drupaltest.ddev.local:8025","name":"drupaltest","phpmyadmin_url":"http://drupaltest.ddev.local:8036","router_status":"healthy","shortroot":"~/Downloads/drupal","status":"running","type":"drupal8"}];
-const expectedDescribeObject = {"MySQL Credentials":{"dbname":"db","host":"db","password":"db","port":"3306","published_port":"32772","username":"db"},"Other Services":{"MailHog":"<a onclick=\"electron.shell.openExternal('http://drupaltest.ddev.local:8025')\" href=\"#\">http://drupaltest.ddev.local:8025</a>","phpMyAdmin":"<a onclick=\"electron.shell.openExternal('http://drupaltest.ddev.local:8036')\" href=\"#\">http://drupaltest.ddev.local:8036</a>"}}
+const expectedDescribeObject = {"MySQL Credentials":{"dbname":"db","host":"db","password":"db","port":"3306","published_port":"32772","username":"db"},"Other Services":{"MailHog":"<a class='open-site' data-url='http://drupaltest.ddev.local:8025' href=\"#\">http://drupaltest.ddev.local:8025</a>","phpMyAdmin":"<a class='open-site' data-url='http://drupaltest.ddev.local:8036' href=\"#\">http://drupaltest.ddev.local:8036</a>"}};
 
 
 const validStartOutput = "Successfully started drupaltest";
