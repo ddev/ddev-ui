@@ -189,10 +189,10 @@ const describe = (siteName) => {
             if(siteDetails.mailhog_url || siteDetails.phpmyadmin_url) {
                 modalData['Other Services'] = {};
                 if(siteDetails.mailhog_url) {
-                    modalData['Other Services']['MailHog'] = "<a onclick=\"electron.shell.openExternal('"+siteDetails.mailhog_url+"')\" href=\"#\">"+siteDetails.mailhog_url+"</a>"
+                    modalData['Other Services']['MailHog'] = "<a class='open-site' data-url='"+siteDetails.mailhog_url+"' href=\"#\">"+siteDetails.mailhog_url+"</a>"
                 }
                 if(siteDetails.phpmyadmin_url) {
-                    modalData['Other Services']['phpMyAdmin'] = "<a onclick=\"electron.shell.openExternal('"+siteDetails.phpmyadmin_url+"')\" href=\"#\">"+siteDetails.phpmyadmin_url+"</a>"
+                    modalData['Other Services']['phpMyAdmin'] = "<a class='open-site' data-url='"+siteDetails.phpmyadmin_url+"' href=\"#\">"+siteDetails.phpmyadmin_url+"</a>"
                 }
             }
             resolve(modalData);
