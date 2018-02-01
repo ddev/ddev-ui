@@ -147,14 +147,32 @@ const config = (path, name, docroot, callback, errorCallback) => {
 };
 
 /**
- * wrapper for `ddev hostname`, attempts to run as sudo
+ * wrapper for `ddev hostname`, attempts to first run without sudo, if error WRITEERROR
+ * will attempt to run as sudo. Any non WRITEERROR error response will reject promise.
  * @param siteName {string} - sitename to create hostname entry for
  * @param domain - optional - domain to create sitename subdomain
  * @returns {Promise} - resolves on successful execution with stdout text
  */
 const hostname = (siteName, domain = 'ddev.local') => {
     var fullDomain = siteName + '.' + domain;
-    return ddevSudo.sudoHostname(fullDomain);
+    var promise = new Promise((resolve,reject) => {
+    		function runSudo(err) {
+    			var errObj = JSON.parse(err);
+    			if(errObj.raw.error === "WRITEERROR"){
+						ddevSudo.sudoHostname(fullDomain)
+							.then(function(output){
+								resolve(output);
+							})
+							.catch(function(error){
+								reject(error);
+							});
+					}else{
+    				reject(err);
+					}
+				}
+				ddevShell('hostname', [fullDomain, '127.0.0.1', "-j"], null, resolve, runSudo, false)
+		});
+    return promise;
 };
 
 /**
