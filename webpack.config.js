@@ -5,7 +5,6 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'js/dist'),
-    publicPath: path.resolve(__dirname, './'),
   },
   target: 'electron',
   module: {
