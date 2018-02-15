@@ -1,0 +1,85 @@
+.modal-header {
+  background-color: #23282b;
+}
+.modal-footer {
+  background-color: #23282b;
+}
+
+.modal-body td {
+  padding: 0 20px;
+  width: 50%;
+}
+.directory-select {
+  display: none;
+}
+
+.add-site-segment {
+  margin: 10px;
+}
+.add-modal-section-header{
+  border-bottom: 1px solid;
+}
+.loading-overlay, .error-overlay {
+  text-align: center;
+  display: none;
+  z-index: 3;
+  margin-top: -15px;
+  margin-left: -15px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(100,100,100,.8);
+  align-items: center;
+  justify-content: center
+}
+.error-overlay {
+  padding: 50px;
+}
+.error-overlay div {
+  margin: 10px 0;
+}
+.loading-spinner {
+  font-size: 150px !important;
+  color: #28bde4;
+}
+.error-icon {
+  color: #d80000;
+}
+.loading-text {
+  width: 55%;
+  margin-left: 20px;
+  color: #28bde4;
+  font-weight: bold;
+  font-size: 20px;
+}
+.error-text {
+  color: #28bde4;
+  font-weight: bold;
+  font-size: 20px;
+}
+.start-button-option-container {
+  display: inline-block;
+  height: 100px;
+  width: 100px;
+  line-height: 100px;
+}
+.option-container {
+  text-align: center;
+}
+
+.second-option {
+  border-left: 1px solid #878787;
+}
+
+.remove-option label {
+  white-space: pre-wrap;
+}
+
+.remove-option input {
+  position: relative;
+  top: -1.5rem;
+}
+
+.section-description {
+  font-size: 14px;
+}

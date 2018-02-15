@@ -1,5 +1,6 @@
 var ddevShell = require('./ddev-shell');
 var electron = require('electron');
+require('../../scss/card.scss');
 
 /**
  * TEMPLATE - generates markup for the placeholder "add/create site" card

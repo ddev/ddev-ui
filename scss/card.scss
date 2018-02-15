@@ -1,0 +1,62 @@
+.card-body {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.card-status {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(100,100,100,0.3);
+}
+.running .startbtn{
+  display: none;
+}
+.stopped .stopbtn{
+  display: none;
+}
+.stopped .restartbtn{
+  display: none;
+}
+
+.card .btn {
+  margin: 5px;
+}
+.card {
+  text-align: center;
+  color: #23282b;
+}
+.card-header, .card-footer {
+  background-color: #23282b;
+}
+.tile-container {
+  width: 100%;
+}
+.tile {
+  width: 33.333333%;
+  float: left;
+  padding: 10px;
+}
+.tile img{
+  width: 100%;
+}
+.tile .active {
+  border: 1px solid #000;
+}
+.add-site-icon {
+  height: 155px;
+  line-height: 155px;
+  font-size: 75px;
+}
+
+.add .card-footer {
+  height:73px;
+}
+
+.site-icon-container {
+  padding-bottom: 20px;
+}
+
+.site-icon {
+  width: 50%;
+}

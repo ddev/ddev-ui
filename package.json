@@ -59,6 +59,7 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.5.1",
+    "file-loader": "^1.1.6",
     "mocha": "^4.0.1",
     "mock-fs": "^4.4.2",
     "nock": "^9.1.3",
