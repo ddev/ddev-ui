@@ -1,24 +1,86 @@
+/*
+  All bootstrap modal overrides
+ */
+@import "./variables.scss";
+
+/*
+  Header
+ */
 .modal-header {
-  background-color: #23282b;
+  background-color: $darkGrey;
 }
-.modal-footer {
-  background-color: #23282b;
-}
+
+/*
+  Body
+ */
 
 .modal-body td {
   padding: 0 20px;
   width: 50%;
 }
+
+.start-button-option-container {
+  display: inline-block;
+  height: 100px;
+  width: 100px;
+  line-height: 100px;
+}
+
+.option-container {
+  text-align: center;
+}
+
+.second-option {
+  border-left: 1px solid $grey;
+}
+
+.remove-option label {
+  white-space: pre-wrap;
+}
+
+.remove-option input {
+  position: relative;
+  top: -1.5rem;
+}
+
 .directory-select {
   display: none;
+}
+
+.section-description {
+  font-size: 14px;
 }
 
 .add-site-segment {
   margin: 10px;
 }
+
 .add-modal-section-header{
   border-bottom: 1px solid;
 }
+
+.tile-container {
+  width: 100%;
+}
+
+.tile {
+  width: 33.333333%;
+  float: left;
+  padding: 10px;
+}
+
+.tile img{
+  width: 100%;
+}
+
+.tile .active {
+  border: 1px solid #000;
+}
+
+/*
+  Loading and error overlays
+ */
+
 .loading-overlay, .error-overlay {
   text-align: center;
   display: none;
@@ -40,46 +102,28 @@
 }
 .loading-spinner {
   font-size: 150px !important;
-  color: #28bde4;
+  color: $lightBlue;
 }
 .error-icon {
-  color: #d80000;
+  color: $errorRed;
 }
 .loading-text {
   width: 55%;
   margin-left: 20px;
-  color: #28bde4;
+  color: $lightBlue;
   font-weight: bold;
   font-size: 20px;
 }
 .error-text {
-  color: #28bde4;
+  color: $lightBlue;
   font-weight: bold;
   font-size: 20px;
 }
-.start-button-option-container {
-  display: inline-block;
-  height: 100px;
-  width: 100px;
-  line-height: 100px;
-}
-.option-container {
-  text-align: center;
-}
 
-.second-option {
-  border-left: 1px solid #878787;
-}
+/*
+  Footer
+ */
 
-.remove-option label {
-  white-space: pre-wrap;
-}
-
-.remove-option input {
-  position: relative;
-  top: -1.5rem;
-}
-
-.section-description {
-  font-size: 14px;
+.modal-footer {
+  background-color: $darkGrey;
 }

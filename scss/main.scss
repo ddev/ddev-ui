@@ -1,5 +1,8 @@
-@import "./variables.scss";
+/*
+  Global styles and main container styles
+ */
 
+@import "./variables.scss";
 @font-face {
   font-family: 'Montserrat';
   src: url('../fonts/Montserrat-ExtraLight.ttf') format('truetype');
@@ -7,6 +10,9 @@
   font-style: normal;
 }
 
+/*
+  Global application wide styles and fonts
+ */
 body {
   font-family: 'Montserrat', sans-serif;
   background-color: $lightGrey;
@@ -27,27 +33,53 @@ h3 {
   font-size: 14pt;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
+/*
+  Global button styles
+ */
 .btn-primary {
   background-color: $lightBlue;
   border-color: $lightBlue;
 }
+
 .btn-secondary {
   background-color: $grey;
   border-color: $grey;
 }
 
-::-webkit-scrollbar {
-  display: none;
+.btn {
+  cursor: pointer;
 }
 
-.container {
-  margin: 70px 5px 70px 5px;
-  max-width: 100%;
-}
+/*
+  Header styles
+ */
 .navbar {
   background-color: $darkGrey;
 }
 
+.ddev-logo {
+  height: 50px;
+}
+
+/*
+  Base container styles
+ */
+.container {
+  margin: 70px 5px 70px 5px;
+  max-width: 100%;
+}
+
+.column {
+  margin: 15px 0;
+}
+
+/*
+  Footer styles
+ */
 .footer {
   height: 66px;
   background-color: $darkGrey;
@@ -55,23 +87,16 @@ h3 {
   position: fixed;
   width: 100%;
 }
-.ddev-logo {
-  height: 50px;
-}
+
 .router-status {
   line-height: 66px;
   color: $white;
   float: right;
 }
-.column {
-  margin: 15px 0;
-}
+
 .router-status-label {
   color: $lightGrey;
   float: right;
   padding: 0 10px;
   line-height: 66px;
-}
-.btn {
-  cursor: pointer;
 }
