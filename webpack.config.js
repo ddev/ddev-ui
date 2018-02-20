@@ -18,14 +18,6 @@ module.exports = {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
         loader: 'file-loader?name=/fonts/[name].[ext]',
       },
-      /* {
-                test: /\.js$/,
-                include: [
-                    path.resolve(__dirname, './js/src')
-                ],
-                loader: 'eslint-loader',
-                exclude: /node_modules/
-            }, */
     ],
   },
 };
