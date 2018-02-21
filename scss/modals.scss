@@ -1,0 +1,129 @@
+/*
+  All bootstrap modal overrides
+ */
+@import "./variables.scss";
+
+/*
+  Header
+ */
+.modal-header {
+  background-color: $darkGrey;
+}
+
+/*
+  Body
+ */
+
+.modal-body td {
+  padding: 0 20px;
+  width: 50%;
+}
+
+.start-button-option-container {
+  display: inline-block;
+  height: 100px;
+  width: 100px;
+  line-height: 100px;
+}
+
+.option-container {
+  text-align: center;
+}
+
+.second-option {
+  border-left: 1px solid $grey;
+}
+
+.remove-option label {
+  white-space: pre-wrap;
+}
+
+.remove-option input {
+  position: relative;
+  top: -1.5rem;
+}
+
+.directory-select {
+  display: none;
+}
+
+.section-description {
+  font-size: 14px;
+}
+
+.add-site-segment {
+  margin: 10px;
+}
+
+.add-modal-section-header{
+  border-bottom: 1px solid;
+}
+
+.tile-container {
+  width: 100%;
+}
+
+.tile {
+  width: 33.333333%;
+  float: left;
+  padding: 10px;
+}
+
+.tile img{
+  width: 100%;
+}
+
+.tile .active {
+  border: 1px solid #000;
+}
+
+/*
+  Loading and error overlays
+ */
+
+.loading-overlay, .error-overlay {
+  text-align: center;
+  display: none;
+  z-index: 3;
+  margin-top: -15px;
+  margin-left: -15px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(100,100,100,.8);
+  align-items: center;
+  justify-content: center
+}
+.error-overlay {
+  padding: 50px;
+}
+.error-overlay div {
+  margin: 10px 0;
+}
+.loading-spinner {
+  font-size: 150px !important;
+  color: $lightBlue;
+}
+.error-icon {
+  color: $errorRed;
+}
+.loading-text {
+  width: 55%;
+  margin-left: 20px;
+  color: $lightBlue;
+  font-weight: bold;
+  font-size: 20px;
+}
+.error-text {
+  color: $lightBlue;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/*
+  Footer
+ */
+
+.modal-footer {
+  background-color: $darkGrey;
+}

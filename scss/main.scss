@@ -1,0 +1,103 @@
+/*
+  Global styles and main container styles
+ */
+
+@import "./variables.scss";
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../fonts/Montserrat-ExtraLight.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/*
+  Global application wide styles and fonts
+ */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: $lightGrey;
+  display: block !important;
+}
+
+h1, h2, h3 {
+  color: $lightBlue;
+}
+
+h1 {
+  font-size: 24pt;
+}
+
+h2 {
+  font-size: 18pt;}
+
+h3 {
+  font-size: 14pt;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/*
+  Global button styles
+ */
+.btn-primary {
+  background-color: $lightBlue;
+  border-color: $lightBlue;
+}
+
+.btn-secondary {
+  background-color: $grey;
+  border-color: $grey;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+/*
+  Header styles
+ */
+.navbar {
+  background-color: $darkGrey;
+}
+
+.ddev-logo {
+  height: 50px;
+}
+
+/*
+  Base container styles
+ */
+.container {
+  margin: 70px 5px 70px 5px;
+  max-width: 100%;
+}
+
+.column {
+  margin: 15px 0;
+}
+
+/*
+  Footer styles
+ */
+.footer {
+  height: 66px;
+  background-color: $darkGrey;
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+}
+
+.router-status {
+  line-height: 66px;
+  color: $white;
+  float: right;
+}
+
+.router-status-label {
+  color: $lightGrey;
+  float: right;
+  padding: 0 10px;
+  line-height: 66px;
+}
