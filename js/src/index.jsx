@@ -4,9 +4,14 @@ import Header from './header.jsx';
 import Footer from './footer.jsx';
 import Container from "./container.jsx";
 
+const ui = require('./ui.js');
 require('../../scss/main.scss');
 
 class App extends React.Component {
+  componentDidMount() {
+    ui.init();
+  }
+
   render() {
     return (
       <div>
