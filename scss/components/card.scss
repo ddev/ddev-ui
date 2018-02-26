@@ -1,18 +1,19 @@
+@import "../common/variables.scss";
+
 /*
   Project card styles
  */
-@import "./variables.scss";
 
 /*
   Base styles
  */
-.card-header, .card-footer {
-  background-color: $darkGrey;
+.card.ddev-card .card-header, .card.ddev-card .card-footer {
+  background-color: $dark;
 }
 
-.card {
+.card.ddev-card {
   text-align: center;
-  color: $darkGrey;
+  color: $dark;
 }
 
 /*
@@ -23,7 +24,7 @@
 /*
   Body
  */
-.card-body {
+.card.ddev-card .card-body {
   margin: 0;
   padding: 0;
   position: relative;
@@ -59,20 +60,20 @@
 /*
   Buttons and footer
  */
-.running .startbtn{
+ .card.ddev-card .btn {
+   margin: 5px;
+ }
+
+.running .startbtn {
   display: none;
 }
 
-.stopped .stopbtn{
+.stopped .stopbtn {
   display: none;
 }
 
-.stopped .restartbtn{
+.stopped .restartbtn {
   display: none;
-}
-
-.card .btn {
-  margin: 5px;
 }
 
 .add .card-footer {

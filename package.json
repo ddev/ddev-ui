@@ -73,6 +73,7 @@
     "webpack-dev-server": "^2.11.0"
   },
   "dependencies": {
+    "bootstrap": "^4.0.0",
     "compare-versions": "^3.1.0",
     "electron-is-dev": "^0.3.0",
     "fix-path": "^2.1.0",

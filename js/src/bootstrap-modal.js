@@ -1,4 +1,4 @@
-require('../../scss/modals.scss');
+require('../../scss/components/modals.scss');
 //Markup Generators
 /**
  * TEMPLATE - generates markup for a bootstrap modal
