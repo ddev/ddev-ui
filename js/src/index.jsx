@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Header from './header.jsx';
-import Footer from './footer.jsx';
+import HeaderContainer from './containers/header/index.jsx';
+import FooterContainer from './containers/footer/index.jsx';
 import Container from "./container.jsx";
 
 const ui = require('./ui.js');
@@ -15,9 +15,9 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Header />
+        <HeaderContainer />
         <Container />
-        <Footer />
+        <FooterContainer status="" />
       </div>
     );
   }
