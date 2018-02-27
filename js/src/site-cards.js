@@ -1,6 +1,6 @@
 var ddevShell = require('./ddev-shell');
 var electron = require('electron');
-require('../../scss/card.scss');
+require('../../scss/components/card.scss');
 
 /**
  * TEMPLATE - generates markup for the placeholder "add/create site" card
@@ -8,7 +8,7 @@ require('../../scss/card.scss');
  */
 function createAddCard(){
     var markup = `<div class="column col-lg-3 col-md-4 col-sm-4">
-        <div class="card add">
+        <div class="ddev-card card add">
             <div class="card-header">
                 <h2><a href="#">Add/Create Project</a></h2>
             </div>
@@ -34,14 +34,14 @@ function createAddCard(){
  */
 function createCard(site) {
     var markup = `<div class="column col-lg-3 col-md-4 col-sm-4 ` + site.status + `" data-path="` + site.approot + `" data-sitename="` + site.name + `">
-        <div class="card">
+        <div class="ddev-card card">
             <div class="card-header">
                 <h2><a href="#" class="open-site" data-url="` + site.httpurl + `">` + site.name + `</a></h2>
             </div>
             <div class="card-body">
                 <a href="#" class="open-site" data-url="` + site.httpurl + `">
                     <div class="site-icon-container">
-                        <img class="site-icon" src="img/` + site.type + `.png" /> 
+                        <img class="site-icon" src="img/` + site.type + `.png" />
                     </div>
                     <div class="card-status">
                         <div>` + site.status + `</div>

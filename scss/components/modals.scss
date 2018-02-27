@@ -1,13 +1,14 @@
+@import "../common/variables.scss";
+
 /*
   All bootstrap modal overrides
  */
-@import "./variables.scss";
 
 /*
   Header
  */
 .modal-header {
-  background-color: $darkGrey;
+  background-color: $dark;
 }
 
 /*
@@ -55,7 +56,7 @@
   margin: 10px;
 }
 
-.add-modal-section-header{
+.add-modal-section-header {
   border-bottom: 1px solid;
 }
 
@@ -69,7 +70,7 @@
   padding: 10px;
 }
 
-.tile img{
+.tile img {
   width: 100%;
 }
 
@@ -94,28 +95,34 @@
   align-items: center;
   justify-content: center
 }
+
 .error-overlay {
   padding: 50px;
 }
+
 .error-overlay div {
   margin: 10px 0;
 }
+
 .loading-spinner {
   font-size: 150px !important;
-  color: $lightBlue;
+  color: $primary;
 }
+
 .error-icon {
-  color: $errorRed;
+  color: $red;
 }
+
 .loading-text {
   width: 55%;
   margin-left: 20px;
-  color: $lightBlue;
+  color: $primary;
   font-weight: bold;
   font-size: 20px;
 }
+
 .error-text {
-  color: $lightBlue;
+  color: $primary;
   font-weight: bold;
   font-size: 20px;
 }
@@ -125,5 +132,5 @@
  */
 
 .modal-footer {
-  background-color: $darkGrey;
+  background-color: $dark;
 }
