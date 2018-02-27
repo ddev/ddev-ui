@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RouterStatus from '../../components/RouterStatus/index.jsx';
+import RouterStatus from '../../components/RouterStatus';
 
 const Footer = ({ status }) =>
   (
@@ -10,7 +10,7 @@ const Footer = ({ status }) =>
   );
 
 Footer.propTypes = {
-  status: PropTypes.string.isRequired,
+  status: PropTypes.object.isRequired,
 };
 
 export default Footer;

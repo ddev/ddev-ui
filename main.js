@@ -26,8 +26,15 @@ app.on('ready', function () {
     mainWindow.loadURL('file://' + __dirname + '/index.html');
 
     if(isDev) {
+        const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
+
+        installExtension(REACT_DEVELOPER_TOOLS)
+          .then((name) => console.log(`Added Extension:  ${name}`))
+          .catch((err) => console.log('An error occurred: ', err));
+
         // Open the DevTools.
         mainWindow.openDevTools();    // requires a height 410px
+
     }
 
     // Emitted when the window is closed.

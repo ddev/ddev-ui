@@ -8,7 +8,7 @@ var siteCreator = require('./cms-installer');
 var siteCard = require('./site-cards');
 var describeSite = require('./describe-site');
 var removeProject = require('./remove-project');
-require('../../scss/main.scss');
+require('./containers/app/main.scss');
 
 /**
  * bootstraps application by initializing modules, downloading distros, starting ddev list polling

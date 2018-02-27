@@ -1,26 +1,14 @@
 import React from 'react';
 import { render } from 'react-dom';
-import HeaderContainer from './containers/header/index.jsx';
-import FooterContainer from './containers/footer/index.jsx';
-import Container from "./container.jsx";
+import { Provider } from 'react-redux';
+import App from './containers/app/index.jsx';
+import configureStore from './store/configureStore';
 
-const ui = require('./ui.js');
-require('../../scss/main.scss');
+const store = configureStore();
 
-class App extends React.Component {
-  componentDidMount() {
-    ui.init();
-  }
-
-  render() {
-    return (
-      <div>
-        <HeaderContainer />
-        <Container />
-        <FooterContainer status="" />
-      </div>
-    );
-  }
-}
-
-render(<App />, document.getElementById('app'));
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('app'),
+);
