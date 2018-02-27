@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Container extends React.Component {
+class Dashboard extends React.Component {
   render() {
     return (
       <div>
@@ -15,5 +15,5 @@ class Container extends React.Component {
   }
 }
 
-export default Container;
+export default Dashboard;
 
