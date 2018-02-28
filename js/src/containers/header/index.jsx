@@ -3,7 +3,7 @@ import HeaderLogo from '../../components/HeaderLogo/index.jsx';
 
 const Header = () =>
   (
-    <nav className="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+    <nav className="navbar navbar-toggleable-md navbar-inverse bg-inverse">
       <HeaderLogo imagePath="img/ddev_last.png" />
     </nav>
   );

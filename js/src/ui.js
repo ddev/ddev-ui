@@ -6,7 +6,7 @@ const siteCreator = require('./cms-installer');
 const siteCard = require('./site-cards');
 const describeSite = require('./describe-site');
 const removeProject = require('./remove-project');
-require('./containers/app/main.scss');
+require('../../scss/main.scss');
 
 /**
  * (re)renders UI cards and status messaging from a ddev list raw output

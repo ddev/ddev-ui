@@ -8,7 +8,7 @@ import DashboardContainer from '../../containers/dashboard';
 import * as RouterStatusActions from '../../reducers/routerStatus';
 
 const ui = require('../../ui.js');
-require('./main.scss');
+require('../../../../scss/main.scss');
 
 class App extends Component {
   componentDidMount() {
