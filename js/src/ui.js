@@ -1,63 +1,67 @@
-//TODO: Implement Redux to store application state
-var state = {};
-var electron = require('electron');
-var dialog = require('electron').remote.dialog;
-var ddevShell = require('./ddev-shell');
-var updater = require('./distro-updater');
-var siteCreator = require('./cms-installer');
-var siteCard = require('./site-cards');
-var describeSite = require('./describe-site');
-var removeProject = require('./remove-project');
+// TODO: Implement Redux to store application state
+let state = {};
+const ddevShell = require('./ddev-shell');
+const updater = require('./distro-updater');
+const siteCreator = require('./cms-installer');
+const siteCard = require('./site-cards');
+const describeSite = require('./describe-site');
+const removeProject = require('./remove-project');
 require('../../scss/main.scss');
-
-/**
- * bootstraps application by initializing modules, downloading distros, starting ddev list polling
- */
-function init() {
-    siteCard.init();
-    siteCreator.init();
-    describeSite.init();
-    removeProject.init();
-    updater.updateDistros();
-    fetchState();
-}
-
-/**
- * to be run on a loop - polls ddev list and compares CLI state to current app state and rerenders on mismatch
- */
-function fetchState() {
-    ddevShell.list().then(function (data) {
-        if (JSON.stringify(data).trim() !== JSON.stringify(state).trim()) {
-            state = data;
-            renderUI(state);
-        }
-        fetchState();
-    }).catch(function(){
-    	fetchState();
-		});
-}
 
 /**
  * (re)renders UI cards and status messaging from a ddev list raw output
  * @param list
  */
-function renderUI(list) {
-    var validRouterStates = [
-        "starting",
-        "healthy"
-    ];
-    var routerStatusText = "DDEV Router Not Running - No Running DDEV Applications.";
-    $('.card-container').empty();
-    $('.card-container').append(siteCard.createAddCard());
-    if(list.length !== 0){
-        list.forEach(function (site) {
-            var card = siteCard.createCard(site);
-            $('.card-container').append(card);
-        });
-        routerStatusText = (validRouterStates.indexOf(list[0].router_status) != -1) ? '' : routerStatusText;
+function renderUI(list, actions) {
+  const validRouterStates = [
+    'starting',
+    'healthy',
+  ];
+
+  $('.card-container').empty();
+  $('.card-container').append(siteCard.createAddCard());
+  if (list.length !== 0) {
+    list.forEach((site) => {
+      const card = siteCard.createCard(site);
+      $('.card-container').append(card);
+    });
+
+    let showStatus = false;
+    const routerStatus = list[0].router_status;
+
+    if ((validRouterStates.indexOf(routerStatus) === -1)) {
+      showStatus = true;
     }
-    $('.router-status-label').text(routerStatusText);
+    actions.updateStatus(routerStatus);
+    actions.showStatus(showStatus);
+  }
 }
 
-// main entry point of application
-init();
+/**
+ * to be run on a loop - polls ddev list and rerenders on update
+ */
+function fetchState(actions) {
+  ddevShell.list().then((data) => {
+    if (JSON.stringify(data).trim() !== JSON.stringify(state).trim()) {
+      state = data;
+      renderUI(state, actions);
+    }
+    fetchState();
+  }).catch(() => {
+    fetchState();
+  });
+}
+
+/**
+ * bootstraps application by initializing modules, downloading distros, starting ddev list polling
+ */
+function init(actions) {
+  siteCard.init();
+  siteCreator.init();
+  describeSite.init();
+  removeProject.init();
+  updater.updateDistros();
+  fetchState(actions);
+}
+
+module.exports.init = init;
