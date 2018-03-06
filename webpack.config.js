@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './js/src/ui.js',
+  entry: './js/src/index.jsx',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'js/dist'),
@@ -10,6 +10,13 @@ module.exports = {
   target: 'electron',
   module: {
     loaders: [
+      {
+        test: /\.js(x)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
       {
         test: /\.(s*)css$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
