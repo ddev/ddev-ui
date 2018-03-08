@@ -18,9 +18,9 @@ function renderUI(list, actions) {
     'healthy',
   ];
 
-  $('.card-container').empty();
-  $('.card-container').append(siteCard.createAddCard());
-  if (list.length !== 0) {
+  //$('.card-container').empty();
+  //$('.card-container').append(siteCard.createAddCard());
+  /*if (list.length !== 0) {
     list.forEach((site) => {
       const card = siteCard.createCard(site);
       $('.card-container').append(card);
@@ -34,7 +34,7 @@ function renderUI(list, actions) {
     }
     actions.updateStatus(routerStatus);
     actions.showStatus(showStatus);
-  }
+  }*/
 }
 
 /**
@@ -44,6 +44,7 @@ function fetchState(actions) {
   ddevShell.list().then((data) => {
     if (JSON.stringify(data).trim() !== JSON.stringify(state).trim()) {
       state = data;
+      console.log(JSON.stringify(data).trim());
       renderUI(state, actions);
     }
     fetchState();

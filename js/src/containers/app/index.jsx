@@ -18,7 +18,7 @@ class App extends Component {
     const { routerStatus } = this.props;
     return (
       <div>
-        <HeaderContainer />
+        <HeaderContainer logoPath="img/ddev_last.png" />
         <DashboardContainer />
         <FooterContainer status={routerStatus} />
       </div>

@@ -1,11 +1,16 @@
 import React from 'react';
-import HeaderLogo from '../../components/HeaderLogo/index.jsx';
+import PropTypes from 'prop-types';
+import HeaderLogo from '../../components/HeaderLogo/index';
 
-const Header = () =>
+const Header = ({ logoPath }) =>
   (
     <nav className="navbar navbar-toggleable-md navbar-inverse bg-inverse">
-      <HeaderLogo imagePath="img/ddev_last.png" />
+      <HeaderLogo imagePath={logoPath} />
     </nav>
   );
+
+Header.propTypes = {
+  logoPath: PropTypes.string.isRequired,
+};
 
 export default Header;
