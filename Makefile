@@ -65,28 +65,31 @@ all: darwin linux windows
 # Build requirements
 # - wine and mono must be available to build Windows on another platform (brew install wine mono )
 
-npmstart: npmsetup
-	npm start
+npmstart: appstart
 
+npmsetup: appsetup
 
-linux: npmsetup
+appstart: appsetup
+	yarn run start
+
+linux: appsetup
 	@echo "Building $@"
-	npm run build-linux
+	yarn run build-linux
 
-darwin: npmsetup
+darwin: appsetup
 	@echo "Building $@"
-	npm run build-darwin
+	yarn run build-darwin
 
-windows: npmsetup
+windows: appsetup
 	@echo "Building $@"
-	npm run build-windows
+	yarn run build-windows
 
-npmsetup: package.json
-	npm install --no-optional
-	npm run webpack
+appsetup: package.json
+	yarn install
+	yarn run webpack
 
 clean:
 	rm -rf js/dist node_modules
 
 test:
-	npm test
+	yarn run test
