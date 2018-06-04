@@ -72,6 +72,7 @@
     "request": "^2.87.0",
     "rewire": "^3.0.2",
     "sass-loader": "^6.0.6",
+    "spawn-sync": "^2.0.0",
     "stub-spawn-once": "^2.3.0",
     "style-loader": "^0.20.1",
     "webpack": "^3.10.0",
