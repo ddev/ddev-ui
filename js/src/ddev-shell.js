@@ -223,8 +223,6 @@ const describe = (siteName) => {
                 }
               }
               resolve(modalData);
-            } else {
-              reject(modalData);
             }
           } catch (e) {
             reject(modalData);
