@@ -138,9 +138,9 @@ const restart = (path, callback, errorCallback) => {
 const remove = (name, shouldRemoveData) => {
   const args = shouldRemoveData ? ['-j', '--remove-data'] : ['-j'];
   args.push(name);
-  const promise = new Promise(((resolve, reject) => {
+  const promise = new Promise((resolve, reject) => {
     ddevShell('remove', args, '', resolve, reject, false);
-  }));
+  });
   return promise;
 };
 
@@ -153,7 +153,12 @@ const remove = (name, shouldRemoveData) => {
  * @param errorCallback - function to call on failure
  */
 const config = (path, name, docroot, callback, errorCallback) => {
-  ddevShell('config', ['-j', '--sitename', name, '--docroot', docroot], path, callback, errorCallback);
+  ddevShell(
+    'config', ['-j', '--sitename', name, '--docroot', docroot],
+    path,
+    callback,
+    errorCallback,
+  );
 };
 
 /**
@@ -163,23 +168,20 @@ const config = (path, name, docroot, callback, errorCallback) => {
  * @returns {Promise} - resolves on successful execution with stdout text
  */
 const hostname = (siteName, domain = 'ddev.local') => {
-  const promise = new Promise(((resolve, reject) => {
+  const promise = new Promise((resolve, reject) => {
     const options = {
       name: 'DDEV UI',
     };
 
     const command = `ddev hostname ${siteName}.${domain} 127.0.0.1 -j`;
-    sudoPrompt.exec(
-      command, options,
-      (error, stdout, stderr) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(stdout);
-        }
-      },
-    );
-  }));
+    sudoPrompt.exec(command, options, (error, stdout, stderr) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(stdout);
+      }
+    });
+  });
   return promise;
 };
 
@@ -191,22 +193,45 @@ const hostname = (siteName, domain = 'ddev.local') => {
 const describe = (siteName) => {
   const promise = new Promise((resolve, reject) => {
     function parseJSONOutput(describeJSON) {
-      const rawData = JSON.parse(describeJSON);
-      const siteDetails = rawData.raw;
-      const modalData = {};
-      if (siteDetails.dbinfo) {
-        modalData['MySQL Credentials'] = siteDetails.dbinfo;
-      }
-      if (siteDetails.mailhog_url || siteDetails.phpmyadmin_url) {
-        modalData['Other Services'] = {};
-        if (siteDetails.mailhog_url) {
-          modalData['Other Services'].MailHog = `<a class='open-site' data-url='${siteDetails.mailhog_url}' href="#">${siteDetails.mailhog_url}</a>`;
+      const objs = describeJSON.split('\n');
+
+      objs.forEach((obj) => {
+        const modalData = {};
+        if (obj) {
+          try {
+            const rawData = JSON.parse(obj);
+
+            if (rawData.level === 'info') {
+              const siteDetails = rawData.raw;
+
+              if (siteDetails.dbinfo) {
+                modalData['MySQL Credentials'] = siteDetails.dbinfo;
+              }
+              if (siteDetails.mailhog_url || siteDetails.phpmyadmin_url) {
+                modalData['Other Services'] = {};
+                if (siteDetails.mailhog_url) {
+                  modalData['Other Services'].MailHog =
+                    `<a class='open-site' data-url='${
+                      siteDetails.mailhog_url
+                    }' href="#">${siteDetails.mailhog_url}</a>`;
+                }
+                if (siteDetails.phpmyadmin_url) {
+                  modalData['Other Services'].phpMyAdmin =
+                    `<a class='open-site' data-url='${
+                      siteDetails.phpmyadmin_url
+                    }' href="#">${siteDetails.phpmyadmin_url}</a>`;
+                }
+              }
+              resolve(modalData);
+            } else {
+              reject(modalData);
+            }
+          } catch (e) {
+            reject(modalData);
+          }
         }
-        if (siteDetails.phpmyadmin_url) {
-          modalData['Other Services'].phpMyAdmin = `<a class='open-site' data-url='${siteDetails.phpmyadmin_url}' href="#">${siteDetails.phpmyadmin_url}</a>`;
-        }
-      }
-      resolve(modalData);
+        return promise;
+      });
     }
     ddevShell('describe', [siteName, '-j'], null, parseJSONOutput, reject, false);
   });
@@ -220,9 +245,12 @@ const describe = (siteName) => {
  * @param promptOptions {object} - sudo prompt options such as application name and prompt icon
  * @returns {promise} - resolves if escalation is successful with stdout text
  */
-const sudo = (command, promptOptions = {
-  name: 'DDEV UI',
-}) => {
+const sudo = (
+  command,
+  promptOptions = {
+    name: 'DDEV UI',
+  },
+) => {
   const bannedCharacters = [';', '|', '&'];
   const whitelistedCommands = ['version'];
   if (whitelistedCommands.indexOf(command) != -1) {
@@ -233,16 +261,13 @@ const sudo = (command, promptOptions = {
     });
     command = `ddev ${command}`;
     const promise = new Promise((resolve, reject) => {
-      sudoPrompt.exec(
-        command, promptOptions,
-        (error, stdout, stderr) => {
-          if (error) {
-            reject('Unable to escalate permissions.');
-          } else {
-            resolve(stdout);
-          }
-        },
-      );
+      sudoPrompt.exec(command, promptOptions, (error, stdout, stderr) => {
+        if (error) {
+          reject('Unable to escalate permissions.');
+        } else {
+          resolve(stdout);
+        }
+      });
     });
 
     return promise;
