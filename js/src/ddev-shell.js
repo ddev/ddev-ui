@@ -17,53 +17,51 @@ fixPath();
  * @param stream {bool} - if true, success callback will be called with every update to stdout.
  */
 const ddevShell = (command, args, path, callback, errorCallback, stream) => {
-    var opts = {};
+  let opts = {};
 
-    if(!Array.isArray(command)) {
-        command = [command];
-    }
+  if (!Array.isArray(command)) {
+    command = [command];
+  }
 
-    if(args && Array.isArray(args)){
-        command = command.concat(args);
-    }
+  if (args && Array.isArray(args)) {
+    command = command.concat(args);
+  }
 
-    if(path) {
-        path = path.replace('~', os.homedir());
-        opts = {
-            cwd: path
-        }
-    }
-
-    var currentCommand = childProcess.spawn('ddev', command, opts);
-
-    var outputBuffer = '';
-
-    var appendBuffer = function(data) {
-        outputBuffer += data;
-        if(stream) {
-            callback(data);
-        }
+  if (path) {
+    path = path.replace('~', os.homedir());
+    opts = {
+      cwd: path,
     };
+  }
 
-    currentCommand.stdout.on('data', function(output) {
-        appendBuffer(output);
-    });
+  const currentCommand = childProcess.spawn('ddev', command, opts);
 
-    currentCommand.stderr.on('data', function(output) {
-        appendBuffer(output);
-    });
+  let outputBuffer = '';
 
-    currentCommand.on('exit', function(code) {
-        if(code !== 0) {
-            errorCallback(outputBuffer);
-        } else {
-            if(stream){
-                callback('Process Exited With Code ' + code);
-            } else {
-                callback(outputBuffer);
-            }
-        }
-    });
+  const appendBuffer = function (data) {
+    outputBuffer += data;
+    if (stream) {
+      callback(data);
+    }
+  };
+
+  currentCommand.stdout.on('data', (output) => {
+    appendBuffer(output);
+  });
+
+  currentCommand.stderr.on('data', (output) => {
+    appendBuffer(output);
+  });
+
+  currentCommand.on('exit', (code) => {
+    if (code !== 0) {
+      errorCallback(outputBuffer);
+    } else if (stream) {
+      callback(`Process Exited With Code ${code}`);
+    } else {
+      callback(outputBuffer);
+    }
+  });
 };
 
 /**
@@ -71,23 +69,35 @@ const ddevShell = (command, args, path, callback, errorCallback, stream) => {
  * @returns {Promise} - resolves with an array of sites, or an empty array if none found
  */
 const list = () => {
-    var promise = new Promise((resolve, reject) => {
-        function getRaw(output) {
-            var outputObject = JSON.parse(output);
-            if(outputObject.level === 'info' && !outputObject.raw) {
+  const promise = new Promise((resolve, reject) => {
+    function getRaw(output) {
+      const objs = output.split('\n');
+      objs.forEach((obj) => {
+        if (obj) {
+          try {
+            let outputObject = JSON.parse(obj);
+            if (outputObject.level === 'info') {
+              if (!outputObject.raw) {
                 outputObject = {
-                    raw: []
-                }
+                  raw: [],
+                };
+              }
+              if (Array.isArray(outputObject.raw)) {
+                resolve(outputObject.raw);
+              } else {
+                reject(obj);
+              }
             }
-            if(Array.isArray(outputObject.raw)) {
-                resolve(outputObject.raw)
-            } else {
-                reject(output);
-            }
+          } catch (e) {
+            reject(obj);
+          }
         }
-        ddevShell('list', ['-j'], null, getRaw, reject);
-    });
-    return promise;
+        return promise;
+      });
+    }
+    ddevShell('list', ['-j'], null, getRaw, reject);
+  });
+  return promise;
 };
 
 /**
@@ -97,7 +107,7 @@ const list = () => {
  * @param errorCallback {function} - function called on error
  */
 const start = (path, callback, errorCallback) => {
-    ddevShell('start', null, path, callback, errorCallback, true);
+  ddevShell('start', null, path, callback, errorCallback, true);
 };
 
 /**
@@ -107,7 +117,7 @@ const start = (path, callback, errorCallback) => {
  * @param errorCallback {function} - function called on error
  */
 const stop = (path, callback, errorCallback) => {
-    ddevShell('stop', null, path, callback, errorCallback, true);
+  ddevShell('stop', null, path, callback, errorCallback, true);
 };
 
 /**
@@ -117,7 +127,7 @@ const stop = (path, callback, errorCallback) => {
  * @param errorCallback {function} - function called on error
  */
 const restart = (path, callback, errorCallback) => {
-    ddevShell('restart', null, path, callback, errorCallback, true);
+  ddevShell('restart', null, path, callback, errorCallback, true);
 };
 
 /**
@@ -126,12 +136,12 @@ const restart = (path, callback, errorCallback) => {
  * @param shouldRemoveData {boolean} - if data should be removed as well as project containers
  */
 const remove = (name, shouldRemoveData) => {
-		var args = shouldRemoveData ? ['-j', '--remove-data'] : ['-j'];
-		args.push(name);
-    var promise = new Promise(function(resolve, reject) {
-        ddevShell('remove', args, '', resolve, reject, false);
-    });
-    return promise;
+  const args = shouldRemoveData ? ['-j', '--remove-data'] : ['-j'];
+  args.push(name);
+  const promise = new Promise((resolve, reject) => {
+    ddevShell('remove', args, '', resolve, reject, false);
+  });
+  return promise;
 };
 
 /**
@@ -143,7 +153,12 @@ const remove = (name, shouldRemoveData) => {
  * @param errorCallback - function to call on failure
  */
 const config = (path, name, docroot, callback, errorCallback) => {
-    ddevShell('config', ['-j','--sitename', name, '--docroot', docroot], path, callback, errorCallback);
+  ddevShell(
+    'config', ['-j', '--sitename', name, '--docroot', docroot],
+    path,
+    callback,
+    errorCallback,
+  );
 };
 
 /**
@@ -153,23 +168,21 @@ const config = (path, name, docroot, callback, errorCallback) => {
  * @returns {Promise} - resolves on successful execution with stdout text
  */
 const hostname = (siteName, domain = 'ddev.local') => {
-    var promise = new Promise(function(resolve, reject){
-        var options = {
-            name: 'DDEV UI',
-        };
+  const promise = new Promise((resolve, reject) => {
+    const options = {
+      name: 'DDEV UI',
+    };
 
-        var command = 'ddev hostname '+siteName+'.'+domain+' 127.0.0.1 -j';
-        sudoPrompt.exec(command, options,
-            function(error, stdout, stderr) {
-                if (error) {
-                    reject(error);
-                }else{
-                    resolve(stdout);
-                }
-            }
-        );
+    const command = `ddev hostname ${siteName}.${domain} 127.0.0.1 -j`;
+    sudoPrompt.exec(command, options, (error, stdout, stderr) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(stdout);
+      }
     });
-    return promise;
+  });
+  return promise;
 };
 
 /**
@@ -178,29 +191,50 @@ const hostname = (siteName, domain = 'ddev.local') => {
  * @returns {Promise} - resolves with object containing formatted links and sections for the UI
  */
 const describe = (siteName) => {
-    var promise = new Promise((resolve, reject) => {
-        function parseJSONOutput (describeJSON) {
-            var rawData = JSON.parse(describeJSON);
-            var siteDetails = rawData.raw;
-            var modalData = {};
-            if(siteDetails.dbinfo) {
-                modalData['MySQL Credentials'] = siteDetails.dbinfo;
-            }
-            if(siteDetails.mailhog_url || siteDetails.phpmyadmin_url) {
-                modalData['Other Services'] = {};
-                if(siteDetails.mailhog_url) {
-                    modalData['Other Services']['MailHog'] = "<a class='open-site' data-url='"+siteDetails.mailhog_url+"' href=\"#\">"+siteDetails.mailhog_url+"</a>"
-                }
-                if(siteDetails.phpmyadmin_url) {
-                    modalData['Other Services']['phpMyAdmin'] = "<a class='open-site' data-url='"+siteDetails.phpmyadmin_url+"' href=\"#\">"+siteDetails.phpmyadmin_url+"</a>"
-                }
-            }
-            resolve(modalData);
-        }
-        ddevShell('describe', [siteName, "-j"], null, parseJSONOutput, reject, false);
-    });
+  const promise = new Promise((resolve, reject) => {
+    function parseJSONOutput(describeJSON) {
+      const objs = describeJSON.split('\n');
 
-    return promise;
+      objs.forEach((obj) => {
+        const modalData = {};
+        if (obj) {
+          try {
+            const rawData = JSON.parse(obj);
+
+            if (rawData.level === 'info') {
+              const siteDetails = rawData.raw;
+
+              if (siteDetails.dbinfo) {
+                modalData['MySQL Credentials'] = siteDetails.dbinfo;
+              }
+              if (siteDetails.mailhog_url || siteDetails.phpmyadmin_url) {
+                modalData['Other Services'] = {};
+                if (siteDetails.mailhog_url) {
+                  modalData['Other Services'].MailHog =
+                    `<a class='open-site' data-url='${
+                      siteDetails.mailhog_url
+                    }' href="#">${siteDetails.mailhog_url}</a>`;
+                }
+                if (siteDetails.phpmyadmin_url) {
+                  modalData['Other Services'].phpMyAdmin =
+                    `<a class='open-site' data-url='${
+                      siteDetails.phpmyadmin_url
+                    }' href="#">${siteDetails.phpmyadmin_url}</a>`;
+                }
+              }
+              resolve(modalData);
+            }
+          } catch (e) {
+            reject(modalData);
+          }
+        }
+        return promise;
+      });
+    }
+    ddevShell('describe', [siteName, '-j'], null, parseJSONOutput, reject, false);
+  });
+
+  return promise;
 };
 
 /**
@@ -209,32 +243,34 @@ const describe = (siteName) => {
  * @param promptOptions {object} - sudo prompt options such as application name and prompt icon
  * @returns {promise} - resolves if escalation is successful with stdout text
  */
-const sudo = (command, promptOptions = {name: 'DDEV UI'}) => {
-    var bannedCharacters = [';','|','&'];
-    var whitelistedCommands = ['version'];
-    if(whitelistedCommands.indexOf(command) != -1){
-        bannedCharacters.forEach(function(character){
-            if(command.includes(character)){
-                return Promise.reject(character + ' is not an allowed character in privilege escalation requests.');
-            }
-        });
-        command = 'ddev ' + command;
-        var promise = new Promise((resolve, reject) => {
-            sudoPrompt.exec(command, promptOptions,
-                function(error, stdout, stderr) {
-                    if (error) {
-                        reject('Unable to escalate permissions.');
-                    }else{
-                        resolve(stdout);
-                    }
-                }
-            );
-        });
+const sudo = (
+  command,
+  promptOptions = {
+    name: 'DDEV UI',
+  },
+) => {
+  const bannedCharacters = [';', '|', '&'];
+  const whitelistedCommands = ['version'];
+  if (whitelistedCommands.indexOf(command) != -1) {
+    bannedCharacters.forEach((character) => {
+      if (command.includes(character)) {
+        return Promise.reject(`${character} is not an allowed character in privilege escalation requests.`);
+      }
+    });
+    command = `ddev ${command}`;
+    const promise = new Promise((resolve, reject) => {
+      sudoPrompt.exec(command, promptOptions, (error, stdout, stderr) => {
+        if (error) {
+          reject('Unable to escalate permissions.');
+        } else {
+          resolve(stdout);
+        }
+      });
+    });
 
-        return promise;
-    } else {
-        return Promise.reject(command + ' is not allowed to be run as sudo');
-    }
+    return promise;
+  }
+  return Promise.reject(`${command} is not allowed to be run as sudo`);
 };
 
 module.exports.list = list;
