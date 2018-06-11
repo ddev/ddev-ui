@@ -4520,10 +4520,6 @@
         "minimalistic-crypto-utils": "^1.0.1"
       }
     },
-    "hoek": {
-      "version": "5.0.3",
-      "dev": true
-    },
     "home-or-tmp": {
       "version": "2.0.0",
       "requires": {
