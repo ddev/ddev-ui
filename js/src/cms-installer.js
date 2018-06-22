@@ -1,13 +1,12 @@
-const distroUpdater = require('./distro-updater');
-const bootstrapModal = require('./bootstrap-modal');
-const tar = require('tar');
-const fs = require('fs');
-const ddevShell = require('./ddev-shell');
-const os = require('os');
-const electron = require('electron');
-
-const remote = electron.remote ? electron.remote : electron;
-const dialog = remote.dialog;
+var distroUpdater = require('./distro-updater');
+var bootstrapModal = require('./bootstrap-modal');
+var tar = require('tar');
+var fs = require('fs');
+var ddevShell = require('./ddev-shell');
+var os = require('os');
+var electron = require('electron');
+var remote = electron.remote ? electron.remote : electron;
+var dialog = remote.dialog;
 
 /**
  *
@@ -21,7 +20,7 @@ const dialog = remote.dialog;
  * @param message {string} - optional - the text to display on the loading screen
  */
 function showLoadingScreen(display, message = 'Working...') {
-  const displayType = display ? 'flex' : 'none';
+  var displayType = display ? "flex" : "none";
   $('.loading-text').text(message.toString());
   $('.loading-overlay').css('display', displayType);
 }
@@ -32,10 +31,10 @@ function showLoadingScreen(display, message = 'Working...') {
  * @param error {string} - optional - the text to display on the loading screen
  */
 function showErrorScreen(display, error = 'Something Went Wrong') {
-  $('.error-overlay').click(() => {
+  $('.error-overlay').click(function() {
     showErrorScreen(false, '');
   });
-  const displayType = display ? 'block' : 'none';
+  var displayType = display ? "block" : "none";
   showLoadingScreen(false);
   $('.error-text').text(error.toString());
   $('.error-overlay').css('display', displayType);
@@ -56,7 +55,7 @@ function resetAddModal() {
   $('#existingFilesModal').modal('hide');
   $('#distroModal').modal('hide');
 }
-const addSiteOptionsModalBody =
+var addSiteOptionsModalBody =
   `<div class="row">
         <div class="option-container column col-lg-6 col-md-6 col-sm-6 start-from-files">
             <div class="btn btn-primary start-button-option-container">
@@ -72,7 +71,7 @@ const addSiteOptionsModalBody =
         </div>
     </div>`;
 
-const createSiteModalBody =
+var createSiteModalBody =
   `<div class="modal-body">
         <div class="loading-overlay">
             <div>
@@ -117,7 +116,7 @@ const createSiteModalBody =
         </div>
     </div>`;
 
-const createSiteExistingModalBody =
+var createSiteExistingModalBody =
   `<div class="modal-body">
         <div class="loading-overlay">
             <div>
@@ -157,11 +156,11 @@ const createSiteExistingModalBody =
         </div>
     </div>`;
 
-const createSiteModalFooter =
-  '<div class="btn btn-primary create-site">Create Project</div>';
+var createSiteModalFooter =
+  `<div class="btn btn-primary create-site">Create Project</div>`;
 
-const createSiteExistingModalFooter =
-  '<div class="btn btn-primary create-site-from-existing">Create Project</div>';
+var createSiteExistingModalFooter =
+  `<div class="btn btn-primary create-site-from-existing">Create Project</div>`;
 
 /**
  * Basic validation of a hostname based on RFC 2396 Section 3.2.2
@@ -169,15 +168,15 @@ const createSiteExistingModalFooter =
  * @return {bool} if hostname has passed validation
  */
 function validateHostname(hostname) {
-  const promise = new Promise(((resolve, reject) => {
-    const hostnameRegex = /^([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)+(\.([a-zA-Z0-9]+(-[a-zA-Z0-9‌​]+)*))*$/;
+  var promise = new Promise(function(resolve, reject) {
+    var hostnameRegex = /^([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)+(\.([a-zA-Z0-9]+(-[a-zA-Z0-9‌​]+)*))*$/;
     if (hostnameRegex.test(hostname.toLowerCase())) {
       resolve(true);
     } else {
-      const error = hostname ? 'Project Name is Invalid.' : 'Project Name Cannot Be Blank.';
+      var error = hostname ? 'Project Name is Invalid.' : 'Project Name Cannot Be Blank.';
       reject(error);
     }
-  }));
+  });
   return promise;
 }
 
@@ -187,15 +186,15 @@ function validateHostname(hostname) {
  * @return {promise} resolves with validity boolean if passes check, rejects with error message if fails.
  */
 function validateCMSType(cmsType) {
-  const promise = new Promise(((resolve, reject) => {
-    const cmsString = cmsType.toLowerCase();
+  var promise = new Promise(function(resolve, reject) {
+    var cmsString = cmsType.toLowerCase();
     if (cmsString === 'wordpress' || cmsString === 'drupal7' || cmsString === 'drupal8') {
       resolve(true);
     } else {
-      const error = cmsType ? 'CMS Type is Invalid.' : 'Please select a CMS type.';
+      var error = cmsType ? 'CMS Type is Invalid.' : 'Please select a CMS type.';
       reject(error);
     }
-  }));
+  });
   return promise;
 }
 
@@ -203,11 +202,11 @@ function validateCMSType(cmsType) {
  * Checks if site has an existing configuration
  */
 function checkIfExistingConfig(path) {
-  const promise = new Promise(((resolve, reject) => {
+  var promise = new Promise(function(resolve, reject) {
     try {
       function checkMessages(messages) {
         if (messages.includes('existing configuration')) {
-          const proceed = confirm(`An existing DDEV configuration was found in ${path}. By proceeding, the existing configuration will be updated and replaced.`);
+          var proceed = confirm("An existing DDEV configuration was found in " + path + ". By proceeding, the existing configuration will be updated and replaced.");
           if (proceed) {
             resolve(true);
           } else {
@@ -221,7 +220,7 @@ function checkIfExistingConfig(path) {
     } catch (err) {
       reject(err);
     }
-  }));
+  });
   return promise;
 }
 
@@ -231,16 +230,16 @@ function checkIfExistingConfig(path) {
  * @return {promise} resolves if path is read/writable, rejects with system error if not
  */
 function validateInstallPath(path) {
-  const promise = new Promise(((resolve, reject) => {
+  var promise = new Promise(function(resolve, reject) {
     distroUpdater.canReadAndWrite(path)
-      .then((output) => {
+      .then(function(output) {
         resolve(output);
       })
-      .catch((err) => {
-        err = err.toString().includes('ENOENT') ? 'Cannot find or write to the selected directory.' : err;
+      .catch(function(err) {
+        err = err.toString().includes('ENOENT') ? "Cannot find or write to the selected directory." : err;
         reject(err);
       });
-  }));
+  });
   return promise;
 }
 
@@ -252,18 +251,18 @@ function validateInstallPath(path) {
  */
 function validateDocroot(path, docroot) {
   if (docroot[0] !== '/') {
-    docroot = `/${docroot}`;
+    docroot = '/' + docroot;
   }
-  const promise = new Promise(((resolve, reject) => {
+  var promise = new Promise(function(resolve, reject) {
     distroUpdater.canReadAndWrite(path + docroot)
-      .then((output) => {
+      .then(function(output) {
         resolve(output);
       })
-      .catch((err) => {
-        err = err.toString().includes('ENOENT') ? 'Cannot find or write to specified docroot directory.' : err;
+      .catch(function(err) {
+        err = err.toString().includes('ENOENT') ? "Cannot find or write to specified docroot directory." : err;
         reject(err);
       });
-  }));
+  });
   return promise;
 }
 
@@ -274,8 +273,8 @@ function validateDocroot(path, docroot) {
  * @return {promise} resolves with tarball path if found, rejects with system error if not found
  */
 function getCMSTarballPath(cmsType, cmsPath) {
-  const promise = new Promise(((resolve, reject) => {
-    let targetCMS;
+  var promise = new Promise(function(resolve, reject) {
+    var targetCMS;
     switch (cmsType) {
       case 'wordpress':
         targetCMS = 'wordpress';
@@ -289,15 +288,15 @@ function getCMSTarballPath(cmsType, cmsPath) {
       default:
         throw 'No CMS selected';
     }
-    distroUpdater.getLocalDistros(cmsPath).then((files) => {
-      files.forEach((fileName) => {
+    distroUpdater.getLocalDistros(cmsPath).then(function(files) {
+      files.forEach(function(fileName) {
         if (fileName.indexOf(targetCMS) != -1) {
-          resolve(`${cmsPath}/${fileName}`);
+          resolve(cmsPath + '/' + fileName);
         }
       });
       reject('CMS archive not found in `~/.ddev/CMS`. Restarting the UI will attempt to redownload these files.');
-    });
-  }));
+    })
+  });
   return promise;
 }
 
@@ -308,30 +307,30 @@ function getCMSTarballPath(cmsType, cmsPath) {
  * @return {promise} resolves with the path to the files extracted from tarball, rejects with system error if not
  */
 function unpackCMSTarball(tarballPath, outputPath) {
-  const promise = new Promise(((resolve, reject) => {
-    fs.readdir(outputPath, (err, items) => {
+  var promise = new Promise(function(resolve, reject) {
+    fs.readdir(outputPath, function(err, items) {
       if (err && err.toString().includes('ENOENT')) {
-        fs.mkdir(outputPath, (err) => {
+        fs.mkdir(outputPath, function(err) {
           if (err) {
             reject(err);
           }
         });
       } else if (items.length > 0) {
-        reject(`The path ${outputPath} already exists and is not empty. Please select a new path or try a different project name`);
+        reject('The path ' + outputPath + ' already exists and is not empty. Please select a new path or try a different project name');
       }
     });
     try {
       tar.x({
         file: tarballPath,
         C: outputPath,
-        strip: 1,
-      }, '', () => {
+        strip: 1
+      }, '', function() {
         resolve(outputPath);
-      });
+      })
     } catch (err) {
       reject('Cannot extract base CMS file in `~/.ddev/CMS`. Restarting the UI will attempt to redownload them.');
     }
-  }));
+  });
   return promise;
 }
 
@@ -346,7 +345,7 @@ function validateNewProjectInputs(name, type, targetPath) {
   return Promise.all([
     validateHostname(name),
     validateCMSType(type),
-    validateInstallPath(targetPath),
+    validateInstallPath(targetPath)
   ]);
 }
 
@@ -361,7 +360,7 @@ function validateExistingFilesInputs(name, path, docroot) {
   return Promise.all([
     validateHostname(name),
     validateInstallPath(path),
-    validateDocroot(path, docroot),
+    validateDocroot(path, docroot)
   ]);
 }
 
@@ -373,19 +372,19 @@ function validateExistingFilesInputs(name, path, docroot) {
  * @return {promise} resolves with path to new site docroot, rejects with error returned from any failed called function
  */
 function extractCMSImageToTargetPath(siteName, cmsType, cmsPath, targetFolder) {
-  const promise = new Promise(((resolve, reject) => {
-    getCMSTarballPath(cmsType, cmsPath).then((CMSTarballPath) => {
-      targetFolder = `${targetFolder}/${siteName}`;
-      unpackCMSTarball(CMSTarballPath, targetFolder).then((unzippedPath) => {
-        resolve(unzippedPath);
-      }).catch((err) => {
+  var promise = new Promise(function(resolve, reject) {
+    getCMSTarballPath(cmsType, cmsPath).then(function(CMSTarballPath) {
+        targetFolder = targetFolder + "/" + siteName;
+        unpackCMSTarball(CMSTarballPath, targetFolder).then(function(unzippedPath) {
+          resolve(unzippedPath);
+        }).catch(function(err) {
+          reject(err);
+        });
+      })
+      .catch(function(err) {
         reject(err);
       });
-    })
-      .catch((err) => {
-        reject(err);
-      });
-  }));
+  });
   return promise;
 }
 
@@ -397,9 +396,9 @@ function extractCMSImageToTargetPath(siteName, cmsType, cmsPath, targetFolder) {
  * @return {promise} resolves with a successful terminal output from ddev config, rejects with ddev error output
  */
 function configureSite(siteName, workingPath, docroot) {
-  const promise = new Promise(((resolve, reject) => {
+  var promise = new Promise(function(resolve, reject) {
     ddevShell.config(workingPath, siteName, docroot, resolve, reject);
-  }));
+  });
   return promise;
 }
 
@@ -409,9 +408,9 @@ function configureSite(siteName, workingPath, docroot) {
  * @return {promise} resolves with a successful terminal output from ddev start, rejects with ddev error output
  */
 function startSite(workingPath) {
-  const promise = new Promise(((resolve, reject) => {
+  var promise = new Promise(function(resolve, reject) {
     ddevShell.start(workingPath, resolve, reject);
-  }));
+  });
   return promise;
 }
 
@@ -421,13 +420,13 @@ function startSite(workingPath) {
  * @param {string} projectPath
  */
 function prepopulateProjectName(projectPath) {
-  const folderName = projectPath.split('/').pop();
-  if (validateHostname(folderName).then(() => {
-    $('#existing-project-name').val(folderName);
-  }).catch((err) => {
-    // silently fail, to be consistent with CLI, we simply do not prepoulate if invalid hostname
-    console.log(err);
-  }));
+  var folderName = projectPath.split('/').pop();
+  if (validateHostname(folderName).then(function() {
+      $('#existing-project-name').val(folderName);
+    }).catch(function(err) {
+      //silently fail, to be consistent with CLI, we simply do not prepoulate if invalid hostname
+      console.log(err);
+    }));
 }
 
 /**
@@ -437,8 +436,8 @@ function prepopulateProjectName(projectPath) {
  * @param targetPath {string} path to unpack CMS and install site
  */
 function addCMS(name, type, targetPath) {
-  let cmsPath = '~/.ddev/CMS';
-  let workingPath = cmsPath;
+  var cmsPath = "~/.ddev/CMS";
+  var workingPath = cmsPath;
   cmsPath = cmsPath.replace('~', os.homedir());
   showLoadingScreen(true);
   validateNewProjectInputs(name, type, targetPath)
@@ -457,7 +456,7 @@ function addCMS(name, type, targetPath) {
     })
     .then(() => {
       showLoadingScreen(true, 'Starting Project');
-      return startSite(workingPath);
+      return startSite(workingPath)
     })
     .then((stdout) => {
       if (stdout.toString().indexOf('Starting environment') != -1) {
@@ -479,7 +478,9 @@ function addCMS(name, type, targetPath) {
 function addCMSFromExisting(name, targetPath, docroot = '') {
   showLoadingScreen(true);
   validateExistingFilesInputs(name, targetPath, docroot)
-    .then(() => checkIfExistingConfig(targetPath))
+    .then(() => {
+      return checkIfExistingConfig(targetPath);
+    })
     .then(() => {
       showLoadingScreen(true, 'Configuring Project');
       return configureSite(name, targetPath, docroot);
@@ -490,7 +491,7 @@ function addCMSFromExisting(name, targetPath, docroot = '') {
     })
     .then(() => {
       showLoadingScreen(true, 'Starting Project');
-      return startSite(targetPath);
+      return startSite(targetPath)
     })
     .then((stdout) => {
       if (stdout.toString().indexOf('Starting environment') != -1) {
@@ -510,33 +511,33 @@ function init() {
   $('body').append(bootstrapModal.createModal('addOptionsDialog', 'Choose a Starting Point', addSiteOptionsModalBody));
   $('body').append(bootstrapModal.createModal('distroModal', 'Create a New Project', createSiteModalBody, createSiteModalFooter));
   $('body').append(bootstrapModal.createModal('existingFilesModal', 'Create a Project From Existing Files', createSiteExistingModalBody, createSiteExistingModalFooter));
-  $(document).on('click', '.add', () => {
+  $(document).on('click', '.add', function() {
     resetAddModal();
     alert('In order to add a new project, DDEV requires elevated permissions to modify your Hosts file. You may be prompted for your username and password to continue.');
-    const command = 'version';
+    var command = 'version';
     ddevShell.sudo(command)
-      .then(() => {
+      .then(function() {
         $('#addOptionsDialog').modal();
       })
-      .catch((err) => {
+      .catch(function(err) {
         alert(err);
       });
   });
-  $(document).on('click', '.start-from-template', () => {
+  $(document).on('click', '.start-from-template', function() {
     resetAddModal();
     $('#addOptionsDialog').modal('hide');
     $('#distroModal').modal();
   });
 
-  $(document).on('click', '.start-from-files', () => {
+  $(document).on('click', '.start-from-files', function() {
     resetAddModal();
     $('#addOptionsDialog').modal('hide');
     $('#existingFilesModal').modal();
   });
 
-  $(document).on('click', '.select-path-folder', () => {
-    const path = dialog.showOpenDialog({
-      properties: ['openDirectory'],
+  $(document).on('click', '.select-path-folder', function() {
+    var path = dialog.showOpenDialog({
+      properties: ['openDirectory']
     });
     if (path) {
       $('.selected-path-text').val(path[0]);
@@ -545,44 +546,44 @@ function init() {
     }
   });
 
-  $(document).on('click', '.select-docroot-folder', () => {
-    const projectRoot = $('.selected-path-text').val();
-    const path = dialog.showOpenDialog({
+  $(document).on('click', '.select-docroot-folder', function() {
+    var projectRoot = $('.selected-path-text').val();
+    var path = dialog.showOpenDialog({
       defaultPath: projectRoot,
-      properties: ['openDirectory'],
+      properties: ['openDirectory']
     });
     if (path) {
       if (path[0].includes(projectRoot)) {
         $('.selected-docroot-text').val(path[0]);
       } else {
         document.activeElement.blur();
-        showErrorScreen(true, 'Docroot must be in the selected project folder.');
+        showErrorScreen(true, "Docroot must be in the selected project folder.");
       }
     }
   });
 
-  $(document).on('click', '.tile img', function () {
+  $(document).on('click', '.tile img', function() {
     $('#appType').val($(this).data('type')).trigger('change');
   });
-  $(document).on('change', '#appType', function () {
+  $(document).on('change', '#appType', function() {
     $('.tile img').removeClass('active');
     if ($(this).val()) {
-      $(`.${$(this).val()}`).addClass('active');
+      $('.' + $(this).val()).addClass('active');
     }
   });
 
-  $(document).on('click', '.create-site', () => {
-    const type = $('#appType').val();
-    const targetPath = $('.selected-path-text').val();
-    const name = $('#site-name').val();
+  $(document).on('click', '.create-site', function() {
+    var type = $('#appType').val();
+    var targetPath = $('.selected-path-text').val();
+    var name = $('#site-name').val();
     addCMS(name, type, targetPath);
     return false;
   });
 
-  $(document).on('click', '.create-site-from-existing', () => {
-    const name = $('#existing-project-name').val();
-    const path = $('#existing-project-path').val();
-    let docroot = $('#existing-project-docroot').val();
+  $(document).on('click', '.create-site-from-existing', function() {
+    var name = $('#existing-project-name').val();
+    var path = $('#existing-project-path').val();
+    var docroot = $('#existing-project-docroot').val();
     docroot = docroot.replace(path, '');
     if (docroot[0] === '/') {
       docroot = docroot.substr(1);
