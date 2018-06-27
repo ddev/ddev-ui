@@ -26,15 +26,19 @@ stages:
       - run:
           name: Homebrew install of node/wine
           command: |
-            brew upgrade node || true
+            brew install nvm || true
+            mkdir ~/.nvm
+            nvm install --lts || true
+            nvm use node
             brew install wine || true
             brew unlink wine && brew link --overwrite wine
-            brew unlink node && brew link --overwrite node
+            brew unlink nvm && brew link --overwrite nvm
 
       - save-cache:
           key: homebrew-v3-{{ checksum "/tmp/info.txt" }}
           paths:
-            - /usr/local/Cellar/node
+            - /usr/local/Cellar/nvm
+            - ~/.nvm/versions/node
             - /usr/local/Cellar/wine
 
       - run:
