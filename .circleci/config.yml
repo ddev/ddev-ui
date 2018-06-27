@@ -24,10 +24,18 @@ stages:
             - homebrew-v3-
 
       - run:
-          name: Homebrew install of node/wine
+          name: Homebrew install of nvm/wine
           command: |
+            brew install wine || true
             brew install nvm || true
             mkdir ~/.nvm
+            export NVM_DIR="$HOME/.nvm" . "$(brew --prefix nvm)/nvm.sh" >> $BASH_ENV
+            brew unlink wine && brew link --overwrite wine
+            brew unlink nvm && brew link --overwrite nvm
+
+      - run:
+          name: NVM install of node
+          command: |
             nvm install --lts || true
             nvm use node
             brew install wine || true
