@@ -29,7 +29,8 @@ stages:
             brew install wine || true
             brew install nvm || true
             mkdir ~/.nvm
-            export NVM_DIR="$HOME/.nvm" . "$(brew --prefix nvm)/nvm.sh" >> $BASH_ENV
+            export NVM_DIR="$HOME/.nvm" >> $BASH_ENV
+            source $NVM_DIR/nvm.sh >> $BASH_ENV
             brew unlink wine && brew link --overwrite wine
             brew unlink nvm && brew link --overwrite nvm
 
@@ -38,9 +39,6 @@ stages:
           command: |
             nvm install --lts || true
             nvm use node
-            brew install wine || true
-            brew unlink wine && brew link --overwrite wine
-            brew unlink nvm && brew link --overwrite nvm
 
       - save-cache:
           key: homebrew-v3-{{ checksum "/tmp/info.txt" }}
