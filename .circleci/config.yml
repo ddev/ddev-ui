@@ -29,7 +29,7 @@ stages:
             brew install wine || true
             brew install nvm || true
             mkdir ~/.nvm
-            echo 'export NVM_DIR="$HOME/.nvm" >> $BASH_ENV
+            echo export NVM_DIR="$HOME/.nvm" >> $BASH_ENV
             source "$(brew --prefix nvm)/nvm.sh"
             brew unlink wine && brew link --overwrite wine
             brew unlink nvm && brew link --overwrite nvm
