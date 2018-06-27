@@ -29,13 +29,12 @@ stages:
             brew install wine || true
             brew install node@8 || true
             brew unlink wine && brew link --overwrite wine
-            brew unlink nvm && brew link --overwrite nvm
+            brew unlink node && brew link --overwrite node
 
       - save-cache:
           key: homebrew-v3-{{ checksum "/tmp/info.txt" }}
           paths:
-            - /usr/local/Cellar/nvm
-            - ~/.nvm/versions/node
+            - /usr/local/Cellar/node
             - /usr/local/Cellar/wine
 
       - run:
