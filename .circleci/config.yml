@@ -6,7 +6,6 @@ stages:
 
     environment:
       ARTIFACTS: /artifacts
-      BASH_ENV: "$HOME/.nvm/nvm.sh"
 
     working_directory: ~/ddev-ui
 
