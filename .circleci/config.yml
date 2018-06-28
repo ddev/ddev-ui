@@ -25,13 +25,16 @@ stages:
             - homebrew-v3-
 
       - run:
-          name: Install of nvm/node
+          name: Install of nvm
           command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash || true
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+            
+      - run:
+          name: Install of node lts / npm latest / yarn latest
+          command: |
             nvm install --lts || true
             nvm use lts/* && nvm alias default lts/* || true
-            npm install -g npm
-            npm install -g yarn
+            npm install -g npm && npm install -g yarn
             
       - run:
           name: Homebrew install of wine
