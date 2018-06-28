@@ -6,7 +6,7 @@ stages:
 
     environment:
       ARTIFACTS: /artifacts
-      BASH_ENV: "~/.nvm/nvm.sh"
+      BASH_ENV: "$HOME/.nvm/nvm.sh"
 
     working_directory: ~/ddev-ui
 
@@ -30,13 +30,12 @@ stages:
             curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
             
       - run:
-          name: Install of node lts / npm latest / yarn latest
+          name: Install of node --lts via nvm
           command: |
             nvm install --lts || true
-            nvm use stable || true
-            nvm alias default stable || true
-            npm install -g npm && npm install -g yarn
-            
+            nvm use lts/* || true
+            nvm alias default lts/* || true
+                        
       - run:
           name: Homebrew install of wine
           command: |
