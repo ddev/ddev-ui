@@ -27,11 +27,12 @@ stages:
           name: Install of nvm/node
           command: |
             curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash || true
-            npm install -g npm || true
-            source ~/.bashrc || true
+            echo 'export NVM_DIR=$HOME/.nvm' >> $BASH_ENV
+            echo 'source $NVM_DIR/nvm.sh' >> $BASH_ENV
             nvm install --lts || true
-            nvm use lts/* && nvm alias default lts/*
-
+            nvm use lts/* && nvm alias default lts/* || true
+            npm install -g npm
+            
       - run:
           name: Homebrew install of wine
           command: |
