@@ -26,23 +26,21 @@ stages:
       - run:
           name: Install of nvm/node
           command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-            source ~/.bashrc
-            nvm install --lts
-            nvm use lts/*
-            nvm alias default lts/*
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash || true
+            npm install -g npm || true
+            source ~/.bashrc || true
+            nvm install --lts || true
+            nvm use lts/* && nvm alias default lts/*
 
       - run:
           name: Homebrew install of wine
           command: |
             brew install wine || true
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
             brew unlink wine && brew link --overwrite wine
 
       - save-cache:
           key: homebrew-v3-{{ checksum "/tmp/info.txt" }}
           paths:
-            - /usr/local/Cellar/node
             - /usr/local/Cellar/wine
 
       - run:
