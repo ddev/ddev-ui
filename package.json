@@ -9,12 +9,10 @@
     "email": "support@drud.com"
   },
   "license": "Apache-2.0",
-  "licenses": [
-    {
-      "type": "Apache-2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0"
-    }
-  ],
+  "licenses": [{
+    "type": "Apache-2.0",
+    "url": "http://www.apache.org/licenses/LICENSE-2.0"
+  }],
   "scripts": {
     "test": "mocha --require babel-register --require ignore-styles",
     "start": "electron .",
@@ -31,8 +29,7 @@
         "width": 600,
         "height": 360
       },
-      "contents": [
-        {
+      "contents": [{
           "x": 150,
           "y": 135
         },
@@ -99,5 +96,9 @@
     "tar": "^4.1.1",
     "tarball-extract": "0.0.6",
     "xml2js": "^0.4.19"
+  },
+  "resolutions": {
+    "node-sass/**/request": "^2.9.0",
+    "node-sass/**/hoek": "^5.0.3"
   }
 }
