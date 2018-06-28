@@ -30,11 +30,11 @@ stages:
             curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
             
       - run:
-          name: Install of node --lts via nvm
+          name: Homebrew install of node --lts
           command: |
-            nvm install --lts || true
-            nvm use lts/* || true
-            nvm alias default lts/* || true
+            brew install node@8 || true
+            brew unlink node || true
+            brew link --overwrite node@8 || true
                         
       - run:
           name: Homebrew install of wine
