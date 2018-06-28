@@ -32,9 +32,9 @@ stages:
       - run:
           name: Install of node lts / npm latest / yarn latest
           command: |
-            nvm install --lts
-            nvm use stable
-            nvm alias default stable
+            nvm install --lts || true
+            nvm use stable || true
+            nvm alias default stable || true
             npm install -g npm && npm install -g yarn
             
       - run:
