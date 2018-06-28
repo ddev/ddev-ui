@@ -16,7 +16,7 @@ stages:
           name: xquartz setup
           command: brew cask install xquartz  # dependency of wine
 
-      - run: brew update && brew info --json=v1 node >/tmp/info.txt && brew info --json=v1 wine >>/tmp/info.txt
+      - run: brew update && brew info --json=v1 wine >>/tmp/info.txt
 
       - restore_cache:
           keys:
@@ -24,12 +24,20 @@ stages:
             - homebrew-v3-
 
       - run:
-          name: Homebrew install of node/wine
+          name: Install of nvm/node
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+            source ~/.bashrc
+            nvm install --lts
+            nvm use lts/*
+            nvm alias default lts/*
+
+      - run:
+          name: Homebrew install of wine
           command: |
             brew install wine || true
-            brew install node@8 || true
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
             brew unlink wine && brew link --overwrite wine
-            brew unlink node && brew link --overwrite node
 
       - save-cache:
           key: homebrew-v3-{{ checksum "/tmp/info.txt" }}
