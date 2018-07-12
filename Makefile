@@ -86,7 +86,7 @@ windows: appsetup
 
 appsetup: package.json
 	yarn install
-	yarn run lint
+	# yarn run lint
 
 clean:
 	rm -rf js/dist node_modules
