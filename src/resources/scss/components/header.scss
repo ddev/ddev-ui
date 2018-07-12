@@ -1,10 +1,8 @@
-// @import "../common/variables.scss";
-
 /*
   Header styles
  */
 .navbar {
-  background-color: $dark;
+  background-color: color("dark");
 }
 
 .ddev-logo {

@@ -1,5 +1,3 @@
-// @import "../common/variables.scss";
-
 /*
   All bootstrap modal overrides
  */
@@ -8,7 +6,7 @@
   Header
  */
 .modal-header {
-  background-color: $dark;
+  background-color: color("dark");
 }
 
 /*
@@ -32,7 +30,7 @@
 }
 
 .second-option {
-  border-left: 1px solid $grey;
+  border-left: 1px solid color("grey");
 }
 
 .remove-option label {
@@ -107,23 +105,23 @@
 
 .loading-spinner {
   font-size: 150px !important;
-  color: $primary;
+  color: color("primary");
 }
 
 .error-icon {
-  color: $red;
+  color: color("red");
 }
 
 .loading-text {
   width: 55%;
   margin-left: 20px;
-  color: $primary;
+  color: color("primary");
   font-weight: bold;
   font-size: 20px;
 }
 
 .error-text {
-  color: $primary;
+  color: color("primary");
   font-weight: bold;
   font-size: 20px;
 }
@@ -133,5 +131,5 @@
  */
 
 .modal-footer {
-  background-color: $dark;
+  background-color: color("dark");
 }

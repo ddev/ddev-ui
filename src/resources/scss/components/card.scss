@@ -1,5 +1,3 @@
-// @import "../common/variables.scss";
-
 /*
   Project card styles
  */
@@ -9,12 +7,12 @@
  */
 .card.ddev-card .card-header,
 .card.ddev-card .card-footer {
-  background-color: $dark;
+  background-color: color("dark");
 }
 
 .card.ddev-card {
   text-align: center;
-  color: $dark;
+  color: color("dark");
 }
 
 /*
@@ -55,7 +53,7 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  background-color: $transparentDarkGrey;
+  background-color: rgba(100, 100, 100, 0.3);
 }
 
 /*
