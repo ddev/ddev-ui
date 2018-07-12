@@ -2,15 +2,18 @@
   Global styles and main container styles
  */
 
-@import "./common/variables.scss";
+@import "common/variables";
 
-// @import "~bootstrap/scss/bootstrap";
+// node modules
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/font-awesome/scss/font-awesome";
 
-@import "./common/globals.scss";
-@import "./common/typography.scss";
+// app styles
+@import "common/globals";
+@import "common/typography";
 
-@import "./components/buttons.scss";
-@import "./components/card.scss";
-@import "./components/footer.scss";
-@import "./components/header.scss";
-@import "./components/modals.scss";
+@import "components/buttons";
+@import "components/card";
+@import "components/footer";
+@import "components/header";
+@import "components/modals";

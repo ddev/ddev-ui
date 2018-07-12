@@ -2,9 +2,7 @@
 <html lang="en">
 
 <head>
-  <link rel="stylesheet" href="./resources/css/font-awesome.min.css">
-  <link rel="stylesheet" href="./resources/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="./resources/scss/main.scss">
+  <link rel="stylesheet" href="./resources/scss/main.scss">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 
@@ -18,7 +16,7 @@
   import { AppContainer } from 'react-hot-loader';
 
   const render = () => {
-    const App = require('./app').default;
+    const App = require('./components/app').default;
     ReactDOM.render(<AppContainer><App /></AppContainer>, document.getElementById('App'));
   }
 
