@@ -1,13 +1,13 @@
-var ddevShell = require('./ddev-shell');
-var electron = require('electron');
-require('../../scss/components/card.scss');
+const ddevShell = require('./ddev-shell');
+const electron = require('electron');
+// require('../../scss/components/card.scss');
 
 /**
  * TEMPLATE - generates markup for the placeholder "add/create site" card
  * @returns {string} - markup for add/create site card
  */
-function createAddCard(){
-    var markup = `<div class="column col-lg-3 col-md-4 col-sm-4">
+function createAddCard() {
+  const markup = `<div class="column col-lg-3 col-md-4 col-sm-4">
         <div class="ddev-card card add">
             <div class="card-header">
                 <h2><a href="#">Add/Create Project</a></h2>
@@ -24,7 +24,7 @@ function createAddCard(){
         </div>
     </div>`;
 
-    return markup;
+  return markup;
 }
 
 /**
@@ -33,18 +33,24 @@ function createAddCard(){
  * @returns {string} - markup for single ddev site card
  */
 function createCard(site) {
-    var markup = `<div class="column col-lg-3 col-md-4 col-sm-4 ` + site.status + `" data-path="` + site.approot + `" data-sitename="` + site.name + `">
+  const markup = `<div class="column col-lg-3 col-md-4 col-sm-4 ${
+    site.status
+  }" data-path="${site.approot}" data-sitename="${site.name}">
         <div class="ddev-card card">
             <div class="card-header">
-                <h2><a href="#" class="open-site" data-url="` + site.httpurl + `">` + site.name + `</a></h2>
+                <h2><a href="#" class="open-site" data-url="${site.httpurl}">${
+    site.name
+  }</a></h2>
             </div>
             <div class="card-body">
-                <a href="#" class="open-site" data-url="` + site.httpurl + `">
+                <a href="#" class="open-site" data-url="${site.httpurl}">
                     <div class="site-icon-container">
-                        <img class="site-icon" src="img/` + site.type + `.png" />
+                        <img class="site-icon" src="resources/img/${
+                          site.type
+                        }.png" />
                     </div>
                     <div class="card-status">
-                        <div>` + site.status + `</div>
+                        <div>${site.status}</div>
                     </div>
                 </a>
             </div>
@@ -57,49 +63,70 @@ function createCard(site) {
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item restartbtn" href="#">Restart</a>
-                <a class="dropdown-item removebtn" href="#" data-project-name="`+site.name+`" data-project-path="` + site.approot + `">Remove Project</a>
-                <a class="dropdown-item showfilesbtn" data-app-path="`+site.approot+`" href="#">Browse Local Files</a>
+                <a class="dropdown-item removebtn" href="#" data-project-name="${
+                  site.name
+                }" data-project-path="${site.approot}">Remove Project</a>
+                <a class="dropdown-item showfilesbtn" data-app-path="${
+                  site.approot
+                }" href="#">Browse Local Files</a>
               </div>
             </div>
         </div>
     </div>`;
 
-    return markup;
+  return markup;
 }
 
 /**
  * Initialization - hook UI and generate markup.
  */
-function init(){
-    $(document).on('click', '.startbtn', function () {
-        console.log('starting');
-        ddevShell.start($(this).closest('.column').data('path'), function (data) {
-            console.log(data)
-        }, function (error) {
-            console.log(error)
-        });
-    });
-    $(document).on('click', '.stopbtn', function () {
-        console.log('stopping');
-        ddevShell.stop($(this).closest('.column').data('path'), function (data) {
-        }, function (error) {
-            console.log(error)
-        });
-    });
-    $(document).on('click', '.restartbtn', function () {
-        console.log('restarting');
-        ddevShell.restart($(this).closest('.column').data('path'), function (data) {
-            console.log(data)
-        }, function (error) {
-            console.log(error)
-        });
-    });
-    $(document).on('click', '.showfilesbtn', function () {
-        electron.shell.showItemInFolder($(this).data('appPath'));
-    });
-		$(document).on('click', '.open-site', function () {
-			electron.shell.openExternal($(this).data('url'));
-		});
+function init() {
+  $(document).on('click', '.startbtn', function () {
+    console.log('starting');
+    ddevShell.start(
+      $(this)
+        .closest('.column')
+        .data('path'),
+      (data) => {
+        console.log(data);
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
+  });
+  $(document).on('click', '.stopbtn', function () {
+    console.log('stopping');
+    ddevShell.stop(
+      $(this)
+        .closest('.column')
+        .data('path'),
+      (data) => {},
+      (error) => {
+        console.log(error);
+      },
+    );
+  });
+  $(document).on('click', '.restartbtn', function () {
+    console.log('restarting');
+    ddevShell.restart(
+      $(this)
+        .closest('.column')
+        .data('path'),
+      (data) => {
+        console.log(data);
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
+  });
+  $(document).on('click', '.showfilesbtn', function () {
+    electron.shell.showItemInFolder($(this).data('appPath'));
+  });
+  $(document).on('click', '.open-site', function () {
+    electron.shell.openExternal($(this).data('url'));
+  });
 }
 
 module.exports.init = init;

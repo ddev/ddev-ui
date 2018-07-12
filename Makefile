@@ -86,10 +86,12 @@ windows: appsetup
 
 appsetup: package.json
 	yarn install
-	yarn run webpack
+	yarn run lint
 
 clean:
 	rm -rf js/dist node_modules
+	yarn install
 
 test:
-	yarn run test
+	# yarn run test
+	@echo "Skipping for Now"

@@ -1,8 +1,8 @@
 {
   "name": "ddev-ui",
   "description": "A GUI to complement the DDEV CLI",
-  "version": "v0.2.0-dev",
-  "main": "main.js",
+  "version": "v0.3.0-dev",
+  "main": "src/index.js",
   "homepage": "https://github.com/drud/ddev",
   "author": {
     "name": "DRUD Tech",
@@ -16,13 +16,15 @@
     }
   ],
   "scripts": {
-    "test": "mocha --require babel-register --require ignore-styles",
-    "start": "electron .",
-    "webpack-reload": "webpack --watch",
-    "webpack": "webpack",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "eslint --cache --color --ext .jsx,.js src",
     "build-linux": "electron-builder --linux --x64",
     "build-windows": "electron-builder --win",
-    "build-darwin": "electron-builder --mac"
+    "build-darwin": "electron-builder --mac",
+    "test": "mocha --require babel-register --require ignore-styles"
   },
   "build": {
     "appId": "ddev-ui",
@@ -55,52 +57,86 @@
       "icon": "build/icon.ico"
     }
   },
+  "config": {
+    "forge": {
+      "make_targets": {
+        "win32": [
+          "squirrel"
+        ],
+        "darwin": [
+          "zip"
+        ],
+        "linux": [
+          "deb",
+          "rpm"
+        ]
+      },
+      "electronPackagerConfig": {
+        "packageManager": "yarn"
+      },
+      "electronWinstallerConfig": {
+        "name": "ddev-ui"
+      },
+      "electronInstallerDebian": {},
+      "electronInstallerRedhat": {},
+      "github_repository": {
+        "owner": "",
+        "name": ""
+      },
+      "windowsStoreConfig": {
+        "packageName": "",
+        "name": "ddev-ui"
+      }
+    }
+  },
   "devDependencies": {
-    "babel-eslint": "^8.2.5",
-    "babel-preset-env": "^1.7.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-wildcard": "^5.0.0",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
-    "css-loader": "^0.28.11",
-    "electron": "^2.0.4",
+    "cross-env": "^5.1.4",
+    "electron": "^1.8.4",
     "electron-builder": "^20.19.2",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-loader": "^1.9.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-jsx-a11y": "^6.1.0",
-    "eslint-plugin-react": "^7.10.0",
+    "electron-forge": "^5.2.2",
+    "electron-prebuilt-compile": "1.8.4",
+    "eslint": "^3",
+    "eslint-config-airbnb": "^15",
+    "eslint-plugin-import": "^2",
+    "eslint-plugin-jsx-a11y": "^5",
+    "eslint-plugin-react": "^7",
     "file-loader": "^1.1.11",
     "ignore-styles": "^5.0.1",
-    "mock-fs": "^4.5.0",
-    "nock": "^9.4.1",
-    "node-sass": "^4.9.1",
-    "rewire": "^4.0.1",
+    "mocha": "^4.0.1",
+    "mock-fs": "^4.4.2",
+    "nock": "^9.1.3",
+    "node-sass": "^4.9.2",
+    "rewire": "^3.0.2",
     "sass-loader": "^7.0.3",
     "spawn-sync": "^2.0.0",
     "stub-spawn-once": "^2.3.0",
-    "style-loader": "^0.21.0",
-    "webpack": "^3.12.0",
-    "webpack-dev-server": "^2.11.2"
+    "webpack": "^4.16.0"
   },
   "dependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "babel-preset-es2015": "^6.24.1",
-    "bootstrap": "^4.1.1",
-    "compare-versions": "^3.3.0",
+    "bootstrap": "^4.1.0",
+    "compare-versions": "^3.1.0",
+    "electron-compile": "^6.4.2",
+    "electron-devtools-installer": "^2.1.0",
     "electron-is-dev": "^0.3.0",
+    "electron-squirrel-startup": "^1.0.0",
     "fix-path": "^2.1.0",
+    "font-awesome": "^4.7",
     "jquery": "^3.3.1",
+    "parse-git-config": "^2.0.2",
     "popper.js": "^1.14.3",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "prop-types": "^15.6.2",
+    "react": "^15.4.1",
+    "react-desktop": "^0.3.5",
+    "react-dom": "^15.4.1",
+    "react-hot-loader": "^3.0.0-beta.6",
     "request": "^2.87.0",
-    "sudo-prompt": "^8.2.0",
-    "tar": "^4.4.4",
+    "sudo-prompt": "^8.0.0",
+    "tar": "^4.1.1",
     "tarball-extract": "0.0.6",
     "xml2js": "^0.4.19"
-  },
-  "resolutions": {
-    "node-sass/**/request": "^2.9.0",
-    "node-sass/**/hoek": "^5.0.3"
   }
 }

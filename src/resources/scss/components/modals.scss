@@ -82,7 +82,8 @@
   Loading and error overlays
  */
 
-.loading-overlay, .error-overlay {
+.loading-overlay,
+.error-overlay {
   text-align: center;
   display: none;
   z-index: 3;
@@ -91,9 +92,9 @@
   position: absolute;
   height: 100%;
   width: 100%;
-  background-color: rgba(100,100,100,.8);
+  background-color: rgba(100, 100, 100, 0.8);
   align-items: center;
-  justify-content: center
+  justify-content: center;
 }
 
 .error-overlay {

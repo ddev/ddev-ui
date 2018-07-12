@@ -7,7 +7,8 @@
 /*
   Base styles
  */
-.card.ddev-card .card-header, .card.ddev-card .card-footer {
+.card.ddev-card .card-header,
+.card.ddev-card .card-footer {
   background-color: $dark;
 }
 
@@ -19,7 +20,7 @@
 /*
   Header
  */
-  //card-header class defined in boostrap base css
+//card-header class defined in boostrap base css
 
 /*
   Body
@@ -60,9 +61,9 @@
 /*
   Buttons and footer
  */
- .card.ddev-card .btn {
-   margin: 5px;
- }
+.card.ddev-card .btn {
+  margin: 5px;
+}
 
 .running .startbtn {
   display: none;
@@ -77,5 +78,5 @@
 }
 
 .add .card-footer {
-  height:73px;
+  height: 73px;
 }

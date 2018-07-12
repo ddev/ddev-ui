@@ -1,10 +1,10 @@
-@import "../common/variables.scss";
+// @import "../common/variables.scss";
 
 /*
   Global application wide styles and fonts
  */
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   background-color: $light;
   display: block !important;
 }
