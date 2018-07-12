@@ -2,9 +2,12 @@
   Header styles
  */
 .navbar {
-  background-color: color("dark");
+  // background-color: $dark;
+  display: block !important;
 }
 
 .ddev-logo {
-  height: 50px;
+  height: 35px;
+  margin-top: 0px;
+  float: right;
 }

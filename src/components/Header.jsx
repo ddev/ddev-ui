@@ -3,10 +3,10 @@ import React from 'react';
 class Header extends React.Component {
   render() {
     return (
-      <nav className="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+      <nav className="navbar fixed-top">
         <img
           alt="ddev logo"
-          src="resources/img/ddev_last.png"
+          src="resources/img/logo.svg"
           className="ddev-logo"
         />
       </nav>
