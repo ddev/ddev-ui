@@ -6,7 +6,7 @@ import Header from './Header';
 import Footer from './Footer';
 import Container from './Container';
 
-import { init } from './../ui.js';
+import { init } from './../modules/ui';
 
 window.$ = window.jQuery = require('jquery');
 
