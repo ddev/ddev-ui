@@ -31,7 +31,7 @@ const polygon = (
   </svg>
 );
 
-export default class extends React.Component {
+class App extends React.Component {
   constructor() {
     super();
     this.state = { selected: 1 };
@@ -65,3 +65,5 @@ export default class extends React.Component {
     );
   }
 }
+
+export default App;
