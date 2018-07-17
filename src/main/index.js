@@ -3,7 +3,9 @@ import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
-import { resolve as resolvePath } from 'app-root-path';
+import { resolve } from 'app-root-path';
+
+require('electron-reload')(resolve('./src/resources'));
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -23,7 +25,7 @@ const createWindow = async () => {
   });
 
   // and load the index.html of the app.
-  mainWindow.loadURL(`file://${resolvePath('./src/index.html')}`);
+  mainWindow.loadURL(`file://${resolve('./src/index.html')}`);
 
   // Open the DevTools.
   if (isDev) {

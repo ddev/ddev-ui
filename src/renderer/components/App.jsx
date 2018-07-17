@@ -3,8 +3,8 @@ import { Window } from "react-desktop/macOs";
 
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-// import Footer from './Footer';
-// import Container from './Container';
+import Footer from "./Footer";
+import Container from "./Container";
 
 import { init } from "./../modules/ui";
 
@@ -20,8 +20,9 @@ class App extends React.Component {
     return (
       <Window chrome padding="0px">
         <Header isFullscreen={this.state.isFullscreen} />
-        <h3>TEST</h3>
         <Sidebar />
+        <Container />
+        <Footer />
       </Window>
     );
   }

@@ -95,7 +95,6 @@
     "compare-versions": "3.1.x",
     "electron-devtools-installer": "2.1.x",
     "electron-is-dev": "0.3.x",
-    "electron-squirrel-startup": "1.0.x",
     "fix-path": "2.1.x",
     "font-awesome": "4.7.x",
     "jquery": "3.3.x",
@@ -109,7 +108,6 @@
     "request": "2.x",
     "sudo-prompt": "8.x",
     "tar": "4.4.x",
-    "tarball-extract": "0.0.x",
     "xml2js": "0.4.x"
   },
   "devDependencies": {
@@ -118,25 +116,15 @@
     "babel-plugin-transform-es2015-classes": "6.24.x",
     "babel-preset-env": "1.6.x",
     "babel-preset-react": "6.24.x",
-    "cross-env": "5.1.x",
+    "electron": "2.0.x",
     "electron-builder": "20.x",
     "electron-forge": "5.x",
     "electron-prebuilt-compile": "1.x",
-    "eslint": "3.x",
-    "eslint-config-airbnb": "15.x",
-    "eslint-plugin-import": "2.x",
-    "eslint-plugin-jsx-a11y": "5.x",
-    "eslint-plugin-react": "7.x",
-    "file-loader": "1.1.x",
-    "ignore-styles": "5.0.x",
+    "electron-reload": "^1.2.5",
     "mocha": "4.x",
     "mock-fs": "4.x",
     "nock": "9.x",
-    "node-sass": "4.9.x",
     "rewire": "3.x",
-    "sass-loader": "7.0.x",
-    "spawn-sync": "2.0.x",
-    "stub-spawn-once": "2.3.x",
-    "webpack": "4.x"
+    "stub-spawn-once": "2.3.x"
   }
 }
