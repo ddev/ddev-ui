@@ -5,8 +5,9 @@
 @import "common/variables";
 
 // node modules
-@import "node_modules/bootstrap/scss/bootstrap";
-@import "node_modules/font-awesome/scss/font-awesome";
+$fa-font-path: "~font-awesome/fonts";
+@import "~bootstrap/scss/bootstrap";
+@import "~font-awesome/scss/font-awesome";
 
 // app styles
 @import "common/globals";

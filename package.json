@@ -16,14 +16,10 @@
     }
   ],
   "scripts": {
-    "dev": "electron-webpack dev",
+    "start": "electron-webpack dev",
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
     "lint": "eslint --cache --color --ext .jsx,.js src",
     "build-linux": "electron-builder --linux --x64",
     "build-windows": "electron-builder --win",
@@ -92,8 +88,10 @@
     "xml2js": "0.4.x"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.54",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0-beta.54",
     "@babel/preset-react": "^7.0.0-beta.54",
+    "babel-plugin-root-import": "^6.1.0",
     "babel-plugin-transform-async-to-generator": "6.24.x",
     "babel-plugin-transform-class-properties": "6.24.x",
     "babel-plugin-transform-es2015-classes": "6.24.x",

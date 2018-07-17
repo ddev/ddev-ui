@@ -1,11 +1,10 @@
 import React from "react";
 import { Window } from "react-desktop/macOs";
-import path from "path";
 
 import "popper.js";
 import "bootstrap";
 
-import(`${__static}/scss/main.scss`);
+import "~/src/resources/scss/main.scss";
 
 window.$ = window.jQuery = require("jquery");
 
