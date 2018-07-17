@@ -3,10 +3,9 @@ import { Window } from "react-desktop/macOs";
 
 import "popper.js";
 import "bootstrap";
+window.$ = window.jQuery = require("jquery");
 
 import "~/src/resources/scss/main.scss";
-
-window.$ = window.jQuery = require("jquery");
 
 import Header from "./Header";
 import Sidebar from "./Sidebar";
@@ -25,11 +24,15 @@ class App extends React.Component {
   }
   render() {
     return (
-      <Window chrome padding="0px">
-        <Header />
-        <Sidebar />
-        <Container />
-        <Footer />
+      <Window chrome padding="0px" className="Window">
+        <div className="wrap">
+          <Header />
+          <section className="Main">
+            <Sidebar className="Sidebar" />
+            <Container />
+          </section>
+          <Footer />
+        </div>
       </Window>
     );
   }

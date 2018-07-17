@@ -2,27 +2,50 @@ const ddevShell = require("./ddev-shell");
 const electron = require("electron");
 // require('../../scss/components/card.scss');
 
+function renderIcon(status) {
+  // set default color
+  let color = "#00A079";
+
+  // determine server color based on status
+  switch (status) {
+    case "running":
+      color = "#00A079";
+      break;
+    case "stopped":
+      color = "#EF5941";
+      break;
+    default:
+      color = "#F3DD3E";
+      break;
+  }
+
+  const markup = `
+  <svg width="17" height="15" xmlns="http://www.w3.org/2000/svg" class="">
+    <path
+      d="M15.792 4.294H1.208A1.042 1.042 0 0 1 .167 3.253V1.169C.167.594.633.128 1.208.128h14.584c.575 0 1.041.466 1.041 1.041v2.084c0 .575-.466 1.041-1.041 1.041zM14.229 1.43a.781.781 0 1 0 0 1.562.781.781 0 0 0 0-1.562zm-2.083 0a.781.781 0 1 0 0 1.562.781.781 0 0 0 0-1.562zm3.646 8.073H1.208A1.042 1.042 0 0 1 .167 8.46V6.378c0-.576.466-1.042 1.041-1.042h14.584c.575 0 1.041.466 1.041 1.042V8.46c0 .575-.466 1.042-1.041 1.042zm-1.563-2.865a.781.781 0 1 0 0 1.563.781.781 0 0 0 0-1.563zm-2.083 0a.781.781 0 1 0 0 1.563.781.781 0 0 0 0-1.563zm3.646 8.073H1.208a1.042 1.042 0 0 1-1.041-1.042v-2.083c0-.575.466-1.042 1.041-1.042h14.584c.575 0 1.041.467 1.041 1.042v2.083c0 .576-.466 1.042-1.041 1.042zm-1.563-2.865a.781.781 0 1 0 0 1.563.781.781 0 0 0 0-1.563zm-2.083 0a.781.781 0 1 0 0 1.563.781.781 0 0 0 0-1.563z"
+      fillRule="nonzero"
+      fill=${color}
+    />
+  </svg>
+  `;
+
+  return markup;
+}
+
 /**
  * TEMPLATE - generates markup for the placeholder "add/create site" card
  * @returns {string} - markup for add/create site card
  */
 function createAddProject() {
-  const markup = `<div class="column">
-        <div class="ddev-card card add">
-            <div class="card-header">
-                <h2><a href="#">Add/Create Project</a></h2>
-            </div>
-            <div class="card-body">
-                <a href="#">
-                    <div class="add-site-icon" >
-                        <i class="fa fa-plus-circle" />
-                    </div>
-                </a>
-            </div>
-            <div class="card-footer">
-            </div>
+  const markup = `
+        <div class="add">
+          <a href="#">
+              <div class="add-site-icon" >
+                  <i class="fa fa-plus-circle" />
+              </div>
+          </a>
         </div>
-    </div>`;
+        `;
 
   return markup;
 }
@@ -33,44 +56,23 @@ function createAddProject() {
  * @returns {string} - markup for single ddev site card
  */
 function createProject(site) {
-  const markup = `<div class="column ${site.status}" data-path="${
-    site.approot
-  }" data-sitename="${site.name}">
-        <div class="ddev-card card">
-            <div class="card-header">
-                <h2><a href="#" class="open-site" data-url="${site.httpurl}">${
-    site.name
-  }</a></h2>
-            </div>
-            <div class="card-body">
-                <a href="#" class="open-site" data-url="${site.httpurl}">
-                    <div class="site-icon-container">
-                        <img class="site-icon" src="img/${site.type}.png" />
-                    </div>
-                    <div class="card-status">
-                        <div>${site.status}</div>
-                    </div>
-                </a>
-            </div>
-            <div class="card-footer">
-                <a class="btn btn-primary startbtn" href="#" role="button"><i class="fa fa-play" aria-hidden="true"></i></a>
-                <a class="btn btn-primary stopbtn" href="#" role="button"><i class="fa fa-stop" aria-hidden="true"></i></a>
-                <a class="btn btn-primary infobtn" href='#'><i class="fa fa-info" aria-hidden="true"></i></a>
-              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item restartbtn" href="#">Restart</a>
-                <a class="dropdown-item removebtn" href="#" data-project-name="${
-                  site.name
-                }" data-project-path="${site.approot}">Remove Project</a>
-                <a class="dropdown-item showfilesbtn" data-app-path="${
-                  site.approot
-                }" href="#">Browse Local Files</a>
-              </div>
-            </div>
-        </div>
-    </div>`;
+  const icon = renderIcon(site.status);
+  const markup = `<ListViewRow
+    height="40"
+    padding="5px 10px"
+    verticalAlignment="center"
+    class="ListViewRow"
+  >
+    <Text class="column w-100 pl-3 my-2" data-sitename="${site.name}">
+      <a class="infobtn align-items-center d-flex flex-row w-100" href='#'>
+        ${icon}
+        <span class="pl-3">
+          <h3>${site.name}</h3>
+          <p>${site.status}</p>
+        </span>
+      </a>
+    </Text>
+  </ListViewRow>`;
 
   return markup;
 }
@@ -129,4 +131,5 @@ function init() {
 
 module.exports.init = init;
 module.exports.createProject = createProject;
+module.exports.renderIcon = renderIcon;
 module.exports.createAddProject = createAddProject;

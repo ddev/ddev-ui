@@ -3,31 +3,6 @@ const electron = require("electron");
 // require('../../scss/components/card.scss');
 
 /**
- * TEMPLATE - generates markup for the placeholder "add/create site" card
- * @returns {string} - markup for add/create site card
- */
-function createAddCard() {
-  const markup = `<div class="column col-lg-3 col-md-4 col-sm-4">
-        <div class="ddev-card card add">
-            <div class="card-header">
-                <h2><a href="#">Add/Create Project</a></h2>
-            </div>
-            <div class="card-body">
-                <a href="#">
-                    <div class="add-site-icon" >
-                        <i class="fa fa-plus-circle" />
-                    </div>
-                </a>
-            </div>
-            <div class="card-footer">
-            </div>
-        </div>
-    </div>`;
-
-  return markup;
-}
-
-/**
  * TEMPLATE - generates markup for a single site
  * @param site {object} - ddev site object parsed from `ddev list` raw output array
  * @returns {string} - markup for single ddev site card
@@ -129,4 +104,3 @@ function init() {
 
 module.exports.init = init;
 module.exports.createCard = createCard;
-module.exports.createAddCard = createAddCard;

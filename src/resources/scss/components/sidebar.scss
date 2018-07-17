@@ -1,10 +1,10 @@
 .projectSidebar {
-  flex: none !important;
+  // flex: none !important;
   background: #131e29;
   color: #fff;
-  margin: -24px 20px -44px -20px;
-  width: 265px;
-  min-height: 95vh;
+  // margin: -24px 20px -44px -20px;
+  // width: 265px;
+  // min-height: 95vh;
 }
 .ListViewSectionHeader,
 .ListViewHeader {
@@ -17,12 +17,17 @@
   align-items: center;
 
   h1 {
-    margin-left: 25px;
+    // margin-left: 25px;
     color: #fff;
   }
 }
 .ListViewFooter {
   background: transparent;
+}
+
+.projectSidebar .ListViewRow {
+  display: flex;
+  align-items: left;
 }
 .projectSidebar .ListViewRow h3 {
   font-weight: 11px;
@@ -32,4 +37,5 @@
 .projectSidebar .ListViewRow p {
   font-weight: 9px;
   color: #fff;
+  margin-bottom: 0px;
 }

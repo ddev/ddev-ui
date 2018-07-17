@@ -3,10 +3,11 @@
  */
 
 .TitleBar {
-  // display: none !important;
+  position: fixed;
+  flex: 0 0 auto;
 }
 .ddev-logo {
-  height: 35px;
-  margin-top: 0px;
-  float: right;
+  // height: 35px;
+  // margin-top: 0px;
+  // float: right;
 }
