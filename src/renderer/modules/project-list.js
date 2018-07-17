@@ -1,6 +1,5 @@
 const ddevShell = require("./ddev-shell");
 const electron = require("electron");
-// require('../../scss/components/card.scss');
 
 function renderIcon(status) {
   // set default color

@@ -11,9 +11,6 @@ const siteCard = require("./site-cards");
 const describeSite = require("./describe-site");
 const removeProject = require("./remove-project");
 
-// require('../../scss/main.scss');
-// require('./resources/scss/main.scss');
-
 /**
  * (re)renders UI cards and status messaging from a ddev list raw output
  * @param list

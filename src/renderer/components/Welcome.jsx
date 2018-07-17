@@ -1,5 +1,7 @@
 import React from "react";
 import { Window } from "react-desktop/macOs";
+import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
 
 import "popper.js";
 import "bootstrap";
@@ -28,7 +30,7 @@ class App extends React.Component {
         <div className="wrap">
           <Header />
           <section className="Main">
-            <Sidebar className="Sidebar" />
+            <NavLink to="/app">TESTING</NavLink>
             <Container />
           </section>
           <Footer />

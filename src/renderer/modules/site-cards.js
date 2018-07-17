@@ -1,6 +1,5 @@
 const ddevShell = require("./ddev-shell");
 const electron = require("electron");
-// require('../../scss/components/card.scss');
 
 /**
  * TEMPLATE - generates markup for a single site

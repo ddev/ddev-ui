@@ -1,6 +1,9 @@
 "use strict";
 
 import { app, BrowserWindow } from "electron";
+import installExtension, {
+  REACT_DEVELOPER_TOOLS
+} from "electron-devtools-installer";
 import * as path from "path";
 import { format as formatUrl } from "url";
 
@@ -9,7 +12,7 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow;
 
-function createMainWindow() {
+const createMainWindow = async () => {
   const window = new BrowserWindow({
     width: 800,
     height: 600,
@@ -17,6 +20,7 @@ function createMainWindow() {
   });
 
   if (isDevelopment) {
+    await installExtension(REACT_DEVELOPER_TOOLS);
     window.webContents.openDevTools();
   }
 
@@ -44,7 +48,7 @@ function createMainWindow() {
   });
 
   return window;
-}
+};
 
 // quit application when all windows are closed
 app.on("window-all-closed", () => {

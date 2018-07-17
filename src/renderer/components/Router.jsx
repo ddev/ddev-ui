@@ -1,14 +1,16 @@
 import React from "react";
-import { HashRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
+import Welcome from "./Welcome";
 import App from "./App";
 
 const Router = () => (
-  <HashRouter>
+  <BrowserRouter>
     <Switch>
-      <Route exact path="/" component={App} />
+      <Route exact path="/" component={Welcome} />
+      <Route forceRefresh path="/app" component={App} />
     </Switch>
-  </HashRouter>
+  </BrowserRouter>
 );
 
 // export default Router;
