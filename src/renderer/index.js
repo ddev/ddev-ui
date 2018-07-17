@@ -1,18 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { AppContainer } from 'react-hot-loader';
+import { render } from 'react-dom';
+import Router from './renderer/components/Router';
 
-const render = () => {
-  const App = require('./renderer/components/app').default;
-  ReactDOM.render(
-    <AppContainer>
-      <App />
-    </AppContainer>,
-    document.getElementById('App'),
-  );
-};
+import 'popper.js';
+import 'bootstrap';
 
-render();
-if (module.hot) {
-  module.hot.accept(render);
-}
+window.$ = window.jQuery = require('jquery');
+
+render(<Router />, document.getElementById('App'));

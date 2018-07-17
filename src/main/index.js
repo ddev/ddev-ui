@@ -9,9 +9,10 @@ import { resolve as resolvePath } from 'app-root-path';
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-const isDevMode = process.execPath.match(/[\\/]electron/);
+// const isDevMode = process.execPath.match(/[\\/]electron/);
+const isDev = require('electron-is-dev');
 
-if (isDevMode) enableLiveReload({ strategy: 'react-hmr' });
+if (isDev) enableLiveReload({ strategy: 'react-hmr' });
 
 const createWindow = async () => {
   // Create the browser window.
@@ -25,7 +26,7 @@ const createWindow = async () => {
   mainWindow.loadURL(`file://${resolvePath('./src/index.html')}`);
 
   // Open the DevTools.
-  if (isDevMode) {
+  if (isDev) {
     await installExtension(REACT_DEVELOPER_TOOLS);
     mainWindow.webContents.openDevTools();
   }

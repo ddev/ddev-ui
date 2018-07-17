@@ -15,7 +15,9 @@
         ],
         "plugins": [
           "transform-async-to-generator",
-          "wildcard"
+          "transform-class-properties",
+          "transform-es2015-classes",
+          "react-hot-loader/babel"
         ],
         "sourceMaps": "inline"
       }
@@ -35,7 +37,8 @@
         ],
         "plugins": [
           "transform-async-to-generator",
-          "wildcard"
+          "transform-class-properties",
+          "transform-es2015-classes"
         ],
         "sourceMaps": "none"
       }
