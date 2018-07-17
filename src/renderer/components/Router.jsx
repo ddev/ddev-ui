@@ -1,8 +1,7 @@
-import React from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
-import { hot } from 'react-hot-loader';
+import React from "react";
+import { HashRouter, Route, Switch } from "react-router-dom";
 
-import App from './App';
+import App from "./App";
 
 const Router = () => (
   <HashRouter>
@@ -13,4 +12,4 @@ const Router = () => (
 );
 
 // export default Router;
-export default hot(module)(Router);
+export default Router;

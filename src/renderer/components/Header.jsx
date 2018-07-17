@@ -3,10 +3,6 @@ import { TitleBar, Toolbar } from "react-desktop/macOs";
 import PropTypes from "prop-types";
 
 class Header extends React.Component {
-  static propTypes = {
-    fishes: PropTypes.object
-  };
-
   constructor() {
     super();
     this.state = { isFullscreen: false };
@@ -25,11 +21,7 @@ class Header extends React.Component {
           this.setState({ isFullscreen: !this.state.isFullscreen })
         }
       >
-        <img
-          alt="ddev logo"
-          src="resources/img/logo.svg"
-          className="ddev-logo"
-        />
+        <img alt="ddev logo" src="/img/Logo.svg" className="ddev-logo" />
       </TitleBar>
     );
   }

@@ -1,5 +1,5 @@
-const ddevShell = require('./ddev-shell');
-const electron = require('electron');
+const ddevShell = require("./ddev-shell");
+const electron = require("electron");
 // require('../../scss/components/card.scss');
 
 /**
@@ -45,9 +45,7 @@ function createCard(site) {
             <div class="card-body">
                 <a href="#" class="open-site" data-url="${site.httpurl}">
                     <div class="site-icon-container">
-                        <img class="site-icon" src="resources/img/${
-                          site.type
-                        }.png" />
+                        <img class="site-icon" src="img/${site.type}.png" />
                     </div>
                     <div class="card-status">
                         <div>${site.status}</div>
@@ -81,51 +79,51 @@ function createCard(site) {
  * Initialization - hook UI and generate markup.
  */
 function init() {
-  $(document).on('click', '.startbtn', function () {
-    console.log('starting');
+  $(document).on("click", ".startbtn", function() {
+    console.log("starting");
     ddevShell.start(
       $(this)
-        .closest('.column')
-        .data('path'),
-      (data) => {
+        .closest(".column")
+        .data("path"),
+      data => {
         console.log(data);
       },
-      (error) => {
+      error => {
         console.log(error);
-      },
+      }
     );
   });
-  $(document).on('click', '.stopbtn', function () {
-    console.log('stopping');
+  $(document).on("click", ".stopbtn", function() {
+    console.log("stopping");
     ddevShell.stop(
       $(this)
-        .closest('.column')
-        .data('path'),
-      (data) => {},
-      (error) => {
+        .closest(".column")
+        .data("path"),
+      data => {},
+      error => {
         console.log(error);
-      },
+      }
     );
   });
-  $(document).on('click', '.restartbtn', function () {
-    console.log('restarting');
+  $(document).on("click", ".restartbtn", function() {
+    console.log("restarting");
     ddevShell.restart(
       $(this)
-        .closest('.column')
-        .data('path'),
-      (data) => {
+        .closest(".column")
+        .data("path"),
+      data => {
         console.log(data);
       },
-      (error) => {
+      error => {
         console.log(error);
-      },
+      }
     );
   });
-  $(document).on('click', '.showfilesbtn', function () {
-    electron.shell.showItemInFolder($(this).data('appPath'));
+  $(document).on("click", ".showfilesbtn", function() {
+    electron.shell.showItemInFolder($(this).data("appPath"));
   });
-  $(document).on('click', '.open-site', function () {
-    electron.shell.openExternal($(this).data('url'));
+  $(document).on("click", ".open-site", function() {
+    electron.shell.openExternal($(this).data("url"));
   });
 }
 

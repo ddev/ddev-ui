@@ -1,10 +1,5 @@
-import React from 'react';
-import { render } from 'react-dom';
-import Router from './renderer/components/Router';
+import React from "react";
+import { render } from "react-dom";
+import Router from "./components/Router.jsx";
 
-import 'popper.js';
-import 'bootstrap';
-
-window.$ = window.jQuery = require('jquery');
-
-render(<Router />, document.getElementById('App'));
+render(<Router />, document.getElementById("app"));

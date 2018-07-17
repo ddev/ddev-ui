@@ -16,6 +16,10 @@
     }
   ],
   "scripts": {
+    "dev": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "dist": "yarn compile && electron-builder",
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
@@ -57,36 +61,12 @@
       "icon": "build/icon.ico"
     }
   },
-  "config": {
-    "forge": {
-      "make_targets": {
-        "win32": [
-          "squirrel"
-        ],
-        "darwin": [
-          "zip"
-        ],
-        "linux": [
-          "deb",
-          "rpm"
-        ]
-      },
-      "electronPackagerConfig": {
-        "packageManager": "yarn"
-      },
-      "electronWinstallerConfig": {
-        "name": "ddev-ui"
-      },
-      "electronInstallerDebian": {},
-      "electronInstallerRedhat": {},
-      "github_repository": {
-        "owner": "",
-        "name": ""
-      },
-      "windowsStoreConfig": {
-        "packageName": "",
-        "name": "ddev-ui"
-      }
+  "electronWebpack": {
+    "renderer": {
+      "webpackConfig": "webpack.renderer.config.js"
+    },
+    "main": {
+      "webpackConfig": "webpack.main.config.js"
     }
   },
   "dependencies": {
@@ -106,11 +86,14 @@
     "react-hot-loader": "4.1.x",
     "react-router-dom": "4.3.x",
     "request": "2.x",
+    "source-map-support": "0.5.x",
     "sudo-prompt": "8.x",
     "tar": "4.4.x",
     "xml2js": "0.4.x"
   },
   "devDependencies": {
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0-beta.54",
+    "@babel/preset-react": "^7.0.0-beta.54",
     "babel-plugin-transform-async-to-generator": "6.24.x",
     "babel-plugin-transform-class-properties": "6.24.x",
     "babel-plugin-transform-es2015-classes": "6.24.x",
@@ -118,13 +101,22 @@
     "babel-preset-react": "6.24.x",
     "electron": "2.0.x",
     "electron-builder": "20.x",
-    "electron-forge": "5.x",
-    "electron-prebuilt-compile": "1.x",
-    "electron-reload": "^1.2.5",
+    "electron-webpack": "^2.x",
+    "eslint": "^3",
+    "eslint-plugin-import": "^2",
+    "eslint-plugin-jsx-a11y": "^5",
+    "eslint-plugin-react": "^7",
+    "file-loader": "1.x",
     "mocha": "4.x",
     "mock-fs": "4.x",
     "nock": "9.x",
+    "node-sass": "^4.9.2",
     "rewire": "3.x",
-    "stub-spawn-once": "2.3.x"
+    "sass-loader": "^7.0.3",
+    "stub-spawn-once": "2.3.x",
+    "webpack": "4.x"
+  },
+  "resolutions": {
+    "webpack-sources": "1.x"
   }
 }

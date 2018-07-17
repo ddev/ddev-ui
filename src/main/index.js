@@ -1,68 +1,67 @@
-import { app, BrowserWindow } from 'electron';
-import installExtension, {
-  REACT_DEVELOPER_TOOLS,
-} from 'electron-devtools-installer';
-import { enableLiveReload } from 'electron-compile';
-import { resolve } from 'app-root-path';
+"use strict";
 
-require('electron-reload')(resolve('./src/resources'));
+import { app, BrowserWindow } from "electron";
+import * as path from "path";
+import { format as formatUrl } from "url";
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+const isDevelopment = process.env.NODE_ENV !== "production";
+
+// global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow;
 
-// const isDevMode = process.execPath.match(/[\\/]electron/);
-const isDev = require('electron-is-dev');
-
-if (isDev) enableLiveReload({ strategy: 'react-hmr' });
-
-const createWindow = async () => {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
+function createMainWindow() {
+  const window = new BrowserWindow({
     width: 800,
     height: 600,
-    titleBarStyle: 'hidden',
+    titleBarStyle: "hidden"
   });
 
-  // and load the index.html of the app.
-  mainWindow.loadURL(`file://${resolve('./src/index.html')}`);
-
-  // Open the DevTools.
-  if (isDev) {
-    await installExtension(REACT_DEVELOPER_TOOLS);
-    mainWindow.webContents.openDevTools();
+  if (isDevelopment) {
+    window.webContents.openDevTools();
   }
 
-  // Emitted when the window is closed.
-  mainWindow.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
+  if (isDevelopment) {
+    window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
+  } else {
+    window.loadURL(
+      formatUrl({
+        pathname: path.join(__dirname, "index.html"),
+        protocol: "file",
+        slashes: true
+      })
+    );
+  }
+
+  window.on("closed", () => {
     mainWindow = null;
   });
-};
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+  window.webContents.on("devtools-opened", () => {
+    window.focus();
+    setImmediate(() => {
+      window.focus();
+    });
+  });
 
-// Quit when all windows are closed.
-app.on('window-all-closed', () => {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
+  return window;
+}
+
+// quit application when all windows are closed
+app.on("window-all-closed", () => {
+  // on macOS it is common for applications to stay open until the user explicitly quits
+  if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
-app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
+app.on("activate", () => {
+  // on macOS it is common to re-create a window even after all windows have been closed
   if (mainWindow === null) {
-    createWindow();
+    mainWindow = createMainWindow();
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+// create main BrowserWindow when electron is ready
+app.on("ready", () => {
+  mainWindow = createMainWindow();
+});

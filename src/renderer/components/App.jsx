@@ -1,5 +1,13 @@
 import React from "react";
 import { Window } from "react-desktop/macOs";
+import path from "path";
+
+import "popper.js";
+import "bootstrap";
+
+import(`${__static}/scss/main.scss`);
+
+window.$ = window.jQuery = require("jquery");
 
 import Header from "./Header";
 import Sidebar from "./Sidebar";
@@ -19,7 +27,7 @@ class App extends React.Component {
   render() {
     return (
       <Window chrome padding="0px">
-        <Header isFullscreen={this.state.isFullscreen} />
+        <Header />
         <Sidebar />
         <Container />
         <Footer />
