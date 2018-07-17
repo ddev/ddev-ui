@@ -87,9 +87,7 @@ class Sidebar extends React.Component {
             </a>
           </div>
         </ListViewHeader>
-        <ListViewSection className="ListViewSection">
-          {this.renderItem("Item 1", "Running")}
-        </ListViewSection>
+        <ListViewSection className="ListViewSection" />
         <ListViewFooter className="ListViewFooter">
           <Text>Status</Text>
         </ListViewFooter>

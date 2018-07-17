@@ -29,7 +29,6 @@ class App extends React.Component {
           <Header />
           <section className="Main">
             <Sidebar className="Sidebar" />
-            <Container />
           </section>
           <Footer />
         </div>
