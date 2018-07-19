@@ -24,12 +24,13 @@ class App extends React.Component {
   componentDidMount() {
     init();
     this.fetchState();
+    setInterval(this.tick, 3000);
   }
   fetchState = () => {
     ddevShell
       .list()
       .then(data => {
-        console.log(data);
+        // console.log(data);
         this.loadProjects(data);
       })
       .catch(() => {
@@ -39,6 +40,9 @@ class App extends React.Component {
   };
   loadProjects = projects => {
     this.setState({ projects: projects });
+  };
+  tick = () => {
+    this.fetchState();
   };
   render() {
     return (

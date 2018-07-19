@@ -1,11 +1,9 @@
 import React from "react";
-
 import ProjectCard from "./ProjectCard";
+
 class ProjectList extends React.Component {
   render() {
-    {
-      console.log(this.props.projects);
-    }
+    // console.log(this.props.projects);
     return (
       <section className="Content container">
         <main className="">
