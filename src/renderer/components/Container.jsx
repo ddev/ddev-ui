@@ -1,13 +1,22 @@
 import React from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-class Container extends React.Component {
-  render() {
-    return (
-      <section className="Content container">
-        <div className="row card-container" />
-      </section>
-    );
-  }
-}
+import Welcome from "./Welcome";
+import ProjectList from "./ProjectList";
+import ProjectDetail from "./ProjectDetail";
+
+const Container = () => (
+  <BrowserRouter>
+    <Switch>
+      <Route exact path="/" component={Welcome} />
+      <Route forceRefresh path="/app" component={ProjectList} />
+      <Route
+        forceRefresh
+        path="/project/:projectID"
+        component={ProjectDetail}
+      />
+    </Switch>
+  </BrowserRouter>
+);
 
 export default Container;

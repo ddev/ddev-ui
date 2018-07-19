@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-class Welcome extends React.Component {
+class ProjectDetail extends React.Component {
   render() {
     return (
       <section className="Main">
@@ -11,4 +11,4 @@ class Welcome extends React.Component {
   }
 }
 
-export default Welcome;
+export default ProjectDetail;

@@ -8,6 +8,8 @@ import {
   Text
 } from "react-desktop/macOs";
 
+import ProjectItem from "./ProjectItem";
+
 class Sidebar extends React.Component {
   constructor() {
     super();
@@ -87,7 +89,16 @@ class Sidebar extends React.Component {
             </a>
           </div>
         </ListViewHeader>
-        <ListViewSection className="ListViewSection" />
+        <ListViewSection className="ListViewSection">
+          {console.log(this.props.projects)}
+          {Object.keys(this.props.projects).map(key => (
+            <ProjectItem
+              key={key}
+              index={key}
+              details={this.props.projects[key]}
+            />
+          ))}
+        </ListViewSection>
         <ListViewFooter className="ListViewFooter">
           <Text>Status</Text>
         </ListViewFooter>
