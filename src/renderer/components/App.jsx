@@ -26,11 +26,10 @@ class App extends React.Component {
     this.fetchState();
   }
   fetchState = () => {
-    console.log("dude");
     ddevShell
       .list()
       .then(data => {
-        // console.log(data);
+        console.log(data);
         this.loadProjects(data);
       })
       .catch(() => {

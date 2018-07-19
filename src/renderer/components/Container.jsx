@@ -1,22 +1,23 @@
 import React from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
 
-import Welcome from "./Welcome";
 import ProjectList from "./ProjectList";
 import ProjectDetail from "./ProjectDetail";
 
-const Container = () => (
-  <HashRouter>
-    <Switch>
-      <Route exact path="/" component={Welcome} />
-      <Route forceRefresh path="/app" component={ProjectList} />
-      <Route
-        forceRefresh
-        path="/project/:projectID"
-        component={ProjectDetail}
-      />
-    </Switch>
-  </HashRouter>
-);
+class Container extends React.Component {
+  render() {
+    // console.log(this.props);
+    return (
+      <HashRouter>
+        <Switch>
+          <Route path="/project/:projectID" component={ProjectDetail} />
+          <Route
+            render={() => <ProjectList projects={this.props.projects} />}
+          />
+        </Switch>
+      </HashRouter>
+    );
+  }
+}
 
 export default Container;
