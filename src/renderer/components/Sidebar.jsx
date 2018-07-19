@@ -90,7 +90,6 @@ class Sidebar extends React.Component {
           </div>
         </ListViewHeader>
         <ListViewSection className="ListViewSection">
-          {console.log(this.props.projects)}
           {Object.keys(this.props.projects).map(key => (
             <ProjectItem
               key={key}

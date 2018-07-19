@@ -6,6 +6,7 @@ class Welcome extends React.Component {
     return (
       <section className="Main">
         <NavLink to="/app">TESTING</NavLink>
+        <NavLink to="/project/new-ui-drupal">TESTING</NavLink>
       </section>
     );
   }

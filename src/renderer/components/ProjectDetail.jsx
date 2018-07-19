@@ -5,7 +5,7 @@ class ProjectDetail extends React.Component {
   render() {
     return (
       <section className="Main">
-        <NavLink to="/app">TESTING</NavLink>
+        <NavLink to="/app">Project Detail</NavLink>
       </section>
     );
   }

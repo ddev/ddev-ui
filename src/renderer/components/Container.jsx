@@ -1,12 +1,12 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 
 import Welcome from "./Welcome";
 import ProjectList from "./ProjectList";
 import ProjectDetail from "./ProjectDetail";
 
 const Container = () => (
-  <BrowserRouter>
+  <HashRouter>
     <Switch>
       <Route exact path="/" component={Welcome} />
       <Route forceRefresh path="/app" component={ProjectList} />
@@ -16,7 +16,7 @@ const Container = () => (
         component={ProjectDetail}
       />
     </Switch>
-  </BrowserRouter>
+  </HashRouter>
 );
 
 export default Container;

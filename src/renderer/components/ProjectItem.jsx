@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { ListViewRow, Text } from "react-desktop/macOs";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class ProjectItem extends React.Component {
   renderIcon = status => {
@@ -48,7 +48,7 @@ class ProjectItem extends React.Component {
           className="column w-100 pl-3 my-2"
           data-sitename={this.props.details.name}
         >
-          <NavLink
+          <Link
             className="align-items-center d-flex flex-row w-100"
             to={navLinkHref}
           >
@@ -57,7 +57,7 @@ class ProjectItem extends React.Component {
               <h3>{this.props.details.name}</h3>
               <p>{this.props.details.status}</p>
             </span>
-          </NavLink>
+          </Link>
         </Text>
       </ListViewRow>
     );
