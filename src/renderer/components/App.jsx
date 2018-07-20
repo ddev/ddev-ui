@@ -22,8 +22,11 @@ class App extends React.Component {
     projects: {}
   };
   componentDidMount() {
+    // TODO: Remove this once everything is moved over
     init();
+    // Inital state load
     this.fetchState();
+    // TODO: this could be reduced once state is updated with the response of the calls.
     setInterval(this.tick, 3000);
   }
   fetchState = () => {
