@@ -65,7 +65,7 @@ class Header extends React.Component {
             />
           </ToolbarNav>
         </Toolbar>
-        <img alt="ddev logo" src={pathToAsset} className="ddev-logo" />
+        <img alt="ddev logo" src="/img/Logo.svg" className="ddev-logo" />
       </TitleBar>
     );
   }

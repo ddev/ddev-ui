@@ -17,6 +17,7 @@ import Container from "./Container";
 import Alerts from "./Alerts";
 
 import { init } from "./../modules/ui";
+import { getErrorResponseType } from "./../modules/helpers";
 
 class App extends React.Component {
   state = {
@@ -57,9 +58,11 @@ class App extends React.Component {
   addError = error => {
     // 1. Take a copy of the existing state
     const errors = { ...this.state.errors };
-    console.log(errors);
+    // console.log(errors);
     // 2. Add our new error to that errors variable
-    errors[`error_${Date.now()}`] = JSON.parse(error);
+    const newError = JSON.parse(error);
+    newError.type = getErrorResponseType(newError);
+    errors[`error_${Date.now()}`] = newError;
     // 3. Set the new errors object to state
     this.setState({ errors });
   };
