@@ -6,7 +6,6 @@ import ProjectDetail from "./ProjectDetail";
 
 class Container extends React.Component {
   render() {
-    // console.log(this.props);
     return (
       <HashRouter>
         <Switch>

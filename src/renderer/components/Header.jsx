@@ -7,6 +7,9 @@ import {
 } from "react-desktop/macOs";
 import PropTypes from "prop-types";
 
+import fs from "fs";
+import path from "path";
+
 const circle = (
   <svg x="0px" y="0px" width="25px" height="25px" viewBox="0 0 25 25">
     <circle cx="12.5" cy="12.5" r="12.5" />
@@ -33,6 +36,11 @@ class Header extends React.Component {
   }
 
   render() {
+    /* use `path` to create the full path to our asset */
+    const pathToAsset = path.join(__static, "/img/Logo.svg");
+
+    /* use `fs` to consume the path and read our asset */
+    const fileContents = fs.readFileSync(pathToAsset, "utf8");
     return (
       <TitleBar inset height="60" className="TitleBar">
         <Toolbar horizontalAlignment="center">
@@ -57,7 +65,7 @@ class Header extends React.Component {
             />
           </ToolbarNav>
         </Toolbar>
-        <img alt="ddev logo" src="/img/Logo.svg" className="ddev-logo" />
+        <img alt="ddev logo" src={pathToAsset} className="ddev-logo" />
       </TitleBar>
     );
   }

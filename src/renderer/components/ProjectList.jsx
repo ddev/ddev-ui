@@ -3,9 +3,8 @@ import ProjectCard from "./ProjectCard";
 
 class ProjectList extends React.Component {
   render() {
-    // console.log(this.props.projects);
     return (
-      <section className="Content container">
+      <section className="container">
         <main className="">
           <h1>My Projects</h1>
           <div className="row card-container">

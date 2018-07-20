@@ -69,6 +69,7 @@
     "app-root-path": "2.1.x",
     "bootstrap": "4.1.x",
     "compare-versions": "3.1.x",
+    "electron-devtools-installer": "2.2.x",
     "electron-is-dev": "0.3.x",
     "fix-path": "2.1.x",
     "font-awesome": "4.7.x",
@@ -90,6 +91,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.54",
     "@babel/plugin-proposal-class-properties": "^7.0.0-beta.54",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.54",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0-beta.54",
     "@babel/preset-react": "^7.0.0-beta.54",
     "babel-plugin-root-import": "^6.1.0",
@@ -100,7 +102,6 @@
     "babel-preset-react": "6.24.x",
     "electron": "1.x",
     "electron-builder": "20.x",
-    "electron-devtools-installer": "2.2.x",
     "electron-webpack": "^2.x",
     "eslint": "^3",
     "eslint-plugin-import": "^2",

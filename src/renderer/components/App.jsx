@@ -14,19 +14,21 @@ import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import Container from "./Container";
+import Alerts from "./Alerts";
 
 import { init } from "./../modules/ui";
 
 class App extends React.Component {
   state = {
-    projects: {}
+    projects: {},
+    errors: {}
   };
   componentDidMount() {
     // TODO: Remove this once everything is moved over
     init();
-    // Inital state load
+    // Initial state load
     this.fetchState();
-    // TODO: this could be reduced once state is updated with the response of the calls.
+    // TODO: this could be reduced/removed once state is updated everywhere.
     setInterval(this.tick, 3000);
   }
   fetchState = () => {
@@ -36,16 +38,30 @@ class App extends React.Component {
         // console.log(data);
         this.loadProjects(data);
       })
-      .catch(() => {
-        // TODO:
-        console.log("'ddev list -j' didn't return results or had an error");
+      .catch(e => {
+        // console.log(e);
+        this.addError(e);
       });
   };
-  loadProjects = projects => {
-    this.setState({ projects: projects });
+  loadProjects = newProjects => {
+    // 1. Take a copy of the existing state
+    const projects = { ...this.state.projects };
+    // 2. Add our new projects to that projects variable
+    projects = newProjects;
+    // 3. Set the new projects object to state
+    this.setState({ projects });
   };
   tick = () => {
     this.fetchState();
+  };
+  addError = error => {
+    // 1. Take a copy of the existing state
+    const errors = { ...this.state.errors };
+    console.log(errors);
+    // 2. Add our new error to that errors variable
+    errors[`error_${Date.now()}`] = JSON.parse(error);
+    // 3. Set the new errors object to state
+    this.setState({ errors });
   };
   render() {
     return (
@@ -54,7 +70,13 @@ class App extends React.Component {
           <Header />
           <section className="Main">
             <Sidebar projects={this.state.projects} />
-            <Container projects={this.state.projects} />
+            <main className="Content">
+              <Alerts errors={this.state.errors} />
+              <Container
+                projects={this.state.projects}
+                errors={this.state.errors}
+              />
+            </main>
           </section>
           <Footer />
         </div>
