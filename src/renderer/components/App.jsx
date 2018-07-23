@@ -47,7 +47,7 @@ class App extends React.Component {
   };
   loadProjects = newProjects => {
     // 1. Take a copy of the existing state
-    const projects = { ...this.state.projects };
+    let projects = { ...this.state.projects };
     // 2. Add our new projects to that projects variable
     projects = newProjects;
     // 3. Set the new projects object to state
