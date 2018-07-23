@@ -4,7 +4,9 @@ class Alert extends React.Component {
   render() {
     return (
       <div
-        className="alert alert-warning alert-dismissible fade show"
+        className={`alert alert-${
+          this.props.style
+        } alert-dismissible fade show`}
         role="alert"
       >
         {this.props.msg}
