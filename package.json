@@ -100,7 +100,7 @@
     "babel-plugin-transform-es2015-classes": "6.24.x",
     "babel-preset-env": "1.6.x",
     "babel-preset-react": "6.24.x",
-    "electron": "1.x",
+    "electron": "1.7.x",
     "electron-builder": "20.x",
     "electron-webpack": "^2.x",
     "eslint": "^3",

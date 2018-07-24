@@ -629,9 +629,9 @@
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
 
-"@types/node@^8.0.24":
-  version "8.10.21"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.21.tgz#12b3f2359b27aa05a45d886c8ba1eb8d1a77e285"
+"@types/node@^7.0.18":
+  version "7.0.67"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.67.tgz#3aeacf429e24e08e14d7621039d37b7f53542ecf"
 
 "@types/webpack-env@^1.13.6":
   version "1.13.6"
@@ -3429,11 +3429,11 @@ electron-webpack@^2.x:
     webpack-merge "^4.1.2"
     yargs "^11.1.0"
 
-electron@1.x:
-  version "1.8.7"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-1.8.7.tgz#373c1dc4589d7ab4acd49aff8db4a1c0a6c3bcc1"
+electron@1.7.x:
+  version "1.7.15"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-1.7.15.tgz#1234fa3645b6c09017815515833a86c26989ef49"
   dependencies:
-    "@types/node" "^8.0.24"
+    "@types/node" "^7.0.18"
     electron-download "^3.0.1"
     extract-zip "^1.0.3"
 

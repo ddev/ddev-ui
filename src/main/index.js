@@ -1,5 +1,3 @@
-"use strict";
-
 import { app, BrowserWindow } from "electron";
 import installExtension, {
   REACT_DEVELOPER_TOOLS
@@ -12,17 +10,12 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow;
 
-const createMainWindow = async () => {
+const createMainWindow = () => {
   const window = new BrowserWindow({
     width: 800,
     height: 600,
     titleBarStyle: "hidden"
   });
-
-  if (isDevelopment) {
-    await installExtension(REACT_DEVELOPER_TOOLS);
-    window.webContents.openDevTools();
-  }
 
   if (isDevelopment) {
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
@@ -66,6 +59,13 @@ app.on("activate", () => {
 });
 
 // create main BrowserWindow when electron is ready
-app.on("ready", () => {
+app.on("ready", async () => {
   mainWindow = createMainWindow();
+
+  if (isDevelopment) {
+    await installExtension(REACT_DEVELOPER_TOOLS)
+      .then(name => console.log(`Added Extension:  ${name}`))
+      .then(name => mainWindow.webContents.openDevTools())
+      .catch(err => console.log("An error occurred: ", err));
+  }
 });
