@@ -62,7 +62,7 @@ class App extends React.Component {
       });
   };
   heartBeat = () => {
-    // this.fetchProjects();
+    this.fetchProjects();
   };
   addError = error => {
     // 1. Take a copy of the existing state
