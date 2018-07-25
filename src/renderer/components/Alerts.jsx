@@ -47,7 +47,7 @@ class Alerts extends React.Component {
     const alerts = Object.keys(this.props.errors).map(type =>
       this.renderAlertType(type)
     );
-    return <div className="alerts container mt-3">{alerts}</div>;
+    return <div className="alerts mt-3">{alerts}</div>;
   }
 }
 

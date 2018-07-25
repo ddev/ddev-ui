@@ -39,3 +39,8 @@
   color: #fff;
   margin-bottom: 0px;
 }
+.projectSidebar .ListViewRow a {
+  &.active {
+    background: #003a70;
+  }
+}

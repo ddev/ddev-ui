@@ -1,5 +1,5 @@
-var bootstrapModal = require('./bootstrap-modal');
-var ddevShell = require('./ddev-shell');
+var bootstrapModal = require("./bootstrap-modal");
+var ddevShell = require("./ddev-shell");
 
 /**
  * Updates describe modal content with current site data and shows modal
@@ -7,9 +7,9 @@ var ddevShell = require('./ddev-shell');
  * @param body
  */
 function showDescribeModal(title, body) {
-    $('#describeModal .modal-title').text(title);
-    $('#describeModal .modal-body').html(body);
-    $('#describeModal').modal();
+  $("#describeModal .modal-title").text(title);
+  $("#describeModal .modal-body").html(body);
+  $("#describeModal").modal();
 }
 
 /**
@@ -18,42 +18,45 @@ function showDescribeModal(title, body) {
  * @returns {string} - markup for site details modal
  */
 function createDetails(details) {
-    var output = '';
-    for (var key in details) {
-        if (details.hasOwnProperty(key)) {
-            var section = details[key];
-            output += '<div><h3>' + key + '</h3><table>';
-            for (var k in section) {
-                if (section.hasOwnProperty(k) && k !== 'notes') {
-                    output += '<tr><td>' + k + '</td>' + '<td>' + section[k] + '</td></tr>';
-                }
-            }
-            output += '</table>';
-            if (section.notes) {
-                output += '<ul>';
-                section.notes.forEach(function (note) {
-                    output += '<li>' + note + '</li>';
-                });
-                output += '</ul>';
-            }
-            output += '</div>';
+  var output = "";
+  for (var key in details) {
+    if (details.hasOwnProperty(key)) {
+      var section = details[key];
+      output += "<div><h3>" + key + "</h3><table>";
+      for (var k in section) {
+        if (section.hasOwnProperty(k) && k !== "notes") {
+          output +=
+            "<tr><td>" + k + "</td>" + "<td>" + section[k] + "</td></tr>";
         }
+      }
+      output += "</table>";
+      if (section.notes) {
+        output += "<ul>";
+        section.notes.forEach(function(note) {
+          output += "<li>" + note + "</li>";
+        });
+        output += "</ul>";
+      }
+      output += "</div>";
     }
-    return output;
+  }
+  return output;
 }
 
 /**
  * Initialization - hook UI and generate markup.
  */
-function init(){
-    $('body').append(bootstrapModal.createModal('describeModal','',''));
-    $(document).on('click', '.infobtn', function () {
-        console.log('describe');
-        var siteName = $(this).closest('.column').data('sitename');
-        ddevShell.describe(siteName).then(function (data) {
-            showDescribeModal('Additional Info For ' + siteName, createDetails(data));
-        });
+function init() {
+  $("body").append(bootstrapModal.createModal("describeModal", "", ""));
+  $(document).on("click", ".infobtn", function() {
+    console.log("describe");
+    var siteName = $(this)
+      .closest(".column")
+      .data("sitename");
+    ddevShell.describeModal(siteName).then(function(data) {
+      showDescribeModal("Additional Info For " + siteName, createDetails(data));
     });
+  });
 }
 
 module.exports.init = init;

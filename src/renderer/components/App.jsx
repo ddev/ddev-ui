@@ -1,5 +1,6 @@
 import React from "react";
 import { Window } from "react-desktop/macOs";
+import { isObject } from "util";
 
 const ddevShell = require("../modules/ddev-shell");
 
@@ -18,47 +19,54 @@ import Alerts from "./Alerts";
 
 import { init } from "./../modules/ui";
 import { getErrorResponseType } from "./../modules/helpers";
-import { isObject } from "../../../node_modules/util";
 
 class App extends React.Component {
   state = {
     projects: {},
     errors: {}
   };
-  componentDidMount() {
+  constructor(props) {
+    super(props);
     // TODO: Remove this once everything is moved over
     init();
     // Initial state load
-    this.fetchState();
-    // TODO: this could be reduced/removed once state is updated everywhere.
-    setInterval(this.tick, 3000);
+    this.fetchProjects();
   }
-  fetchState = () => {
+  componentDidMount() {
+    // this.fetchProjects();
+    // TODO: this could be reduced/removed once state is updated everywhere.
+    this.timerID = setInterval(() => this.heartBeat(), 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  fetchProjects = () => {
     ddevShell
       .list()
-      .then(data => {
-        // console.log(data);
-        this.loadProjects(data);
+      .then(newProjects => {
+        // 1. Take a copy of the existing state
+        let projects = { ...this.state.projects };
+        // 2. Add our new projects to that projects variable
+        for (var key in newProjects) {
+          if (newProjects.hasOwnProperty(key)) {
+            projects[newProjects[key].name] = newProjects[key];
+          }
+        }
+        // 3. Set the new projects object to state
+        this.setState({ projects });
       })
       .catch(e => {
-        // console.log(e);
+        console.log(e);
         this.addError(e);
       });
   };
-  loadProjects = newProjects => {
-    // 1. Take a copy of the existing state
-    let projects = { ...this.state.projects };
-    // 2. Add our new projects to that projects variable
-    projects = newProjects;
-    // 3. Set the new projects object to state
-    this.setState({ projects });
-  };
-  tick = () => {
-    this.fetchState();
+  heartBeat = () => {
+    // this.fetchProjects();
   };
   addError = error => {
     // 1. Take a copy of the existing state
-    const errors = { ...this.state.errors };
+    let errors = { ...this.state.errors };
     // 2. Add our new error to that errors variable
     const newError = JSON.parse(error);
     newError.type = getErrorResponseType(newError);
@@ -76,9 +84,10 @@ class App extends React.Component {
           <Header />
           <section className="Main">
             <Sidebar projects={this.state.projects} />
-            <main className="Content">
+            <main className="Content container-fluid">
               <Alerts errors={this.state.errors} />
               <Container
+                addError={this.addError}
                 projects={this.state.projects}
                 errors={this.state.errors}
               />

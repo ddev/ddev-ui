@@ -7,8 +7,9 @@ import {
   ListViewRow,
   Text
 } from "react-desktop/macOs";
+import { NavLink } from "react-router-dom";
 
-import ProjectItem from "./ProjectItem";
+import ProjectNavItem from "./ProjectNavItem";
 
 class Sidebar extends React.Component {
   constructor() {
@@ -82,7 +83,9 @@ class Sidebar extends React.Component {
               fill="#236192"
             />
           </svg>
-          <h1 className="pl-3 mb-0">Projects</h1>
+          <h1 className="pl-3 mb-0">
+            <NavLink to="/projects">Projects</NavLink>
+          </h1>
           <div className="add ListViewHeaderAdd ml-auto">
             <a className="btn btn-primary btn-sm" href="#">
               + New
@@ -91,7 +94,7 @@ class Sidebar extends React.Component {
         </ListViewHeader>
         <ListViewSection className="ListViewSection">
           {Object.keys(this.props.projects).map(key => (
-            <ProjectItem
+            <ProjectNavItem
               key={key}
               index={key}
               details={this.props.projects[key]}

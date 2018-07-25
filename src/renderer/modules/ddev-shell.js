@@ -1,7 +1,7 @@
-const childProcess = require('child_process');
-const os = require('os');
-const fixPath = require('fix-path');
-const sudoPrompt = require('sudo-prompt');
+const childProcess = require("child_process");
+const os = require("os");
+const fixPath = require("fix-path");
+const sudoPrompt = require("sudo-prompt");
 
 // quirk with electron's pathing. without this, / is symlinked to application working directory root
 fixPath();
@@ -28,32 +28,32 @@ const ddevShell = (command, args, path, callback, errorCallback, stream) => {
   }
 
   if (path) {
-    path = path.replace('~', os.homedir());
+    path = path.replace("~", os.homedir());
     opts = {
-      cwd: path,
+      cwd: path
     };
   }
 
-  const currentCommand = childProcess.spawn('ddev', command, opts);
+  const currentCommand = childProcess.spawn("ddev", command, opts);
 
-  let outputBuffer = '';
+  let outputBuffer = "";
 
-  const appendBuffer = function (data) {
+  const appendBuffer = function(data) {
     outputBuffer += data;
     if (stream) {
       callback(data);
     }
   };
 
-  currentCommand.stdout.on('data', (output) => {
+  currentCommand.stdout.on("data", output => {
     appendBuffer(output);
   });
 
-  currentCommand.stderr.on('data', (output) => {
+  currentCommand.stderr.on("data", output => {
     appendBuffer(output);
   });
 
-  currentCommand.on('exit', (code) => {
+  currentCommand.on("exit", code => {
     if (code !== 0) {
       errorCallback(outputBuffer);
     } else if (stream) {
@@ -71,15 +71,15 @@ const ddevShell = (command, args, path, callback, errorCallback, stream) => {
 const list = () => {
   const promise = new Promise((resolve, reject) => {
     function getRaw(output) {
-      const objs = output.split('\n');
-      objs.forEach((obj) => {
+      const objs = output.split("\n");
+      objs.forEach(obj => {
         if (obj) {
           try {
             let outputObject = JSON.parse(obj);
-            if (outputObject.level === 'info') {
+            if (outputObject.level === "info") {
               if (!outputObject.raw) {
                 outputObject = {
-                  raw: [],
+                  raw: []
                 };
               }
               if (Array.isArray(outputObject.raw)) {
@@ -95,7 +95,7 @@ const list = () => {
         return promise;
       });
     }
-    ddevShell('list', ['-j'], null, getRaw, reject);
+    ddevShell("list", ["-j"], null, getRaw, reject);
   });
   return promise;
 };
@@ -107,7 +107,7 @@ const list = () => {
  * @param errorCallback {function} - function called on error
  */
 const start = (path, callback, errorCallback) => {
-  ddevShell('start', null, path, callback, errorCallback, true);
+  ddevShell("start", null, path, callback, errorCallback, true);
 };
 
 /**
@@ -117,7 +117,7 @@ const start = (path, callback, errorCallback) => {
  * @param errorCallback {function} - function called on error
  */
 const stop = (path, callback, errorCallback) => {
-  ddevShell('stop', null, path, callback, errorCallback, true);
+  ddevShell("stop", null, path, callback, errorCallback, true);
 };
 
 /**
@@ -127,7 +127,7 @@ const stop = (path, callback, errorCallback) => {
  * @param errorCallback {function} - function called on error
  */
 const restart = (path, callback, errorCallback) => {
-  ddevShell('restart', null, path, callback, errorCallback, true);
+  ddevShell("restart", null, path, callback, errorCallback, true);
 };
 
 /**
@@ -136,10 +136,10 @@ const restart = (path, callback, errorCallback) => {
  * @param shouldRemoveData {boolean} - if data should be removed as well as project containers
  */
 const remove = (name, shouldRemoveData) => {
-  const args = shouldRemoveData ? ['-j', '--remove-data'] : ['-j'];
+  const args = shouldRemoveData ? ["-j", "--remove-data"] : ["-j"];
   args.push(name);
   const promise = new Promise((resolve, reject) => {
-    ddevShell('remove', args, '', resolve, reject, false);
+    ddevShell("remove", args, "", resolve, reject, false);
   });
   return promise;
 };
@@ -154,10 +154,11 @@ const remove = (name, shouldRemoveData) => {
  */
 const config = (path, name, docroot, callback, errorCallback) => {
   ddevShell(
-    'config', ['-j', '--sitename', name, '--docroot', docroot],
+    "config",
+    ["-j", "--sitename", name, "--docroot", docroot],
     path,
     callback,
-    errorCallback,
+    errorCallback
   );
 };
 
@@ -167,10 +168,10 @@ const config = (path, name, docroot, callback, errorCallback) => {
  * @param domain - optional - domain to create sitename subdomain
  * @returns {Promise} - resolves on successful execution with stdout text
  */
-const hostname = (siteName, domain = 'ddev.local') => {
+const hostname = (siteName, domain = "ddev.local") => {
   const promise = new Promise((resolve, reject) => {
     const options = {
-      name: 'DDEV UI',
+      name: "DDEV UI"
     };
 
     const command = `ddev hostname ${siteName}.${domain} 127.0.0.1 -j`;
@@ -190,36 +191,78 @@ const hostname = (siteName, domain = 'ddev.local') => {
  * @param siteName {string} - target site to get details of
  * @returns {Promise} - resolves with object containing formatted links and sections for the UI
  */
-const describe = (siteName) => {
+const describe = siteName => {
   const promise = new Promise((resolve, reject) => {
     function parseJSONOutput(describeJSON) {
-      const objs = describeJSON.split('\n');
+      const objs = describeJSON.split("\n");
 
-      objs.forEach((obj) => {
+      objs.forEach(obj => {
+        const siteDetails = {};
+        if (obj) {
+          try {
+            const rawData = JSON.parse(obj);
+
+            if (rawData.level === "info") {
+              const siteDetails = rawData.raw;
+              resolve(siteDetails);
+            }
+          } catch (e) {
+            reject(siteDetails);
+          }
+        }
+        return promise;
+      });
+    }
+    ddevShell(
+      "describe",
+      [siteName, "-j"],
+      null,
+      parseJSONOutput,
+      reject,
+      false
+    );
+  });
+
+  return promise;
+};
+
+/**
+ * wrapper for `ddev describe` and formats output (creates links) as needed by the UI
+ * @param siteName {string} - target site to get details of
+ * @returns {Promise} - resolves with object containing formatted links and sections for the UI
+ */
+const describeModal = siteName => {
+  const promise = new Promise((resolve, reject) => {
+    function parseJSONOutput(describeJSON) {
+      const objs = describeJSON.split("\n");
+
+      objs.forEach(obj => {
         const modalData = {};
         if (obj) {
           try {
             const rawData = JSON.parse(obj);
 
-            if (rawData.level === 'info') {
+            if (rawData.level === "info") {
               const siteDetails = rawData.raw;
 
               if (siteDetails.dbinfo) {
-                modalData['MySQL Credentials'] = siteDetails.dbinfo;
+                modalData["MySQL Credentials"] = siteDetails.dbinfo;
               }
               if (siteDetails.mailhog_url || siteDetails.phpmyadmin_url) {
-                modalData['Other Services'] = {};
+                modalData["Other Services"] = {};
                 if (siteDetails.mailhog_url) {
-                  modalData['Other Services'].MailHog =
-                    `<a class='open-site' data-url='${
-                      siteDetails.mailhog_url
-                    }' href="#">${siteDetails.mailhog_url}</a>`;
+                  modalData[
+                    "Other Services"
+                  ].MailHog = `<a class='open-site' data-url='${
+                    siteDetails.mailhog_url
+                  }' href="#">${siteDetails.mailhog_url}</a>`;
                 }
                 if (siteDetails.phpmyadmin_url) {
-                  modalData['Other Services'].phpMyAdmin =
-                    `<a class='open-site' data-url='${
-                      siteDetails.phpmyadmin_url
-                    }' href="#">${siteDetails.phpmyadmin_url}</a>`;
+                  modalData[
+                    "Other Services"
+                  ].phpMyAdmin = `<a class='open-site' data-url='${
+                    siteDetails.phpmyadmin_url
+                  }' href="#">${siteDetails.phpmyadmin_url}</a>`;
                 }
               }
               resolve(modalData);
@@ -231,7 +274,14 @@ const describe = (siteName) => {
         return promise;
       });
     }
-    ddevShell('describe', [siteName, '-j'], null, parseJSONOutput, reject, false);
+    ddevShell(
+      "describe",
+      [siteName, "-j"],
+      null,
+      parseJSONOutput,
+      reject,
+      false
+    );
   });
 
   return promise;
@@ -246,22 +296,24 @@ const describe = (siteName) => {
 const sudo = (
   command,
   promptOptions = {
-    name: 'DDEV UI',
-  },
+    name: "DDEV UI"
+  }
 ) => {
-  const bannedCharacters = [';', '|', '&'];
-  const whitelistedCommands = ['version'];
+  const bannedCharacters = [";", "|", "&"];
+  const whitelistedCommands = ["version"];
   if (whitelistedCommands.indexOf(command) != -1) {
-    bannedCharacters.forEach((character) => {
+    bannedCharacters.forEach(character => {
       if (command.includes(character)) {
-        return Promise.reject(`${character} is not an allowed character in privilege escalation requests.`);
+        return Promise.reject(
+          `${character} is not an allowed character in privilege escalation requests.`
+        );
       }
     });
     command = `ddev ${command}`;
     const promise = new Promise((resolve, reject) => {
       sudoPrompt.exec(command, promptOptions, (error, stdout, stderr) => {
         if (error) {
-          reject('Unable to escalate permissions.');
+          reject("Unable to escalate permissions.");
         } else {
           resolve(stdout);
         }
@@ -281,4 +333,5 @@ module.exports.restart = restart;
 module.exports.remove = remove;
 module.exports.config = config;
 module.exports.describe = describe;
+module.exports.describeModal = describeModal;
 module.exports.sudo = sudo;

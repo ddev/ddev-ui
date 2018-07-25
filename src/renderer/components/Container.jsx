@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, PropsRoute, Switch } from "react-router-dom";
 
 import ProjectList from "./ProjectList";
 import ProjectDetail from "./ProjectDetail";
@@ -9,9 +9,24 @@ class Container extends React.Component {
     return (
       <HashRouter>
         <Switch>
-          <Route path="/project/:projectID" component={ProjectDetail} />
           <Route
-            render={() => <ProjectList projects={this.props.projects} />}
+            path="/project/:projectID"
+            render={routeProps => (
+              <ProjectDetail
+                {...routeProps}
+                projects={this.props.projects}
+                addError={this.props.addError}
+              />
+            )}
+          />
+          <Route
+            render={routeProps => (
+              <ProjectList
+                {...routeProps}
+                projects={this.props.projects}
+                addError={this.props.addError}
+              />
+            )}
           />
         </Switch>
       </HashRouter>

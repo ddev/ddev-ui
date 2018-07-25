@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { ListViewRow, Text } from "react-desktop/macOs";
 import { NavLink } from "react-router-dom";
 
-class ProjectItem extends React.Component {
+class ProjectNavItem extends React.Component {
   renderIcon = status => {
     // set default color
     let color = "#00A079";
@@ -64,4 +64,4 @@ class ProjectItem extends React.Component {
   }
 }
 
-export default ProjectItem;
+export default ProjectNavItem;
