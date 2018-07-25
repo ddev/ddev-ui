@@ -21,9 +21,9 @@
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "lint": "eslint --cache --color --ext .jsx,.js src",
-    "build-linux": "electron-builder --linux --x64",
-    "build-windows": "electron-builder --win",
-    "build-darwin": "electron-builder --mac",
+    "build-linux": "yarn compile && electron-builder --linux --x64",
+    "build-windows": "yarn compile && electron-builder --win",
+    "build-darwin": "yarn compile && electron-builder --mac",
     "test": "mocha --require babel-register --require ignore-styles"
   },
   "build": {
