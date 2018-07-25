@@ -65,10 +65,6 @@ all: darwin linux windows
 # Build requirements
 # - wine and mono must be available to build Windows on another platform (brew install wine mono )
 
-npmstart: appstart
-
-npmsetup: appsetup
-
 appstart: appsetup
 	yarn run start
 
@@ -86,12 +82,11 @@ windows: appsetup
 
 appsetup: package.json
 	yarn install
-	# yarn run lint
 
-clean:
+clean: package.json
 	rm -rf js/dist node_modules
 	yarn install
 
 test:
 	# yarn run test
-	@echo "Skipping for Now"
+	@echo "Skipping $@ for Now 🙈"
