@@ -68,6 +68,10 @@ all: darwin linux windows
 appstart: appsetup
 	yarn run start
 
+package: appsetup
+	@echo "Building $@"
+	yarn run dist
+
 linux: appsetup
 	@echo "Building $@"
 	yarn run build-linux
