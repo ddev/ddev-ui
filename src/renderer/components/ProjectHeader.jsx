@@ -102,7 +102,8 @@ class ProjectHeader extends React.Component {
     e.preventDefault();
     console.log("stopping");
     ddevShell.remove(
-      this.props.approot,
+      this.props.name,
+      false, // TODO: Need to remove
       data => {
         console.log(data);
       },
@@ -150,25 +151,39 @@ class ProjectHeader extends React.Component {
                 </a>
               </p>
               <ul className="project-actions list-unstyled list-inline mb-0">
-                <li className="restart list-inline-item">
-                  <a
-                    href="#!"
-                    className="text-success"
-                    onClick={this.processRestart}
-                  >
-                    <i className="fa fa-retweet" aria-hidden="true" /> Restart
-                  </a>
-                </li>
-                <li className="stop list-inline-item">
-                  <a
-                    href="#!"
-                    className="text-danger"
-                    onClick={this.processStop}
-                  >
-                    <i className="fa fa-stop-circle-o" aria-hidden="true" />{" "}
-                    Stop
-                  </a>
-                </li>
+                {this.props.status === "stopped" ? (
+                  <li className="restart list-inline-item">
+                    <a
+                      href="#!"
+                      className="text-success"
+                      onClick={this.processStart}
+                    >
+                      <i className="fa fa-retweet" aria-hidden="true" /> Start
+                    </a>
+                  </li>
+                ) : (
+                  <li className="restart list-inline-item">
+                    <a
+                      href="#!"
+                      className="text-success"
+                      onClick={this.processRestart}
+                    >
+                      <i className="fa fa-retweet" aria-hidden="true" /> Restart
+                    </a>
+                  </li>
+                )}
+                {this.props.status !== "stopped" ? (
+                  <li className="stop list-inline-item">
+                    <a
+                      href="#!"
+                      className="text-danger"
+                      onClick={this.processStop}
+                    >
+                      <i className="fa fa-stop-circle-o" aria-hidden="true" />{" "}
+                      Stop
+                    </a>
+                  </li>
+                ) : null}
                 <li className="remove list-inline-item">
                   <a
                     href="#!"
