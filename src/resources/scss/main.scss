@@ -36,4 +36,6 @@ $fa-font-path: "~font-awesome/fonts";
 }
 .Content {
   flex: 1;
+  overflow: scroll;
+  margin-bottom: 1.5rem;
 }

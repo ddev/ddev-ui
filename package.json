@@ -86,6 +86,7 @@
     "source-map-support": "0.5.x",
     "sudo-prompt": "8.x",
     "tar": "4.4.x",
+    "terminal-in-react": "^4.3.0",
     "xml2js": "0.4.x"
   },
   "devDependencies": {

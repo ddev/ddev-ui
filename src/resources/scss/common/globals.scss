@@ -16,3 +16,7 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
+
+.selectable-text {
+  user-select: all;
+}

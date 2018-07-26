@@ -42,7 +42,7 @@ class ProjectDetail extends React.Component {
         this.setState({ project });
       })
       .catch(e => {
-        console.log(e);
+        // console.log(e);
         this.props.addError(e);
       });
   };
