@@ -1,6 +1,24 @@
 import React from "react";
-import Alert from "./Alert";
 
+// define the Alert component
+const Alert = props => (
+  <div
+    className={`alert alert-${props.style} alert-dismissible fade show`}
+    role="alert"
+  >
+    {props.msg}
+    <button
+      type="button"
+      className="close"
+      data-dismiss="alert"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+);
+
+// define the Alerts component
 class Alerts extends React.Component {
   renderAlert = (type, key) => {
     switch (type) {
