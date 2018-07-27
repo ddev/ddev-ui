@@ -4,7 +4,7 @@ import { HashRouter, Route, PropsRoute, Switch } from "react-router-dom";
 import ProjectList from "./ProjectList";
 import ProjectDetail from "./ProjectDetail";
 
-class Container extends React.Component {
+class ViewRouter extends React.Component {
   render() {
     return (
       <HashRouter>
@@ -34,4 +34,4 @@ class Container extends React.Component {
   }
 }
 
-export default Container;
+export default ViewRouter;

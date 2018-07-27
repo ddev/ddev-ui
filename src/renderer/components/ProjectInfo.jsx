@@ -121,9 +121,7 @@ class ProjectInfo extends React.Component {
                   justifyContent: "center",
                   alignItems: "center"
                 }}
-              >
-                <ProjectConsole root={this.props.approot} />
-              </div>
+              />
             </dl>
           </div>
           {/* config */}
@@ -134,7 +132,10 @@ class ProjectInfo extends React.Component {
             aria-labelledby="config-tab"
           >
             <dl className="list-group list-group-flush">
-              <ProjectTabItem title="WIP" value="This will pull in the config settings from the CLI or reading the config.yml" />
+              <ProjectTabItem
+                title="WIP"
+                value="This will pull in the config settings from the CLI or reading the config.yml"
+              />
             </dl>
           </div>
         </div>

@@ -1,27 +1,18 @@
 import React from "react";
 import ProjectHeader from "./ProjectHeader";
 import ProjectInfo from "./ProjectInfo";
-const ddevShell = require("../modules/ddev-shell");
+import ddevShell from "../modules/ddev-shell";
 
 class ProjectDetail extends React.Component {
   state = {
     project: {}
   };
-  constructor(props) {
-    super(props);
-    const { params } = props.match;
-    this.fetchProject(params.projectID);
-  }
-  componentDidUpdate(prevProps) {
-    const { params } = this.props.match;
-    if (params.projectID !== prevProps.match.params.projectID) {
-      this.fetchProject(params.projectID);
-    }
-  }
   componentDidMount() {
     console.log(this.props);
+    const { params } = this.props.match;
+    this.fetchProject(params.projectID);
     // TODO: this could be reduced/removed once state is updated everywhere.
-    this.timerID = setInterval(() => this.heartBeat(), 5000);
+    this.timerID = setInterval(() => this.heartBeat(), 1000);
   }
   componentWillUnmount() {
     clearInterval(this.timerID);
@@ -29,8 +20,8 @@ class ProjectDetail extends React.Component {
   heartBeat = () => {
     this.fetchProject(this.props.match.params.projectID);
   };
-  fetchProject = async newProject => {
-    await ddevShell
+  fetchProject = newProject => {
+    ddevShell
       .describe(newProject)
       .then(newProject => {
         // 1. Take a copy of the existing state

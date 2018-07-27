@@ -8,9 +8,10 @@ class ProjectList extends React.Component {
         <main className="">
           <h1>My Projects</h1>
           <div className="row card-container">
-            {Object.keys(this.props.projects).map(key => (
-              <ProjectCard key={key} {...this.props.projects[key]} />
-            ))}
+            {this.props.projects &&
+              Object.keys(this.props.projects).map(key => (
+                <ProjectCard key={key} {...this.props.projects[key]} />
+              ))}
           </div>
         </main>
       </section>

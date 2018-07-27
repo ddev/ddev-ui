@@ -61,10 +61,14 @@ class Alerts extends React.Component {
     return alertTypes;
   }
   render() {
+    let alerts;
     // find errors stored in state
-    const alerts = Object.keys(this.props.errors).map(type =>
-      this.renderAlertType(type)
-    );
+    if (this.props.errors) {
+      alerts = Object.keys(this.props.errors).map(type =>
+        this.renderAlertType(type)
+      );
+    }
+
     return <div className="alerts mt-3">{alerts}</div>;
   }
 }

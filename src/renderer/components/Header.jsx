@@ -5,10 +5,6 @@ import {
   ToolbarNav,
   ToolbarNavItem
 } from "react-desktop/macOs";
-import PropTypes from "prop-types";
-
-import fs from "fs";
-import path from "path";
 
 const circle = (
   <svg x="0px" y="0px" width="25px" height="25px" viewBox="0 0 25 25">
@@ -29,18 +25,10 @@ const polygon = (
 );
 
 class Header extends React.Component {
-  constructor() {
-    super();
-    this.state = { isFullscreen: false };
-    this.state = { selected: 1 };
-  }
-
+  state = {
+    selected: 1
+  };
   render() {
-    /* use `path` to create the full path to our asset */
-    const pathToAsset = path.join(__static, "/img/Logo.svg");
-
-    /* use `fs` to consume the path and read our asset */
-    const fileContents = fs.readFileSync(pathToAsset, "utf8");
     return (
       <TitleBar inset height="60" className="TitleBar">
         <Toolbar horizontalAlignment="center">
@@ -49,19 +37,19 @@ class Header extends React.Component {
               title="Item 1"
               icon={circle}
               selected={this.state.selected === 1}
-              onClick={() => this.setState({ selected: 1 })}
+              // onClick={() => this.setState({ selected: 1 })}
             />
             <ToolbarNavItem
               title="Item 2"
               icon={star}
               selected={this.state.selected === 2}
-              onClick={() => this.setState({ selected: 2 })}
+              // onClick={() => this.setState({ selected: 2 })}
             />
             <ToolbarNavItem
               title="Item 3"
               icon={polygon}
               selected={this.state.selected === 3}
-              onClick={() => this.setState({ selected: 3 })}
+              // onClick={() => this.setState({ selected: 3 })}
             />
           </ToolbarNav>
         </Toolbar>
