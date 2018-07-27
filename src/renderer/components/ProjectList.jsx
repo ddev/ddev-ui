@@ -1,7 +1,7 @@
 import React from "react";
 import ProjectCard from "./ProjectCard";
 
-class ProjectList extends React.Component {
+class ProjectList extends React.PureComponent {
   render() {
     return (
       <section className="container">

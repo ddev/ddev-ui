@@ -40,21 +40,23 @@ class Dashboard extends React.Component {
     ddevShell
       .list()
       .then(newProjects => {
-        // 1. Take a copy of the existing state
-        let projects = { ...this.state.projects };
-        // 2. Add our new projects to that projects variable
+        let projects = {};
         for (var key in newProjects) {
           if (newProjects.hasOwnProperty(key)) {
             projects[newProjects[key].name] = newProjects[key];
           }
         }
-        // 3. Set the new projects object to state
-        this.setState({ projects });
+        this.updateProjects(projects);
       })
       .catch(e => {
         console.log(e);
         this.addError(e);
       });
+  };
+  updateProjects = projects => {
+    if (JSON.stringify(this.state.projects) !== JSON.stringify(projects)) {
+      this.setState({ projects });
+    }
   };
   heartBeat = () => {
     this.fetchProjects();

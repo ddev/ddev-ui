@@ -26,7 +26,7 @@ const ProjectTabItem = props => (
   </li>
 );
 
-class ProjectInfo extends React.Component {
+class ProjectInfo extends React.PureComponent {
   render() {
     return (
       <div className="tabs">
@@ -121,7 +121,9 @@ class ProjectInfo extends React.Component {
                   justifyContent: "center",
                   alignItems: "center"
                 }}
-              />
+              >
+                <ProjectConsole />
+              </div>
             </dl>
           </div>
           {/* config */}

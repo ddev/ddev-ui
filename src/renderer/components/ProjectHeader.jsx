@@ -6,7 +6,7 @@ import ProjectStatusIcon from "./ProjectStatusIcon";
 
 import ddevShell from "./../modules/ddev-shell";
 
-class ProjectHeader extends React.Component {
+class ProjectHeader extends React.PureComponent {
   processStart = e => {
     e.preventDefault();
     console.log("starting");
