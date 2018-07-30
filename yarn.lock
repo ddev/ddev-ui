@@ -7460,6 +7460,10 @@ rc@^1.0.1, rc@^1.1.2, rc@^1.1.6, rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-data-grid@^4.0.7:
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/react-data-grid/-/react-data-grid-4.0.7.tgz#ef44f4c8d22773ee3fc1278ae2cb9e69c75c62b0"
+
 react-desktop@0.3.x:
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/react-desktop/-/react-desktop-0.3.5.tgz#4530ae634b91ce706ed9801a586aba96f04ca63a"
