@@ -1,9 +1,6 @@
 import React from "react";
 import { Window } from "react-desktop/macOs";
 import { isObject } from "util";
-import "popper.js";
-import "bootstrap";
-window.$ = window.jQuery = require("jquery");
 
 // components
 import Header from "./Header";

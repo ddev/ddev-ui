@@ -1,7 +1,7 @@
 import React from "react";
+
 import ProjectHeader from "./ProjectHeader";
 import ProjectInfo from "./ProjectInfo";
-import ddevShell from "../modules/ddev-shell";
 
 class ProjectDetail extends React.PureComponent {
   render() {

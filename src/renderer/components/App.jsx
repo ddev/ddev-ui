@@ -1,6 +1,10 @@
 import React from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
 
+import "popper.js";
+import "bootstrap";
+window.$ = window.jQuery = require("jquery");
+
 import Dashboard from "./Dashboard";
 
 const App = () => (
