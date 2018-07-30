@@ -99,6 +99,7 @@
     "babel-plugin-transform-async-to-generator": "6.24.x",
     "babel-plugin-transform-class-properties": "6.24.x",
     "babel-plugin-transform-es2015-classes": "6.24.x",
+    "babel-preset-airbnb": "^2.5.3",
     "babel-preset-env": "1.6.x",
     "babel-preset-react": "6.24.x",
     "electron": "1.7.x",
