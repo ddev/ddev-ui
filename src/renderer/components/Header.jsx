@@ -5,6 +5,8 @@ import {
   ToolbarNav,
   ToolbarNavItem
 } from "react-desktop/macOs";
+import { NavLink } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const circle = (
   <svg x="0px" y="0px" width="25px" height="25px" viewBox="0 0 25 25">
@@ -28,6 +30,9 @@ class Header extends React.Component {
   state = {
     selected: 1
   };
+  static propTypes = {
+    history: PropTypes.object
+  };
   render() {
     return (
       <TitleBar inset height="60" className="TitleBar">
@@ -43,7 +48,11 @@ class Header extends React.Component {
               title="Item 2"
               icon={star}
               selected={this.state.selected === 2}
-              // onClick={() => this.setState({ selected: 2 })}
+              onClick={e => {
+                e.preventDefault();
+                this.props.history.push(`/project/create`);
+                // this.setState({ selected: 2 });
+              }}
             />
             <ToolbarNavItem
               title="Item 3"

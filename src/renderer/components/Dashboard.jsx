@@ -75,7 +75,7 @@ class Dashboard extends React.Component {
     return (
       <Window chrome padding="0px" className="Window">
         <div className="wrap">
-          <Header />
+          <Header {...this.props} />
           <section className="Main">
             <Sidebar projects={this.state.projects} />
             <main className="Content container-fluid">

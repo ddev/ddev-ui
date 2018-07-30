@@ -35,9 +35,9 @@ class Sidebar extends React.Component {
             <NavLink to="/projects">Projects</NavLink>
           </h1>
           <div className="add ListViewHeaderAdd ml-auto">
-            <a className="btn btn-primary btn-sm" href="#">
+            <NavLink className="btn btn-primary btn-sm" to="/project/create">
               + New
-            </a>
+            </NavLink>
           </div>
         </ListViewHeader>
         {this.props.projects && (

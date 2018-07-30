@@ -3,12 +3,14 @@ import { HashRouter, Route, PropsRoute, Switch } from "react-router-dom";
 
 import ProjectList from "./ProjectList";
 import ProjectDetail from "./ProjectDetail";
+import CreateProject from "./CreateProject";
 
 class ViewRouter extends React.PureComponent {
   render() {
     return (
       <HashRouter>
         <Switch>
+          <Route path="/project/create" render={() => <CreateProject />} />
           <Route
             path="/project/:projectID"
             render={routeProps => (

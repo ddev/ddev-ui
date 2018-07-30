@@ -58,109 +58,6 @@ function resetAddModal() {
   $("#existingFilesModal").modal("hide");
   $("#distroModal").modal("hide");
 }
-let addSiteOptionsModalBody = `<div class="row">
-        <div class="option-container column col-lg-6 col-md-6 col-sm-6 start-from-files">
-            <div class="btn btn-primary start-button-option-container">
-                <i class="fa fa-file-archive-o" style="font-size: 50px"></i>
-            </div>
-            <div>Start from existing project files</div>
-        </div>
-        <div class="option-container second-option column col-lg-6 col-md-6 col-sm-6 start-from-template">
-            <div class="btn btn-primary start-button-option-container">
-                <i class="fa fa-file-archive-o" style="font-size: 50px"></i>
-            </div>
-            <div>Start fresh from a CMS template</div>
-        </div>
-    </div>`;
-
-let createSiteModalBody = `<div class="modal-body">
-        <div class="loading-overlay">
-            <div>
-                <i class="fa fa-spinner fa-spin loading-spinner" style="font-size:150px"></i>
-            </div>
-            <div class="loading-text">Working...</div>
-        </div>
-        <div class="error-overlay">
-            <div>
-                <i class="fa fa-exclamation-triangle error-icon" style="font-size:50px"></i>
-            </div>
-            <div class="error-text">Something Went Wrong</div>
-            <div class="btn btn-primary">OK</div>
-        </div>
-        <h3 class="add-modal-section-header">Application Type</h3>
-        <div class="tile-container">
-            <div class="tile">
-                <img class="drupal7" src="img/drupal7.png" data-type="drupal7"/>
-            </div>
-            <div class="tile">
-                <img class="drupal8" src="img/drupal8.png" data-type="drupal8"/>
-            </div>
-            <div class="tile">
-                <img class="wordpress" src="img/wordpress.png" data-type="wordpress"/>
-            </div>
-        </div>
-				<h3 class="add-modal-section-header">Installation Directory</h3>
-        <div class="select-folder-container add-site-segment">
-            <div class="input-group select-path-folder">
-                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
-                <input type="text" readonly class="selected-path-text form-control" placeholder="Path To Install Project" aria-describedby="basic-addon1">
-            </div>
-        </div>
-        <h3 class="add-modal-section-header">Project Name</h3>
-        <div class="site-name-container add-site-segment">
-            <div class="input-group">
-                <input type="text" class="form-control" id="site-name">
-            </div>
-        </div>
-        <div class="hidden">
-            <input type="hidden" id="appType">
-        </div>
-    </div>`;
-
-let createSiteExistingModalBody = `<div class="modal-body">
-        <div class="loading-overlay">
-            <div>
-                <i class="fa fa-spinner fa-spin loading-spinner" style="font-size:150px"></i>
-            </div>
-            <div class="loading-text">Working...</div>
-        </div>
-        <div class="error-overlay">
-            <div>
-                <i class="fa fa-exclamation-triangle error-icon" style="font-size:50px"></i>
-            </div>
-            <div class="error-text">Something Went Wrong</div>
-            <div class="btn btn-primary">OK</div>
-        </div>
-				<h3 class="add-modal-section-header">Project Files</h3>
-				<div class="section-description">Select the folder that contains your project's files.</div>
-        <div class="select-folder-container add-site-segment">
-            <div class="input-group select-path-folder">
-                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
-                <input type="text" id="existing-project-path" readonly class="selected-path-text form-control" placeholder="Path To Project Files" aria-describedby="basic-addon1">
-            </div>
-        </div>
-        <h3 class="add-modal-section-header">Project Name</h3>
-        <div class="section-description">Enter a name for your project.</div>
-        <div class="site-name-container add-site-segment">
-            <div class="input-group">
-                <input type="text" class="form-control" id="existing-project-name">
-            </div>
-        </div>
-        <h3 class="add-modal-section-header">Project Docroot</h3>
-        <div class="section-description">Select the directory from which your site is served. You may skip this field if your site files are in the project root.</div>
-        <div class="docroot-container add-site-segment">
-            <div class="input-group select-docroot-folder">
-                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
-                <input type="text" id="existing-project-docroot" readonly class="selected-docroot-text form-control" placeholder="Project Docroot Path" aria-describedby="basic-addon1">
-            </div>
-        </div>
-    </div>`;
-
-let createSiteModalFooter =
-  '<div class="btn btn-primary create-site">Create Project</div>';
-
-let createSiteExistingModalFooter =
-  '<div class="btn btn-primary create-site-from-existing">Create Project</div>';
 
 /**
  * Basic validation of a hostname based on RFC 2396 Section 3.2.2
@@ -553,44 +450,21 @@ function addCMSFromExisting(name, targetPath, docroot = "") {
  * Initialization - hook UI and generate markup.
  */
 function init() {
-  $("body").append(
-    bootstrapModal.createModal(
-      "addOptionsDialog",
-      "Choose a Starting Point",
-      addSiteOptionsModalBody
-    )
-  );
-  $("body").append(
-    bootstrapModal.createModal(
-      "distroModal",
-      "Create a New Project",
-      createSiteModalBody,
-      createSiteModalFooter
-    )
-  );
-  $("body").append(
-    bootstrapModal.createModal(
-      "existingFilesModal",
-      "Create a Project From Existing Files",
-      createSiteExistingModalBody,
-      createSiteExistingModalFooter
-    )
-  );
-  $(document).on("click", ".add", () => {
-    resetAddModal();
-    alert(
-      "In order to add a new project, DDEV requires elevated permissions to modify your Hosts file. You may be prompted for your username and password to continue."
-    );
-    let command = "version";
-    ddevShell
-      .sudo(command)
-      .then(() => {
-        $("#addOptionsDialog").modal();
-      })
-      .catch(err => {
-        alert(err);
-      });
-  });
+  // $(document).on("click", ".add", () => {
+  //   resetAddModal();
+  //   alert(
+  //     "In order to add a new project, DDEV requires elevated permissions to modify your Hosts file. You may be prompted for your username and password to continue."
+  //   );
+  //   let command = "version";
+  //   ddevShell
+  //     .sudo(command)
+  //     .then(() => {
+  //       $("#addOptionsDialog").modal();
+  //     })
+  //     .catch(err => {
+  //       alert(err);
+  //     });
+  // });
   $(document).on("click", ".start-from-template", () => {
     resetAddModal();
     $("#addOptionsDialog").modal("hide");
