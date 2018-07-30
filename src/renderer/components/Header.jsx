@@ -36,32 +36,7 @@ class Header extends React.Component {
   render() {
     return (
       <TitleBar inset height="60" className="TitleBar">
-        <Toolbar horizontalAlignment="center">
-          <ToolbarNav>
-            <ToolbarNavItem
-              title="Item 1"
-              icon={circle}
-              selected={this.state.selected === 1}
-              // onClick={() => this.setState({ selected: 1 })}
-            />
-            <ToolbarNavItem
-              title="Item 2"
-              icon={star}
-              selected={this.state.selected === 2}
-              onClick={e => {
-                e.preventDefault();
-                this.props.history.push(`/project/create`);
-                // this.setState({ selected: 2 });
-              }}
-            />
-            <ToolbarNavItem
-              title="Item 3"
-              icon={polygon}
-              selected={this.state.selected === 3}
-              // onClick={() => this.setState({ selected: 3 })}
-            />
-          </ToolbarNav>
-        </Toolbar>
+        <Toolbar horizontalAlignment="center" />
         <img alt="ddev logo" src="/img/Logo.svg" className="ddev-logo" />
       </TitleBar>
     );
