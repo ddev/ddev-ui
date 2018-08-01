@@ -1,5 +1,9 @@
 import React from "react";
 
+const drupal7Img = require(__static + "/img/drupal7.png");
+const drupal8Img = require(__static + "/img/drupal8.png");
+const wordpressImg = require(__static + "/img/wordpress.png");
+
 const CreateProjectForm = props => (
   <div className="modal-body">
     <div className="loading-overlay">
@@ -18,17 +22,13 @@ const CreateProjectForm = props => (
     <h3 className="add-modal-section-header">Application Type</h3>
     <div className="tile-container">
       <div className="tile">
-        <img className="drupal7" src="img/drupal7.png" data-type="drupal7" />
+        <img className="drupal7" src={drupal7Img} data-type="drupal7" />
       </div>
       <div className="tile">
-        <img className="drupal8" src="img/drupal8.png" data-type="drupal8" />
+        <img className="drupal8" src={drupal8Img} data-type="drupal8" />
       </div>
       <div className="tile">
-        <img
-          className="wordpress"
-          src="img/wordpress.png"
-          data-type="wordpress"
-        />
+        <img className="wordpress" src={wordpressImg} data-type="wordpress" />
       </div>
     </div>
     <h3 className="add-modal-section-header">Installation Directory</h3>

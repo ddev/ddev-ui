@@ -4,6 +4,7 @@ import React from "react";
 const ProjectTypeIcon = props => {
   const { type, httpurl } = props;
   if (type) {
+    const platformImg = require(__static + "/img/" + type + ".png");
     return (
       <a
         href="#!"
@@ -15,7 +16,7 @@ const ProjectTypeIcon = props => {
       >
         <img
           alt="ddev logo"
-          src={`/img/${type}.png`}
+          src={platformImg}
           className="platform-logo img-fluid"
         />
       </a>
