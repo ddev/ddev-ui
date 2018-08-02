@@ -43,9 +43,7 @@ class Sidebar extends React.Component {
             ))}
           </ListViewSection>
         )}
-        <ListViewFooter className="ListViewFooter">
-          <Text>Status</Text>
-        </ListViewFooter>
+        <ListViewFooter className="ListViewFooter" />
       </ListView>
     );
   }

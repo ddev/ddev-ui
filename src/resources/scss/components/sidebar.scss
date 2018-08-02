@@ -1,9 +1,7 @@
 .projectSidebar {
-  background: #131e29;
-  color: #fff;
-
-  .ListViewSectionHeader,
-  .ListViewHeader {
+  &,
+  .ListViewHeader,
+  .ListViewSectionHeader {
     background: #131e29 !important;
     color: #fff !important;
   }
@@ -12,16 +10,13 @@
     font-weight: bold;
     align-items: center;
     border-bottom: 1px solid rgba(0, 58, 112, 0.6) !important;
-
     img {
       height: 22px;
     }
-
     h1 {
       color: #fff;
       font-size: 1rem;
     }
-
     .btn {
       border-width: 2px;
       border-color: $primary !important;
@@ -41,29 +36,29 @@
     display: flex;
     align-items: left;
     border-bottom: 0.5px solid rgba(0, 58, 112, 0.6);
-  }
-  .ListViewRow h3 {
-    font-size: 0.7rem;
-    color: #fff;
-    margin-bottom: 0px;
-  }
-  .ListViewRow p {
-    font-size: 0.575rem;
-    color: #fff;
-    margin-bottom: 0px;
-    font-weight: normal;
-  }
-  .ListViewRow a {
-    text-decoration: none;
-    &,
-    &:hover {
-      cursor: pointer !important;
+    h3 {
+      font-size: 0.7rem;
+      color: #fff;
+      margin-bottom: 0px;
     }
-    &.active {
-      background: #003a70;
+    p {
+      font-size: 0.575rem;
+      color: #fff;
+      margin-bottom: 0px;
+      font-weight: normal;
     }
-  }
-  .ListViewRow .project-status-icon {
-    transform: scale(1.25);
+    a {
+      text-decoration: none;
+      &,
+      &:hover {
+        cursor: pointer !important;
+      }
+      &.active {
+        background: #003a70;
+      }
+    }
+    .project-status-icon {
+      transform: scale(1.2);
+    }
   }
 }

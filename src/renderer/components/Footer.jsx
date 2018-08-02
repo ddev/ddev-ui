@@ -14,7 +14,7 @@ class Footer extends React.Component {
             <div className="col-md-8">
               <div className="row">
                 <RouterStatus className="col-md-7" />
-                <GlobalActions className="col-md-5" />
+                {/* <GlobalActions className="col-md-5" /> */}
               </div>
             </div>
           </div>
