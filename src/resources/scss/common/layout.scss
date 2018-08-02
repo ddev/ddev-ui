@@ -1,0 +1,22 @@
+.app-container {
+  height: calc(100vh - 87px);
+  overflow: hidden;
+  margin-top: 63px;
+}
+
+main.content,
+.projectSidebar {
+  overflow-y: scroll;
+}
+
+.selectable-text {
+  user-select: all;
+}
+
+.Window > div {
+  flex-direction: column !important;
+}
+
+main.content {
+  background-color: #fff;
+}

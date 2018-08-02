@@ -74,11 +74,11 @@ class Dashboard extends React.Component {
   render() {
     return (
       <Window chrome padding="0px" className="Window">
-        <div className="wrap">
-          <Header {...this.props} />
-          <section className="Main">
+        <Header {...this.props} />
+        <section className="app-container container-fluid">
+          <div className="row h-100">
             <Sidebar projects={this.state.projects} />
-            <main className="Content container-fluid">
+            <main className="content h-100 col-md-8">
               <Alerts errors={this.state.errors} />
               <ViewRouter
                 addError={this.addError}
@@ -86,9 +86,9 @@ class Dashboard extends React.Component {
                 errors={this.state.errors}
               />
             </main>
-          </section>
-          <Footer />
-        </div>
+          </div>
+        </section>
+        <Footer />
       </Window>
     );
   }

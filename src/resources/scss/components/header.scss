@@ -2,12 +2,54 @@
   Header styles
  */
 
-.TitleBar {
-  position: fixed;
-  flex: 0 0 auto;
+.TitleBar > div {
+  padding-right: 0px !important;
+}
+.app-title {
+  height: 1.7rem !important;
+  margin-bottom: 0.1rem;
+
+  h1 {
+    font-size: 0.8rem;
+    margin-bottom: 0;
+    color: $gray-700;
+  }
+  img {
+    height: 16px;
+  }
+}
+.app-nav {
+  margin-bottom: 0.4rem;
+  width: 100%;
+
+  .btn-group {
+    background: #ffffff;
+    box-shadow: 0 1px 1px 0 #e0e0e0;
+    border-radius: 5px;
+    margin-left: 4px;
+    margin-right: 4px;
+
+    &,
+    & > div {
+      height: 1.7rem !important;
+    }
+
+    a {
+      width: auto !important;
+      min-width: 30px !important;
+      margin-left: 0.3rem !important;
+      margin-right: 0.3rem !important;
+      height: 100%;
+      display: block;
+      vertical-align: middle;
+
+      img {
+        max-height: 0.8rem;
+      }
+    }
+  }
 }
 .ddev-logo {
-  // height: 35px;
-  // margin-top: 0px;
-  // float: right;
+  position: absolute;
+  right: 20px;
 }

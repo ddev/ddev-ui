@@ -14,7 +14,7 @@ import ProjectNavItem from "./ProjectNavItem";
 class Sidebar extends React.Component {
   render() {
     return (
-      <ListView className="projectSidebar">
+      <ListView className="projectSidebar h-md-100 col-md-4">
         <ListViewHeader
           height="80px"
           className="ListViewHeader align-items-center d-flex flex-row w-100"

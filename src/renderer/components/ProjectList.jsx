@@ -198,36 +198,34 @@ class ProjectList extends React.PureComponent {
   };
   render() {
     return (
-      <section className="container">
-        <main>
-          <h1>My Projects</h1>
-          <div className="row card-container">
-            {this.state.rows &&
-              this.state.rows.length !== 0 && (
-                <ReactDataGrid
-                  columns={[
-                    { key: "id", name: "ID", cellClass: "" },
-                    {
-                      key: "actions",
-                      name: "Actions",
-                      cellClass: "text-center",
-                      width: 150
-                    },
-                    {
-                      key: "status",
-                      name: "Status",
-                      cellClass: "text-center",
-                      width: 80
-                    }
-                  ]}
-                  rowGetter={this.rowGetter}
-                  rowsCount={this.state.rows.length}
-                  rowHeight={55}
-                  minHeight={500}
-                />
-              )}
-          </div>
-        </main>
+      <section className="my-projects">
+        <h1>My Projects</h1>
+        <div className="project-grid">
+          {this.state.rows &&
+            this.state.rows.length !== 0 && (
+              <ReactDataGrid
+                columns={[
+                  { key: "id", name: "ID", cellClass: "" },
+                  {
+                    key: "actions",
+                    name: "Actions",
+                    cellClass: "text-center",
+                    width: 150
+                  },
+                  {
+                    key: "status",
+                    name: "Status",
+                    cellClass: "text-center",
+                    width: 80
+                  }
+                ]}
+                rowGetter={this.rowGetter}
+                rowsCount={this.state.rows.length}
+                rowHeight={55}
+                minHeight={500}
+              />
+            )}
+        </div>
       </section>
     );
   }

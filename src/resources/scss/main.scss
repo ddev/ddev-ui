@@ -12,6 +12,7 @@ $fa-font-path: "~font-awesome/fonts";
 // app styles
 @import "common/globals";
 @import "common/typography";
+@import "common/layout";
 
 @import "components/buttons";
 @import "components/card";
@@ -19,23 +20,3 @@ $fa-font-path: "~font-awesome/fonts";
 @import "components/header";
 @import "components/sidebar";
 @import "components/modals";
-
-.wrap {
-  display: flex;
-  min-height: 100vh;
-  min-width: 100vw;
-  flex-direction: column;
-}
-.Main {
-  flex: 1;
-  display: flex;
-  margin-top: 60.5px;
-}
-.projectSidebar {
-  flex: 0 0 25% !important;
-}
-.Content {
-  flex: 1;
-  overflow: scroll;
-  margin-bottom: 1.5rem;
-}

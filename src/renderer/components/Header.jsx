@@ -8,22 +8,18 @@ import {
 import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const circle = (
-  <svg x="0px" y="0px" width="25px" height="25px" viewBox="0 0 25 25">
-    <circle cx="12.5" cy="12.5" r="12.5" />
-  </svg>
-);
+const logo = require(__static + "/img/Logo.svg");
+const stack = require(__static + "/img/stack.svg");
+const ddevIcon = require(__static + "/img/Icon.svg");
+const cloud = require(__static + "/img/cloud.svg");
+const account = require(__static + "/img/account.svg");
+const settings = require(__static + "/img/settings.svg");
 
-const star = (
-  <svg x="0px" y="0px" width="25px" height="23.8px" viewBox="0 0 25 23.8">
-    <polygon points="12.5,0 16.4,7.8 25,9.1 18.8,15.2 20.2,23.8 12.5,19.7 4.8,23.8 6.2,15.2 0,9.1 8.6,7.8 " />
-  </svg>
-);
-
-const polygon = (
-  <svg x="0px" y="0px" width="25px" height="21.7px" viewBox="0 0 25 21.7">
-    <polygon points="6.2,21.7 0,10.8 6.2,0 18.8,0 25,10.8 18.8,21.7 " />
-  </svg>
+const AppTitle = () => (
+  <div className="app-title d-flex flex-row align-items-center">
+    <img alt="DDEV UI" src={ddevIcon} className="" />
+    <h1 className="ml-1 d-inline-block">DDEV UI</h1>
+  </div>
 );
 
 class Header extends React.Component {
@@ -35,9 +31,91 @@ class Header extends React.Component {
   };
   render() {
     return (
-      <TitleBar inset height="60" className="TitleBar">
-        <Toolbar horizontalAlignment="center" />
-        <img alt="ddev logo" src="/img/Logo.svg" className="ddev-logo" />
+      <TitleBar
+        inset
+        height="63"
+        className="TitleBar fixed-top"
+        isFullscreen={this.state.isFullscreen}
+        onCloseClick={() => console.log("Close window")}
+        onMinimizeClick={() => console.log("Minimize window")}
+        onMaximizeClick={() => console.log("Mazimize window")}
+        onResizeClick={() =>
+          this.setState({ isFullscreen: !this.state.isFullscreen })
+        }
+        title={
+          <Toolbar className="d-flex flex-column">
+            <AppTitle />
+            <div className="app-nav d-flex flex-row">
+              <div className="history-nav col-4 d-none d-sm-flex flex-row justify-content-start justify-content-md-end pr-0">
+                <ToolbarNav className="btn-group btn-group-sm">
+                  <ToolbarNavItem
+                    icon={
+                      <i className="fa fa-chevron-left" aria-hidden="true" />
+                    }
+                    selected={this.state.selected === 1}
+                    onClick={() => this.setState({ selected: 1 })}
+                    className="m-0"
+                  />
+                </ToolbarNav>
+                <ToolbarNav className="btn-group btn-group-sm d-flex">
+                  <ToolbarNavItem
+                    icon={
+                      <i className="fa fa-chevron-right" aria-hidden="true" />
+                    }
+                    selected={this.state.selected === 1}
+                    onClick={() => this.setState({ selected: 1 })}
+                    className="m-0"
+                  />
+                </ToolbarNav>
+              </div>
+
+              <div className="primary-nav d-flex flex-row col-sm-8 justify-content-center justify-content-md-start pl-1">
+                <ToolbarNav className="btn-group btn-group-sm mr-3">
+                  <ToolbarNavItem
+                    icon={<img alt="DDEV Local" src={stack} className="" />}
+                    selected={this.state.selected === 1}
+                    onClick={() => this.setState({ selected: 1 })}
+                    className="m-0"
+                  />
+                  <ToolbarNavItem
+                    icon={<img alt="DDEV Live" src={cloud} className="" />}
+                    selected={this.state.selected === 2}
+                    onClick={() => this.setState({ selected: 2 })}
+                    className="m-0"
+                  />
+                  <ToolbarNavItem
+                    icon={<img alt="DDEV Live" src={account} className="" />}
+                    selected={this.state.selected === 3}
+                    onClick={() => this.setState({ selected: 3 })}
+                    className="m-0"
+                  />
+                  <ToolbarNavItem
+                    icon={<img alt="DDEV Live" src={settings} className="" />}
+                    selected={this.state.selected === 4}
+                    onClick={() => this.setState({ selected: 4 })}
+                    className="m-0"
+                  />
+                </ToolbarNav>
+                <ToolbarNav className="btn-group btn-group-sm">
+                  <ToolbarNavItem
+                    icon={
+                      <i className="fa fa-plus-circle" aria-hidden="true" />
+                    }
+                    selected={this.state.selected === 1}
+                    onClick={() => this.setState({ selected: 1 })}
+                    className="m-0"
+                  />
+                </ToolbarNav>
+              </div>
+            </div>
+          </Toolbar>
+        }
+      >
+        <img
+          alt="ddev logo"
+          src={logo}
+          className="ddev-logo d-none d-md-block"
+        />
       </TitleBar>
     );
   }
