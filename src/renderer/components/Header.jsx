@@ -53,7 +53,7 @@ class Header extends React.Component {
                       <i className="fa fa-chevron-left" aria-hidden="true" />
                     }
                     selected={this.state.selected === 1}
-                    onClick={() => this.setState({ selected: 1 })}
+                    onClick={() => this.props.history.goBack()}
                     className="m-0"
                   />
                 </ToolbarNav>
@@ -63,7 +63,7 @@ class Header extends React.Component {
                       <i className="fa fa-chevron-right" aria-hidden="true" />
                     }
                     selected={this.state.selected === 1}
-                    onClick={() => this.setState({ selected: 1 })}
+                    onClick={() => this.props.history.goForward()}
                     className="m-0"
                   />
                 </ToolbarNav>
@@ -86,13 +86,15 @@ class Header extends React.Component {
                     onClick={() => this.setState({ selected: 2 })}
                     className="m-0"
                   />
+                  {/*
+                    <ToolbarNavItem
+                      icon={<img alt="My Account" src={account} className="" />}
+                      onClick={() => this.setState({ selected: 3 })}
+                      className="m-0"
+                    />
+                  */}
                   <ToolbarNavItem
-                    icon={<img alt="DDEV Live" src={account} className="" />}
-                    onClick={() => this.setState({ selected: 3 })}
-                    className="m-0"
-                  />
-                  <ToolbarNavItem
-                    icon={<img alt="DDEV Live" src={settings} className="" />}
+                    icon={<img alt="Settings" src={settings} className="" />}
                     onClick={() => this.setState({ selected: 4 })}
                     className="m-0"
                   />
