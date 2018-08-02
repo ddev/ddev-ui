@@ -9,26 +9,31 @@ class ProjectNavItem extends React.Component {
     const navLinkHref = `/project/${this.props.name}/`;
     return (
       <ListViewRow
-        height="40"
-        padding="5px 10px"
+        height="43"
+        margin="0px"
+        padding="0px"
         verticalAlignment="center"
         className="ListViewRow"
       >
-        <Text
-          className="column w-100 pl-3 my-2"
+        <NavLink
+          className="w-100 h-100"
+          to={navLinkHref}
           data-sitename={this.props.name}
         >
-          <NavLink
-            className="align-items-center d-flex flex-row w-100"
-            to={navLinkHref}
+          <div
+            className="align-items-center d-flex flex-row h-100 w-100"
+            data-sitename={this.props.name}
           >
-            <ProjectStatusIcon status={this.props.status} />
+            <ProjectStatusIcon
+              className="project-status-icon ml-2"
+              status={this.props.status}
+            />
             <span className="pl-3">
               <h3>{this.props.name}</h3>
               <p>{this.props.status}</p>
             </span>
-          </NavLink>
-        </Text>
+          </div>
+        </NavLink>
       </ListViewRow>
     );
   }

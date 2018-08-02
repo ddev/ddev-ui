@@ -71,40 +71,43 @@ class Header extends React.Component {
 
               <div className="primary-nav d-flex flex-row col-sm-8 justify-content-center justify-content-md-start pl-1">
                 <ToolbarNav className="btn-group btn-group-sm mr-3">
-                  <ToolbarNavItem
-                    icon={<img alt="DDEV Local" src={stack} className="" />}
-                    selected={this.state.selected === 1}
-                    onClick={() => this.setState({ selected: 1 })}
-                    className="m-0"
-                  />
+                  <div className="nav-item">
+                    <NavLink
+                      className="m-0 d-flex flex-column align-items-center"
+                      to="/projects"
+                    >
+                      <div className="h-100  d-flex align-content-center align-items-center justify-content-center">
+                        <img alt="DDEV Local" src={stack} className="" />
+                      </div>
+                    </NavLink>
+                  </div>
                   <ToolbarNavItem
                     icon={<img alt="DDEV Live" src={cloud} className="" />}
-                    selected={this.state.selected === 2}
                     onClick={() => this.setState({ selected: 2 })}
                     className="m-0"
                   />
                   <ToolbarNavItem
                     icon={<img alt="DDEV Live" src={account} className="" />}
-                    selected={this.state.selected === 3}
                     onClick={() => this.setState({ selected: 3 })}
                     className="m-0"
                   />
                   <ToolbarNavItem
                     icon={<img alt="DDEV Live" src={settings} className="" />}
-                    selected={this.state.selected === 4}
                     onClick={() => this.setState({ selected: 4 })}
                     className="m-0"
                   />
                 </ToolbarNav>
                 <ToolbarNav className="btn-group btn-group-sm">
-                  <ToolbarNavItem
-                    icon={
-                      <i className="fa fa-plus-circle" aria-hidden="true" />
-                    }
-                    selected={this.state.selected === 1}
-                    onClick={() => this.setState({ selected: 1 })}
-                    className="m-0"
-                  />
+                  <div className="nav-item">
+                    <NavLink
+                      className="m-0 d-flex flex-column align-items-center"
+                      to="/project/create"
+                    >
+                      <div className="h-100 d-flex align-content-center align-items-center justify-content-center">
+                        <i className="fa fa-plus-circle" aria-hidden="true" />
+                      </div>
+                    </NavLink>
+                  </div>
                 </ToolbarNav>
               </div>
             </div>

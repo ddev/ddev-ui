@@ -1,46 +1,69 @@
 .projectSidebar {
-  // flex: none !important;
   background: #131e29;
   color: #fff;
-  // margin: -24px 20px -44px -20px;
-  // width: 265px;
-  // min-height: 95vh;
-}
-.ListViewSectionHeader,
-.ListViewHeader {
-  background: #131e29 !important;
-  color: #fff !important;
-}
-.ListViewHeader {
-  font-weight: 14px;
-  font-weight: bold;
-  align-items: center;
 
-  h1 {
-    // margin-left: 25px;
-    color: #fff;
+  .ListViewSectionHeader,
+  .ListViewHeader {
+    background: #131e29 !important;
+    color: #fff !important;
   }
-}
-.ListViewFooter {
-  background: transparent;
-}
+  .ListViewHeader {
+    font-weight: 14px;
+    font-weight: bold;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 58, 112, 0.6) !important;
 
-.projectSidebar .ListViewRow {
-  display: flex;
-  align-items: left;
-}
-.projectSidebar .ListViewRow h3 {
-  font-weight: 11px;
-  color: #fff;
-  margin-bottom: 0px;
-}
-.projectSidebar .ListViewRow p {
-  font-weight: 9px;
-  color: #fff;
-  margin-bottom: 0px;
-}
-.projectSidebar .ListViewRow a {
-  &.active {
-    background: #003a70;
+    img {
+      height: 22px;
+    }
+
+    h1 {
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .btn {
+      border-width: 2px;
+      border-color: $primary !important;
+      text-transform: uppercase;
+      color: $white;
+      font-size: 0.6rem;
+      font-weight: bold;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+  .ListViewFooter {
+    background: transparent;
+  }
+
+  .ListViewRow {
+    display: flex;
+    align-items: left;
+    border-bottom: 0.5px solid rgba(0, 58, 112, 0.6);
+  }
+  .ListViewRow h3 {
+    font-size: 0.7rem;
+    color: #fff;
+    margin-bottom: 0px;
+  }
+  .ListViewRow p {
+    font-size: 0.575rem;
+    color: #fff;
+    margin-bottom: 0px;
+    font-weight: normal;
+  }
+  .ListViewRow a {
+    text-decoration: none;
+    &,
+    &:hover {
+      cursor: pointer !important;
+    }
+    &.active {
+      background: #003a70;
+    }
+  }
+  .ListViewRow .project-status-icon {
+    transform: scale(1.25);
   }
 }
