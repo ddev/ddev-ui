@@ -22,7 +22,7 @@ function getNewestDrupalVersion(majorVersion) {
     };
 
     function callback(error, response, body) {
-      if (!error && response.statusCode == 200) {
+      if (!error && response.statusCode === 200) {
         parseXMLString(body, (err, result) => {
           const latestRelease = {
             version: result.project.releases['0'].release['0'].version['0'],
@@ -54,7 +54,7 @@ function getNewestWordpressVersion() {
     };
 
     function callback(error, response, body) {
-      if (!error && response.statusCode == 200) {
+      if (!error && response.statusCode === 200) {
         const responseJSON = JSON.parse(body);
         resolve({
           version: responseJSON[0].name,
@@ -78,8 +78,8 @@ function getNewestWordpressVersion() {
  */
 function getLocalDistros(localPath) {
   const promise = new Promise((resolve, reject) => {
-    function readFiles(path) {
-      fs.readdir(path, (err, filenames) => {
+    function readFiles(p) {
+      fs.readdir(p, (err, filenames) => {
         if (err) {
           reject(err);
         } else {
@@ -100,9 +100,9 @@ function getLocalDistros(localPath) {
  * @param majorVersion {number} optional - the major version number to check for drupal
  * @return {promise} an object containing the version number for local CMS distro tarballs, or 0.0 if not found.
  */
-function getLocalVersion(distro, path, majorVersion = null) {
+function getLocalVersion(distro, localPath, majorVersion = null) {
   const promise = new Promise((resolve, reject) => {
-    getLocalDistros(path)
+    getLocalDistros(localPath)
       .then(fileList => {
         fileList.forEach(fileName => {
           const fileNameArray = fileName.split('-');
@@ -142,6 +142,7 @@ function canReadAndWrite(targetPath) {
         reject(err);
         return;
       }
+      /* eslint-disable no-bitwise */
       fs.access(targetPath, fs.W_OK | fs.R_OK, err => {
         if (err) {
           const dir = path.dirname(targetPath);
@@ -155,6 +156,7 @@ function canReadAndWrite(targetPath) {
         }
         resolve(true);
       });
+      /* eslint-enable no-bitwise */
     });
   });
 }
@@ -162,13 +164,13 @@ function canReadAndWrite(targetPath) {
 /**
  * downloads a file from target URL and saves it to a target path
  * @param url {string} URL to file to be downloaded
- * @param path {string} path to save downloaded file
+ * @param filePath {string} filePath to save downloaded file
  * @return {promise} resolves if file is successfully downloaded and written
  */
-function downloadFile(url, path) {
+function downloadFile(url, filePath) {
   const promise = new Promise((resolve, reject) => {
     request({ uri: url })
-      .pipe(fs.createWriteStream(path))
+      .pipe(fs.createWriteStream(filePath))
       .on('close', () => {
         resolve('written successfully');
       })

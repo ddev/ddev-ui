@@ -12,6 +12,18 @@ class ProjectList extends React.PureComponent {
     rows: [],
   };
 
+  componentDidMount() {
+    const rows = this.createRows();
+    this.setState({ rows });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.projects !== prevProps.projects) {
+      const rows = this.createRows();
+      this.setState({ rows });
+    }
+  }
+
   createRows = () => {
     const rows = [];
     if (this.props.projects) {
@@ -100,18 +112,6 @@ class ProjectList extends React.PureComponent {
   };
 
   rowGetter = i => this.state.rows[i];
-
-  componentDidMount() {
-    const rows = this.createRows();
-    this.setState({ rows });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.projects !== prevProps.projects) {
-      const rows = this.createRows();
-      this.setState({ rows });
-    }
-  }
 
   processStart = e => {
     e.preventDefault();

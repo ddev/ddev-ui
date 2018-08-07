@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CreateExistingProjectForm = props => (
+const CreateExistingProjectForm = () => (
   <div className="modal-body">
     <div className="loading-overlay">
       <div>

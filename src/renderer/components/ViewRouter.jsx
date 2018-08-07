@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Route, PropsRoute, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 
 import ProjectList from './ProjectList';
 import ProjectDetail from './ProjectDetail';

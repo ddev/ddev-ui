@@ -1,8 +1,6 @@
 import React from 'react';
 import Terminal from 'terminal-in-react';
 
-const ddevShell = require('../modules/ddev-shell');
-
 class ProjectConsole extends React.Component {
   logs = () => 'Hey NOW';
 

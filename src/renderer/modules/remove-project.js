@@ -2,6 +2,25 @@ const bootstrapModal = require('./bootstrap-modal');
 const ddevShell = require('./ddev-shell');
 
 /**
+ * Dismiss modal and show success or error result
+ * @param message
+ */
+function removeCompleted(message) {
+  alert(message);
+  $('#removeModal').modal('hide');
+}
+
+/**
+ * display loading spinner while waiting for promise to fulfill
+ */
+function displayLoadingState() {
+  $('.loading-overlay', '#removeModal').css('display', 'flex');
+  $('.remove-project-button')
+    .addClass('btn-secondary')
+    .removeClass('btn-danger');
+}
+
+/**
  * Remove Project - processes form input and calls ddevShell.remove
  * @formData {object} - serialzed formdata containing path and data removal option
  */
@@ -26,25 +45,6 @@ function removeProject(formData) {
   } catch (err) {
     removeCompleted(`Invalid Input Passed To Remove (${err}) payload:${JSON.stringify(formData)}`);
   }
-}
-
-/**
- * display loading spinner while waiting for promise to fulfill
- */
-function displayLoadingState() {
-  $('.loading-overlay', '#removeModal').css('display', 'flex');
-  $('.remove-project-button')
-    .addClass('btn-secondary')
-    .removeClass('btn-danger');
-}
-
-/**
- * Dismiss modal and show success or error result
- * @param message
- */
-function removeCompleted(message) {
-  alert(message);
-  $('#removeModal').modal('hide');
 }
 
 /**

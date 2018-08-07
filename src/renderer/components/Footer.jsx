@@ -2,7 +2,6 @@ import React from 'react';
 
 import ProjectCount from './ProjectCount';
 import RouterStatus from './RouterStatus';
-import GlobalActions from './GlobalActions';
 
 class Footer extends React.Component {
   render() {
@@ -14,7 +13,6 @@ class Footer extends React.Component {
             <div className="col-md-8">
               <div className="row">
                 <RouterStatus className="col-md-7" />
-                {/* <GlobalActions className="col-md-5" /> */}
               </div>
             </div>
           </div>

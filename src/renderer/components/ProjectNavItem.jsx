@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { ListViewRow, Text } from 'react-desktop/macOs';
+import React from 'react';
+import { ListViewRow } from 'react-desktop/macOs';
 import { NavLink } from 'react-router-dom';
 
 import ProjectStatusIcon from './ProjectStatusIcon';
