@@ -1,8 +1,10 @@
 import React from 'react';
 
+/* eslint-disable no-undef,global-require,import/no-dynamic-require */
 const drupal7Img = require(`${__static}/img/drupal7.png`);
 const drupal8Img = require(`${__static}/img/drupal8.png`);
 const wordpressImg = require(`${__static}/img/wordpress.png`);
+/* eslint-enable no-undef,global-require,import/no-dynamic-require */
 
 const CreateProjectForm = props => (
   <div className="modal-body">

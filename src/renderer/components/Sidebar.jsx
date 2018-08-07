@@ -11,7 +11,7 @@ import { NavLink } from 'react-router-dom';
 
 import ProjectNavItem from './ProjectNavItem';
 
-const stack = require(`${__static}/img/stack.svg`);
+const stack = require(`${__static}/img/stack.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
 
 class Sidebar extends React.Component {
   render() {

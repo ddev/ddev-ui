@@ -3,12 +3,14 @@ import { TitleBar, Toolbar, ToolbarNav, ToolbarNavItem } from 'react-desktop/mac
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+/* eslint-disable no-undef,global-require,import/no-dynamic-require */
 const logo = require(`${__static}/img/Logo.svg`);
 const stack = require(`${__static}/img/stack.svg`);
 const ddevIcon = require(`${__static}/img/Icon.svg`);
 const cloud = require(`${__static}/img/cloud.svg`);
 const account = require(`${__static}/img/account.svg`);
 const settings = require(`${__static}/img/settings.svg`);
+/* eslint-enable no-undef,global-require,import/no-dynamic-require */
 
 const AppTitle = () => (
   <div className="app-title d-flex flex-row align-items-center">

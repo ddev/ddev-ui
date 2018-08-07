@@ -4,7 +4,7 @@ import React from 'react';
 const ProjectTypeIcon = props => {
   const { type, httpurl } = props;
   if (type) {
-    const platformImg = require(`${__static}/img/${type}.png`);
+    const platformImg = require(`${__static}/img/${type}.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
     return (
       <a
         href="#!"

@@ -15,7 +15,7 @@ import ddevShell from '../modules/ddev-shell';
 import { getErrorResponseType } from '../modules/helpers';
 
 // app styling
-import '~/src/resources/scss/main.scss';
+import '~/src/resources/scss/main.scss'; // eslint-disable-line import/no-unresolved
 
 class Dashboard extends React.Component {
   state = {
