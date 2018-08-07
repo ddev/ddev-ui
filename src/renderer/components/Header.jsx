@@ -8,9 +8,9 @@ const logo = require(`${__static}/img/Logo.svg`);
 const stack = require(`${__static}/img/stack.svg`);
 const ddevIcon = require(`${__static}/img/Icon.svg`);
 const cloud = require(`${__static}/img/cloud.svg`);
-const account = require(`${__static}/img/account.svg`);
+// const account = require(`${__static}/img/account.svg`);
 const settings = require(`${__static}/img/settings.svg`);
-/* eslint-enable no-undef,global-require,import/no-dynamic-require */
+/* eslint-enable rule-name */
 
 const AppTitle = () => (
   <div className="app-title d-flex flex-row align-items-center">
@@ -20,12 +20,12 @@ const AppTitle = () => (
 );
 
 class Header extends React.Component {
-  state = {
-    selected: 1,
-  };
-
   static propTypes = {
     history: PropTypes.object,
+  };
+
+  state = {
+    selected: 1,
   };
 
   render() {

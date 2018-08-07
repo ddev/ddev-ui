@@ -1,12 +1,5 @@
-import React, { Component } from 'react';
-import {
-  ListView,
-  ListViewHeader,
-  ListViewFooter,
-  ListViewSection,
-  ListViewRow,
-  Text,
-} from 'react-desktop/macOs';
+import React from 'react';
+import { ListView, ListViewHeader, ListViewFooter, ListViewSection } from 'react-desktop/macOs';
 import { NavLink } from 'react-router-dom';
 
 import ProjectNavItem from './ProjectNavItem';

@@ -1,4 +1,5 @@
 import React from 'react';
+import electron from 'electron';
 
 // project type Icon
 const ProjectTypeIcon = props => {

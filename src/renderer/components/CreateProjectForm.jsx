@@ -6,7 +6,7 @@ const drupal8Img = require(`${__static}/img/drupal8.png`);
 const wordpressImg = require(`${__static}/img/wordpress.png`);
 /* eslint-enable no-undef,global-require,import/no-dynamic-require */
 
-const CreateProjectForm = props => (
+const CreateProjectForm = () => (
   <div className="modal-body">
     <div className="loading-overlay">
       <div>
@@ -24,13 +24,13 @@ const CreateProjectForm = props => (
     <h3 className="add-modal-section-header">Application Type</h3>
     <div className="tile-container">
       <div className="tile">
-        <img className="drupal7" src={drupal7Img} data-type="drupal7" />
+        <img className="drupal7" src={drupal7Img} data-type="drupal7" alt="Drupal 7" />
       </div>
       <div className="tile">
-        <img className="drupal8" src={drupal8Img} data-type="drupal8" />
+        <img className="drupal8" src={drupal8Img} data-type="drupal8" alt="Drupal 8" />
       </div>
       <div className="tile">
-        <img className="wordpress" src={wordpressImg} data-type="wordpress" />
+        <img className="wordpress" src={wordpressImg} data-type="wordpress" alt="WordPress" />
       </div>
     </div>
     <h3 className="add-modal-section-header">Installation Directory</h3>

@@ -2,7 +2,7 @@ import React from 'react';
 
 // define the Alert component
 const Alert = props => (
-  <div className={`alert alert-${props.style} alert-dismissible fade show`} role="alert">
+  <div className={`alert alert-${props.type} alert-dismissible fade show`} role="alert">
     {props.msg}
     <button type="button" className="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -13,20 +13,21 @@ const Alert = props => (
 // define the Alerts component
 class Alerts extends React.Component {
   renderAlert = (type, key) => {
+    let alertType = 'primary';
     switch (type) {
       case 'docker':
-        return <Alert key={key} id={key} msg={this.props.errors[type][key].msg} style="warning" />;
+        alertType = 'warning';
         break;
 
       default:
-        return <Alert key={key} id={key} msg={this.props.errors[type][key].msg} style="primary" />;
         break;
     }
+    return <Alert key={key} id={key} msg={this.props.errors[type][key].msg} type={alertType} />;
   };
 
   renderAlertType(type) {
     let alertTypes = null;
-    if (type == 'docker') {
+    if (type === 'docker') {
       // send only the first alert for now
       alertTypes = this.renderAlert(type, Object.keys(this.props.errors[type])[0]);
     } else {
