@@ -10,7 +10,7 @@ const ddevIcon = require(`${__static}/img/Icon.svg`);
 const cloud = require(`${__static}/img/cloud.svg`);
 // const account = require(`${__static}/img/account.svg`);
 const settings = require(`${__static}/img/settings.svg`);
-/* eslint-enable rule-name */
+/* eslint-disable no-undef,global-require,import/no-dynamic-require */
 
 const AppTitle = () => (
   <div className="app-title d-flex flex-row align-items-center">
