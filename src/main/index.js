@@ -4,9 +4,7 @@ import * as path from 'path';
 import { format as formatUrl } from 'url';
 
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path')
-    .join(__dirname, '/static')
-    .replace(/\\/g, '\\\\');
+  global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\');
 }
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -69,7 +67,7 @@ app.on('ready', async () => {
   if (isDevelopment) {
     await installExtension(REACT_DEVELOPER_TOOLS)
       .then(name => console.log(`Added Extension:  ${name}`))
-      .then(name => mainWindow.webContents.openDevTools())
+      .then(() => mainWindow.webContents.openDevTools())
       .catch(err => console.log('An error occurred: ', err));
   }
 });
