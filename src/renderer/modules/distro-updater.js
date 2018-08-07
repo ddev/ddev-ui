@@ -78,8 +78,8 @@ function getNewestWordpressVersion() {
  */
 function getLocalDistros(localPath) {
   const promise = new Promise((resolve, reject) => {
-    function readFiles(p) {
-      fs.readdir(p, (err, filenames) => {
+    function readFiles(filePath) {
+      fs.readdir(filePath, (err, filenames) => {
         if (err) {
           reject(err);
         } else {
