@@ -1,11 +1,12 @@
-import React from "react";
-import { HashRouter, Route, Switch } from "react-router-dom";
+import React from 'react';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 
-import "popper.js";
-import "bootstrap";
-window.$ = window.jQuery = require("jquery");
+import 'popper.js';
+import 'bootstrap';
 
-import Dashboard from "./Dashboard";
+import Dashboard from './Dashboard';
+
+window.$ = window.jQuery = require('jquery');
 
 const App = () => (
   <HashRouter>

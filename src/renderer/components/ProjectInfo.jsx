@@ -1,11 +1,11 @@
-import React from "react";
-import ProjectConsole from "./ProjectConsole";
+import React from 'react';
+import ProjectConsole from './ProjectConsole';
 
 // define the ProjectTab sub-component
 const ProjectTab = props => (
   <li className="nav-item">
     <a
-      className={`nav-link ${props.status ? props.status : ""}`}
+      className={`nav-link ${props.status ? props.status : ''}`}
       id={`${props.id}-tab`}
       data-toggle="tab"
       href={`#${props.id}`}
@@ -33,16 +33,10 @@ class ProjectInfo extends React.PureComponent {
         <ul className="nav nav-tabs" id="myTab" role="tablist">
           {/* Project Details */}
           {this.props.name ? (
-            <ProjectTab
-              title="Project Details"
-              id="site-details"
-              status="active"
-            />
+            <ProjectTab title="Project Details" id="site-details" status="active" />
           ) : null}
           {/* Database */}
-          {this.props.dbinfo ? (
-            <ProjectTab title="Database" id="site-db" />
-          ) : null}
+          {this.props.dbinfo ? <ProjectTab title="Database" id="site-db" /> : null}
           {/* Console */}
           <ProjectTab title="Console" id="console" />
           {/* config */}
@@ -61,10 +55,7 @@ class ProjectInfo extends React.PureComponent {
                 <ProjectTabItem title="Name" value={this.props.name} />
                 <ProjectTabItem title="Root" value={this.props.approot} />
                 <ProjectTabItem title="URL" value={this.props.httpurl} />
-                <ProjectTabItem
-                  title="PHP Version"
-                  value={this.props.php_version}
-                />
+                <ProjectTabItem title="PHP Version" value={this.props.php_version} />
                 <ProjectTabItem title="Status" value={this.props.status} />
                 <ProjectTabItem title="Install Type" value={this.props.type} />
               </dl>
@@ -79,26 +70,11 @@ class ProjectInfo extends React.PureComponent {
               aria-labelledby="site-db-tab"
             >
               <dl className="list-group list-group-flush">
-                <ProjectTabItem
-                  title="DB Name"
-                  value={this.props.dbinfo.dbname}
-                />
-                <ProjectTabItem
-                  title="DB Username"
-                  value={this.props.dbinfo.username}
-                />
-                <ProjectTabItem
-                  title="DB Host"
-                  value={this.props.dbinfo.host}
-                />
-                <ProjectTabItem
-                  title="DB Password"
-                  value={this.props.dbinfo.password}
-                />
-                <ProjectTabItem
-                  title="DB Port"
-                  value={this.props.dbinfo.port}
-                />
+                <ProjectTabItem title="DB Name" value={this.props.dbinfo.dbname} />
+                <ProjectTabItem title="DB Username" value={this.props.dbinfo.username} />
+                <ProjectTabItem title="DB Host" value={this.props.dbinfo.host} />
+                <ProjectTabItem title="DB Password" value={this.props.dbinfo.password} />
+                <ProjectTabItem title="DB Port" value={this.props.dbinfo.port} />
                 <ProjectTabItem
                   title="DB Published Port"
                   value={this.props.dbinfo.published_port}
@@ -107,19 +83,14 @@ class ProjectInfo extends React.PureComponent {
             </div>
           ) : null}
           {/* Console */}
-          <div
-            className="tab-pane fade"
-            id="console"
-            role="tabpanel"
-            aria-labelledby="console-tab"
-          >
+          <div className="tab-pane fade" id="console" role="tabpanel" aria-labelledby="console-tab">
             <dl className="list-group list-group-flush">
               <div
                 className="row h-100"
                 style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center"
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
                 <ProjectConsole />
@@ -127,12 +98,7 @@ class ProjectInfo extends React.PureComponent {
             </dl>
           </div>
           {/* config */}
-          <div
-            className="tab-pane fade"
-            id="config"
-            role="tabpanel"
-            aria-labelledby="config-tab"
-          >
+          <div className="tab-pane fade" id="config" role="tabpanel" aria-labelledby="config-tab">
             <dl className="list-group list-group-flush">
               <ProjectTabItem
                 title="WIP"

@@ -1,19 +1,14 @@
-import React from "react";
-import {
-  TitleBar,
-  Toolbar,
-  ToolbarNav,
-  ToolbarNavItem
-} from "react-desktop/macOs";
-import { NavLink } from "react-router-dom";
-import PropTypes from "prop-types";
+import React from 'react';
+import { TitleBar, Toolbar, ToolbarNav, ToolbarNavItem } from 'react-desktop/macOs';
+import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const logo = require(__static + "/img/Logo.svg");
-const stack = require(__static + "/img/stack.svg");
-const ddevIcon = require(__static + "/img/Icon.svg");
-const cloud = require(__static + "/img/cloud.svg");
-const account = require(__static + "/img/account.svg");
-const settings = require(__static + "/img/settings.svg");
+const logo = require(`${__static}/img/Logo.svg`);
+const stack = require(`${__static}/img/stack.svg`);
+const ddevIcon = require(`${__static}/img/Icon.svg`);
+const cloud = require(`${__static}/img/cloud.svg`);
+const account = require(`${__static}/img/account.svg`);
+const settings = require(`${__static}/img/settings.svg`);
 
 const AppTitle = () => (
   <div className="app-title d-flex flex-row align-items-center">
@@ -24,11 +19,13 @@ const AppTitle = () => (
 
 class Header extends React.Component {
   state = {
-    selected: 1
+    selected: 1,
   };
+
   static propTypes = {
-    history: PropTypes.object
+    history: PropTypes.object,
   };
+
   render() {
     return (
       <TitleBar
@@ -36,12 +33,10 @@ class Header extends React.Component {
         height="63"
         className="TitleBar fixed-top"
         isFullscreen={this.state.isFullscreen}
-        onCloseClick={() => console.log("Close window")}
-        onMinimizeClick={() => console.log("Minimize window")}
-        onMaximizeClick={() => console.log("Mazimize window")}
-        onResizeClick={() =>
-          this.setState({ isFullscreen: !this.state.isFullscreen })
-        }
+        onCloseClick={() => console.log('Close window')}
+        onMinimizeClick={() => console.log('Minimize window')}
+        onMaximizeClick={() => console.log('Mazimize window')}
+        onResizeClick={() => this.setState({ isFullscreen: !this.state.isFullscreen })}
         title={
           <Toolbar className="d-flex flex-column">
             <AppTitle />
@@ -49,22 +44,18 @@ class Header extends React.Component {
               <div className="history-nav col-4 d-none d-sm-flex flex-row justify-content-start justify-content-md-end pr-0">
                 <ToolbarNav className="btn-group btn-group-sm">
                   <ToolbarNavItem
-                    icon={
-                      <i className="fa fa-chevron-left" aria-hidden="true" />
-                    }
+                    icon={<i className="fa fa-chevron-left" aria-hidden="true" />}
                     selected={this.state.selected === 1}
                     onClick={() => this.props.history.goBack()}
-                    className="m-0"
+                    className="m-0 text-muted"
                   />
                 </ToolbarNav>
                 <ToolbarNav className="btn-group btn-group-sm d-flex">
                   <ToolbarNavItem
-                    icon={
-                      <i className="fa fa-chevron-right" aria-hidden="true" />
-                    }
+                    icon={<i className="fa fa-chevron-right" aria-hidden="true" />}
                     selected={this.state.selected === 1}
                     onClick={() => this.props.history.goForward()}
-                    className="m-0"
+                    className="m-0 text-light"
                   />
                 </ToolbarNav>
               </div>
@@ -72,10 +63,7 @@ class Header extends React.Component {
               <div className="primary-nav d-flex flex-row col-sm-8 justify-content-center justify-content-md-start pl-1">
                 <ToolbarNav className="btn-group btn-group-sm mr-3">
                   <div className="nav-item">
-                    <NavLink
-                      className="m-0 d-flex flex-column align-items-center"
-                      to="/projects"
-                    >
+                    <NavLink className="m-0 d-flex flex-column align-items-center" to="/projects">
                       <div className="h-100  d-flex align-content-center align-items-center justify-content-center">
                         <img alt="DDEV Local" src={stack} className="" />
                       </div>
@@ -116,11 +104,7 @@ class Header extends React.Component {
           </Toolbar>
         }
       >
-        <img
-          alt="ddev logo"
-          src={logo}
-          className="ddev-logo d-none d-md-block"
-        />
+        <img alt="ddev logo" src={logo} className="ddev-logo d-none d-md-block" />
       </TitleBar>
     );
   }

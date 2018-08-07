@@ -1,17 +1,17 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   ListView,
   ListViewHeader,
   ListViewFooter,
   ListViewSection,
   ListViewRow,
-  Text
-} from "react-desktop/macOs";
-import { NavLink } from "react-router-dom";
+  Text,
+} from 'react-desktop/macOs';
+import { NavLink } from 'react-router-dom';
 
-import ProjectNavItem from "./ProjectNavItem";
+import ProjectNavItem from './ProjectNavItem';
 
-const stack = require(__static + "/img/stack.svg");
+const stack = require(`${__static}/img/stack.svg`);
 
 class Sidebar extends React.Component {
   render() {
@@ -24,10 +24,7 @@ class Sidebar extends React.Component {
           <img alt="DDEV UI" src={stack} className="" />
           <h1 className="pl-2 mb-0">Projects</h1>
           <div className="add ListViewHeaderAdd ml-auto">
-            <NavLink
-              className="btn btn-outline-primary btn-sm"
-              to="/project/create"
-            >
+            <NavLink className="btn btn-outline-primary btn-sm" to="/project/create">
               + New
             </NavLink>
           </div>
@@ -35,15 +32,11 @@ class Sidebar extends React.Component {
         {this.props.projects && (
           <ListViewSection className="ListViewSection">
             {Object.keys(this.props.projects).map(key => (
-              <ProjectNavItem
-                key={key}
-                index={key}
-                {...this.props.projects[key]}
-              />
+              <ProjectNavItem key={key} index={key} {...this.props.projects[key]} />
             ))}
           </ListViewSection>
         )}
-        <ListViewFooter className="ListViewFooter" />
+        <ListViewFooter className="ListViewFooter d-none" />
       </ListView>
     );
   }

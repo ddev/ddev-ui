@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const CreateExistingProjectForm = props => (
   <div className="modal-body">
@@ -16,9 +16,7 @@ const CreateExistingProjectForm = props => (
       <div className="btn btn-primary">OK</div>
     </div>
     <h3 className="add-modal-section-header">Project Files</h3>
-    <div className="section-description">
-      Select the folder that contains your project's files.
-    </div>
+    <div className="section-description">Select the folder that contains your project's files.</div>
     <div className="select-folder-container add-site-segment">
       <div className="input-group select-path-folder">
         <span className="input-group-addon" id="basic-addon1">
@@ -38,17 +36,13 @@ const CreateExistingProjectForm = props => (
     <div className="section-description">Enter a name for your project.</div>
     <div className="site-name-container add-site-segment">
       <div className="input-group">
-        <input
-          type="text"
-          className="form-control"
-          id="existing-project-name"
-        />
+        <input type="text" className="form-control" id="existing-project-name" />
       </div>
     </div>
     <h3 className="add-modal-section-header">Project Docroot</h3>
     <div className="section-description">
-      Select the directory from which your site is served. You may skip this
-      field if your site files are in the project root.
+      Select the directory from which your site is served. You may skip this field if your site
+      files are in the project root.
     </div>
     <div className="docroot-container add-site-segment">
       <div className="input-group select-docroot-folder">
@@ -65,9 +59,7 @@ const CreateExistingProjectForm = props => (
         />
       </div>
     </div>
-    <div className="btn btn-primary create-site-from-existing">
-      Create Project
-    </div>
+    <div className="btn btn-primary create-site-from-existing">Create Project</div>
   </div>
 );
 

@@ -19,4 +19,14 @@ main.content,
 
 main.content {
   background-color: #fff;
+  position: relative;
+}
+
+main.content .fixed-bottom {
+  background: #f9f9f9;
+  @include media-breakpoint-up(md) {
+    // @include make-col-ready();
+    @include make-col(8);
+    @include make-col-offset(4);
+  }
 }

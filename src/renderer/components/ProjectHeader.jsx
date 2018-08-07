@@ -1,15 +1,15 @@
-import React from "react";
-import electron from "electron";
+import React from 'react';
+import electron from 'electron';
 
-import ProjectTypeIcon from "./ProjectTypeIcon";
-import ProjectStatusIcon from "./ProjectStatusIcon";
+import ProjectTypeIcon from './ProjectTypeIcon';
+import ProjectStatusIcon from './ProjectStatusIcon';
 
-import ddevShell from "./../modules/ddev-shell";
+import ddevShell from '../modules/ddev-shell';
 
 class ProjectHeader extends React.PureComponent {
   processStart = e => {
     e.preventDefault();
-    console.log("starting");
+    console.log('starting');
     ddevShell.start(
       this.props.approot,
       data => {
@@ -20,9 +20,10 @@ class ProjectHeader extends React.PureComponent {
       }
     );
   };
+
   processRestart = e => {
     e.preventDefault();
-    console.log("restarting");
+    console.log('restarting');
     ddevShell.restart(
       this.props.approot,
       data => {
@@ -33,9 +34,10 @@ class ProjectHeader extends React.PureComponent {
       }
     );
   };
+
   processStop = e => {
     e.preventDefault();
-    console.log("stopping");
+    console.log('stopping');
     ddevShell.stop(
       this.props.approot,
       data => {
@@ -46,9 +48,10 @@ class ProjectHeader extends React.PureComponent {
       }
     );
   };
+
   processRemove = e => {
     e.preventDefault();
-    console.log("stopping");
+    console.log('stopping');
     ddevShell.remove(
       this.props.name,
       false, // TODO: Need to remove
@@ -60,6 +63,7 @@ class ProjectHeader extends React.PureComponent {
       }
     );
   };
+
   render() {
     return (
       <header className="row align-items-center">
@@ -99,45 +103,28 @@ class ProjectHeader extends React.PureComponent {
                 </a>
               </p>
               <ul className="project-actions list-unstyled list-inline mb-0">
-                {this.props.status === "stopped" ? (
+                {this.props.status === 'stopped' ? (
                   <li className="restart list-inline-item">
-                    <a
-                      href="#!"
-                      className="text-success"
-                      onClick={this.processStart}
-                    >
+                    <a href="#!" className="text-success" onClick={this.processStart}>
                       <i className="fa fa-retweet" aria-hidden="true" /> Start
                     </a>
                   </li>
                 ) : (
                   <li className="restart list-inline-item">
-                    <a
-                      href="#!"
-                      className="text-success"
-                      onClick={this.processRestart}
-                    >
+                    <a href="#!" className="text-success" onClick={this.processRestart}>
                       <i className="fa fa-retweet" aria-hidden="true" /> Restart
                     </a>
                   </li>
                 )}
-                {this.props.status !== "stopped" ? (
+                {this.props.status !== 'stopped' ? (
                   <li className="stop list-inline-item">
-                    <a
-                      href="#!"
-                      className="text-danger"
-                      onClick={this.processStop}
-                    >
-                      <i className="fa fa-stop-circle-o" aria-hidden="true" />{" "}
-                      Stop
+                    <a href="#!" className="text-danger" onClick={this.processStop}>
+                      <i className="fa fa-stop-circle-o" aria-hidden="true" /> Stop
                     </a>
                   </li>
                 ) : null}
                 <li className="remove list-inline-item">
-                  <a
-                    href="#!"
-                    className="text-danger"
-                    onClick={this.processRemove}
-                  >
+                  <a href="#!" className="text-danger" onClick={this.processRemove}>
                     <i className="fa fa-trash-o" aria-hidden="true" /> Remove
                   </a>
                 </li>

@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
 // project type Icon
 const ProjectTypeIcon = props => {
   const { type, httpurl } = props;
   if (type) {
-    const platformImg = require(__static + "/img/" + type + ".png");
+    const platformImg = require(`${__static}/img/${type}.png`);
     return (
       <a
         href="#!"
@@ -14,16 +14,11 @@ const ProjectTypeIcon = props => {
           electron.shell.openExternal(httpurl);
         }}
       >
-        <img
-          alt="ddev logo"
-          src={platformImg}
-          className="platform-logo img-fluid"
-        />
+        <img alt="ddev logo" src={platformImg} className="platform-logo img-fluid" />
       </a>
     );
-  } else {
-    return null;
   }
+  return null;
 };
 
 export default ProjectTypeIcon;

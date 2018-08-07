@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-const drupal7Img = require(__static + "/img/drupal7.png");
-const drupal8Img = require(__static + "/img/drupal8.png");
-const wordpressImg = require(__static + "/img/wordpress.png");
+const drupal7Img = require(`${__static}/img/drupal7.png`);
+const drupal8Img = require(`${__static}/img/drupal8.png`);
+const wordpressImg = require(`${__static}/img/wordpress.png`);
 
 const CreateProjectForm = props => (
   <div className="modal-body">

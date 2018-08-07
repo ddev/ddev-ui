@@ -1,38 +1,39 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import electron from "electron";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import electron from 'electron';
 
-import ddevShell from "./../modules/ddev-shell";
+import ReactDataGrid from 'react-data-grid';
+import ddevShell from '../modules/ddev-shell';
 
-import ReactDataGrid from "react-data-grid";
-import ProjectStatusIcon from "./ProjectStatusIcon";
+import ProjectStatusIcon from './ProjectStatusIcon';
 
 class ProjectList extends React.PureComponent {
   state = {
-    rows: []
+    rows: [],
   };
+
   createRows = () => {
-    let rows = [];
+    const rows = [];
     if (this.props.projects) {
       Object.keys(this.props.projects).map(projectKey => {
         const project = this.props.projects[projectKey];
         let platformIcon = project.type;
         switch (project.type) {
-          case "drupal8":
-          case "drupal7":
-            platformIcon = "drupal";
+          case 'drupal8':
+          case 'drupal7':
+            platformIcon = 'drupal';
             break;
 
           default:
             break;
         }
-        let color = "text-warning";
+        let color = 'text-warning';
         switch (project.status) {
-          case "running":
-            color = "text-success";
+          case 'running':
+            color = 'text-success';
             break;
-          case "stopped":
-            color = "text-danger";
+          case 'stopped':
+            color = 'text-danger';
             break;
           default:
             break;
@@ -40,19 +41,11 @@ class ProjectList extends React.PureComponent {
         rows.push({
           id: (
             <NavLink to={`/project/${project.name}/`}>
-              <i
-                className={`fa fa-${platformIcon} fa-2 mr-2`}
-                aria-hidden="true"
-              />{" "}
-              {project.name}
+              <i className={`fa fa-${platformIcon} fa-2 mr-2`} aria-hidden="true" /> {project.name}
             </NavLink>
           ),
           actions: (
-            <div
-              className="actions"
-              data-path={project.approot}
-              data-sitename={project.name}
-            >
+            <div className="actions" data-path={project.approot} data-sitename={project.name}>
               {/* Browse Files */}
               <a
                 className="mx-1 text-secondary"
@@ -78,69 +71,55 @@ class ProjectList extends React.PureComponent {
                 <i className="fa fa-eye" aria-hidden="true" />
               </a>
               {/* Start */}
-              {project.status === "stopped" && (
-                <a
-                  className="mx-1 text-secondary"
-                  onClick={this.processStart}
-                  href="#!"
-                >
+              {project.status === 'stopped' && (
+                <a className="mx-1 text-secondary" onClick={this.processStart} href="#!">
                   <i className="fa fa-play-circle" aria-hidden="true" />
                 </a>
               )}
               {/* Restart */}
-              {project.status !== "stopped" && (
-                <a
-                  className="mx-1 text-secondary"
-                  onClick={this.processRestart}
-                  href="#!"
-                >
+              {project.status !== 'stopped' && (
+                <a className="mx-1 text-secondary" onClick={this.processRestart} href="#!">
                   <i className="fa fa-retweet" aria-hidden="true" />
                 </a>
               )}
               {/* Stop */}
-              <a
-                className="mx-1 text-secondary"
-                onClick={this.processStop}
-                href="#!"
-              >
+              <a className="mx-1 text-secondary" onClick={this.processStop} href="#!">
                 <i className="fa fa-stop-circle-o" aria-hidden="true" />
               </a>
               {/* Remove */}
-              <a
-                className="mx-1 text-danger"
-                onClick={this.processRemove}
-                href="#!"
-              >
+              <a className="mx-1 text-danger" onClick={this.processRemove} href="#!">
                 <i className="fa fa-trash-o" aria-hidden="true" />
               </a>
             </div>
           ),
-          status: <ProjectStatusIcon {...project} />
+          status: <ProjectStatusIcon {...project} />,
         });
       });
     }
     return rows;
   };
-  rowGetter = i => {
-    return this.state.rows[i];
-  };
+
+  rowGetter = i => this.state.rows[i];
+
   componentDidMount() {
     const rows = this.createRows();
-    this.setState({ rows: rows });
+    this.setState({ rows });
   }
+
   componentDidUpdate(prevProps, prevState) {
     if (this.props.projects !== prevProps.projects) {
-      let rows = this.createRows();
-      this.setState({ rows: rows });
+      const rows = this.createRows();
+      this.setState({ rows });
     }
   }
+
   processStart = e => {
     e.preventDefault();
-    console.log("starting");
+    console.log('starting');
     ddevShell.start(
       $(e.target)
-        .closest(".actions")
-        .data("path"),
+        .closest('.actions')
+        .data('path'),
       data => {
         console.log(data);
       },
@@ -149,13 +128,14 @@ class ProjectList extends React.PureComponent {
       }
     );
   };
+
   processRestart = e => {
     e.preventDefault();
-    console.log("restarting");
+    console.log('restarting');
     ddevShell.restart(
       $(e.target)
-        .closest(".actions")
-        .data("path"),
+        .closest('.actions')
+        .data('path'),
       data => {
         console.log(data);
       },
@@ -164,13 +144,14 @@ class ProjectList extends React.PureComponent {
       }
     );
   };
+
   processStop = e => {
     e.preventDefault();
-    console.log("stopping");
+    console.log('stopping');
     ddevShell.stop(
       $(e.target)
-        .closest(".actions")
-        .data("path"),
+        .closest('.actions')
+        .data('path'),
       data => {
         console.log(data);
       },
@@ -179,13 +160,14 @@ class ProjectList extends React.PureComponent {
       }
     );
   };
+
   processRemove = e => {
     e.preventDefault();
-    console.log("removing");
+    console.log('removing');
     ddevShell.remove(
       $(e.target)
-        .closest(".actions")
-        .data("sitename"),
+        .closest('.actions')
+        .data('sitename'),
       false,
       data => {
         // TODO: Need to remove
@@ -196,6 +178,7 @@ class ProjectList extends React.PureComponent {
       }
     );
   };
+
   render() {
     return (
       <section className="my-projects">
@@ -205,19 +188,19 @@ class ProjectList extends React.PureComponent {
             this.state.rows.length !== 0 && (
               <ReactDataGrid
                 columns={[
-                  { key: "id", name: "ID", cellClass: "" },
+                  { key: 'id', name: 'ID', cellClass: '' },
                   {
-                    key: "actions",
-                    name: "Actions",
-                    cellClass: "text-center",
-                    width: 150
+                    key: 'actions',
+                    name: 'Actions',
+                    cellClass: 'text-center',
+                    width: 150,
                   },
                   {
-                    key: "status",
-                    name: "Status",
-                    cellClass: "text-center",
-                    width: 80
-                  }
+                    key: 'status',
+                    name: 'Status',
+                    cellClass: 'text-center',
+                    width: 80,
+                  },
                 ]}
                 rowGetter={this.rowGetter}
                 rowsCount={this.state.rows.length}

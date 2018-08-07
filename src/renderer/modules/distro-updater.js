@@ -1,9 +1,9 @@
-var request = require('request');
-var parseXMLString = require('xml2js').parseString;
-var fs = require('fs');
-var compareVersions = require('compare-versions');
-var os = require('os');
-var path = require('path');
+const request = require('request');
+const parseXMLString = require('xml2js').parseString;
+const fs = require('fs');
+const compareVersions = require('compare-versions');
+const os = require('os');
+const path = require('path');
 
 // Remote read actions - fetch latest version information from remote endpoints
 
@@ -13,31 +13,31 @@ var path = require('path');
  * @return {promise} an object containing the latest version and URI at which the tarball can be downloaded
  */
 function getNewestDrupalVersion(majorVersion) {
-    var promise = new Promise(function(resolve, reject) {
-        var options = {
-            url: "https://updates.drupal.org/release-history/drupal/" + majorVersion + ".x",
-            headers: {
-                'User-Agent': 'request'
-            }
-        };
+  const promise = new Promise((resolve, reject) => {
+    const options = {
+      url: `https://updates.drupal.org/release-history/drupal/${majorVersion}.x`,
+      headers: {
+        'User-Agent': 'request',
+      },
+    };
 
-        function callback(error, response, body) {
-            if (!error && response.statusCode == 200) {
-                parseXMLString(body, function(err, result){
-                    var latestRelease = {
-                        "version": result.project.releases["0"].release["0"].version["0"],
-                        "uri": result.project.releases["0"].release["0"].download_link["0"]
-                    };
-                    resolve(latestRelease);
-                });
-            } else {
-                reject(error);
-            }
-        }
+    function callback(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        parseXMLString(body, (err, result) => {
+          const latestRelease = {
+            version: result.project.releases['0'].release['0'].version['0'],
+            uri: result.project.releases['0'].release['0'].download_link['0'],
+          };
+          resolve(latestRelease);
+        });
+      } else {
+        reject(error);
+      }
+    }
 
-        request(options, callback);
-    });
-    return promise;
+    request(options, callback);
+  });
+  return promise;
 }
 
 /**
@@ -45,29 +45,29 @@ function getNewestDrupalVersion(majorVersion) {
  * @return {promise/object} an object containing the latest version and URI at which the tarball can be downloaded
  */
 function getNewestWordpressVersion() {
-    var promise = new Promise(function(resolve, reject) {
-        var options = {
-            url: 'https://api.github.com/repos/wordpress/wordpress/tags',
-            headers: {
-                'User-Agent': 'request'
-            }
-        };
+  const promise = new Promise((resolve, reject) => {
+    const options = {
+      url: 'https://api.github.com/repos/wordpress/wordpress/tags',
+      headers: {
+        'User-Agent': 'request',
+      },
+    };
 
-        function callback(error, response, body) {
-            if (!error && response.statusCode == 200) {
-                var responseJSON = JSON.parse(body);
-                resolve({
-                    "version": responseJSON[0].name,
-                    "uri": "https://wordpress.org/wordpress-"+responseJSON[0].name+".tar.gz"
-                });
-            } else {
-                reject(error);
-            }
-        }
+    function callback(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        const responseJSON = JSON.parse(body);
+        resolve({
+          version: responseJSON[0].name,
+          uri: `https://wordpress.org/wordpress-${responseJSON[0].name}.tar.gz`,
+        });
+      } else {
+        reject(error);
+      }
+    }
 
-        request(options, callback);
-    });
-    return promise;
+    request(options, callback);
+  });
+  return promise;
 }
 
 // Local read actions - read filesystem and local version info
@@ -76,22 +76,21 @@ function getNewestWordpressVersion() {
  * @param localPath {string} path on local filesystem to retrieve file listing of
  * @return {promise/array} an array containing strings of filenames in the target directory
  */
-function getLocalDistros(localPath){
-    var promise = new Promise(function(resolve, reject) {
-
-        function readFiles(path) {
-            fs.readdir(path, function(err, filenames) {
-                if(err) {
-                    reject(err);
-                } else {
-                    resolve(filenames);
-                }
-            });
+function getLocalDistros(localPath) {
+  const promise = new Promise((resolve, reject) => {
+    function readFiles(path) {
+      fs.readdir(path, (err, filenames) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(filenames);
         }
+      });
+    }
 
-        readFiles(localPath);
-    });
-    return promise;
+    readFiles(localPath);
+  });
+  return promise;
 }
 
 /**
@@ -101,33 +100,33 @@ function getLocalDistros(localPath){
  * @param majorVersion {number} optional - the major version number to check for drupal
  * @return {promise} an object containing the version number for local CMS distro tarballs, or 0.0 if not found.
  */
-function getLocalVersion(distro, path, majorVersion = null){
-    var promise = new Promise(function(resolve, reject) {
-        getLocalDistros(path)
-            .then(function(fileList){
-                fileList.forEach(function(fileName){
-                    var fileNameArray = fileName.split('-');
-                    if(fileNameArray.length === 2) {
-                        if(fileNameArray[0] === distro) {
-                            var versionNumber = fileNameArray[1].split('.tar')[0];
-                            if(majorVersion) {
-                                if(versionNumber.split('.')[0]*1 === majorVersion){
-                                    resolve(versionNumber);
-                                }
-                            }else{
-                                resolve(versionNumber);
-                            }
-                        }
-                    }
-                });
-                resolve('0.0');
-            })
-            .catch(function(error){
-                reject(error);
-            });
-    });
+function getLocalVersion(distro, path, majorVersion = null) {
+  const promise = new Promise((resolve, reject) => {
+    getLocalDistros(path)
+      .then(fileList => {
+        fileList.forEach(fileName => {
+          const fileNameArray = fileName.split('-');
+          if (fileNameArray.length === 2) {
+            if (fileNameArray[0] === distro) {
+              const versionNumber = fileNameArray[1].split('.tar')[0];
+              if (majorVersion) {
+                if (versionNumber.split('.')[0] * 1 === majorVersion) {
+                  resolve(versionNumber);
+                }
+              } else {
+                resolve(versionNumber);
+              }
+            }
+          }
+        });
+        resolve('0.0');
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 
-    return promise;
+  return promise;
 }
 
 // Filesystem read/write actions - delete outdated repo and download/save new files
@@ -137,21 +136,27 @@ function getLocalVersion(distro, path, majorVersion = null){
  * @return {promise/boolean} returns true if path both exists and is writable
  */
 function canReadAndWrite(targetPath) {
-    return new Promise(function (resolve, reject) {
-        fs.stat(targetPath, function (err) {
-            if (err) { reject(err); return; }
-            fs.access(targetPath, fs.W_OK | fs.R_OK, (err) => {
-                if (err) {
-                    const dir = path.dirname(targetPath);
-                    fs.access(dir, fs.W_OK | fs.R_OK, (err) => {
-                        if (err) { reject(err); return; }
-                        resolve(false);
-                    });
-                }
-                resolve(true);
-            })
-        })
+  return new Promise((resolve, reject) => {
+    fs.stat(targetPath, err => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      fs.access(targetPath, fs.W_OK | fs.R_OK, err => {
+        if (err) {
+          const dir = path.dirname(targetPath);
+          fs.access(dir, fs.W_OK | fs.R_OK, err => {
+            if (err) {
+              reject(err);
+              return;
+            }
+            resolve(false);
+          });
+        }
+        resolve(true);
+      });
     });
+  });
 }
 
 /**
@@ -161,18 +166,18 @@ function canReadAndWrite(targetPath) {
  * @return {promise} resolves if file is successfully downloaded and written
  */
 function downloadFile(url, path) {
-    var promise = new Promise(function(resolve, reject) {
-        request({uri: url})
-            .pipe(fs.createWriteStream(path))
-            .on('close', function () {
-                resolve('written successfully');
-            })
-            .on('error', function (err) {
-                reject(err);
-            });
-    });
+  const promise = new Promise((resolve, reject) => {
+    request({ uri: url })
+      .pipe(fs.createWriteStream(path))
+      .on('close', () => {
+        resolve('written successfully');
+      })
+      .on('error', err => {
+        reject(err);
+      });
+  });
 
-    return promise;
+  return promise;
 }
 
 /**
@@ -181,17 +186,17 @@ function downloadFile(url, path) {
  * @return {promise} resolves if file deletion is successful
  */
 function deleteFile(filePath) {
-    var promise = new Promise(function(resolve, reject) {
-        fs.unlink(filePath, (err) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve();
-            }
-        });
+  const promise = new Promise((resolve, reject) => {
+    fs.unlink(filePath, err => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
     });
+  });
 
-    return promise;
+  return promise;
 }
 
 // public function, handles checking remote, comparing local, and downloading new/deleting old files.
@@ -202,59 +207,60 @@ function deleteFile(filePath) {
  * @return {promise} resolves upon successful update or no change needed.
  */
 const updateDistros = function() {
-    var promise = new Promise(function(resolve, reject) {
-        var cmsPath = "~/.ddev/CMS";
-        cmsPath = cmsPath.replace('~', os.homedir());
+  const promise = new Promise((resolve, reject) => {
+    let cmsPath = '~/.ddev/CMS';
+    cmsPath = cmsPath.replace('~', os.homedir());
 
-        if (!fs.existsSync(cmsPath)){
-            fs.mkdirSync(cmsPath);
-        }
+    if (!fs.existsSync(cmsPath)) {
+      fs.mkdirSync(cmsPath);
+    }
 
-        canReadAndWrite(cmsPath).then(function(directoryContents){
-            var drupal7Promise = getLocalVersion('drupal', cmsPath, 7);
-            var drupal8Promise = getLocalVersion('drupal', cmsPath, 8);
-            var wordpressPromise = getLocalVersion('wordpress', cmsPath);
+    canReadAndWrite(cmsPath)
+      .then(directoryContents => {
+        const drupal7Promise = getLocalVersion('drupal', cmsPath, 7);
+        const drupal8Promise = getLocalVersion('drupal', cmsPath, 8);
+        const wordpressPromise = getLocalVersion('wordpress', cmsPath);
 
-            Promise.all([drupal7Promise, drupal8Promise, wordpressPromise]).then(function(localVersions) {
-                var drupal7Promise = getNewestDrupalVersion(7);
-                var drupal8Promise = getNewestDrupalVersion(8);
-                var wordpressPromise = getNewestWordpressVersion();
+        Promise.all([drupal7Promise, drupal8Promise, wordpressPromise]).then(localVersions => {
+          const drupal7Promise = getNewestDrupalVersion(7);
+          const drupal8Promise = getNewestDrupalVersion(8);
+          const wordpressPromise = getNewestWordpressVersion();
 
-                Promise.all([drupal7Promise, drupal8Promise, wordpressPromise]).then(function(newestVersions) {
-                    if(compareVersions(localVersions[0], newestVersions[0].version) < 0){
-                        var currentVersion = localVersions[0];
-                        var newVersion = newestVersions[0];
-                        downloadFile(newVersion.uri, cmsPath + '/drupal-' + newVersion.version + '.tar.gz');
-                        if(currentVersion !== '0.0') {
-                            deleteFile(cmsPath + "/drupal-" + currentVersion + '.tar.gz');
-                        }
-                    }
-                    if(compareVersions(localVersions[1], newestVersions[1].version) < 0){
-                        var currentVersion = localVersions[1];
-                        var newVersion = newestVersions[1];
-                        downloadFile(newVersion.uri, cmsPath + '/drupal-' + newVersion.version + '.tar.gz');
-                        if(currentVersion !== '0.0') {
-                            deleteFile(cmsPath + "/drupal-" + currentVersion + '.tar.gz');
-                        }
-                    }
-                    if(compareVersions(localVersions[2], newestVersions[2].version) < 0){
-                        var currentVersion = localVersions[2];
-                        var newVersion = newestVersions[2];
-                        downloadFile(newVersion.uri, cmsPath + '/wordpress-' + newVersion.version + '.tar.gz');
-                        if(currentVersion !== '0.0') {
-                            deleteFile(cmsPath + "/wordpress-" + currentVersion +'.tar.gz');
-                        }
-                    }
-                    resolve();
-                });
-            });
-        })
-        .catch(function(error){
-            reject(error);
+          Promise.all([drupal7Promise, drupal8Promise, wordpressPromise]).then(newestVersions => {
+            if (compareVersions(localVersions[0], newestVersions[0].version) < 0) {
+              var currentVersion = localVersions[0];
+              var newVersion = newestVersions[0];
+              downloadFile(newVersion.uri, `${cmsPath}/drupal-${newVersion.version}.tar.gz`);
+              if (currentVersion !== '0.0') {
+                deleteFile(`${cmsPath}/drupal-${currentVersion}.tar.gz`);
+              }
+            }
+            if (compareVersions(localVersions[1], newestVersions[1].version) < 0) {
+              var currentVersion = localVersions[1];
+              var newVersion = newestVersions[1];
+              downloadFile(newVersion.uri, `${cmsPath}/drupal-${newVersion.version}.tar.gz`);
+              if (currentVersion !== '0.0') {
+                deleteFile(`${cmsPath}/drupal-${currentVersion}.tar.gz`);
+              }
+            }
+            if (compareVersions(localVersions[2], newestVersions[2].version) < 0) {
+              var currentVersion = localVersions[2];
+              var newVersion = newestVersions[2];
+              downloadFile(newVersion.uri, `${cmsPath}/wordpress-${newVersion.version}.tar.gz`);
+              if (currentVersion !== '0.0') {
+                deleteFile(`${cmsPath}/wordpress-${currentVersion}.tar.gz`);
+              }
+            }
+            resolve();
+          });
         });
-    });
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 
-    return promise;
+  return promise;
 };
 
 module.exports.updateDistros = updateDistros;

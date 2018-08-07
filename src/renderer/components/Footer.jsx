@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import ProjectCount from "./ProjectCount";
-import RouterStatus from "./RouterStatus";
-import GlobalActions from "./GlobalActions";
+import ProjectCount from './ProjectCount';
+import RouterStatus from './RouterStatus';
+import GlobalActions from './GlobalActions';
 
 class Footer extends React.Component {
   render() {

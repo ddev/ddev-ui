@@ -1,10 +1,11 @@
-import React from "react";
-import Terminal from "terminal-in-react";
+import React from 'react';
+import Terminal from 'terminal-in-react';
 
-const ddevShell = require("../modules/ddev-shell");
+const ddevShell = require('../modules/ddev-shell');
 
 class ProjectConsole extends React.Component {
-  logs = () => "Hey NOW";
+  logs = () => 'Hey NOW';
+
   render() {
     return (
       <Terminal
@@ -18,8 +19,8 @@ class ProjectConsole extends React.Component {
         //   print(`-PassedThrough:${cmd}: command not found`);
         // }}
         style={{
-          fontWeight: "bold",
-          fontSize: "1em"
+          fontWeight: 'bold',
+          fontSize: '1em',
         }}
         commands={
           {
@@ -28,7 +29,7 @@ class ProjectConsole extends React.Component {
         }
         descriptions={{
           color: false,
-          show: false
+          show: false,
           // logs: "pull logs from the container"
         }}
         msg="Welcome to the DDEV console! From here you can pull logs, run commands from inside the container, and run any other DDEV-CLI commands for this project."

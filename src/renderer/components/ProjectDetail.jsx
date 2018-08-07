@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import ProjectHeader from "./ProjectHeader";
-import ProjectInfo from "./ProjectInfo";
+import ProjectHeader from './ProjectHeader';
+import ProjectInfo from './ProjectInfo';
 
 class ProjectDetail extends React.PureComponent {
   render() {

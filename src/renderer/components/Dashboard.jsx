@@ -1,27 +1,28 @@
-import React from "react";
-import { Window } from "react-desktop/macOs";
-import { isObject } from "util";
+import React from 'react';
+import { Window } from 'react-desktop/macOs';
+import { isObject } from 'util';
 
 // components
-import Header from "./Header";
-import Sidebar from "./Sidebar";
-import Footer from "./Footer";
-import ViewRouter from "./ViewRouter";
-import Alerts from "./Alerts";
+import Header from './Header';
+import Sidebar from './Sidebar';
+import Footer from './Footer';
+import ViewRouter from './ViewRouter';
+import Alerts from './Alerts';
 
 // non componentized JS
-import { init } from "./../modules/ui";
-import ddevShell from "../modules/ddev-shell";
-import { getErrorResponseType } from "./../modules/helpers";
+import { init } from '../modules/ui';
+import ddevShell from '../modules/ddev-shell';
+import { getErrorResponseType } from '../modules/helpers';
 
 // app styling
-import "~/src/resources/scss/main.scss";
+import '~/src/resources/scss/main.scss';
 
 class Dashboard extends React.Component {
   state = {
     projects: {},
-    errors: {}
+    errors: {},
   };
+
   componentDidMount() {
     // TODO: Remove this once everything is moved over
     init();
@@ -30,15 +31,17 @@ class Dashboard extends React.Component {
     // TODO: this could be reduced/removed once state is updated everywhere.
     this.timerID = setInterval(() => this.heartBeat(), 1000);
   }
+
   componentWillUnmount() {
     clearInterval(this.timerID);
   }
+
   fetchProjects = () => {
     ddevShell
       .list()
       .then(newProjects => {
-        let projects = {};
-        for (var key in newProjects) {
+        const projects = {};
+        for (const key in newProjects) {
           if (newProjects.hasOwnProperty(key)) {
             projects[newProjects[key].name] = newProjects[key];
           }
@@ -50,17 +53,20 @@ class Dashboard extends React.Component {
         this.addError(e);
       });
   };
+
   updateProjects = projects => {
     if (JSON.stringify(this.state.projects) !== JSON.stringify(projects)) {
       this.setState({ projects });
     }
   };
+
   heartBeat = () => {
     this.fetchProjects();
   };
+
   addError = error => {
     // 1. Take a copy of the existing state
-    let errors = { ...this.state.errors };
+    const errors = { ...this.state.errors };
     // 2. Add our new error to that errors variable
     const newError = JSON.parse(error);
     newError.type = getErrorResponseType(newError);
@@ -71,6 +77,7 @@ class Dashboard extends React.Component {
     // 3. Set the new errors object to state
     this.setState({ errors });
   };
+
   render() {
     return (
       <Window chrome padding="0px" className="Window">
