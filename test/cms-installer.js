@@ -1,92 +1,83 @@
 const rewire = require('rewire');
-const cmsInstallerFixtures = require('./cms-installer-fixtures');
+
 const cmsInstaller = rewire('../js/src/cms-installer');
 const assert = require('assert');
 const mockFS = require('mock-fs');
+const cmsInstallerFixtures = require('./cms-installer-fixtures');
 
-describe('cms-installer', function () {
-    describe('#Validations', function () {
-        const validateHostname = cmsInstaller.__get__('validateHostname');
-        const validateCMSType = cmsInstaller.__get__('validateCMSType');
+describe('cms-installer', () => {
+  describe('#Validations', () => {
+    const validateHostname = cmsInstaller.__get__('validateHostname');
+    const validateCMSType = cmsInstaller.__get__('validateCMSType');
 
-        it('should validate conforming hostnames', function () {
-            return validateHostname(cmsInstallerFixtures.validHostname).then(function fulfilled(result) {
-                assert(result === true);
-            });
-        });
-        it('should reject invalid hostnames', function () {
-            return validateHostname(cmsInstallerFixtures.invalidHostname)
-                .then(function () {
-                    return Promise.reject('Expected method to reject.');
-                }).catch(function (err) {
-                    assert(err === 'Project Name is Invalid.')
-                });
-        });
-        it('should reject empty hostnames', function () {
-            return validateHostname('')
-                .then(function () {
-                    return Promise.reject('Expected method to reject.');
-                }).catch(function (err) {
-                    assert(err === 'Project Name Cannot Be Blank.')
-                });
-        });
-        it('should validate supported CMS types', function () {
-            return validateCMSType(cmsInstallerFixtures.validCMSType).then(function fulfilled(result) {
-                assert(result === true);
-            });
-        });
-        it('should reject unsupported CMS types', function () {
-            return validateCMSType(cmsInstallerFixtures.invalidCMSType)
-                .then(function () {
-                    return Promise.reject('Expected method to reject.');
-                }).catch(function (err) {
-                    assert(err === 'CMS Type is Invalid.')
-                });
-        });
-        it('should reject empty CMS types', function () {
-            return validateCMSType('')
-                .then(function () {
-                    return Promise.reject('Expected method to reject.');
-                }).catch(function (err) {
-                    assert(err === 'Please select a CMS type.')
-                });
-        });
+    it('should validate conforming hostnames', () =>
+      validateHostname(cmsInstallerFixtures.validHostname).then(result => {
+        assert(result === true);
+      }));
+    it('should reject invalid hostnames', () =>
+      validateHostname(cmsInstallerFixtures.invalidHostname)
+        .then(() => Promise.reject(new Error('Expected method to reject.')))
+        .catch(err => {
+          assert(err === 'Project Name is Invalid.');
+        }));
+    it('should reject empty hostnames', () =>
+      validateHostname('')
+        .then(() => Promise.reject(new Error('Expected method to reject.')))
+        .catch(err => {
+          assert(err === 'Project Name Cannot Be Blank.');
+        }));
+    it('should validate supported CMS types', () =>
+      validateCMSType(cmsInstallerFixtures.validCMSType).then(result => {
+        assert(result === true);
+      }));
+    it('should reject unsupported CMS types', () =>
+      validateCMSType(cmsInstallerFixtures.invalidCMSType)
+        .then(() => Promise.reject(new Error('Expected method to reject.')))
+        .catch(err => {
+          assert(err === 'CMS Type is Invalid.');
+        }));
+    it('should reject empty CMS types', () =>
+      validateCMSType('')
+        .then(() => Promise.reject(new Error('Expected method to reject.')))
+        .catch(err => {
+          assert(err === 'Please select a CMS type.');
+        }));
 
-        //validateInstallPath is a wrapper for distroUpdater.canReadAndWrite, tests included in that module
+    // validateInstallPath is a wrapper for distroUpdater.canReadAndWrite, tests included in that module
 
-        //getCMSTarballPath is a wrapper for distroUpdater.getLocalDistros, tests included in that module
+    // getCMSTarballPath is a wrapper for distroUpdater.getLocalDistros, tests included in that module
+  });
+
+  describe('#Filesystem Operations', () => {
+    beforeEach(done => {
+      mockFS(cmsInstallerFixtures.mockFileSystem);
+      done();
     });
 
-    describe('#Filesystem Operations', function () {
-        beforeEach(function(done) {
-            mockFS(cmsInstallerFixtures.mockFileSystem);
-            done();
-        });
+    afterEach(done => {
+      mockFS.restore();
+      done();
+    });
 
-        afterEach(function(done) {
-            mockFS.restore();
-            done();
-        });
+    const getCMSTarballPath = cmsInstaller.__get__('getCMSTarballPath');
 
-        const getCMSTarballPath = cmsInstaller.__get__('getCMSTarballPath');
+    // unpackCMSTarball is a wrapper for the tarball npm library, unit tests exist there
 
-        //unpackCMSTarball is a wrapper for the tarball npm library, unit tests exist there
+    it('should retrieve the full path to a tarball given the distro name and the CMS path', () =>
+      getCMSTarballPath('wordpress', '~/.ddev/CMS').then(tarballPath => {
+        assert(tarballPath === '~/.ddev/CMS/wordpress-7.0.0.tar.gz');
+      }));
 
-        it('should retrieve the full path to a tarball given the distro name and the CMS path', function () {
-            return getCMSTarballPath('wordpress','~/.ddev/CMS').then(function(tarballPath){
-                assert(tarballPath === '~/.ddev/CMS/wordpress-7.0.0.tar.gz');
-            })
-        });
+    it('should fail if no such file is found', () =>
+      getCMSTarballPath('drupal8', '~/.ddev/CMS')
+        .then(response => Promise.reject(new Error('Expected method to reject.')))
+        .catch(err => {
+          assert(
+            err ===
+              'CMS archive not found in `~/.ddev/CMS`. Restarting the UI will attempt to redownload these files.'
+          );
+        }));
 
-        it('should fail if no such file is found', function () {
-           return getCMSTarballPath('drupal8','~/.ddev/CMS')
-               .then(function (response) {
-                   return Promise.reject('Expected method to reject.');
-               }).catch(function (err) {
-                   assert(err === 'CMS archive not found in `~/.ddev/CMS`. Restarting the UI will attempt to redownload these files.')
-               });
-        });
-
-        mockFS.restore();
-    })
+    mockFS.restore();
+  });
 });

@@ -1,4 +1,4 @@
-var drupal7ApiResponse = `<?xml version="1.0" encoding="utf-8"?>
+const drupal7ApiResponse = `<?xml version="1.0" encoding="utf-8"?>
 <project xmlns:dc="http://purl.org/dc/elements/1.1/">
     <title>Drupal core</title>
     <short_name>drupal</short_name>
@@ -101,7 +101,7 @@ var drupal7ApiResponse = `<?xml version="1.0" encoding="utf-8"?>
 </project>
 `;
 
-var drupal8ApiResponse = `<?xml version="1.0" encoding="utf-8"?>
+const drupal8ApiResponse = `<?xml version="1.0" encoding="utf-8"?>
 <project xmlns:dc="http://purl.org/dc/elements/1.1/">
     <title>Drupal core</title>
     <short_name>drupal</short_name>
@@ -204,7 +204,7 @@ var drupal8ApiResponse = `<?xml version="1.0" encoding="utf-8"?>
 </project>
 `;
 
-var wordpressApiResponse = `[
+const wordpressApiResponse = `[
     {
         "name": "9.9.9",
         "zipball_url": "https://api.github.com/repos/WordPress/WordPress/zipball/9.9.9",
@@ -225,32 +225,34 @@ var wordpressApiResponse = `[
     }
 ]`;
 
+const drupal7ExpectedLatestVersion = `{"version":"7.12345","uri":"https://ftp.drupal.org/files/projects/drupal-7.12345.tar.gz"}`;
+const drupal8ExpectedLatestVersion = `{"version":"8.88888","uri":"https://ftp.drupal.org/files/projects/drupal-8.88888.tar.gz"}`;
+const wordpressExpectedLatestVersion = `{"version":"9.9.9","uri":"https://wordpress.org/wordpress-9.9.9.tar.gz"}`;
 
-var drupal7ExpectedLatestVersion = `{"version":"7.12345","uri":"https://ftp.drupal.org/files/projects/drupal-7.12345.tar.gz"}`;
-var drupal8ExpectedLatestVersion = `{"version":"8.88888","uri":"https://ftp.drupal.org/files/projects/drupal-8.88888.tar.gz"}`;
-var wordpressExpectedLatestVersion = `{"version":"9.9.9","uri":"https://wordpress.org/wordpress-9.9.9.tar.gz"}`;
-
-
-var mockOutdatedFilesystem = {
-    '~/.ddev/CMS': {
-        'drupal-7.0.tar.gz': '',
-        'drupal-8.0.tar.gz': '',
-        'wordpress-7.0.0.tar.gz': ''
-    }
+const mockOutdatedFilesystem = {
+  '~/.ddev/CMS': {
+    'drupal-7.0.tar.gz': '',
+    'drupal-8.0.tar.gz': '',
+    'wordpress-7.0.0.tar.gz': '',
+  },
 };
 
-var mockCurrentFilesystem = {
-    '~/.ddev/CMS': {
-        'drupal-7.12345.tar.gz': '',
-        'drupal-8.88888.tar.gz': '',
-        'wordpress-7.7.777.tar.gz': ''
-    }
+const mockCurrentFilesystem = {
+  '~/.ddev/CMS': {
+    'drupal-7.12345.tar.gz': '',
+    'drupal-8.88888.tar.gz': '',
+    'wordpress-7.7.777.tar.gz': '',
+  },
 };
 
-var expectedOutdatedFilesystem = [ 'drupal-7.0.tar.gz', 'drupal-8.0.tar.gz', 'wordpress-7.0.0.tar.gz' ];
-var expectedDeletedFilesystem = ["drupal-8.0.tar.gz","wordpress-7.0.0.tar.gz"];
+const expectedOutdatedFilesystem = [
+  'drupal-7.0.tar.gz',
+  'drupal-8.0.tar.gz',
+  'wordpress-7.0.0.tar.gz',
+];
+const expectedDeletedFilesystem = ['drupal-8.0.tar.gz', 'wordpress-7.0.0.tar.gz'];
 
-var mockDownloadBinary = "IAmABinaryFile";
+const mockDownloadBinary = 'IAmABinaryFile';
 
 module.exports.drupal7ApiResponse = drupal7ApiResponse;
 module.exports.drupal8ApiResponse = drupal8ApiResponse;
