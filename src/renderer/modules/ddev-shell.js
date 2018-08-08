@@ -19,22 +19,23 @@ fixPath();
 const ddevShell = (command, args, path, callback, errorCallback, stream) => {
   let opts = {};
 
-  if (!Array.isArray(command)) {
-    command = [command];
+  let ddevCommand = command;
+
+  if (!Array.isArray(ddevCommand)) {
+    ddevCommand = [ddevCommand];
   }
 
   if (args && Array.isArray(args)) {
-    command = command.concat(args);
+    ddevCommand = ddevCommand.concat(args);
   }
 
   if (path) {
-    path = path.replace('~', os.homedir());
     opts = {
-      cwd: path,
+      cwd: path.replace('~', os.homedir()),
     };
   }
 
-  const currentCommand = childProcess.spawn('ddev', command, opts);
+  const currentCommand = childProcess.spawn('ddev', ddevCommand, opts);
 
   let outputBuffer = '';
 
@@ -177,6 +178,7 @@ const hostname = (siteName, domain = 'ddev.local') => {
     const command = `ddev hostname ${siteName}.${domain} 127.0.0.1 -j`;
     sudoPrompt.exec(command, options, (error, stdout, stderr) => {
       if (error) {
+        console.log(stderr);
         reject(error);
       } else {
         resolve(stdout);
@@ -197,13 +199,12 @@ const describe = siteName => {
       const objs = describeJSON.split('\n');
 
       objs.forEach(obj => {
-        const siteDetails = {};
+        let siteDetails = {};
         if (obj) {
           try {
             const rawData = JSON.parse(obj);
-
             if (rawData.level === 'info') {
-              const siteDetails = rawData.raw;
+              siteDetails = rawData.raw;
               resolve(siteDetails);
             }
           } catch (e) {
@@ -283,19 +284,21 @@ const sudo = (
 ) => {
   const bannedCharacters = [';', '|', '&'];
   const whitelistedCommands = ['version'];
-  if (whitelistedCommands.indexOf(command) != -1) {
+  const ddevCommand = `ddev ${command}`;
+
+  if (whitelistedCommands.indexOf(command) !== -1) {
     bannedCharacters.forEach(character => {
       if (command.includes(character)) {
         return Promise.reject(
-          `${character} is not an allowed character in privilege escalation requests.`
+          new Error(`${character} is not an allowed character in privilege escalation requests.`)
         );
       }
     });
-    command = `ddev ${command}`;
     const promise = new Promise((resolve, reject) => {
-      sudoPrompt.exec(command, promptOptions, (error, stdout, stderr) => {
+      sudoPrompt.exec(ddevCommand, promptOptions, (error, stdout, stderr) => {
         if (error) {
-          reject('Unable to escalate permissions.');
+          console.log(stderr);
+          reject(new Error('Unable to escalate permissions.'));
         } else {
           resolve(stdout);
         }
@@ -304,7 +307,7 @@ const sudo = (
 
     return promise;
   }
-  return Promise.reject(`${command} is not allowed to be run as sudo`);
+  return Promise.reject(new Error(`${ddevCommand} is not allowed to be run as sudo`));
 };
 
 module.exports.list = list;

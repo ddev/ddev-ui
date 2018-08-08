@@ -1,6 +1,5 @@
 const updater = require('./distro-updater');
 const siteCreator = require('./cms-installer');
-const describeSite = require('./describe-site');
 const removeProject = require('./remove-project');
 
 /**
@@ -8,7 +7,6 @@ const removeProject = require('./remove-project');
  */
 function init() {
   siteCreator.init();
-  describeSite.init();
   removeProject.init();
   updater.updateDistros();
 }
