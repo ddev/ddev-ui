@@ -6,7 +6,7 @@ import 'bootstrap';
 
 import Dashboard from './Dashboard';
 
-window.$ = window.jQuery = require('jquery');
+window.$ = window.jQuery = require('jquery'); // eslint-disable-line no-multi-assign
 
 const App = () => (
   <HashRouter>
