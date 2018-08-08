@@ -1,9 +1,19 @@
-const request = require('request');
-const parseXMLString = require('xml2js').parseString;
-const fs = require('fs');
-const compareVersions = require('compare-versions');
-const os = require('os');
-const path = require('path');
+import request from 'request';
+import { parseString as parseXMLString } from 'xml2js';
+import {
+  readdir,
+  stat,
+  access,
+  W_OK,
+  R_OK,
+  createWriteStream,
+  unlink,
+  existsSync,
+  mkdirSync,
+} from 'fs';
+import compareVersions from 'compare-versions';
+import { homedir } from 'os';
+import { dirname } from 'path';
 
 // Remote read actions - fetch latest version information from remote endpoints
 
@@ -79,7 +89,7 @@ function getNewestWordpressVersion() {
 function getLocalDistros(localPath) {
   const promise = new Promise((resolve, reject) => {
     function readFiles(filePath) {
-      fs.readdir(filePath, (err, filenames) => {
+      readdir(filePath, (err, filenames) => {
         if (err) {
           reject(err);
         } else {
@@ -137,16 +147,16 @@ function getLocalVersion(distro, localPath, majorVersion = null) {
  */
 function canReadAndWrite(targetPath) {
   return new Promise((resolve, reject) => {
-    fs.stat(targetPath, err => {
+    stat(targetPath, err => {
       if (err) {
         reject(err);
         return;
       }
       /* eslint-disable no-bitwise */
-      fs.access(targetPath, fs.W_OK | fs.R_OK, err => {
+      access(targetPath, W_OK | R_OK, err => {
         if (err) {
-          const dir = path.dirname(targetPath);
-          fs.access(dir, fs.W_OK | fs.R_OK, err => {
+          const dir = dirname(targetPath);
+          access(dir, W_OK | R_OK, err => {
             if (err) {
               reject(err);
               return;
@@ -170,7 +180,7 @@ function canReadAndWrite(targetPath) {
 function downloadFile(url, filePath) {
   const promise = new Promise((resolve, reject) => {
     request({ uri: url })
-      .pipe(fs.createWriteStream(filePath))
+      .pipe(createWriteStream(filePath))
       .on('close', () => {
         resolve('written successfully');
       })
@@ -189,7 +199,7 @@ function downloadFile(url, filePath) {
  */
 function deleteFile(filePath) {
   const promise = new Promise((resolve, reject) => {
-    fs.unlink(filePath, err => {
+    unlink(filePath, err => {
       if (err) {
         reject(err);
       } else {
@@ -211,10 +221,10 @@ function deleteFile(filePath) {
 const updateDistros = function() {
   const promise = new Promise((resolve, reject) => {
     let cmsPath = '~/.ddev/CMS';
-    cmsPath = cmsPath.replace('~', os.homedir());
+    cmsPath = cmsPath.replace('~', homedir());
 
-    if (!fs.existsSync(cmsPath)) {
-      fs.mkdirSync(cmsPath);
+    if (!existsSync(cmsPath)) {
+      mkdirSync(cmsPath);
     }
 
     canReadAndWrite(cmsPath)
@@ -265,12 +275,20 @@ const updateDistros = function() {
   return promise;
 };
 
-module.exports.updateDistros = updateDistros;
+const _updateDistros = updateDistros;
+export { _updateDistros as updateDistros };
 
-module.exports.getNewestDrupalVersion = getNewestDrupalVersion;
-module.exports.getNewestWordpressVersion = getNewestWordpressVersion;
-module.exports.getLocalDistros = getLocalDistros;
-module.exports.getLocalVersion = getLocalVersion;
-module.exports.canReadAndWrite = canReadAndWrite;
-module.exports.downloadFile = downloadFile;
-module.exports.deleteFile = deleteFile;
+const _getNewestDrupalVersion = getNewestDrupalVersion;
+export { _getNewestDrupalVersion as getNewestDrupalVersion };
+const _getNewestWordpressVersion = getNewestWordpressVersion;
+export { _getNewestWordpressVersion as getNewestWordpressVersion };
+const _getLocalDistros = getLocalDistros;
+export { _getLocalDistros as getLocalDistros };
+const _getLocalVersion = getLocalVersion;
+export { _getLocalVersion as getLocalVersion };
+const _canReadAndWrite = canReadAndWrite;
+export { _canReadAndWrite as canReadAndWrite };
+const _downloadFile = downloadFile;
+export { _downloadFile as downloadFile };
+const _deleteFile = deleteFile;
+export { _deleteFile as deleteFile };

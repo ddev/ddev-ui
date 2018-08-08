@@ -29,4 +29,5 @@ function createModal(id, title, body, footer) {
   return markup;
 }
 
-module.exports.createModal = createModal;
+const _createModal = createModal;
+export { _createModal as createModal };

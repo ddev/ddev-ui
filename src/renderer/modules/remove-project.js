@@ -1,5 +1,5 @@
-const bootstrapModal = require('./bootstrap-modal');
-const ddevShell = require('./ddev-shell');
+import { createModal } from './bootstrap-modal';
+import { remove } from './ddev-shell';
 
 /**
  * Dismiss modal and show success or error result
@@ -34,8 +34,7 @@ function removeProject(formData) {
     const removeName = name[0].value;
     const removeData = data[0].value.includes('Database');
 
-    return ddevShell
-      .remove(removeName, removeData)
+    return remove(removeName, removeData)
       .then(() => {
         removeCompleted('Project Successfully Removed.');
       })
@@ -116,12 +115,7 @@ const removeProjectModalFooter = `<div class="remove-button-container">
  */
 function init() {
   $('body').append(
-    bootstrapModal.createModal(
-      'removeModal',
-      'Remove Project',
-      removeProjectModalBody,
-      removeProjectModalFooter
-    )
+    createModal('removeModal', 'Remove Project', removeProjectModalBody, removeProjectModalFooter)
   );
   $(document).on('click', '.removebtn', function() {
     showRemoveModal($(this).data('projectPath'), $(this).data('projectName'));
@@ -136,4 +130,5 @@ function init() {
   });
 }
 
-module.exports.init = init;
+const _init = init;
+export { _init as init };
