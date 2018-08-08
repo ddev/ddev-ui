@@ -1,12 +1,12 @@
-const tar = require('tar');
-const fs = require('fs');
-const os = require('os');
-const electron = require('electron');
-const ddevShell = require('./ddev-shell');
-const distroUpdater = require('./distro-updater');
+import { x } from 'tar';
+import { readdir, mkdir } from 'fs';
+import { homedir } from 'os';
+import electron, { remote as _remote } from 'electron';
+import { config, start, hostname as _hostname } from './ddev-shell';
+import { canReadAndWrite, getLocalDistros } from './distro-updater';
 
-const remote = electron.remote ? electron.remote : electron;
-const dialog = remote.dialog;
+const remote = _remote || electron;
+const { dialog } = remote;
 
 /**
  *
@@ -65,7 +65,7 @@ function resetAddModal() {
  */
 function validateHostname(hostname) {
   const promise = new Promise((resolve, reject) => {
-    const hostnameRegex = /^([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)+(\.([a-zA-Z0-9]+(-[a-zA-Z0-9‌​]+)*))*$/;
+    const hostnameRegex = /^([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)+(\.([a-zA-Z0-9]+(-[a-zA-Z0-9‌​]+)*))*$/; // eslint-disable-line no-irregular-whitespace
     if (hostnameRegex.test(hostname.toLowerCase())) {
       resolve(true);
     } else {
@@ -100,27 +100,20 @@ function validateCMSType(cmsType) {
 function checkIfExistingConfig(path) {
   const promise = new Promise((resolve, reject) => {
     try {
-      function checkMessages(messages) {
+      config(path, 'validName', 'totally invalid docroot that does not exist', null, messages => {
         if (messages.includes('existing configuration')) {
-          const proceed = confirm(
+          const proceed = window.confirm(
             `An existing DDEV configuration was found in ${path}. By proceeding, the existing configuration will be updated and replaced.`
           );
           if (proceed) {
             resolve(true);
           } else {
-            reject('User Canceled');
+            reject(new Error('User Canceled'));
           }
         } else {
           resolve(false);
         }
-      }
-      ddevShell.config(
-        path,
-        'validName',
-        'totally invalid docroot that does not exist',
-        null,
-        checkMessages
-      );
+      });
     } catch (err) {
       reject(err);
     }
@@ -135,16 +128,16 @@ function checkIfExistingConfig(path) {
  */
 function validateInstallPath(path) {
   const promise = new Promise((resolve, reject) => {
-    distroUpdater
-      .canReadAndWrite(path)
+    canReadAndWrite(path)
       .then(output => {
         resolve(output);
       })
       .catch(err => {
-        err = err.toString().includes('ENOENT')
+        let errStr = err;
+        errStr = errStr.toString().includes('ENOENT')
           ? 'Cannot find or write to the selected directory.'
-          : err;
-        reject(err);
+          : errStr;
+        reject(errStr);
       });
   });
   return promise;
@@ -157,20 +150,21 @@ function validateInstallPath(path) {
  * @return {promise} resolves if full docroot path is read/writable, rejects with system error if not
  */
 function validateDocroot(path, docroot) {
-  if (docroot[0] !== '/') {
-    docroot = `/${docroot}`;
+  let root = docroot;
+  if (root[0] !== '/') {
+    root = `/${root}`;
   }
   const promise = new Promise((resolve, reject) => {
-    distroUpdater
-      .canReadAndWrite(path + docroot)
+    canReadAndWrite(path + root)
       .then(output => {
         resolve(output);
       })
       .catch(err => {
-        err = err.toString().includes('ENOENT')
+        let errStr = err;
+        errStr = errStr.toString().includes('ENOENT')
           ? 'Cannot find or write to specified docroot directory.'
-          : err;
-        reject(err);
+          : errStr;
+        reject(errStr);
       });
   });
   return promise;
@@ -196,16 +190,18 @@ function getCMSTarballPath(cmsType, cmsPath) {
         targetCMS = 'drupal-8';
         break;
       default:
-        throw 'No CMS selected';
+        Error('No CMS selected');
     }
-    distroUpdater.getLocalDistros(cmsPath).then(files => {
+    getLocalDistros(cmsPath).then(files => {
       files.forEach(fileName => {
-        if (fileName.indexOf(targetCMS) != -1) {
+        if (fileName.indexOf(targetCMS) !== -1) {
           resolve(`${cmsPath}/${fileName}`);
         }
       });
       reject(
-        'CMS archive not found in `~/.ddev/CMS`. Restarting the UI will attempt to redownload these files.'
+        new Error(
+          'CMS archive not found in `~/.ddev/CMS`. Restarting the UI will attempt to redownload these files.'
+        )
       );
     });
   });
@@ -220,21 +216,23 @@ function getCMSTarballPath(cmsType, cmsPath) {
  */
 function unpackCMSTarball(tarballPath, outputPath) {
   const promise = new Promise((resolve, reject) => {
-    fs.readdir(outputPath, (err, items) => {
+    readdir(outputPath, (err, items) => {
       if (err && err.toString().includes('ENOENT')) {
-        fs.mkdir(outputPath, err => {
+        mkdir(outputPath, err => {
           if (err) {
             reject(err);
           }
         });
       } else if (items.length > 0) {
         reject(
-          `The path ${outputPath} already exists and is not empty. Please select a new path or try a different project name`
+          new Error(
+            `The path ${outputPath} already exists and is not empty. Please select a new path or try a different project name`
+          )
         );
       }
     });
     try {
-      tar.x(
+      x(
         {
           file: tarballPath,
           C: outputPath,
@@ -247,7 +245,9 @@ function unpackCMSTarball(tarballPath, outputPath) {
       );
     } catch (err) {
       reject(
-        'Cannot extract base CMS file in `~/.ddev/CMS`. Restarting the UI will attempt to redownload them.'
+        new Error(
+          'Cannot extract base CMS file in `~/.ddev/CMS`. Restarting the UI will attempt to redownload them.'
+        )
       );
     }
   });
@@ -295,8 +295,8 @@ function extractCMSImageToTargetPath(siteName, cmsType, cmsPath, targetFolder) {
   const promise = new Promise((resolve, reject) => {
     getCMSTarballPath(cmsType, cmsPath)
       .then(CMSTarballPath => {
-        targetFolder = `${targetFolder}/${siteName}`;
-        unpackCMSTarball(CMSTarballPath, targetFolder)
+        const targetPath = `${targetFolder}/${siteName}`;
+        unpackCMSTarball(CMSTarballPath, targetPath)
           .then(unzippedPath => {
             resolve(unzippedPath);
           })
@@ -320,7 +320,7 @@ function extractCMSImageToTargetPath(siteName, cmsType, cmsPath, targetFolder) {
  */
 function configureSite(siteName, workingPath, docroot) {
   const promise = new Promise((resolve, reject) => {
-    ddevShell.config(workingPath, siteName, docroot, resolve, reject);
+    config(workingPath, siteName, docroot, resolve, reject);
   });
   return promise;
 }
@@ -332,7 +332,7 @@ function configureSite(siteName, workingPath, docroot) {
  */
 function startSite(workingPath) {
   const promise = new Promise((resolve, reject) => {
-    ddevShell.start(workingPath, resolve, reject);
+    start(workingPath, resolve, reject);
   });
   return promise;
 }
@@ -365,7 +365,7 @@ function prepopulateProjectName(projectPath) {
 function addCMS(name, type, targetPath) {
   let cmsPath = '~/.ddev/CMS';
   let workingPath = cmsPath;
-  cmsPath = cmsPath.replace('~', os.homedir());
+  cmsPath = cmsPath.replace('~', homedir());
   showLoadingScreen(true);
   validateNewProjectInputs(name, type, targetPath)
     .then(() => {
@@ -379,14 +379,14 @@ function addCMS(name, type, targetPath) {
     })
     .then(() => {
       showLoadingScreen(true, 'Updating Hosts File');
-      return ddevShell.hostname(name);
+      return _hostname(name);
     })
     .then(() => {
       showLoadingScreen(true, 'Starting Project');
       return startSite(workingPath);
     })
     .then(stdout => {
-      if (stdout.toString().indexOf('Starting environment') != -1) {
+      if (stdout.toString().indexOf('Starting environment') !== -1) {
         resetAddModal();
         alert(
           'Start Process Initiated. It may take a few seconds for the new project to appear on your dashboard.'
@@ -414,14 +414,14 @@ function addCMSFromExisting(name, targetPath, docroot = '') {
     })
     .then(() => {
       showLoadingScreen(true, 'Updating Hosts File');
-      return ddevShell.hostname(name);
+      return _hostname(name);
     })
     .then(() => {
       showLoadingScreen(true, 'Starting Project');
       return startSite(targetPath);
     })
     .then(stdout => {
-      if (stdout.toString().indexOf('Starting environment') != -1) {
+      if (stdout.toString().indexOf('Starting environment') !== -1) {
         resetAddModal();
         alert(
           'Start Process Initiated. It may take a few seconds for the new project to appear on your dashboard.'
@@ -508,4 +508,5 @@ function init() {
   });
 }
 
-module.exports.init = init;
+const _init = init;
+export { _init as init };
