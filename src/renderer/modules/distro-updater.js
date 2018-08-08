@@ -228,44 +228,48 @@ const updateDistros = function() {
     }
 
     canReadAndWrite(cmsPath)
-      .then(directoryContents => {
-        const drupal7Promise = getLocalVersion('drupal', cmsPath, 7);
-        const drupal8Promise = getLocalVersion('drupal', cmsPath, 8);
-        const wordpressPromise = getLocalVersion('wordpress', cmsPath);
+      .then(() => {
+        const drupal7LocalPromise = getLocalVersion('drupal', cmsPath, 7);
+        const drupal8LocalPromise = getLocalVersion('drupal', cmsPath, 8);
+        const wordpressLocalPromise = getLocalVersion('wordpress', cmsPath);
 
-        Promise.all([drupal7Promise, drupal8Promise, wordpressPromise]).then(localVersions => {
-          const drupal7Promise = getNewestDrupalVersion(7);
-          const drupal8Promise = getNewestDrupalVersion(8);
-          const wordpressPromise = getNewestWordpressVersion();
+        Promise.all([drupal7LocalPromise, drupal8LocalPromise, wordpressLocalPromise]).then(
+          localVersions => {
+            const drupal7NewPromise = getNewestDrupalVersion(7);
+            const drupal8NewPromise = getNewestDrupalVersion(8);
+            const wordpressNewPromise = getNewestWordpressVersion();
 
-          Promise.all([drupal7Promise, drupal8Promise, wordpressPromise]).then(newestVersions => {
-            if (compareVersions(localVersions[0], newestVersions[0].version) < 0) {
-              var currentVersion = localVersions[0];
-              var newVersion = newestVersions[0];
-              downloadFile(newVersion.uri, `${cmsPath}/drupal-${newVersion.version}.tar.gz`);
-              if (currentVersion !== '0.0') {
-                deleteFile(`${cmsPath}/drupal-${currentVersion}.tar.gz`);
+            Promise.all([drupal7NewPromise, drupal8NewPromise, wordpressNewPromise]).then(
+              newestVersions => {
+                if (compareVersions(localVersions[0], newestVersions[0].version) < 0) {
+                  const currentVersion = localVersions[0];
+                  const newVersion = newestVersions[0];
+                  downloadFile(newVersion.uri, `${cmsPath}/drupal-${newVersion.version}.tar.gz`);
+                  if (currentVersion !== '0.0') {
+                    deleteFile(`${cmsPath}/drupal-${currentVersion}.tar.gz`);
+                  }
+                }
+                if (compareVersions(localVersions[1], newestVersions[1].version) < 0) {
+                  const currentVersion = localVersions[1];
+                  const newVersion = newestVersions[1];
+                  downloadFile(newVersion.uri, `${cmsPath}/drupal-${newVersion.version}.tar.gz`);
+                  if (currentVersion !== '0.0') {
+                    deleteFile(`${cmsPath}/drupal-${currentVersion}.tar.gz`);
+                  }
+                }
+                if (compareVersions(localVersions[2], newestVersions[2].version) < 0) {
+                  const currentVersion = localVersions[2];
+                  const newVersion = newestVersions[2];
+                  downloadFile(newVersion.uri, `${cmsPath}/wordpress-${newVersion.version}.tar.gz`);
+                  if (currentVersion !== '0.0') {
+                    deleteFile(`${cmsPath}/wordpress-${currentVersion}.tar.gz`);
+                  }
+                }
+                resolve();
               }
-            }
-            if (compareVersions(localVersions[1], newestVersions[1].version) < 0) {
-              var currentVersion = localVersions[1];
-              var newVersion = newestVersions[1];
-              downloadFile(newVersion.uri, `${cmsPath}/drupal-${newVersion.version}.tar.gz`);
-              if (currentVersion !== '0.0') {
-                deleteFile(`${cmsPath}/drupal-${currentVersion}.tar.gz`);
-              }
-            }
-            if (compareVersions(localVersions[2], newestVersions[2].version) < 0) {
-              var currentVersion = localVersions[2];
-              var newVersion = newestVersions[2];
-              downloadFile(newVersion.uri, `${cmsPath}/wordpress-${newVersion.version}.tar.gz`);
-              if (currentVersion !== '0.0') {
-                deleteFile(`${cmsPath}/wordpress-${currentVersion}.tar.gz`);
-              }
-            }
-            resolve();
-          });
-        });
+            );
+          }
+        );
       })
       .catch(error => {
         reject(error);
