@@ -1,7 +1,6 @@
 import React from 'react';
 import { TitleBar, Toolbar, ToolbarNav, ToolbarNavItem } from 'react-desktop/macOs';
 import { NavLink } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 /* eslint-disable no-undef,global-require,import/no-dynamic-require */
 const logo = require(`${__static}/img/Logo.svg`);
@@ -20,10 +19,6 @@ const AppTitle = () => (
 );
 
 class Header extends React.Component {
-  static propTypes = {
-    history: PropTypes.object,
-  };
-
   state = {
     selected: 1,
   };
@@ -34,11 +29,9 @@ class Header extends React.Component {
         inset
         height="63"
         className="TitleBar fixed-top"
-        isFullscreen={this.state.isFullscreen}
         onCloseClick={() => console.log('Close window')}
         onMinimizeClick={() => console.log('Minimize window')}
         onMaximizeClick={() => console.log('Mazimize window')}
-        onResizeClick={() => this.setState({ isFullscreen: !this.state.isFullscreen })}
         title={
           <Toolbar className="d-flex flex-column">
             <AppTitle />

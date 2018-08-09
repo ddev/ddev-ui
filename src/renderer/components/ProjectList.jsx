@@ -17,7 +17,7 @@ class ProjectList extends React.PureComponent {
     this.setState({ rows });
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (this.props.projects !== prevProps.projects) {
       const rows = this.createRows();
       this.setState({ rows });
@@ -27,7 +27,7 @@ class ProjectList extends React.PureComponent {
   createRows = () => {
     const rows = [];
     if (this.props.projects) {
-      Object.keys(this.props.projects).map(projectKey => {
+      Object.keys(this.props.projects).forEach(projectKey => {
         const project = this.props.projects[projectKey];
         let platformIcon = project.type;
         switch (project.type) {
@@ -36,17 +36,6 @@ class ProjectList extends React.PureComponent {
             platformIcon = 'drupal';
             break;
 
-          default:
-            break;
-        }
-        let color = 'text-warning';
-        switch (project.status) {
-          case 'running':
-            color = 'text-success';
-            break;
-          case 'stopped':
-            color = 'text-danger';
-            break;
           default:
             break;
         }

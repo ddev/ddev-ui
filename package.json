@@ -21,6 +21,7 @@
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "lint": "eslint --cache --color --ext .jsx,.js src",
+    "lint:tests": "eslint --cache --color --ext .jsx,.js test",
     "build-linux": "yarn compile && electron-builder --linux --x64",
     "build-windows": "yarn compile && electron-builder --win",
     "build-darwin": "yarn compile && electron-builder --mac",

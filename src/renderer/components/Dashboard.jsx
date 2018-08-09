@@ -41,11 +41,11 @@ class Dashboard extends React.Component {
       .list()
       .then(newProjects => {
         const projects = {};
-        for (const key in newProjects) {
-          if (newProjects.hasOwnProperty(key)) {
+        Object.keys(newProjects).forEach(key => {
+          if (Object.prototype.hasOwnProperty.call(newProjects, key)) {
             projects[newProjects[key].name] = newProjects[key];
           }
-        }
+        });
         this.updateProjects(projects);
       })
       .catch(e => {
