@@ -1,0 +1,110 @@
+import React from 'react';
+
+/* eslint-disable no-undef,global-require,import/no-dynamic-require */
+const drupalLogo = require(`${__static}/img/druplicon-vector.svg`);
+const wordpressLogo = require(`${__static}/img/wordpress-vector.svg`);
+const typo3Logo = require(`${__static}/img/typo3.svg`);
+const backdropLogo = require(`${__static}/img/Backdrop-vector.svg`);
+const phpLogo = require(`${__static}/img/PHPApp.svg`);
+/* eslint-enable no-undef,global-require,import/no-dynamic-require */
+
+class CmsSettings extends React.Component {
+  render() {
+    return (
+      <div className="setup-content" id="step-3">
+        <div className="row">
+          <div className="col-md-12">
+            <h3>Platform Setup</h3>
+            <div className="form-group">
+              <div className="card-deck">
+                <div className="card">
+                  <a
+                    href="!#"
+                    className="text-center"
+                    cms="drupal"
+                    onClick={this.props.handleCmsUpdate}
+                  >
+                    <img src={drupalLogo} alt="Drupal" className="" />
+                  </a>
+                </div>
+                <div className="card">
+                  <a
+                    href="!#"
+                    className="text-center"
+                    cms="wordpress"
+                    onClick={this.props.handleCmsUpdate}
+                  >
+                    <img src={wordpressLogo} alt="WordPress" className="" />
+                  </a>
+                </div>
+                <div className="card">
+                  <a
+                    href="!#"
+                    className="text-center"
+                    cms="backdrop"
+                    onClick={this.props.handleCmsUpdate}
+                  >
+                    <img src={backdropLogo} alt="BackDrop" className="" />
+                  </a>
+                </div>
+                <div className="card">
+                  <a
+                    href="!#"
+                    className="text-center"
+                    cms="typo3"
+                    onClick={this.props.handleCmsUpdate}
+                  >
+                    <img src={typo3Logo} alt="Typo3" className="" />
+                  </a>
+                </div>
+                <div className={`card ${this.props.cmsType === 'none' ? 'active' : ''}`}>
+                  <a
+                    href="!#"
+                    className="text-center"
+                    cms="none"
+                    onClick={this.props.handleCmsUpdate}
+                  >
+                    <img src={phpLogo} alt="PHP Application" className="" />
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="form-group">
+              {this.props.cmsType === 'drupal' && (
+                <div className="">
+                  <div className="form-inline">
+                    <div className="form-group form-row">
+                      <label className="control-label mr-2" htmlFor="cmsVersion">
+                        Version:
+                      </label>
+                      <select
+                        name="cms-version"
+                        id="cmsVersion"
+                        className="form-control form-control-lg"
+                        value={this.props.cmsVersion}
+                        onChange={this.props.handleCmsVersionUpdate}
+                      >
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="form-group clearix">
+              <button className="btn btn-outline-secondary backBtn btn-sm pull-left" type="button">
+                Back
+              </button>
+              <button className="btn btn-primary btn-sm pull-right" type="submit">
+                Create
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default CmsSettings;

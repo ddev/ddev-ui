@@ -509,4 +509,4 @@ function init() {
 }
 
 const _init = init;
-export { _init as init };
+export { _init as init, addCMSFromExisting, addCMS };
