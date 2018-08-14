@@ -21,10 +21,11 @@ class ContainerSettings extends React.Component {
                   Default
                 </button>
                 <button
-                  className="btn btn-outline-secondary btn-lg"
+                  className="btn btn-outline-secondary btn-lg disabled"
                   containertype="custom"
                   type="button"
                   onClick={this.props.handleContainerTypeUpdate}
+                  disabled
                 >
                   Custom
                 </button>
@@ -78,7 +79,7 @@ class ContainerSettings extends React.Component {
             <div className="clearix">
               <p>
                 <a
-                  className=""
+                  className="d-none"
                   data-toggle="collapse"
                   href="#advancedContainerOptions"
                   role="button"

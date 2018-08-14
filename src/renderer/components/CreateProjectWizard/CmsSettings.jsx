@@ -17,7 +17,7 @@ class CmsSettings extends React.Component {
             <h3 className="text-center">Platform Setup</h3>
             <div className="form-group">
               <div className="card-deck">
-                <div className="card">
+                <div className={`card ${this.props.cmsType === 'drupal' ? 'active' : ''}`}>
                   <a
                     href="!#"
                     className="text-center"
@@ -27,7 +27,7 @@ class CmsSettings extends React.Component {
                     <img src={drupalLogo} alt="Drupal" className="" />
                   </a>
                 </div>
-                <div className="card">
+                <div className={`card ${this.props.cmsType === 'wordpress' ? 'active' : ''}`}>
                   <a
                     href="!#"
                     className="text-center"
@@ -37,20 +37,20 @@ class CmsSettings extends React.Component {
                     <img src={wordpressLogo} alt="WordPress" className="" />
                   </a>
                 </div>
-                <div className="card">
+                <div className={`card ${this.props.cmsType === 'backdrop' ? 'active' : ''}`}>
                   <a
                     href="!#"
-                    className="text-center"
+                    className="text-center btn disabled"
                     cms="backdrop"
                     onClick={this.props.handleCmsUpdate}
                   >
                     <img src={backdropLogo} alt="BackDrop" className="" />
                   </a>
                 </div>
-                <div className="card">
+                <div className={`card ${this.props.cmsType === 'typo3' ? 'active' : ''}`}>
                   <a
                     href="!#"
-                    className="text-center"
+                    className="text-center btn disabled"
                     cms="typo3"
                     onClick={this.props.handleCmsUpdate}
                   >
@@ -60,7 +60,7 @@ class CmsSettings extends React.Component {
                 <div className={`card ${this.props.cmsType === 'none' ? 'active' : ''}`}>
                   <a
                     href="!#"
-                    className="text-center"
+                    className="text-center btn disabled"
                     cms="none"
                     onClick={this.props.handleCmsUpdate}
                   >

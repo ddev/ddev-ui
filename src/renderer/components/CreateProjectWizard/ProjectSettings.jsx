@@ -61,10 +61,10 @@ class ProjectSettings extends React.Component {
                   <input
                     maxLength="100"
                     type="text"
-                    disabled="disabled"
-                    readOnly
+                    // disabled="disabled"
+                    // readOnly
                     required="required"
-                    className="form-control"
+                    className="form-control disabled"
                     placeholder="~/Local Sites/"
                     value={this.props.path}
                     id="localPath"

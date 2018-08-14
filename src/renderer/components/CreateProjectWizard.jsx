@@ -14,7 +14,6 @@ const { dialog } = remote;
 
 class CreateProjectWizard extends React.Component {
   state = {
-    step: 'step-1',
     name: '',
     installtype: 'new',
     path: '',
@@ -26,7 +25,7 @@ class CreateProjectWizard extends React.Component {
     enableXDebug: false,
     httpPort: 80,
     httpsPort: 443,
-    cmsType: 'none',
+    cmsType: 'wordpress',
     cmsVersion: 'latest',
   };
 
