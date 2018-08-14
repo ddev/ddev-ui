@@ -84,6 +84,7 @@ class CmsSettings extends React.Component {
                         value={this.props.cmsVersion}
                         onChange={this.props.handleCmsVersionUpdate}
                       >
+                        <option value="">latest</option>
                         <option value="7">7</option>
                         <option value="8">8</option>
                       </select>
