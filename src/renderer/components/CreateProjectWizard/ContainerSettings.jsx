@@ -158,10 +158,10 @@ class ContainerSettings extends React.Component {
               </div>
             </div>
             <div className="form-group clearix">
-              <button className="btn btn-outline-secondary backBtn btn-sm pull-left" type="button">
+              <button className="btn btn-outline-secondary backBtn pull-left" type="button">
                 Back
               </button>
-              <button className="btn btn-outline-primary nextBtn btn-sm pull-right" type="button">
+              <button className="btn btn-outline-primary nextBtn pull-right" type="button">
                 Next
               </button>
             </div>

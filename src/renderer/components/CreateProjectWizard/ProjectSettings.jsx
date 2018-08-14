@@ -137,7 +137,7 @@ class ProjectSettings extends React.Component {
             </div>
             <div className="form-group clearix">
               <button
-                className="btn btn-outline-secondary btn-sm pull-left"
+                className="btn btn-outline-secondary pull-left"
                 type="button"
                 onClick={e => {
                   e.preventDefault();
@@ -146,7 +146,7 @@ class ProjectSettings extends React.Component {
               >
                 Cancel
               </button>
-              <button className="btn btn-outline-primary nextBtn btn-sm pull-right" type="button">
+              <button className="btn btn-outline-primary nextBtn pull-right" type="button">
                 Next
               </button>
             </div>

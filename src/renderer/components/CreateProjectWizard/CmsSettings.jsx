@@ -93,10 +93,10 @@ class CmsSettings extends React.Component {
               )}
             </div>
             <div className="form-group clearix">
-              <button className="btn btn-outline-secondary backBtn btn-sm pull-left" type="button">
+              <button className="btn btn-outline-secondary backBtn pull-left" type="button">
                 Back
               </button>
-              <button className="btn btn-primary btn-sm pull-right" type="submit">
+              <button className="btn btn-primary pull-right" type="submit">
                 Create
               </button>
             </div>
