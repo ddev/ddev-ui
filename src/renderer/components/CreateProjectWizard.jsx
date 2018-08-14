@@ -1,12 +1,12 @@
 import React from 'react';
 import electron, { remote as _remote } from 'electron';
 
-import { addCMS, addCMSFromExisting } from '../modules/cms-installer';
-
 import ProjectSettings from './CreateProjectWizard/ProjectSettings';
 import ContainerSettings from './CreateProjectWizard/ContainerSettings';
 import CmsSettings from './CreateProjectWizard/CmsSettings';
 import WizardSteps from './CreateProjectWizard/WizardSteps';
+
+import { addCMS, addCMSFromExisting } from '../modules/cms-installer';
 
 const remote = _remote || electron;
 const { dialog } = remote;
@@ -17,6 +17,7 @@ class CreateProjectWizard extends React.Component {
     name: '',
     installtype: '',
     path: '',
+    docroot: '',
     containerType: 'default',
     phpVersion: '7.1',
     webServer: 'nginx',
@@ -60,7 +61,7 @@ class CreateProjectWizard extends React.Component {
       const curInputs = curStep.find("input[type='text'],input[type='url'],select");
       let isValid = true;
 
-      console.log([curStep, curStepBtn, nextStepWizard]);
+      // console.log([curStep, curStepBtn, nextStepWizard]);
 
       $('.form-group').removeClass('has-error');
       for (let i = 0; i < curInputs.length; i += 1) {
@@ -109,14 +110,25 @@ class CreateProjectWizard extends React.Component {
   };
 
   handlePathSetting = () => {
-    const projectRoot = $('.selected-path-text').val();
+    const projectRoot = this.state.path;
     const path = dialog.showOpenDialog({
       defaultPath: projectRoot,
       properties: ['openDirectory'],
     });
     if (path) {
-      if (path[0].includes(projectRoot)) {
-        this.setState({ path: path[0] });
+      this.setState({ path: path[0], docroot: path[0] });
+    }
+  };
+
+  handleDocrootSetting = () => {
+    const projectRoot = this.state.docroot;
+    const docroot = dialog.showOpenDialog({
+      defaultPath: projectRoot,
+      properties: ['openDirectory'],
+    });
+    if (docroot) {
+      if (docroot[0].includes(projectRoot)) {
+        this.setState({ docroot: docroot[0] });
       } else {
         alert('Docroot must be in the selected project folder.');
       }
@@ -176,8 +188,16 @@ class CreateProjectWizard extends React.Component {
 
   handleProjectCreation = e => {
     e.preventDefault();
-    // console.log(this.state);
-    addCMS(this.state.name, this.state.cmsType, this.state.path);
+    if (this.state.installtype === 'new') {
+      addCMS(this.state.name, this.state.cmsType, this.state.path);
+    } else {
+      let { docroot } = this.state;
+      docroot = docroot.replace(this.state.path, '');
+      if (docroot[0] === '/') {
+        docroot = docroot.substr(1);
+      }
+      addCMSFromExisting(this.state.name, this.state.path, docroot);
+    }
   };
 
   render() {
@@ -187,10 +207,13 @@ class CreateProjectWizard extends React.Component {
           {/* Step 1 */}
           <ProjectSettings
             path={this.state.path}
-            history={this.props.history}
             projectName={this.state.name}
+            installtype={this.state.installtype}
+            docroot={this.state.docroot}
+            history={this.props.history}
             handleNameUpdate={this.handleNameUpdate}
             handlePathSetting={this.handlePathSetting}
+            handleDocrootSetting={this.handleDocrootSetting}
             handleInstallTypeUpdate={this.handleInstallTypeUpdate}
           />
           {/* Step 2 */}

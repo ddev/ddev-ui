@@ -48,25 +48,6 @@ class ProjectSettings extends React.Component {
             </div>
             <div className="form-group form-row">
               <div className="col">
-                <label className="control-label" htmlFor="localDomain">
-                  Local project domain
-                </label>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    disabled="disabled"
-                    readOnly
-                    className="form-control"
-                    placeholder="my-new-project"
-                    value={this.props.projectName}
-                    id="localDomain"
-                  />
-                  <div className="input-group-append">
-                    <div className="input-group-text">.ddev.local</div>
-                  </div>
-                </div>
-              </div>
-              <div className="col">
                 <label className="control-label" htmlFor="localPath">
                   Local path for install
                 </label>
@@ -83,7 +64,7 @@ class ProjectSettings extends React.Component {
                     disabled="disabled"
                     readOnly
                     required="required"
-                    className="selected-path-text form-control"
+                    className="form-control"
                     placeholder="~/Local Sites/"
                     value={this.props.path}
                     id="localPath"
@@ -92,6 +73,64 @@ class ProjectSettings extends React.Component {
                     <div className="input-group-text">
                       <i className="fa fa-folder-open-o" aria-hidden="true" />
                     </div>
+                  </div>
+                </div>
+                <small className="form-text text-muted">
+                  Select the folder that contains your project's files.
+                </small>
+              </div>
+              {this.props.installtype === 'existing' && (
+                <div className="col">
+                  <label className="control-label" htmlFor="localPath">
+                    Project Docroot
+                  </label>
+                  <div
+                    className="input-group"
+                    onClick={this.props.handleDocrootSetting}
+                    onKeyPress={this.props.handleDocrootSetting}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    <input
+                      maxLength="100"
+                      type="text"
+                      disabled="disabled"
+                      readOnly
+                      className="form-control"
+                      placeholder="~/Local Sites/my-new-project/docroot"
+                      value={this.props.docroot}
+                      id="localPath"
+                    />
+                    <div className="input-group-append">
+                      <div className="input-group-text">
+                        <i className="fa fa-folder-open-o" aria-hidden="true" />
+                      </div>
+                    </div>
+                  </div>
+                  <small className="form-text text-muted">
+                    Select the directory from which your site is served. You may skip this field if
+                    your site files are in the project root.
+                  </small>
+                </div>
+              )}
+            </div>
+            <div className="form-group form-row">
+              <div className="col">
+                <label className="control-label" htmlFor="localDomain">
+                  Local project domain
+                </label>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    disabled="disabled"
+                    readOnly
+                    className="form-control"
+                    placeholder="my-new-project"
+                    value={this.props.projectName}
+                    id="localDomain"
+                  />
+                  <div className="input-group-append">
+                    <div className="input-group-text">.ddev.local</div>
                   </div>
                 </div>
               </div>
