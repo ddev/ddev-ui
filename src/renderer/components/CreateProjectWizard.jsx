@@ -5,6 +5,7 @@ import ProjectSettings from './CreateProjectWizard/ProjectSettings';
 import ContainerSettings from './CreateProjectWizard/ContainerSettings';
 import CmsSettings from './CreateProjectWizard/CmsSettings';
 import WizardSteps from './CreateProjectWizard/WizardSteps';
+import Status from './CreateProjectWizard/Status';
 
 import { addCMS, addCMSFromExisting } from '../modules/cms-installer';
 
@@ -15,7 +16,7 @@ class CreateProjectWizard extends React.Component {
   state = {
     step: 'step-1',
     name: '',
-    installtype: '',
+    installtype: 'new',
     path: '',
     docroot: '',
     containerType: 'default',
@@ -214,20 +215,8 @@ class CreateProjectWizard extends React.Component {
   render() {
     return (
       <div className="create-project-wizard">
-        <form onSubmit={this.handleProjectCreation}>
-          <div className="loading-overlay">
-            <div>
-              <i className="fa fa-spinner fa-spin loading-spinner" />
-            </div>
-            <div className="loading-text">Working...</div>
-          </div>
-          <div className="error-overlay">
-            <div>
-              <i className="fa fa-exclamation-triangle error-icon" />
-            </div>
-            <div className="error-text">Something Went Wrong</div>
-            <div className="btn btn-primary">OK</div>
-          </div>
+        <form className="" onSubmit={this.handleProjectCreation}>
+          <Status />
           {/* Step 1 */}
           <ProjectSettings
             path={this.state.path}

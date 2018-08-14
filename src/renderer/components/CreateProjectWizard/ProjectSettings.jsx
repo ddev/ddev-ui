@@ -29,7 +29,7 @@ class ProjectSettings extends React.Component {
               </label>
               <div className="btn-group w-100" id="installType">
                 <button
-                  className="btn btn-outline-secondary btn-lg"
+                  className="btn btn-outline-secondary btn-lg active"
                   installtype="new"
                   type="button"
                   onClick={this.props.handleInstallTypeUpdate}
@@ -47,7 +47,7 @@ class ProjectSettings extends React.Component {
               </div>
             </div>
             <div className="form-group form-row">
-              <div className="col">
+              <div className={this.props.installtype === 'new' ? 'col' : 'col-md-6'}>
                 <label className="control-label" htmlFor="localPath">
                   Local path for install
                 </label>
@@ -80,7 +80,7 @@ class ProjectSettings extends React.Component {
                 </small>
               </div>
               {this.props.installtype === 'existing' && (
-                <div className="col">
+                <div className="col-md-6">
                   <label className="control-label" htmlFor="localPath">
                     Project Docroot
                   </label>

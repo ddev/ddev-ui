@@ -2,6 +2,76 @@
   form {
     margin-bottom: 4rem;
   }
+
+  .btn-group {
+    height: 5rem;
+    .btn {
+      @include make-col-ready();
+      // min-height: 4rem;
+      margin-top: 0.8rem;
+      margin-bottom: 0.8rem;
+
+      &:not(.active) {
+        &:first-child {
+          border-right: none;
+        }
+        &:last-child {
+          border-left: none;
+        }
+      }
+    }
+    .btn.active {
+      height: 5rem;
+      margin-top: 0;
+      margin-bottom: 0;
+      position: relative;
+      overflow: hidden;
+
+      &:not(:first-child) {
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
+      }
+
+      &:not(:last-child) {
+        border-top-right-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+      }
+    }
+    .btn-outline-secondary {
+      color: $secondary;
+      background: transparent;
+      &.active {
+        color: $primary;
+        background: transparent;
+        border-color: $primary;
+        border-width: 3px;
+        &:focus {
+          box-shadow: 0 0 0 0.1rem rgba(35, 97, 146, 0.5);
+        }
+        &:before {
+          content: "\2713 ";
+          position: absolute;
+          top: 0;
+          right: 0;
+          color: $white;
+          z-index: 3;
+        }
+        &:after {
+          content: "";
+          position: absolute;
+          width: 0;
+          height: 0;
+          border-top: 55px solid transparent;
+          border-bottom: 55px solid transparent;
+          border-left: 55px solid $primary;
+          transform: rotate(-45deg);
+          top: -55px;
+          right: -22.5px;
+          z-index: 2;
+        }
+      }
+    }
+  }
 }
 
 .stepwizard {
