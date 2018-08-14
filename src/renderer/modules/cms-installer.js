@@ -342,19 +342,19 @@ function startSite(workingPath) {
  * NOTE: fails silently if invalid hostname (i.e. has spaces or illegal chars)
  * @param {string} projectPath
  */
-function prepopulateProjectName(projectPath) {
-  const folderName = projectPath.split('/').pop();
-  if (
-    validateHostname(folderName)
-      .then(() => {
-        $('#existing-project-name').val(folderName);
-      })
-      .catch(err => {
-        // silently fail, to be consistent with CLI, we simply do not prepoulate if invalid hostname
-        console.log(err);
-      })
-  );
-}
+// function prepopulateProjectName(projectPath) {
+//   const folderName = projectPath.split('/').pop();
+//   if (
+//     validateHostname(folderName)
+//       .then(() => {
+//         $('#existing-project-name').val(folderName);
+//       })
+//       .catch(err => {
+//         // silently fail, to be consistent with CLI, we simply do not prepoulate if invalid hostname
+//         console.log(err);
+//       })
+//   );
+// }
 
 /**
  * public function - calls private functions to validate inputs, unpack files, and configure/start site
@@ -362,7 +362,7 @@ function prepopulateProjectName(projectPath) {
  * @param type {string} type of CMS to install (drupal7, drupal8, wordpress)
  * @param targetPath {string} path to unpack CMS and install site
  */
-function addCMS(name, type, targetPath) {
+function addCMS(name, type, targetPath, history = {}) {
   let cmsPath = '~/.ddev/CMS';
   let workingPath = cmsPath;
   cmsPath = cmsPath.replace('~', homedir());
@@ -391,6 +391,7 @@ function addCMS(name, type, targetPath) {
         alert(
           'Start Process Initiated. It may take a few seconds for the new project to appear on your dashboard.'
         );
+        history.push(`/project/${name}`);
       }
     })
     .catch(err => {
@@ -404,7 +405,7 @@ function addCMS(name, type, targetPath) {
  * @param targetPath {string} path to existing project files
  * @param docroot {string} - optional - application docroot relative to targetPath
  */
-function addCMSFromExisting(name, targetPath, docroot = '') {
+function addCMSFromExisting(name, targetPath, docroot = '', history = {}) {
   showLoadingScreen(true);
   validateExistingFilesInputs(name, targetPath, docroot)
     .then(() => checkIfExistingConfig(targetPath))
@@ -426,6 +427,7 @@ function addCMSFromExisting(name, targetPath, docroot = '') {
         alert(
           'Start Process Initiated. It may take a few seconds for the new project to appear on your dashboard.'
         );
+        history.push(`/project/${name}`);
       }
     })
     .catch(err => {
@@ -442,13 +444,11 @@ function init() {
     $('#addOptionsDialog').modal('hide');
     $('#distroModal').modal();
   });
-
   $(document).on('click', '.start-from-files', () => {
     resetAddModal();
     $('#addOptionsDialog').modal('hide');
     $('#existingFilesModal').modal();
   });
-
   $(document).on('click', '.select-path-folder', () => {
     const path = dialog.showOpenDialog({
       properties: ['openDirectory'],
@@ -459,7 +459,6 @@ function init() {
       prepopulateProjectName(path[0]);
     }
   });
-
   $(document).on('click', '.select-docroot-folder', () => {
     const projectRoot = $('.selected-path-text').val();
     const path = dialog.showOpenDialog({
@@ -475,7 +474,6 @@ function init() {
       }
     }
   });
-
   $(document).on('click', '.tile img', function() {
     $('#appType')
       .val($(this).data('type'))
@@ -487,7 +485,6 @@ function init() {
       $(`.${$(this).val()}`).addClass('active');
     }
   });
-
   $(document).on('click', '.create-site', () => {
     const type = $('#appType').val();
     const targetPath = $('.selected-path-text').val();
@@ -495,7 +492,6 @@ function init() {
     addCMS(name, type, targetPath);
     return false;
   });
-
   $(document).on('click', '.create-site-from-existing', () => {
     const name = $('#existing-project-name').val();
     const path = $('#existing-project-path').val();
@@ -508,5 +504,4 @@ function init() {
   });
 }
 
-const _init = init;
-export { _init as init, addCMSFromExisting, addCMS };
+export { addCMSFromExisting, addCMS };

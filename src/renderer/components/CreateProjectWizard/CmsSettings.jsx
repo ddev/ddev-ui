@@ -14,7 +14,7 @@ class CmsSettings extends React.Component {
       <div className="setup-content" id="step-3">
         <div className="row">
           <div className="col-md-12">
-            <h3>Platform Setup</h3>
+            <h3 className="text-center">Platform Setup</h3>
             <div className="form-group">
               <div className="card-deck">
                 <div className="card">

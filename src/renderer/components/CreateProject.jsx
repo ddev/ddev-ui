@@ -10,7 +10,7 @@ class CreateProject extends React.Component {
         {console.log(this.props)}
         {/* <CreateProjectOld /> */}
         {/* <CreateProjectWizard /> */}
-        <CreateProjectOld history={this.props.history} addError={this.props.addError} />
+        <CreateProjectWizard history={this.props.history} addError={this.props.addError} />
       </div>
     );
   }

@@ -198,16 +198,16 @@ class CreateProjectWizard extends React.Component {
       } else {
         cms = this.state.cmsType;
       }
-      addCMS(this.state.name, cms, this.state.path);
-      this.props.history.push(`/project/${this.state.name}`);
+      addCMS(this.state.name, cms, this.state.path, this.props.history);
+      // this.props.history.push(`/project/${this.state.name}`);
     } else {
       let { docroot } = this.state;
       docroot = docroot.replace(this.state.path, '');
       if (docroot[0] === '/') {
         docroot = docroot.substr(1);
       }
-      addCMSFromExisting(this.state.name, this.state.path, docroot);
-      this.props.history.push(`/project/${this.state.name}`);
+      addCMSFromExisting(this.state.name, this.state.path, docroot, this.props.history);
+      // this.props.history.push(`/project/${this.state.name}`);
     }
   };
 
@@ -215,6 +215,19 @@ class CreateProjectWizard extends React.Component {
     return (
       <div className="create-project-wizard">
         <form onSubmit={this.handleProjectCreation}>
+          <div className="loading-overlay">
+            <div>
+              <i className="fa fa-spinner fa-spin loading-spinner" />
+            </div>
+            <div className="loading-text">Working...</div>
+          </div>
+          <div className="error-overlay">
+            <div>
+              <i className="fa fa-exclamation-triangle error-icon" />
+            </div>
+            <div className="error-text">Something Went Wrong</div>
+            <div className="btn btn-primary">OK</div>
+          </div>
           {/* Step 1 */}
           <ProjectSettings
             path={this.state.path}

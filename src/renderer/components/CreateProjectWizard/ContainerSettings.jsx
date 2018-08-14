@@ -6,7 +6,7 @@ class ContainerSettings extends React.Component {
       <div className="setup-content" id="step-2">
         <div className="row">
           <div className="col-md-12">
-            <h3>Container Settings</h3>
+            <h3 className="text-center">Container Settings</h3>
             <div className="form-group form-row">
               <label className="control-label" htmlFor="containerType">
                 Use default or custom configuration?
