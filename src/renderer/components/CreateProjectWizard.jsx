@@ -189,7 +189,16 @@ class CreateProjectWizard extends React.Component {
   handleProjectCreation = e => {
     e.preventDefault();
     if (this.state.installtype === 'new') {
-      addCMS(this.state.name, this.state.cmsType, this.state.path);
+      // Temp filter for drupal
+      // TODO: make the version allow for any version of a CMS
+      let cms = '';
+      if (this.state.cmsType === 'drupal') {
+        const version = this.state.cmsVersion === 'latest' ? '8' : this.state.cmsVersion;
+        cms = this.state.cmsType + version;
+      } else {
+        cms = this.state.cmsType;
+      }
+      addCMS(this.state.name, cms, this.state.path);
       this.props.history.push(`/project/${this.state.name}`);
     } else {
       let { docroot } = this.state;
