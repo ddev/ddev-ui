@@ -190,6 +190,7 @@ class CreateProjectWizard extends React.Component {
     e.preventDefault();
     if (this.state.installtype === 'new') {
       addCMS(this.state.name, this.state.cmsType, this.state.path);
+      this.props.history.push(`/project/${this.state.name}`);
     } else {
       let { docroot } = this.state;
       docroot = docroot.replace(this.state.path, '');
@@ -197,6 +198,7 @@ class CreateProjectWizard extends React.Component {
         docroot = docroot.substr(1);
       }
       addCMSFromExisting(this.state.name, this.state.path, docroot);
+      this.props.history.push(`/project/${this.state.name}`);
     }
   };
 
