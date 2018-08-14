@@ -7,22 +7,6 @@ class ProjectSettings extends React.Component {
         <div className="row">
           <div className="col-md-12">
             <h3 className="text-center">Project Setup</h3>
-            <div className="form-group">
-              <label className="control-label" htmlFor="projectName">
-                Project Name
-              </label>
-              <input
-                maxLength="200"
-                type="text"
-                required="required"
-                className="form-control form-control-lg"
-                placeholder="my-new-project"
-                value={this.props.projectName}
-                name="project-name"
-                id="projectName"
-                onChange={this.props.handleNameUpdate}
-              />
-            </div>
             <div className="form-group form-row">
               <label className="control-label" htmlFor="installType">
                 Is your project new or existing
@@ -113,6 +97,22 @@ class ProjectSettings extends React.Component {
                   </small>
                 </div>
               )}
+            </div>
+            <div className="form-group">
+              <label className="control-label" htmlFor="projectName">
+                Project Name
+              </label>
+              <input
+                maxLength="200"
+                type="text"
+                required="required"
+                className="form-control form-control-lg"
+                placeholder="my-new-project"
+                value={this.props.projectName}
+                name="project-name"
+                id="projectName"
+                onChange={this.props.handleNameUpdate}
+              />
             </div>
             <div className="form-group form-row">
               <div className="col">
