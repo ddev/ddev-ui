@@ -118,7 +118,7 @@ class CreateProjectWizard extends React.Component {
     if (path) {
       this.setState({ path: path[0], docroot: path[0] });
       if (this.state.installtype !== 'new') {
-        const name = path[0].match(/([^\/]*)\/*$/)[1];
+        const name = path[0].match(/([^/]*)\/*$/)[1];
         this.setState({ name });
       }
     }

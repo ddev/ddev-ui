@@ -8,7 +8,7 @@ class ProjectSettings extends React.Component {
           <div className="col-md-12">
             <h3 className="text-center">Project Setup</h3>
             <div className="form-group form-row">
-              <label className="control-label" htmlFor="installType">
+              <label className="control-label mx-auto" htmlFor="installType">
                 Is your project new or existing
               </label>
               <div className="btn-group w-100" id="installType">
@@ -29,11 +29,15 @@ class ProjectSettings extends React.Component {
                   Existing Install
                 </button>
               </div>
+              <div className="form-row w-100 mt-2">
+                <p className="col text-center small mb-1">Create a fresh project</p>
+                <p className="col text-center small mb-1">Connect existing project</p>
+              </div>
             </div>
             <div className="form-group form-row">
               <div className={this.props.installtype === 'new' ? 'col' : 'col-md-6'}>
                 <label className="control-label" htmlFor="localPath">
-                  Local path for install
+                  Local Path
                 </label>
                 <div
                   className="input-group"
@@ -49,7 +53,7 @@ class ProjectSettings extends React.Component {
                     // readOnly
                     required="required"
                     className="form-control disabled"
-                    placeholder="~/Local Sites/"
+                    placeholder="~/Sites/"
                     value={this.props.path}
                     id="localPath"
                   />
@@ -60,12 +64,14 @@ class ProjectSettings extends React.Component {
                   </div>
                 </div>
                 <small className="form-text text-muted">
-                  Select the folder that contains your project's files.
+                  {this.props.installtype === 'new'
+                    ? 'Select the directory where you would like your new project installed.'
+                    : "Select the directory that contains your project's files."}
                 </small>
               </div>
               {this.props.installtype === 'existing' && (
                 <div className="col-md-6">
-                  <label className="control-label" htmlFor="localPath">
+                  <label className="control-label" htmlFor="localDocroot">
                     Project Docroot
                   </label>
                   <div
@@ -78,12 +84,12 @@ class ProjectSettings extends React.Component {
                     <input
                       maxLength="100"
                       type="text"
-                      disabled="disabled"
-                      readOnly
+                      // disabled="disabled"
+                      // readOnly
                       className="form-control"
-                      placeholder="~/Local Sites/my-new-project/docroot"
+                      placeholder="~/Sites/my-new-project/docroot"
                       value={this.props.docroot}
-                      id="localPath"
+                      id="localDocroot"
                     />
                     <div className="input-group-append">
                       <div className="input-group-text">
@@ -113,27 +119,15 @@ class ProjectSettings extends React.Component {
                 id="projectName"
                 onChange={this.props.handleNameUpdate}
               />
-            </div>
-            <div className="form-group form-row">
-              <div className="col">
-                <label className="control-label" htmlFor="localDomain">
-                  Local project domain
-                </label>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    disabled="disabled"
-                    readOnly
-                    className="form-control"
-                    placeholder="my-new-project"
-                    value={this.props.projectName}
-                    id="localDomain"
-                  />
-                  <div className="input-group-append">
-                    <div className="input-group-text">.ddev.local</div>
-                  </div>
-                </div>
-              </div>
+              <small className="form-text text-muted">
+                Name or Domain of your project. (In a url friendly format.)
+              </small>
+              <small className="form-text text-muted">
+                <b>Local URL: </b>
+                <span className="text-primary">{`${
+                  this.props.projectName ? this.props.projectName : 'my-new-project'
+                }.ddev.local`}</span>
+              </small>
             </div>
             <div className="form-group clearix">
               <button
