@@ -14,6 +14,7 @@ const { dialog } = remote;
 
 class CreateProjectWizard extends React.Component {
   state = {
+    step: '1',
     name: '',
     installtype: 'new',
     path: '',
@@ -29,80 +30,46 @@ class CreateProjectWizard extends React.Component {
     cmsVersion: 'latest',
   };
 
-  componentDidMount() {
-    const navListItems = $('div.setup-panel div a');
-    const allWells = $('.setup-content');
-    const allNextBtn = $('.nextBtn');
-    const allBackBtn = $('.backBtn');
+  handleInputChange = e => {
+    const { target } = e;
+    const { type, checked, name } = target;
+    let { value } = target;
 
-    allWells.hide();
+    value = type === 'checkbox' ? checked : value;
 
-    navListItems.click(function(e) {
-      e.preventDefault();
-      const $target = $($(this).attr('href'));
-      const $item = $(this);
-
-      if (!$item.hasClass('disabled')) {
-        navListItems.removeClass('btn-outline-primary').addClass('btn-outline-secondary');
-        $item.removeClass('btn-outline-secondary').addClass('btn-outline-primary');
-        allWells.hide();
-        $target.show();
-        $target.find('input:eq(0)').focus();
-      }
+    this.setState({
+      [name]: value,
     });
+  };
 
-    allNextBtn.click(function() {
-      const curStep = $(this).closest('.setup-content');
-      const curStepBtn = curStep.attr('id');
-      const nextStepWizard = $(`div.setup-panel div a[href="#${curStepBtn}"]`)
-        .parent()
-        .next()
-        .children('a');
-      const curInputs = curStep.find("input[type='text'],input[type='url'],select");
-      let isValid = true;
+  handleNextStep = e => {
+    const curStep = $(e.currentTarget).closest('.setup-content');
+    const curInputs = curStep.find("input[type='text'],input[type='url'],select");
+    let isValid = true;
 
-      // console.log([curStep, curStepBtn, nextStepWizard]);
-
-      $('.form-group').removeClass('has-error');
-      for (let i = 0; i < curInputs.length; i += 1) {
-        if (!curInputs[i].validity.valid) {
-          isValid = false;
-          $(curInputs[i])
-            .closest('.form-group')
-            .addClass('has-error');
-        }
+    $('.form-group').removeClass('has-error');
+    for (let i = 0; i < curInputs.length; i += 1) {
+      if (!curInputs[i].validity.valid) {
+        isValid = false;
+        $(curInputs[i])
+          .closest('.form-group')
+          .addClass('has-error');
       }
+    }
 
-      if (isValid) {
-        nextStepWizard.removeAttr('disabled').trigger('click');
-      }
-    });
+    if (isValid) {
+      this.setState({ step: e.currentTarget.getAttribute('step') });
+    }
+  };
 
-    allBackBtn.click(function() {
-      const curStep = $(this).closest('.setup-content');
-      const curStepBtn = curStep.attr('id');
-      const prevStepWizard = $(`div.setup-panel div a[href="#${curStepBtn}"]`)
-        .parent()
-        .prev()
-        .children('a');
-      console.log([curStep, curStepBtn, prevStepWizard]);
-      prevStepWizard.removeAttr('disabled').trigger('click');
-    });
-
-    $('div.setup-panel div a.btn-outline-primary').trigger('click');
-  }
-
-  handleNameUpdate = e => {
-    this.setState({ name: e.target.value });
+  handlePrevStep = e => {
+    this.setState({ step: e.currentTarget.getAttribute('step') });
   };
 
   handleInstallTypeUpdate = e => {
     const type = e.currentTarget.getAttribute('installtype');
-    const target = $(e.currentTarget);
     this.setState(prevState => {
       if (prevState.installtype !== type) {
-        target.siblings().removeClass('active');
-        target.addClass('active');
         return { installtype: type };
       }
       return { prevState };
@@ -141,31 +108,12 @@ class CreateProjectWizard extends React.Component {
 
   handleContainerTypeUpdate = e => {
     const type = e.currentTarget.getAttribute('containertype');
-    const target = $(e.currentTarget);
     this.setState(prevState => {
       if (prevState.containerType !== type) {
-        target.siblings().removeClass('active');
-        target.addClass('active');
         return { containerType: type };
       }
       return { prevState };
     });
-  };
-
-  handlePhpVersionUpdate = e => {
-    this.setState({ phpVersion: e.target.value });
-  };
-
-  handleWebServerUpdate = e => {
-    this.setState({ webServer: e.target.value });
-  };
-
-  handleHttpPortUpdate = e => {
-    this.setState({ httpPort: e.target.value });
-  };
-
-  handleHttpsPortUpdate = e => {
-    this.setState({ httpsPort: e.target.value });
   };
 
   handleEnableXDebugUpdate = e => {
@@ -175,19 +123,12 @@ class CreateProjectWizard extends React.Component {
   handleCmsUpdate = e => {
     e.preventDefault();
     const cms = e.currentTarget.getAttribute('cms');
-    const target = $(e.currentTarget);
     this.setState(prevState => {
       if (prevState.cmsType !== cms) {
-        target.siblings().removeClass('active');
-        target.addClass('active');
         return { cmsType: cms };
       }
       return { prevState };
     });
-  };
-
-  handleCmsVersionUpdate = e => {
-    this.setState({ cmsVersion: e.target.value });
   };
 
   handleProjectCreation = e => {
@@ -220,41 +161,52 @@ class CreateProjectWizard extends React.Component {
       <div className="create-project-wizard">
         <form className="" onSubmit={this.handleProjectCreation}>
           <Status />
+
           {/* Step 1 */}
-          <ProjectSettings
-            path={this.state.path}
-            projectName={this.state.name}
-            installtype={this.state.installtype}
-            docroot={this.state.docroot}
-            history={this.props.history}
-            handleNameUpdate={this.handleNameUpdate}
-            handlePathSetting={this.handlePathSetting}
-            handleDocrootSetting={this.handleDocrootSetting}
-            handleInstallTypeUpdate={this.handleInstallTypeUpdate}
-          />
+          {this.state.step === '1' && (
+            <ProjectSettings
+              key="project-settings"
+              path={this.state.path}
+              projectName={this.state.name}
+              installtype={this.state.installtype}
+              docroot={this.state.docroot}
+              history={this.props.history}
+              handleInputChange={this.handleInputChange}
+              handleNextStep={this.handleNextStep}
+              handlePathSetting={this.handlePathSetting}
+              handleDocrootSetting={this.handleDocrootSetting}
+              handleInstallTypeUpdate={this.handleInstallTypeUpdate}
+            />
+          )}
+
           {/* Step 2 */}
-          <ContainerSettings
-            containerType={this.state.containerType}
-            phpVersion={this.state.phpVersion}
-            webServer={this.state.webServer}
-            dbType={this.state.dbType}
-            enableXDebug={this.state.enableXDebug}
-            httpPort={this.state.httpPort}
-            httpsPort={this.state.httpsPort}
-            handleContainerTypeUpdate={this.handleContainerTypeUpdate}
-            handlePhpVersionUpdate={this.handlePhpVersionUpdate}
-            handleWebServerUpdate={this.handleWebServerUpdate}
-            handleEnableXDebugUpdate={this.handleEnableXDebugUpdate}
-            handleHttpPortUpdate={this.handleHttpPortUpdate}
-            handleHttpsPortUpdate={this.handleHttpsPortUpdate}
-          />
+          {this.state.step === '2' && (
+            <ContainerSettings
+              containerType={this.state.containerType}
+              phpVersion={this.state.phpVersion}
+              webServer={this.state.webServer}
+              dbType={this.state.dbType}
+              enableXDebug={this.state.enableXDebug}
+              httpPort={this.state.httpPort}
+              httpsPort={this.state.httpsPort}
+              handleInputChange={this.handleInputChange}
+              handleNextStep={this.handleNextStep}
+              handlePrevStep={this.handlePrevStep}
+              handleContainerTypeUpdate={this.handleContainerTypeUpdate}
+              handleEnableXDebugUpdate={this.handleEnableXDebugUpdate}
+            />
+          )}
+
           {/* Step 3 */}
-          <CmsSettings
-            cmsType={this.state.cmsType}
-            cmsVersion={this.state.cmsVersion}
-            handleCmsUpdate={this.handleCmsUpdate}
-            handleCmsVersionUpdate={this.handleCmsVersionUpdate}
-          />
+          {this.state.step === '3' && (
+            <CmsSettings
+              cmsType={this.state.cmsType}
+              cmsVersion={this.state.cmsVersion}
+              handleInputChange={this.handleInputChange}
+              handlePrevStep={this.handlePrevStep}
+              handleCmsUpdate={this.handleCmsUpdate}
+            />
+          )}
         </form>
         {/* Steps */}
         <WizardSteps />

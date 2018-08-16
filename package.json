@@ -25,9 +25,11 @@
     "build-linux": "yarn compile && electron-builder --linux --x64",
     "build-windows": "yarn compile && electron-builder --win",
     "build-darwin": "yarn compile && electron-builder --mac",
-    "test": "mocha --require babel-register --require ignore-styles"
+    "test": "mocha --require babel-register --require ignore-styles",
+    "postinstall": "electron-builder install-app-deps"
   },
   "build": {
+    "productName": "DDEV UI",
     "appId": "ddev-ui",
     "dmg": {
       "window": {

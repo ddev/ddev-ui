@@ -13,7 +13,9 @@ class ProjectSettings extends React.Component {
               </label>
               <div className="btn-group w-100" id="installType">
                 <button
-                  className="btn btn-outline-secondary btn-lg active"
+                  className={`btn btn-outline-secondary btn-lg ${
+                    this.props.installtype === 'new' ? 'active' : ''
+                  }`}
                   installtype="new"
                   type="button"
                   onClick={this.props.handleInstallTypeUpdate}
@@ -21,7 +23,9 @@ class ProjectSettings extends React.Component {
                   New Install
                 </button>
                 <button
-                  className="btn btn-outline-secondary btn-lg"
+                  className={`btn btn-outline-secondary btn-lg ${
+                    this.props.installtype === 'existing' ? 'active' : ''
+                  }`}
                   installtype="existing"
                   type="button"
                   onClick={this.props.handleInstallTypeUpdate}
@@ -50,12 +54,13 @@ class ProjectSettings extends React.Component {
                     maxLength="100"
                     type="text"
                     // disabled="disabled"
-                    // readOnly
+                    readOnly
                     required="required"
                     className="form-control disabled"
                     placeholder="~/Sites/"
                     value={this.props.path}
                     id="localPath"
+                    name="path"
                   />
                   <div className="input-group-append">
                     <div className="input-group-text">
@@ -85,7 +90,7 @@ class ProjectSettings extends React.Component {
                       maxLength="100"
                       type="text"
                       // disabled="disabled"
-                      // readOnly
+                      readOnly
                       className="form-control"
                       placeholder="~/Sites/my-new-project/docroot"
                       value={this.props.docroot}
@@ -104,8 +109,8 @@ class ProjectSettings extends React.Component {
                 </div>
               )}
             </div>
-            <div className="form-group">
-              <label className="control-label" htmlFor="projectName">
+            <div className="form-group" key="projectName">
+              <label className="control-label" htmlFor="projectName" key="projectNameLabel">
                 Project Name
               </label>
               <input
@@ -115,16 +120,17 @@ class ProjectSettings extends React.Component {
                 className="form-control form-control-lg"
                 placeholder="my-new-project"
                 value={this.props.projectName}
-                name="project-name"
+                name="name"
                 id="projectName"
-                onChange={this.props.handleNameUpdate}
+                onChange={this.props.handleInputChange}
+                key="projectName"
               />
               <small className="form-text text-muted">
                 Name or Domain of your project. (In a url friendly format.)
               </small>
               <small className="form-text text-muted">
                 <b>Local URL: </b>
-                <span className="text-primary">{`${
+                <span className="text-primary" key="projectNameExample">{`${
                   this.props.projectName ? this.props.projectName : 'my-new-project'
                 }.ddev.local`}</span>
               </small>
@@ -140,7 +146,12 @@ class ProjectSettings extends React.Component {
               >
                 Cancel
               </button>
-              <button className="btn btn-outline-primary nextBtn pull-right" type="button">
+              <button
+                className="btn btn-outline-primary pull-right"
+                onClick={this.props.handleNextStep}
+                step="2"
+                type="button"
+              >
                 Next
               </button>
             </div>

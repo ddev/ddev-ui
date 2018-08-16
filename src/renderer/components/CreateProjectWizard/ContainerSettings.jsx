@@ -13,7 +13,9 @@ class ContainerSettings extends React.Component {
               </label>
               <div className="btn-group w-100" id="containerType">
                 <button
-                  className="btn btn-outline-secondary btn-lg active"
+                  className={`btn btn-outline-secondary btn-lg ${
+                    this.props.containerType === 'default' ? 'active' : ''
+                  }`}
                   containertype="default"
                   type="button"
                   onClick={this.props.handleContainerTypeUpdate}
@@ -21,7 +23,9 @@ class ContainerSettings extends React.Component {
                   Default
                 </button>
                 <button
-                  className="btn btn-outline-secondary btn-lg disabled"
+                  className={`btn btn-outline-secondary btn-lg ${
+                    this.props.containerType === 'custom' ? 'active' : ''
+                  }`}
                   containertype="custom"
                   type="button"
                   onClick={this.props.handleContainerTypeUpdate}
@@ -47,11 +51,11 @@ class ContainerSettings extends React.Component {
                       PHP Version:
                     </label>
                     <select
-                      name="php-version"
+                      name="phpVersion"
                       id="phpVersion"
                       className="form-control form-control-lg"
                       value={this.props.phpVersion}
-                      onChange={this.props.handlePhpVersionUpdate}
+                      onChange={this.props.handleInputChange}
                     >
                       <option value="5.6">5.6</option>
                       <option value="7.1">7.1</option>
@@ -63,11 +67,11 @@ class ContainerSettings extends React.Component {
                       Web Server:
                     </label>
                     <select
-                      name="web-server"
+                      name="webServer"
                       id="webServer"
                       className="form-control form-control-lg"
                       value={this.props.webServer}
-                      onChange={this.props.handleWebServerUpdate}
+                      onChange={this.props.handleInputChange}
                     >
                       <option value="nginx">nginx</option>
                       <option value="apache">apache</option>
@@ -128,9 +132,9 @@ class ContainerSettings extends React.Component {
                               className="w-100"
                               placeholder="80"
                               value={this.props.httpPort}
-                              name="http-port"
+                              name="httpPort"
                               id="httpPort"
-                              onChange={this.props.handleHttpPortUpdate}
+                              onChange={this.props.handleInputChange}
                             />
                           </div>
                           <div className="col-sm-6">
@@ -146,9 +150,9 @@ class ContainerSettings extends React.Component {
                               className="w-100"
                               placeholder="443"
                               value={this.props.httpsPort}
-                              name="https-port"
+                              name="httpsPort"
                               id="httpsPort"
-                              onChange={this.props.handleHttpsPortUpdate}
+                              onChange={this.props.handleInputChange}
                             />
                           </div>
                         </div>
@@ -159,10 +163,20 @@ class ContainerSettings extends React.Component {
               </div>
             </div>
             <div className="form-group clearix">
-              <button className="btn btn-outline-secondary backBtn pull-left" type="button">
+              <button
+                className="btn btn-outline-secondary pull-left"
+                step="1"
+                onClick={this.props.handlePrevStep}
+                type="button"
+              >
                 Back
               </button>
-              <button className="btn btn-outline-primary nextBtn pull-right" type="button">
+              <button
+                className="btn btn-outline-primary pull-right"
+                step="3"
+                onClick={this.props.handleNextStep}
+                type="button"
+              >
                 Next
               </button>
             </div>

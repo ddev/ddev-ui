@@ -78,11 +78,11 @@ class CmsSettings extends React.Component {
                         Version:
                       </label>
                       <select
-                        name="cms-version"
+                        name="cmsVersion"
                         id="cmsVersion"
                         className="form-control form-control-lg"
                         value={this.props.cmsVersion}
-                        onChange={this.props.handleCmsVersionUpdate}
+                        onChange={this.props.handleInputChange}
                       >
                         <option value="">latest</option>
                         <option value="7">7</option>
@@ -94,7 +94,12 @@ class CmsSettings extends React.Component {
               )}
             </div>
             <div className="form-group clearix">
-              <button className="btn btn-outline-secondary backBtn pull-left" type="button">
+              <button
+                className="btn btn-outline-secondary pull-left"
+                step="2"
+                onClick={this.props.handlePrevStep}
+                type="button"
+              >
                 Back
               </button>
               <button className="btn btn-primary pull-right" type="submit">
