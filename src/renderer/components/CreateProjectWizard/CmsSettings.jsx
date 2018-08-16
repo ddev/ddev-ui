@@ -11,7 +11,7 @@ const phpLogo = require(`${__static}/img/PHPApp.svg`);
 class CmsSettings extends React.Component {
   render() {
     return (
-      <div className="setup-content" id="step-3">
+      <div className="setup-content" id="step-3" key="createProjectStep3">
         <div className="row">
           <div className="col-md-12">
             <h3 className="text-center">Platform Setup</h3>

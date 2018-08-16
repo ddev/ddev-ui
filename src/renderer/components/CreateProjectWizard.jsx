@@ -159,13 +159,12 @@ class CreateProjectWizard extends React.Component {
   render() {
     return (
       <div className="create-project-wizard">
-        <form className="" onSubmit={this.handleProjectCreation}>
+        <form className="" onSubmit={this.handleProjectCreation} key="createProjectForm">
           <Status />
 
           {/* Step 1 */}
           {this.state.step === '1' && (
             <ProjectSettings
-              key="project-settings"
               path={this.state.path}
               projectName={this.state.name}
               installtype={this.state.installtype}

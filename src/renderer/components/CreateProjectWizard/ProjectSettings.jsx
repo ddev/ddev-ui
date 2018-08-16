@@ -1,13 +1,43 @@
 import React from 'react';
 
+const Name = props => (
+  <div className="form-group clearix" key="projectName">
+    <label className="control-label" htmlFor="projectName" key="projectNameLabel">
+      Project Name
+    </label>
+    <input
+      maxLength="200"
+      type="text"
+      required="required"
+      className="form-control form-control-lg"
+      placeholder="my-new-project"
+      value={props.projectName}
+      name="name"
+      id="projectName"
+      onChange={props.handleInputChange}
+      key="projectName"
+      autoFocus
+    />
+    <small className="form-text text-muted">
+      Name or Domain of your project. (In a url friendly format.)
+    </small>
+    <small className="form-text text-muted">
+      <b>Local URL: </b>
+      <span className="text-primary" key="projectNameExample">{`${
+        props.projectName ? props.projectName : 'my-new-project'
+      }.ddev.local`}</span>
+    </small>
+  </div>
+);
+
 class ProjectSettings extends React.Component {
   render() {
     return (
-      <div className="setup-content" id="step-1">
+      <div className="setup-content" id="step-1" key="createProjectStep1">
         <div className="row">
           <div className="col-md-12">
             <h3 className="text-center">Project Setup</h3>
-            <div className="form-group form-row">
+            <div className="form-group form-row" key="installType">
               <label className="control-label mx-auto" htmlFor="installType">
                 Is your project new or existing
               </label>
@@ -38,7 +68,7 @@ class ProjectSettings extends React.Component {
                 <p className="col text-center small mb-1">Connect existing project</p>
               </div>
             </div>
-            <div className="form-group form-row">
+            <div className="form-group form-row" key="installPaths">
               <div className={this.props.installtype === 'new' ? 'col' : 'col-md-6'}>
                 <label className="control-label" htmlFor="localPath">
                   Local Path
@@ -109,33 +139,8 @@ class ProjectSettings extends React.Component {
                 </div>
               )}
             </div>
-            <div className="form-group" key="projectName">
-              <label className="control-label" htmlFor="projectName" key="projectNameLabel">
-                Project Name
-              </label>
-              <input
-                maxLength="200"
-                type="text"
-                required="required"
-                className="form-control form-control-lg"
-                placeholder="my-new-project"
-                value={this.props.projectName}
-                name="name"
-                id="projectName"
-                onChange={this.props.handleInputChange}
-                key="projectName"
-              />
-              <small className="form-text text-muted">
-                Name or Domain of your project. (In a url friendly format.)
-              </small>
-              <small className="form-text text-muted">
-                <b>Local URL: </b>
-                <span className="text-primary" key="projectNameExample">{`${
-                  this.props.projectName ? this.props.projectName : 'my-new-project'
-                }.ddev.local`}</span>
-              </small>
-            </div>
-            <div className="form-group clearix">
+            <Name {...this.props} />
+            <div className="form-group clearix" key="step1nav">
               <button
                 className="btn btn-outline-secondary pull-left"
                 type="button"

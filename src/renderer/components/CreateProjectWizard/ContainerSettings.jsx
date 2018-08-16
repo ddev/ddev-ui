@@ -3,7 +3,7 @@ import React from 'react';
 class ContainerSettings extends React.Component {
   render() {
     return (
-      <div className="setup-content" id="step-2">
+      <div className="setup-content" id="step-2" key="createProjectStep2">
         <div className="row">
           <div className="col-md-12">
             <h3 className="text-center">Container Settings</h3>
@@ -44,7 +44,7 @@ class ContainerSettings extends React.Component {
                 </p>
               </div>
             ) : (
-              <div className="">
+              <div className="form-group">
                 <div className="form-inline">
                   <div className="form-group form-row">
                     <label className="control-label mr-2" htmlFor="phpVersion">
