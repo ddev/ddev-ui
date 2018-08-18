@@ -136,7 +136,7 @@ class ProjectHeader extends React.PureComponent {
           <div className="btn-group" role="group" aria-label="View Site">
             <button
               type="button"
-              className="btn btn-secondary"
+              className="btn btn-outline-secondary"
               onClick={e => {
                 e.preventDefault();
                 electron.shell.openExternal(this.props.httpurl);
@@ -146,7 +146,7 @@ class ProjectHeader extends React.PureComponent {
             </button>
             <button
               type="button"
-              className="btn btn-secondary"
+              className="btn btn-outline-secondary"
               onClick={e => {
                 e.preventDefault();
                 electron.shell.openExternal(this.props.httpurl);
