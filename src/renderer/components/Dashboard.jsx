@@ -95,7 +95,7 @@ class Dashboard extends React.Component {
             </main>
           </div>
         </section>
-        <Footer />
+        <Footer projects={this.state.projects} />
       </Window>
     );
   }

@@ -78,6 +78,7 @@
     "fix-path": "2.1.x",
     "font-awesome": "4.7.x",
     "jquery": "3.3.x",
+    "lodash": "^4.17.10",
     "popper.js": "1.14.x",
     "prop-types": "15.6.x",
     "react": "16.4.x",

@@ -9,7 +9,7 @@ class Footer extends React.Component {
       <footer className="footer fixed-bottom">
         <div className="container-fluid">
           <div className="row">
-            <ProjectCount className="col-md-4 d-none d-md-block" />
+            <ProjectCount projects={this.props.projects} className="col-md-4 d-none d-md-block" />
             <div className="col-md-8">
               <div className="row">
                 <RouterStatus className="col-md-7" />
