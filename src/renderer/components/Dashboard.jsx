@@ -1,6 +1,7 @@
 import React from 'react';
 import { Window } from 'react-desktop/macOs';
 import { isObject } from 'util';
+import _ from 'lodash';
 
 // components
 import Header from './Header';
@@ -21,6 +22,7 @@ class Dashboard extends React.Component {
   state = {
     projects: {},
     errors: {},
+    router: '',
   };
 
   componentDidMount() {
@@ -47,6 +49,7 @@ class Dashboard extends React.Component {
           }
         });
         this.updateProjects(projects);
+        this.updateRouterStatus(projects);
       })
       .catch(e => {
         console.log(e);
@@ -58,6 +61,19 @@ class Dashboard extends React.Component {
     if (JSON.stringify(this.state.projects) !== JSON.stringify(projects)) {
       this.setState({ projects });
     }
+  };
+
+  updateRouterStatus = projects => {
+    let routerStatusText = 'Not Running - No Running DDEV Applications.';
+    const validRouterStates = ['starting', 'healthy'];
+    const routerStatus = Object.values(projects)[0].router_status;
+
+    routerStatusText =
+      validRouterStates.indexOf(routerStatus) !== -1
+        ? _.upperFirst(routerStatus)
+        : routerStatusText;
+
+    this.setState({ router: routerStatusText });
   };
 
   heartBeat = () => {
@@ -95,7 +111,7 @@ class Dashboard extends React.Component {
             </main>
           </div>
         </section>
-        <Footer projects={this.state.projects} />
+        <Footer projects={this.state.projects} router={this.state.router} />
       </Window>
     );
   }

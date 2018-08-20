@@ -12,7 +12,7 @@ class Footer extends React.Component {
             <ProjectCount projects={this.props.projects} className="col-md-4 d-none d-md-block" />
             <div className="col-md-8">
               <div className="row">
-                <RouterStatus className="col-md-7" />
+                <RouterStatus router={this.props.router} className="col-md-12" />
               </div>
             </div>
           </div>
