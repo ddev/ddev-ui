@@ -3,7 +3,7 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 
 import ProjectList from './ProjectList';
 import ProjectDetail from './ProjectDetail';
-import CreateProject from './CreateProject';
+import CreateProjectWizard from './CreateProjectWizard';
 
 class ViewRouter extends React.PureComponent {
   render() {
@@ -12,7 +12,9 @@ class ViewRouter extends React.PureComponent {
         <Switch>
           <Route
             path="/project/create"
-            render={routeProps => <CreateProject {...routeProps} addError={this.props.addError} />}
+            render={routeProps => (
+              <CreateProjectWizard {...routeProps} addError={this.props.addError} />
+            )}
           />
           <Route
             path="/project/:projectID"

@@ -5,7 +5,7 @@ import ProjectSettings from './CreateProjectWizard/ProjectSettings';
 import ContainerSettings from './CreateProjectWizard/ContainerSettings';
 import CmsSettings from './CreateProjectWizard/CmsSettings';
 import WizardSteps from './CreateProjectWizard/WizardSteps';
-import Status from './CreateProjectWizard/Status';
+import Status from './Status';
 
 import { addCMS, addCMSFromExisting } from '../modules/cms-installer';
 
