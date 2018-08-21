@@ -73,7 +73,9 @@ class Dashboard extends React.Component {
         ? _.upperFirst(routerStatus)
         : routerStatusText;
 
-    this.setState({ router: routerStatusText });
+    if (this.state.router !== routerStatusText) {
+      this.setState({ router: routerStatusText });
+    }
   };
 
   heartBeat = () => {
