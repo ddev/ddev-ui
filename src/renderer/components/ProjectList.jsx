@@ -31,6 +31,7 @@ class ProjectList extends React.PureComponent {
         const project = this.props.projects[projectKey];
         let platformIcon = project.type;
         switch (project.type) {
+          case 'drupal6':
           case 'drupal8':
           case 'drupal7':
             platformIcon = 'drupal';
