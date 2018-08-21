@@ -11,7 +11,7 @@ const Alert = props => (
 );
 
 // define the Alerts component
-class Alerts extends React.Component {
+class Alerts extends React.PureComponent {
   renderAlert = (type, key) => {
     let alertType = 'primary';
     switch (type) {

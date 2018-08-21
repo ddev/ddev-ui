@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 
-class ProjectCount extends React.Component {
+class ProjectCount extends React.PureComponent {
   render() {
     const { projects } = this.props;
     const projectCount = Object.keys(projects).length;

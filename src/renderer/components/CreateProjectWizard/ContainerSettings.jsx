@@ -1,6 +1,6 @@
 import React from 'react';
 
-class ContainerSettings extends React.Component {
+class ContainerSettings extends React.PureComponent {
   render() {
     return (
       <div className="setup-content" id="step-2" key="createProjectStep2">

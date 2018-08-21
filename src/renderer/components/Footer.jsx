@@ -3,7 +3,7 @@ import React from 'react';
 import ProjectCount from './ProjectCount';
 import RouterStatus from './RouterStatus';
 
-class Footer extends React.Component {
+class Footer extends React.PureComponent {
   render() {
     return (
       <footer className="footer fixed-bottom">

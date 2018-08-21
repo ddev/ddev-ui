@@ -1,6 +1,6 @@
 import React from 'react';
 
-class WizardSteps extends React.Component {
+class WizardSteps extends React.PureComponent {
   render() {
     return (
       <div className="stepwizard fixed-bottom">

@@ -1,6 +1,6 @@
 import React from 'react';
 
-class RouterStatus extends React.Component {
+class RouterStatus extends React.PureComponent {
   render() {
     return (
       <div className={`router-status ${this.props.className ? this.props.className : ''}`}>

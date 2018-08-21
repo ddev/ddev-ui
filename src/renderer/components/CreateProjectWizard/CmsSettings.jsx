@@ -8,7 +8,7 @@ const backdropLogo = require(`${__static}/img/Backdrop-vector.svg`);
 const phpLogo = require(`${__static}/img/PHPApp.svg`);
 /* eslint-enable no-undef,global-require,import/no-dynamic-require */
 
-class CmsSettings extends React.Component {
+class CmsSettings extends React.PureComponent {
   render() {
     return (
       <div className="setup-content" id="step-3" key="createProjectStep3">

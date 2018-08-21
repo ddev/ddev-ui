@@ -30,7 +30,7 @@ const Name = props => (
   </div>
 );
 
-class ProjectSettings extends React.Component {
+class ProjectSettings extends React.PureComponent {
   render() {
     return (
       <div className="setup-content" id="step-1" key="createProjectStep1">

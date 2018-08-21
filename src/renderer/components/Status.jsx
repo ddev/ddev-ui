@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Status extends React.Component {
+class Status extends React.PureComponent {
   render() {
     return (
       <React.Fragment>

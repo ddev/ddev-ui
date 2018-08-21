@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 import ProjectStatusIcon from './ProjectStatusIcon';
 
-class ProjectNavItem extends React.Component {
+class ProjectNavItem extends React.PureComponent {
   render() {
     const navLinkHref = `/project/${this.props.name}/`;
     return (
