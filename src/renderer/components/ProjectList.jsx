@@ -37,7 +37,15 @@ class ProjectList extends React.PureComponent {
             platformIcon = 'drupal';
             break;
 
+          case 'wordpress':
+            platformIcon = 'wordpress';
+            break;
+
+          case 'typo3':
+          case 'backdrop':
+          case 'php':
           default:
+            platformIcon = 'code';
             break;
         }
         rows.push({
