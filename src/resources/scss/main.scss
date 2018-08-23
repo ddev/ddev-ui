@@ -1,0 +1,23 @@
+/*
+  Global styles and main container styles
+ */
+
+@import "common/variables";
+
+// node modules
+$fa-font-path: "~font-awesome/fonts";
+@import "~bootstrap/scss/bootstrap";
+@import "~font-awesome/scss/font-awesome";
+
+// app styles
+@import "common/globals";
+@import "common/typography";
+@import "common/layout";
+
+@import "components/buttons";
+@import "components/card";
+@import "components/footer";
+@import "components/header";
+@import "components/sidebar";
+@import "components/createProject";
+@import "components/modals";

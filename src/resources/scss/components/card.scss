@@ -1,0 +1,80 @@
+/*
+  Project card styles
+ */
+
+/*
+  Base styles
+ */
+.card.ddev-card .card-header,
+.card.ddev-card .card-footer {
+  background-color: color("dark");
+}
+
+.card.ddev-card {
+  text-align: center;
+  color: color("dark");
+}
+
+/*
+  Header
+ */
+//card-header class defined in boostrap base css
+
+/*
+  Body
+ */
+.card.ddev-card .card-body {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.add-site-icon {
+  height: 155px;
+  line-height: 155px;
+  font-size: 75px;
+}
+
+/*
+  CMS type icon
+ */
+.site-icon-container {
+  padding-bottom: 20px;
+}
+
+.site-icon {
+  width: 50%;
+}
+
+/*
+  Project status container
+ */
+.card-status {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(100, 100, 100, 0.3);
+}
+
+/*
+  Buttons and footer
+ */
+.card.ddev-card .btn {
+  margin: 5px;
+}
+
+.running .startbtn {
+  display: none;
+}
+
+.stopped .stopbtn {
+  display: none;
+}
+
+.stopped .restartbtn {
+  display: none;
+}
+
+.add .card-footer {
+  height: 73px;
+}

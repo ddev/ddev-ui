@@ -1,0 +1,32 @@
+.app-container {
+  height: calc(100vh - 87px);
+  overflow: hidden;
+  margin-top: 63px;
+}
+
+main.content,
+.projectSidebar {
+  overflow-y: scroll;
+}
+
+.selectable-text {
+  user-select: all;
+}
+
+.Window > div {
+  flex-direction: column !important;
+}
+
+main.content {
+  background-color: #fff;
+  position: relative;
+}
+
+main.content .fixed-bottom {
+  background: #f9f9f9;
+  @include media-breakpoint-up(md) {
+    // @include make-col-ready();
+    @include make-col(8);
+    @include make-col-offset(4);
+  }
+}

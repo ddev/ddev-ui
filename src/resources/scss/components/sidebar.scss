@@ -1,0 +1,64 @@
+.projectSidebar {
+  &,
+  .ListViewHeader,
+  .ListViewSectionHeader {
+    background: #131e29 !important;
+    color: #fff !important;
+  }
+  .ListViewHeader {
+    font-weight: 14px;
+    font-weight: bold;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 58, 112, 0.6) !important;
+    img {
+      height: 22px;
+    }
+    h1 {
+      color: #fff;
+      font-size: 1rem;
+    }
+    .btn {
+      border-width: 2px;
+      border-color: $primary !important;
+      text-transform: uppercase;
+      color: $white;
+      font-size: 0.6rem;
+      font-weight: bold;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+  .ListViewFooter {
+    background: transparent;
+  }
+
+  .ListViewRow {
+    display: flex;
+    align-items: left;
+    border-bottom: 0.5px solid rgba(0, 58, 112, 0.6);
+    h3 {
+      font-size: 0.7rem;
+      color: #fff;
+      margin-bottom: 0px;
+    }
+    p {
+      font-size: 0.575rem;
+      color: #fff;
+      margin-bottom: 0px;
+      font-weight: normal;
+    }
+    a {
+      text-decoration: none;
+      &,
+      &:hover {
+        cursor: pointer !important;
+      }
+      &.active {
+        background: #003a70;
+      }
+    }
+    .project-status-icon {
+      transform: scale(1.2);
+    }
+  }
+}
