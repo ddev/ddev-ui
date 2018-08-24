@@ -31,7 +31,7 @@ class Dashboard extends React.Component {
     // Initial state load
     this.fetchProjects();
     // TODO: this could be reduced/removed once state is updated everywhere.
-    this.timerID = setInterval(() => this.heartBeat(), 1000);
+    this.timerID = setInterval(() => this.heartBeat(), 2500); // 2.5s
   }
 
   componentWillUnmount() {
