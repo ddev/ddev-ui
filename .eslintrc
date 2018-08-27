@@ -112,8 +112,5 @@
       }
     ]
   },
-  "plugins": [
-    // "html",
-    "prettier"
-  ]
+  "plugins": ["babel", "prettier"]
 }

@@ -3,18 +3,18 @@ module.exports = {
     rules: [
       {
         test: /\.jsx?$/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
         options: {
-          presets: ["@babel/react"]
-        }
-      }
-    ]
+          presets: ['@babel/env', '@babel/react']
+        },
+      },
+    ],
   },
   resolve: {
-    extensions: [".js", ".jsx"]
+    extensions: ['.js', '.jsx']
   },
   devServer: {
     historyApiFallback: true,
-    hot: true
-  }
+    hot: true,
+  },
 };

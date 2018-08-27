@@ -67,7 +67,6 @@ app.on('ready', async () => {
   if (isDevelopment) {
     await installExtension(REACT_DEVELOPER_TOOLS)
       .then(name => console.log(`Added Extension:  ${name}`))
-      .then(() => mainWindow.webContents.openDevTools())
       .catch(err => console.log('An error occurred: ', err));
   }
 });
