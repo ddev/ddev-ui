@@ -795,9 +795,9 @@
   version "2.2.44"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.44.tgz#1d4a798e53f35212fd5ad4d04050620171cd5b5e"
 
-"@types/node@^7.0.18":
-  version "7.0.69"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.69.tgz#709629340708ec0e1845559bf5c0c88d26d31dca"
+"@types/node@^8.0.24":
+  version "8.10.28"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.28.tgz#03bf70dd7f1de7826251331ce57beddf7f9dd253"
 
 "@types/sinon-chai@2.7.29":
   version "2.7.29"
@@ -3767,11 +3767,11 @@ electron-webpack@^2.x:
     webpack-merge "^4.1.2"
     yargs "^11.1.0"
 
-electron@1.7.x:
-  version "1.7.15"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-1.7.15.tgz#1234fa3645b6c09017815515833a86c26989ef49"
+electron@2.x:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-2.0.8.tgz#6ec7113b356e09cc9899797e0d41ebff8163e962"
   dependencies:
-    "@types/node" "^7.0.18"
+    "@types/node" "^8.0.24"
     electron-download "^3.0.1"
     extract-zip "^1.0.3"
 

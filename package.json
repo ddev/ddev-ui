@@ -105,7 +105,7 @@
     "babel-eslint": "^8.2.6",
     "babel-plugin-root-import": "^6.1.0",
     "cypress": "^3.0.3",
-    "electron": "1.7.x",
+    "electron": "2.x",
     "electron-builder": "20.x",
     "electron-webpack": "^2.x",
     "eslint": "^4",
