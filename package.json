@@ -109,7 +109,7 @@
     "electron": "2.x",
     "electron-builder": "20.x",
     "electron-webpack": "2.1.x",
-    "eslint": "4.x",
+    "eslint": "5.x",
     "eslint-config-airbnb": "17.x",
     "eslint-config-prettier": "3.x",
     "eslint-plugin-import": "2.x",
