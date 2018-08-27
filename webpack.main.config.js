@@ -5,11 +5,11 @@ module.exports = {
         test: /\.(png|jpg|gif|svg)$/,
         use: [
           {
-            loader: "file-loader",
-            options: {}
-          }
-        ]
-      }
-    ]
-  }
+            loader: 'file-loader',
+            options: {},
+          },
+        ],
+      },
+    ],
+  },
 };
