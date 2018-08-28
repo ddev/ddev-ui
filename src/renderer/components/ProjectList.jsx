@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import electron from 'electron';
 
 import ReactDataGrid from 'react-data-grid';
-import ddevShell from '../modules/ddev-shell';
+import { start, restart, stop, remove } from '../modules/ddev-shell';
 
 import ProjectStatusIcon from './ProjectStatusIcon';
 
@@ -114,7 +114,7 @@ class ProjectList extends React.PureComponent {
   processStart = e => {
     e.preventDefault();
     console.log('starting');
-    ddevShell.start(
+    start(
       $(e.target)
         .closest('.actions')
         .data('path'),
@@ -130,7 +130,7 @@ class ProjectList extends React.PureComponent {
   processRestart = e => {
     e.preventDefault();
     console.log('restarting');
-    ddevShell.restart(
+    restart(
       $(e.target)
         .closest('.actions')
         .data('path'),
@@ -146,7 +146,7 @@ class ProjectList extends React.PureComponent {
   processStop = e => {
     e.preventDefault();
     console.log('stopping');
-    ddevShell.stop(
+    stop(
       $(e.target)
         .closest('.actions')
         .data('path'),
@@ -162,7 +162,7 @@ class ProjectList extends React.PureComponent {
   processRemove = e => {
     e.preventDefault();
     console.log('removing');
-    ddevShell.remove(
+    remove(
       $(e.target)
         .closest('.actions')
         .data('sitename'),

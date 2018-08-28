@@ -4,13 +4,13 @@ import electron from 'electron';
 import ProjectTypeIcon from './ProjectTypeIcon';
 import ProjectStatusIcon from './ProjectStatusIcon';
 
-import ddevShell from '../modules/ddev-shell';
+import { start, restart, stop, remove } from '../modules/ddev-shell';
 
 class ProjectHeader extends React.PureComponent {
   processStart = e => {
     e.preventDefault();
     console.log('starting');
-    ddevShell.start(
+    start(
       this.props.approot,
       data => {
         console.log(data);
@@ -24,7 +24,7 @@ class ProjectHeader extends React.PureComponent {
   processRestart = e => {
     e.preventDefault();
     console.log('restarting');
-    ddevShell.restart(
+    restart(
       this.props.approot,
       data => {
         console.log(data);
@@ -38,7 +38,7 @@ class ProjectHeader extends React.PureComponent {
   processStop = e => {
     e.preventDefault();
     console.log('stopping');
-    ddevShell.stop(
+    stop(
       this.props.approot,
       data => {
         console.log(data);
@@ -52,7 +52,7 @@ class ProjectHeader extends React.PureComponent {
   processRemove = e => {
     e.preventDefault();
     console.log('stopping');
-    ddevShell.remove(
+    remove(
       this.props.name,
       false, // TODO: Need to remove
       data => {
