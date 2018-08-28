@@ -22,7 +22,7 @@ import { dirname } from 'path';
  * @param majorVersion {number} major version number i.e. 7 or 8
  * @return {promise} an object containing the latest version and URI at which the tarball can be downloaded
  */
-function getNewestDrupalVersion(majorVersion) {
+export function getNewestDrupalVersion(majorVersion) {
   const promise = new Promise((resolve, reject) => {
     const options = {
       url: `https://updates.drupal.org/release-history/drupal/${majorVersion}.x`,
@@ -54,7 +54,7 @@ function getNewestDrupalVersion(majorVersion) {
  * Get newest version of wordpress and the URI that the tarball can be found
  * @return {promise/object} an object containing the latest version and URI at which the tarball can be downloaded
  */
-function getNewestWordpressVersion() {
+export function getNewestWordpressVersion() {
   const promise = new Promise((resolve, reject) => {
     const options = {
       url: 'https://api.github.com/repos/wordpress/wordpress/tags',
@@ -86,7 +86,7 @@ function getNewestWordpressVersion() {
  * @param localPath {string} path on local filesystem to retrieve file listing of
  * @return {promise/array} an array containing strings of filenames in the target directory
  */
-function getLocalDistros(localPath) {
+export function getLocalDistros(localPath) {
   const promise = new Promise((resolve, reject) => {
     function readFiles(filePath) {
       readdir(filePath, (err, filenames) => {
@@ -110,7 +110,7 @@ function getLocalDistros(localPath) {
  * @param majorVersion {number} optional - the major version number to check for drupal
  * @return {promise} an object containing the version number for local CMS distro tarballs, or 0.0 if not found.
  */
-function getLocalVersion(distro, localPath, majorVersion = null) {
+export function getLocalVersion(distro, localPath, majorVersion = null) {
   const promise = new Promise((resolve, reject) => {
     getLocalDistros(localPath)
       .then(fileList => {
@@ -145,7 +145,7 @@ function getLocalVersion(distro, localPath, majorVersion = null) {
  * @param targetPath {string} path to determine existence and write permissions
  * @return {promise/boolean} returns true if path both exists and is writable
  */
-function canReadAndWrite(targetPath) {
+export function canReadAndWrite(targetPath) {
   return new Promise((resolve, reject) => {
     stat(targetPath, err => {
       if (err) {
@@ -177,7 +177,7 @@ function canReadAndWrite(targetPath) {
  * @param filePath {string} filePath to save downloaded file
  * @return {promise} resolves if file is successfully downloaded and written
  */
-function downloadFile(url, filePath) {
+export function downloadFile(url, filePath) {
   const promise = new Promise((resolve, reject) => {
     request({ uri: url })
       .pipe(createWriteStream(filePath))
@@ -197,7 +197,7 @@ function downloadFile(url, filePath) {
  * @param filePath {string} path of file to delete
  * @return {promise} resolves if file deletion is successful
  */
-function deleteFile(filePath) {
+export function deleteFile(filePath) {
   const promise = new Promise((resolve, reject) => {
     unlink(filePath, err => {
       if (err) {
@@ -218,7 +218,7 @@ function deleteFile(filePath) {
  * successful updated file download.
  * @return {promise} resolves upon successful update or no change needed.
  */
-const updateDistros = function() {
+export function updateDistros() {
   const promise = new Promise((resolve, reject) => {
     let cmsPath = '~/.ddev/CMS';
     cmsPath = cmsPath.replace('~', homedir());
@@ -278,21 +278,3 @@ const updateDistros = function() {
 
   return promise;
 };
-
-const _updateDistros = updateDistros;
-export { _updateDistros as updateDistros };
-
-const _getNewestDrupalVersion = getNewestDrupalVersion;
-export { _getNewestDrupalVersion as getNewestDrupalVersion };
-const _getNewestWordpressVersion = getNewestWordpressVersion;
-export { _getNewestWordpressVersion as getNewestWordpressVersion };
-const _getLocalDistros = getLocalDistros;
-export { _getLocalDistros as getLocalDistros };
-const _getLocalVersion = getLocalVersion;
-export { _getLocalVersion as getLocalVersion };
-const _canReadAndWrite = canReadAndWrite;
-export { _canReadAndWrite as canReadAndWrite };
-const _downloadFile = downloadFile;
-export { _downloadFile as downloadFile };
-const _deleteFile = deleteFile;
-export { _deleteFile as deleteFile };

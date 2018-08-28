@@ -221,67 +221,12 @@ export function describe (siteName) {
 };
 
 /**
- * wrapper for `ddev describe` and formats output (creates links) as needed by the UI
- * @param siteName {string} - target site to get details of
- * @returns {Promise} - resolves with object containing formatted links and sections for the UI
- */
-export function describeModal (siteName) {
-  const promise = new Promise((resolve, reject) => {
-    function parseJSONOutput(describeJSON) {
-      const objs = describeJSON.split('\n');
-
-      objs.forEach(obj => {
-        const modalData = {};
-        if (obj) {
-          try {
-            const rawData = JSON.parse(obj);
-
-            if (rawData.level === 'info') {
-              const siteDetails = rawData.raw;
-
-              if (siteDetails.dbinfo) {
-                modalData['MySQL Credentials'] = siteDetails.dbinfo;
-              }
-              if (siteDetails.mailhog_url || siteDetails.phpmyadmin_url) {
-                modalData['Other Services'] = {};
-                if (siteDetails.mailhog_url) {
-                  modalData['Other Services'].MailHog = `<a class='open-site' data-url='${
-                    siteDetails.mailhog_url
-                  }' href="#">${siteDetails.mailhog_url}</a>`;
-                }
-                if (siteDetails.phpmyadmin_url) {
-                  modalData['Other Services'].phpMyAdmin = `<a class='open-site' data-url='${
-                    siteDetails.phpmyadmin_url
-                  }' href="#">${siteDetails.phpmyadmin_url}</a>`;
-                }
-              }
-              resolve(modalData);
-            }
-          } catch (e) {
-            reject(modalData);
-          }
-        }
-        return promise;
-      });
-    }
-    ddevShell('describe', [siteName, '-j'], null, parseJSONOutput, reject, false);
-  });
-
-  return promise;
-};
-
-/**
  * priv escalation - only allows whitelisted commands to be run as sudo, and bans dangerous characters
  * @param command {string} - ddev command to run
  * @param promptOptions {object} - sudo prompt options such as application name and prompt icon
  * @returns {promise} - resolves if escalation is successful with stdout text
  */
-export function sudo (
-  command,
-  promptOptions = {
-    name: 'DDEV UI',
-  }
-) {
+export function sudo (command, promptOptions = {name: 'DDEV UI',}) {
   const bannedCharacters = [';', '|', '&'];
   const whitelistedCommands = ['version'];
   const ddevCommand = `ddev ${command}`;
