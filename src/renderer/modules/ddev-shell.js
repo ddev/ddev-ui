@@ -63,13 +63,13 @@ export function ddevShell(command, args, path, callback, errorCallback, stream) 
       callback(outputBuffer);
     }
   });
-};
+}
 
 /**
  * wrapper for `ddev list` - parses array of site objects from raw or returns empty array if none
  * @returns {Promise} - resolves with an array of sites, or an empty array if none found
  */
-export function list () {
+export function list() {
   const promise = new Promise((resolve, reject) => {
     function getRaw(output) {
       const objs = output.split('\n');
@@ -99,7 +99,7 @@ export function list () {
     ddevShell('list', ['-j'], null, getRaw, reject);
   });
   return promise;
-};
+}
 
 /**
  * wrapper for `ddev start`
@@ -107,9 +107,9 @@ export function list () {
  * @param callback {function} - function called on stdout update
  * @param errorCallback {function} - function called on error
  */
-export function start (path, callback, errorCallback) {
+export function start(path, callback, errorCallback) {
   ddevShell('start', null, path, callback, errorCallback, true);
-};
+}
 
 /**
  * wrapper for `ddev stop`
@@ -117,9 +117,9 @@ export function start (path, callback, errorCallback) {
  * @param callback {function} - function called on stdout update
  * @param errorCallback {function} - function called on error
  */
-export function stop (path, callback, errorCallback) {
+export function stop(path, callback, errorCallback) {
   ddevShell('stop', null, path, callback, errorCallback, true);
-};
+}
 
 /**
  * wrapper for `ddev restart`
@@ -127,23 +127,23 @@ export function stop (path, callback, errorCallback) {
  * @param callback {function} - function called on stdout update
  * @param errorCallback {function} - function called on error
  */
-export function restart (path, callback, errorCallback) {
+export function restart(path, callback, errorCallback) {
   ddevShell('restart', null, path, callback, errorCallback, true);
-};
+}
 
 /**
  * wrapper for `ddev remove`
  * @param name {string} - name of site to remove
  * @param shouldRemoveData {boolean} - if data should be removed as well as project containers
  */
-export function remove (name, shouldRemoveData) {
+export function remove(name, shouldRemoveData) {
   const args = shouldRemoveData ? ['-j', '--remove-data'] : ['-j'];
   args.push(name);
   const promise = new Promise((resolve, reject) => {
     ddevShell('remove', args, '', resolve, reject, false);
   });
   return promise;
-};
+}
 
 /**
  * wrapper for `ddev config`, run with --sitename --docroot flags to prevent cli from prompting
@@ -153,7 +153,7 @@ export function remove (name, shouldRemoveData) {
  * @param callback {function} - function to call on execution completion
  * @param errorCallback - function to call on failure
  */
-export function config (path, name, docroot, callback, errorCallback) {
+export function config(path, name, docroot, callback, errorCallback) {
   ddevShell(
     'config',
     ['-j', '--sitename', name, '--docroot', docroot],
@@ -161,7 +161,7 @@ export function config (path, name, docroot, callback, errorCallback) {
     callback,
     errorCallback
   );
-};
+}
 
 /**
  * wrapper for `ddev hostname`, attempts to run as sudo
@@ -169,7 +169,7 @@ export function config (path, name, docroot, callback, errorCallback) {
  * @param domain - optional - domain to create sitename subdomain
  * @returns {Promise} - resolves on successful execution with stdout text
  */
-export function hostname (siteName, domain = 'ddev.local') {
+export function hostname(siteName, domain = 'ddev.local') {
   const promise = new Promise((resolve, reject) => {
     const options = {
       name: 'DDEV UI',
@@ -186,14 +186,14 @@ export function hostname (siteName, domain = 'ddev.local') {
     });
   });
   return promise;
-};
+}
 
 /**
  * wrapper for `ddev describe` and formats output (creates links) as needed by the UI
  * @param siteName {string} - target site to get details of
  * @returns {Promise} - resolves with object containing formatted links and sections for the UI
  */
-export function describe (siteName) {
+export function describe(siteName) {
   const promise = new Promise((resolve, reject) => {
     function parseJSONOutput(describeJSON) {
       const objs = describeJSON.split('\n');
@@ -218,7 +218,7 @@ export function describe (siteName) {
   });
 
   return promise;
-};
+}
 
 /**
  * priv escalation - only allows whitelisted commands to be run as sudo, and bans dangerous characters
@@ -226,7 +226,7 @@ export function describe (siteName) {
  * @param promptOptions {object} - sudo prompt options such as application name and prompt icon
  * @returns {promise} - resolves if escalation is successful with stdout text
  */
-export function sudo (command, promptOptions = {name: 'DDEV UI',}) {
+export function sudo(command, promptOptions = { name: 'DDEV UI' }) {
   const bannedCharacters = [';', '|', '&'];
   const whitelistedCommands = ['version'];
   const ddevCommand = `ddev ${command}`;
@@ -253,4 +253,4 @@ export function sudo (command, promptOptions = {name: 'DDEV UI',}) {
     return promise;
   }
   return Promise.reject(new Error(`${ddevCommand} is not allowed to be run as sudo`));
-};
+}

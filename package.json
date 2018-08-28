@@ -113,6 +113,7 @@
     "eslint": "5.x",
     "eslint-config-airbnb": "17.x",
     "eslint-config-prettier": "3.x",
+    "eslint-plugin-babel": "5.x",
     "eslint-plugin-import": "2.x",
     "eslint-plugin-jsx-a11y": "6.x",
     "eslint-plugin-prettier": "2.x",

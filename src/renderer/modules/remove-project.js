@@ -73,53 +73,62 @@ function showRemoveModal(projectPath, projectName) {
   $('#removeModal').modal();
 }
 
-
-const RemoveProjectModalBody = () => {
-  return(
-    <div>
-      <div className="loading-overlay">
-        <div>
-            <i className="fa fa-spinner fa-spin loading-spinner"></i>
-        </div>
-        <div className="loading-text">Removing...</div>
+const RemoveProjectModalBody = () => (
+  <div>
+    <div className="loading-overlay">
+      <div>
+        <i className="fa fa-spinner fa-spin loading-spinner" />
       </div>
-      <div className="error-overlay">
-        <div>
-            <i className="fa fa-exclamation-triangle error-icon"></i>
-        </div>
-        <div className="error-text">Something Went Wrong</div>
-        <div className="btn btn-primary">OK</div>
-      </div>
-      <h2>Please select a removal option for project "<span id='removeName'></span>"</h2>
-      <div>The project files will *not* be removed from your system.</div>
-      <hr/>
-      <form className="remove-options">
-      <input id='projectPath' name="projectPath" type="hidden" />
-      <input id='projectName' name="projectName" type="hidden" />
-      <div className="remove-option">
-        <input type="radio" name="removeOptions" id="removeContainers" value="Project from Dashboard" checked />
-        <label for="removeContainers">Remove Project
-      (ddev rm)</label>
-      </div>
-      <div className="remove-option">
-        <input type="radio" name="removeOptions" id="removeContainersAndData" value="Project from Dashboard AND Project Database"/>
-        <label for="removeContainersAndData">Remove Project AND Project Database
-      (ddev rm --remove-data)</label>
-      </div>
-      </form>
-      <hr/>
+      <div className="loading-text">Removing...</div>
     </div>
-  );
-};
-
-const RemoveProjectModalFooter = () => {
-  return (
-    <div className="remove-button-container">
-      <div className="btn btn-danger pull-right remove-project-button">Remove <span className="removal-items">Project from Dashboard</span>
+    <div className="error-overlay">
+      <div>
+        <i className="fa fa-exclamation-triangle error-icon" />
       </div>
+      <div className="error-text">Something Went Wrong</div>
+      <div className="btn btn-primary">OK</div>
     </div>
-  );
-}
+    <h2>
+      Please select a removal option for project "<span id="removeName" />"
+    </h2>
+    <div>The project files will *not* be removed from your system.</div>
+    <hr />
+    <form className="remove-options">
+      <input id="projectPath" name="projectPath" type="hidden" />
+      <input id="projectName" name="projectName" type="hidden" />
+      <div className="remove-option">
+        <input
+          type="radio"
+          name="removeOptions"
+          id="removeContainers"
+          value="Project from Dashboard"
+          checked
+        />
+        <label htmlFor="removeContainers">Remove Project (ddev rm)</label>
+      </div>
+      <div className="remove-option">
+        <input
+          type="radio"
+          name="removeOptions"
+          id="removeContainersAndData"
+          value="Project from Dashboard AND Project Database"
+        />
+        <label htmlFor="removeContainersAndData">
+          Remove Project AND Project Database (ddev rm --remove-data)
+        </label>
+      </div>
+    </form>
+    <hr />
+  </div>
+);
+
+const RemoveProjectModalFooter = () => (
+  <div className="remove-button-container">
+    <div className="btn btn-danger pull-right remove-project-button">
+      Remove <span className="removal-items">Project from Dashboard</span>
+    </div>
+  </div>
+);
 
 /**
  * Initialization - hook UI and generate markup.

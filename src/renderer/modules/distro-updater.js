@@ -277,4 +277,4 @@ export function updateDistros() {
   });
 
   return promise;
-};
+}

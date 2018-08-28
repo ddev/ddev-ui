@@ -39,7 +39,7 @@ class Dashboard extends React.Component {
   }
 
   fetchProjects = () => {
-      list()
+    list()
       .then(newProjects => {
         const projects = {};
         Object.keys(newProjects).forEach(key => {
