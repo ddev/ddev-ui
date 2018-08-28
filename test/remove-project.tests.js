@@ -1,7 +1,12 @@
-const rewire = require('rewire');
-const fixtures = require('./remove-project-fixtures');
+import rewire from 'rewire';
+import {
+  removeProjectArray,
+  removeProjectDataArray,
+  brokenErrorMessage,
+  brokenProjectArray,
+} from './remove-project-fixtures';
 
-const remove_project = rewire('../js/src/remove-project'); // eslint-disable-line camelcase
+const remove_project = rewire('../src/renderer/modules/remove-project'); // eslint-disable-line camelcase
 
 describe('remove-project', () => {
   describe('#removeProject()', () => {
@@ -27,7 +32,7 @@ describe('remove-project', () => {
         },
       };
       remove_project.__set__('ddevShell', mockShell);
-      removeProject(fixtures.removeProjectArray);
+      removeProject(removeProjectArray);
     });
     it('should call ddevShell module and attempt to exec `ddev remove` from path with the remove db flag', done => {
       const mockShell = {
@@ -43,7 +48,7 @@ describe('remove-project', () => {
         },
       };
       remove_project.__set__('ddevShell', mockShell);
-      removeProject(fixtures.removeProjectDataArray);
+      removeProject(removeProjectDataArray);
     });
 
     it('should throw an error if valid called with valid arguments, but remove is unsuccessful', done => {
@@ -62,7 +67,7 @@ describe('remove-project', () => {
         }
       });
       remove_project.__set__('ddevShell', mockShell);
-      removeProject(fixtures.removeProjectDataArray);
+      removeProject(removeProjectDataArray);
     });
 
     it('should throw an error if called with invalid arguments', done => {
@@ -74,14 +79,14 @@ describe('remove-project', () => {
         },
       };
       remove_project.__set__('removeCompleted', msg => {
-        if (msg === fixtures.brokenErrorMessage) {
+        if (msg === brokenErrorMessage) {
           done();
         } else {
           console.log(`Fail - expected error message, instead received ${msg}`);
         }
       });
       remove_project.__set__('ddevShell', mockShell);
-      removeProject(fixtures.brokenProjectArray);
+      removeProject(brokenProjectArray);
     });
   });
 });
