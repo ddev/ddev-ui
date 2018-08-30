@@ -4,7 +4,7 @@ import { x } from 'tar';
 import { readdir, mkdir } from 'fs';
 import { homedir } from 'os';
 
-import { hostname as _hostname } from '../modules/ddev-shell';
+import { start, hostname as _hostname } from '../modules/ddev-shell';
 import { getLocalDistros } from '../modules/distro-updater';
 
 import {
@@ -15,7 +15,6 @@ import {
   validateInstallPath,
   validateDocroot,
   configureSite,
-  startSite,
   checkIfExistingConfig,
 } from '../modules/helpers';
 
@@ -196,15 +195,23 @@ export function addCMS(name, type, targetPath, history = {}) {
     })
     .then(() => {
       showLoadingScreen(true, 'Starting Project');
-      return startSite(workingPath);
-    })
-    .then(stdout => {
-      if (stdout.toString().indexOf('Starting environment') !== -1) {
-        alert(
-          'Start Process Initiated. It may take a few seconds for the new project to appear on your dashboard.'
-        );
-        history.push(`/project/${name}`);
-      }
+      return start(
+        workingPath,
+        data => {
+          // console.log(data);
+          showLoadingScreen(true, data.toString());
+          if (data.toString().includes('Successfully started')) {
+            history.push(`/project/${name}`);
+          }
+          if (data.toString().includes('Process Exited')) {
+            showLoadingScreen(false);
+          }
+        },
+        err => {
+          console.error(err);
+          showErrorScreen(true, err.toString());
+        }
+      );
     })
     .catch(err => {
       showErrorScreen(true, err.toString());
@@ -231,15 +238,23 @@ export function addCMSFromExisting(name, targetPath, docroot = '', history = {})
     })
     .then(() => {
       showLoadingScreen(true, 'Starting Project');
-      return startSite(targetPath);
-    })
-    .then(stdout => {
-      if (stdout.toString().indexOf('Starting environment') !== -1) {
-        alert(
-          'Start Process Initiated. It may take a few seconds for the new project to appear on your dashboard.'
-        );
-        history.push(`/project/${name}`);
-      }
+      return start(
+        targetPath,
+        data => {
+          // console.log(data);
+          showLoadingScreen(true, data.toString());
+          if (data.toString().includes('Successfully started')) {
+            history.push(`/project/${name}`);
+          }
+          if (data.toString().includes('Process Exited')) {
+            showLoadingScreen(false);
+          }
+        },
+        err => {
+          console.error(err);
+          showErrorScreen(true, err.toString());
+        }
+      );
     })
     .catch(err => {
       showErrorScreen(true, err.toString());
@@ -378,7 +393,6 @@ class CreateProjectWizard extends React.Component {
         cms = this.state.cmsType;
       }
       addCMS(this.state.name, cms, this.state.path, this.props.history);
-      // this.props.history.push(`/project/${this.state.name}`);
     } else {
       let { docroot } = this.state;
       docroot = docroot.replace(this.state.path, '');
@@ -386,7 +400,6 @@ class CreateProjectWizard extends React.Component {
         docroot = docroot.substr(1);
       }
       addCMSFromExisting(this.state.name, this.state.path, docroot, this.props.history);
-      // this.props.history.push(`/project/${this.state.name}`);
     }
   };
 
