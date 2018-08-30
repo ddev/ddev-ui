@@ -4,6 +4,7 @@ import electron from 'electron';
 import ProjectTypeIcon from './ProjectTypeIcon';
 import ProjectStatusIcon from './ProjectStatusIcon';
 
+import { showLoadingScreen, showErrorScreen } from '../modules/helpers';
 import { start, restart, stop, remove } from '../modules/ddev-shell';
 
 class ProjectHeader extends React.PureComponent {
@@ -13,10 +14,16 @@ class ProjectHeader extends React.PureComponent {
     start(
       this.props.approot,
       data => {
-        console.log(data);
+        const res = data.toString();
+        if (res.includes('Process Exited')) {
+          showLoadingScreen(false);
+        } else {
+          showLoadingScreen(true, res);
+        }
       },
-      error => {
-        console.log(error);
+      err => {
+        console.error(err);
+        showErrorScreen(true, err.toString());
       }
     );
   };
@@ -27,10 +34,16 @@ class ProjectHeader extends React.PureComponent {
     restart(
       this.props.approot,
       data => {
-        console.log(data);
+        const res = data.toString();
+        if (res.includes('Process Exited')) {
+          showLoadingScreen(false);
+        } else {
+          showLoadingScreen(true, res);
+        }
       },
-      error => {
-        console.log(error);
+      err => {
+        console.error(err);
+        showErrorScreen(true, err.toString());
       }
     );
   };
@@ -41,10 +54,16 @@ class ProjectHeader extends React.PureComponent {
     stop(
       this.props.approot,
       data => {
-        console.log(data);
+        const res = data.toString();
+        if (res.includes('Process Exited')) {
+          showLoadingScreen(false);
+        } else {
+          showLoadingScreen(true, res);
+        }
       },
-      error => {
-        console.log(error);
+      err => {
+        console.error(err);
+        showErrorScreen(true, err.toString());
       }
     );
   };
@@ -56,10 +75,12 @@ class ProjectHeader extends React.PureComponent {
       this.props.name,
       false, // TODO: Need to remove
       data => {
-        console.log(data);
+        const res = data.toString();
+        showLoadingScreen(true, res);
       },
-      error => {
-        console.log(error);
+      err => {
+        console.error(err);
+        showErrorScreen(true, err.toString());
       }
     );
   };

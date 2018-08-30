@@ -198,13 +198,13 @@ export function addCMS(name, type, targetPath, history = {}) {
       return start(
         workingPath,
         data => {
-          // console.log(data);
-          showLoadingScreen(true, data.toString());
-          if (data.toString().includes('Successfully started')) {
+          const res = data.toString();
+          if (res.includes('Successfully started')) {
             history.push(`/project/${name}`);
-          }
-          if (data.toString().includes('Process Exited')) {
+          } else if (res.includes('Process Exited')) {
             showLoadingScreen(false);
+          } else if (!res.includes('[1A')) {
+            showLoadingScreen(true, res);
           }
         },
         err => {
@@ -241,13 +241,13 @@ export function addCMSFromExisting(name, targetPath, docroot = '', history = {})
       return start(
         targetPath,
         data => {
-          // console.log(data);
-          showLoadingScreen(true, data.toString());
-          if (data.toString().includes('Successfully started')) {
+          const res = data.toString();
+          if (res.includes('Successfully started')) {
             history.push(`/project/${name}`);
-          }
-          if (data.toString().includes('Process Exited')) {
+          } else if (res.includes('Process Exited')) {
             showLoadingScreen(false);
+          } else if (!res.includes('[1A')) {
+            showLoadingScreen(true, res);
           }
         },
         err => {

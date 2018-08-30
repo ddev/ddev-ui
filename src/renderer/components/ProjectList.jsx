@@ -1,11 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import electron from 'electron';
-
 import ReactDataGrid from 'react-data-grid';
+
+import { showLoadingScreen, showErrorScreen } from '../modules/helpers';
 import { start, restart, stop, remove } from '../modules/ddev-shell';
 
 import ProjectStatusIcon from './ProjectStatusIcon';
+import Status from './Status';
 
 class ProjectList extends React.PureComponent {
   state = {
@@ -119,10 +121,16 @@ class ProjectList extends React.PureComponent {
         .closest('.actions')
         .data('path'),
       data => {
-        console.log(data);
+        const res = data.toString();
+        if (res.includes('Process Exited')) {
+          showLoadingScreen(false);
+        } else {
+          showLoadingScreen(true, res);
+        }
       },
-      error => {
-        console.log(error);
+      err => {
+        console.error(err);
+        showErrorScreen(true, err.toString());
       }
     );
   };
@@ -135,10 +143,16 @@ class ProjectList extends React.PureComponent {
         .closest('.actions')
         .data('path'),
       data => {
-        console.log(data);
+        const res = data.toString();
+        if (res.includes('Process Exited')) {
+          showLoadingScreen(false);
+        } else {
+          showLoadingScreen(true, res);
+        }
       },
-      error => {
-        console.log(error);
+      err => {
+        console.error(err);
+        showErrorScreen(true, err.toString());
       }
     );
   };
@@ -151,10 +165,16 @@ class ProjectList extends React.PureComponent {
         .closest('.actions')
         .data('path'),
       data => {
-        console.log(data);
+        const res = data.toString();
+        if (res.includes('Process Exited')) {
+          showLoadingScreen(false);
+        } else {
+          showLoadingScreen(true, res);
+        }
       },
-      error => {
-        console.log(error);
+      err => {
+        console.error(err);
+        showErrorScreen(true, err.toString());
       }
     );
   };
@@ -180,6 +200,7 @@ class ProjectList extends React.PureComponent {
   render() {
     return (
       <section className="my-projects">
+        <Status />
         <h1>My Projects</h1>
         <div className="project-grid">
           {this.state.rows &&
