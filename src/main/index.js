@@ -53,6 +53,11 @@ if (process.platform === 'darwin') {
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow;
 
+const sendStatusToWindow = text => {
+  log.info(text);
+  window.webContents.send('message', text);
+};
+
 const createMainWindow = () => {
   const window = new BrowserWindow({
     width: 800,
@@ -85,6 +90,28 @@ const createMainWindow = () => {
 
   return window;
 };
+
+autoUpdater.on('checking-for-update', () => {
+  sendStatusToWindow('Checking for update...');
+});
+autoUpdater.on('update-available', info => {
+  sendStatusToWindow('Update available.');
+});
+autoUpdater.on('update-not-available', info => {
+  sendStatusToWindow('Update not available.');
+});
+autoUpdater.on('error', err => {
+  sendStatusToWindow(`Error in auto-updater. ${err}`);
+});
+autoUpdater.on('download-progress', progressObj => {
+  let log_message = `Download speed: ${progressObj.bytesPerSecond}`;
+  log_message = `${log_message} - Downloaded ${progressObj.percent}%`;
+  log_message = `${log_message} (${progressObj.transferred}/${progressObj.total})`;
+  sendStatusToWindow(log_message);
+});
+autoUpdater.on('update-downloaded', info => {
+  sendStatusToWindow('Update downloaded');
+});
 
 // quit application when all windows are closed
 app.on('window-all-closed', () => {
