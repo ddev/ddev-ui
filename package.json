@@ -26,27 +26,22 @@
     "build-windows": "yarn compile && electron-builder --win",
     "build-darwin": "yarn compile && electron-builder --mac",
     "test": "mocha --require babel-register --require ignore-styles",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "publish": "yarn compile && build -p always"
   },
   "build": {
     "productName": "DDEV UI",
-    "appId": "ddev-ui",
-    "dmg": {
-      "window": {
-        "width": 600,
-        "height": 360
-      },
-      "contents": [
-        {
-          "x": 150,
-          "y": 135
-        },
-        {
-          "x": 450,
-          "y": 135,
-          "type": "link",
-          "path": "/Applications"
-        }
+    "appId": "com.github.drud.ddev-ui",
+    "publish": [{
+        "provider": "github",
+        "owner": "alkymst",
+        "repo": "ddev-ui"
+    }],
+    "mac": {
+      "category": "your.app.category.type",
+      "target": [
+        "zip",
+        "dmg"
       ]
     },
     "linux": {
@@ -75,6 +70,8 @@
     "compare-versions": "3.x",
     "electron-devtools-installer": "2.2.x",
     "electron-is-dev": "0.3.x",
+    "electron-log": "^2.2.17",
+    "electron-updater": "3.x",
     "fix-path": "2.1.x",
     "font-awesome": "4.7.x",
     "jquery": "3.3.x",
