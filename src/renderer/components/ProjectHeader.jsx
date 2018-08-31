@@ -11,6 +11,7 @@ class ProjectHeader extends React.PureComponent {
   processStart = e => {
     e.preventDefault();
     console.log('starting');
+    showLoadingScreen(true, 'Starting Project');
     start(
       this.props.approot,
       data => {
@@ -31,6 +32,7 @@ class ProjectHeader extends React.PureComponent {
   processRestart = e => {
     e.preventDefault();
     console.log('restarting');
+    showLoadingScreen(true, 'Restarting Project');
     restart(
       this.props.approot,
       data => {
@@ -51,6 +53,7 @@ class ProjectHeader extends React.PureComponent {
   processStop = e => {
     e.preventDefault();
     console.log('stopping');
+    showLoadingScreen(true, 'Stopping Project');
     stop(
       this.props.approot,
       data => {
@@ -71,6 +74,7 @@ class ProjectHeader extends React.PureComponent {
   processRemove = e => {
     e.preventDefault();
     console.log('stopping');
+    showLoadingScreen(true, 'Removing Project');
     remove(
       this.props.name,
       false, // TODO: Need to remove

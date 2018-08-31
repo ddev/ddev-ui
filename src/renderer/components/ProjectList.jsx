@@ -116,6 +116,7 @@ class ProjectList extends React.PureComponent {
   processStart = e => {
     e.preventDefault();
     console.log('starting');
+    showLoadingScreen(true, 'Starting Project');
     start(
       $(e.target)
         .closest('.actions')
@@ -138,6 +139,7 @@ class ProjectList extends React.PureComponent {
   processRestart = e => {
     e.preventDefault();
     console.log('restarting');
+    showLoadingScreen(true, 'Restarting Project');
     restart(
       $(e.target)
         .closest('.actions')
@@ -160,6 +162,7 @@ class ProjectList extends React.PureComponent {
   processStop = e => {
     e.preventDefault();
     console.log('stopping');
+    showLoadingScreen(true, 'Stopping Project');
     stop(
       $(e.target)
         .closest('.actions')
@@ -182,6 +185,7 @@ class ProjectList extends React.PureComponent {
   processRemove = e => {
     e.preventDefault();
     console.log('removing');
+    showLoadingScreen(true, 'Removing Project');
     remove(
       $(e.target)
         .closest('.actions')
