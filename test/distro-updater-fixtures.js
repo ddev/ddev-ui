@@ -254,18 +254,29 @@ const expectedDeletedFilesystem = ['drupal-8.0.tar.gz', 'wordpress-7.0.0.tar.gz'
 
 const mockDownloadBinary = 'IAmABinaryFile';
 
-module.exports.drupal7ApiResponse = drupal7ApiResponse;
-module.exports.drupal8ApiResponse = drupal8ApiResponse;
-module.exports.wordpressApiResponse = wordpressApiResponse;
+const _drupal7ApiResponse = drupal7ApiResponse;
+export { _drupal7ApiResponse as drupal7ApiResponse };
+const _drupal8ApiResponse = drupal8ApiResponse;
+export { _drupal8ApiResponse as drupal8ApiResponse };
+const _wordpressApiResponse = wordpressApiResponse;
+export { _wordpressApiResponse as wordpressApiResponse };
 
-module.exports.drupal7ExpectedLatestVersion = drupal7ExpectedLatestVersion;
-module.exports.drupal8ExpectedLatestVersion = drupal8ExpectedLatestVersion;
-module.exports.wordpressExpectedLatestVersion = wordpressExpectedLatestVersion;
+const _drupal7ExpectedLatestVersion = drupal7ExpectedLatestVersion;
+export { _drupal7ExpectedLatestVersion as drupal7ExpectedLatestVersion };
+const _drupal8ExpectedLatestVersion = drupal8ExpectedLatestVersion;
+export { _drupal8ExpectedLatestVersion as drupal8ExpectedLatestVersion };
+const _wordpressExpectedLatestVersion = wordpressExpectedLatestVersion;
+export { _wordpressExpectedLatestVersion as wordpressExpectedLatestVersion };
 
-module.exports.mockOutdatedFilesystem = mockOutdatedFilesystem;
-module.exports.mockCurrentFilesystem = mockCurrentFilesystem;
+const _mockOutdatedFilesystem = mockOutdatedFilesystem;
+export { _mockOutdatedFilesystem as mockOutdatedFilesystem };
+const _mockCurrentFilesystem = mockCurrentFilesystem;
+export { _mockCurrentFilesystem as mockCurrentFilesystem };
 
-module.exports.expectedOutdatedFilesystem = expectedOutdatedFilesystem;
-module.exports.expectedDeletedFilesystem = expectedDeletedFilesystem;
+const _expectedOutdatedFilesystem = expectedOutdatedFilesystem;
+export { _expectedOutdatedFilesystem as expectedOutdatedFilesystem };
+const _expectedDeletedFilesystem = expectedDeletedFilesystem;
+export { _expectedDeletedFilesystem as expectedDeletedFilesystem };
 
-module.exports.mockDownloadBinary = mockDownloadBinary;
+const _mockDownloadBinary = mockDownloadBinary;
+export { _mockDownloadBinary as mockDownloadBinary };

@@ -73,49 +73,69 @@ function showRemoveModal(projectPath, projectName) {
   $('#removeModal').modal();
 }
 
-const removeProjectModalBody = `<div class="loading-overlay">
-            <div>
-                <i class="fa fa-spinner fa-spin loading-spinner" style="font-size:150px"></i>
-            </div>
-            <div class="loading-text">Removing...</div>
-        </div>
-        <div class="error-overlay">
-            <div>
-                <i class="fa fa-exclamation-triangle error-icon" style="font-size:50px"></i>
-            </div>
-            <div class="error-text">Something Went Wrong</div>
-            <div class="btn btn-primary">OK</div>
-        </div>
-    <h2>Please select a removal option for project "<span id='removeName'></span>"</h2>
+const RemoveProjectModalBody = () => (
+  <div>
+    <div className="loading-overlay">
+      <div>
+        <i className="fa fa-spinner fa-spin loading-spinner" />
+      </div>
+      <div className="loading-text">Removing...</div>
+    </div>
+    <div className="error-overlay">
+      <div>
+        <i className="fa fa-exclamation-triangle error-icon" />
+      </div>
+      <div className="error-text">Something Went Wrong</div>
+      <div className="btn btn-primary">OK</div>
+    </div>
+    <h2>
+      Please select a removal option for project "<span id="removeName" />"
+    </h2>
     <div>The project files will *not* be removed from your system.</div>
-    <hr/>
-    <form class="remove-options">
-        <input id='projectPath' name="projectPath" type="hidden">
-        <input id='projectName' name="projectName" type="hidden">
-        <div class="remove-option">
-            <input type="radio" name="removeOptions" id="removeContainers" value="Project from Dashboard" checked/>
-            <label for="removeContainers">Remove Project
-(ddev rm)</label>
-        </div>
-        <div class="remove-option">
-            <input type="radio" name="removeOptions" id="removeContainersAndData" value="Project from Dashboard AND Project Database"/>
-            <label for="removeContainersAndData">Remove Project AND Project Database
-(ddev rm --remove-data)</label>
-        </div>
+    <hr />
+    <form className="remove-options">
+      <input id="projectPath" name="projectPath" type="hidden" />
+      <input id="projectName" name="projectName" type="hidden" />
+      <div className="remove-option">
+        <input
+          type="radio"
+          name="removeOptions"
+          id="removeContainers"
+          value="Project from Dashboard"
+          checked
+        />
+        <label htmlFor="removeContainers">Remove Project (ddev rm)</label>
+      </div>
+      <div className="remove-option">
+        <input
+          type="radio"
+          name="removeOptions"
+          id="removeContainersAndData"
+          value="Project from Dashboard AND Project Database"
+        />
+        <label htmlFor="removeContainersAndData">
+          Remove Project AND Project Database (ddev rm --remove-data)
+        </label>
+      </div>
     </form>
-    <hr/>
-    `;
+    <hr />
+  </div>
+);
 
-const removeProjectModalFooter = `<div class="remove-button-container">
-        <div class="btn btn-danger pull-right remove-project-button">Remove <span class="removal-items">Project from Dashboard</span></div>
-    </div>`;
+const RemoveProjectModalFooter = () => (
+  <div className="remove-button-container">
+    <div className="btn btn-danger pull-right remove-project-button">
+      Remove <span className="removal-items">Project from Dashboard</span>
+    </div>
+  </div>
+);
 
 /**
  * Initialization - hook UI and generate markup.
  */
-function init() {
+export function init() {
   $('body').append(
-    createModal('removeModal', 'Remove Project', removeProjectModalBody, removeProjectModalFooter)
+    createModal('removeModal', 'Remove Project', RemoveProjectModalBody, RemoveProjectModalFooter)
   );
   $(document).on('click', '.removebtn', function() {
     showRemoveModal($(this).data('projectPath'), $(this).data('projectName'));
@@ -129,6 +149,3 @@ function init() {
     }
   });
 }
-
-const _init = init;
-export { _init as init };

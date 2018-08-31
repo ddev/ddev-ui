@@ -8,14 +8,12 @@ class ProjectDetail extends React.PureComponent {
   render() {
     return (
       <section className="project-info">
-        {this.props.project ? (
+        <Status />
+        {this.props.project && (
           <div className="project-details">
-            <Status />
             <ProjectHeader {...this.props.project} />
             <ProjectInfo {...this.props.project} />
           </div>
-        ) : (
-          <h1 className="text-center text-danger">Project Was Not Found!</h1>
         )}
       </section>
     );

@@ -1,21 +1,28 @@
-const rewire = require('rewire');
+import rewire from 'rewire';
+import assert from 'assert';
+import mockFS, { restore } from 'mock-fs';
+import {
+  validHostname,
+  invalidHostname,
+  validCMSType,
+  invalidCMSType,
+  mockFileSystem,
+} from './cms-installer-fixtures';
 
-const cmsInstaller = rewire('../js/src/cms-installer');
-const assert = require('assert');
-const mockFS = require('mock-fs');
-const cmsInstallerFixtures = require('./cms-installer-fixtures');
+const helpers = rewire('../src/renderer/modules/helpers');
+const cmsInstaller = rewire('../src/renderer/components/CreateProjectWizard');
 
 describe('cms-installer', () => {
   describe('#Validations', () => {
-    const validateHostname = cmsInstaller.__get__('validateHostname');
-    const validateCMSType = cmsInstaller.__get__('validateCMSType');
+    const validateHostname = helpers.__get__('validateHostname');
+    const validateCMSType = helpers.__get__('validateCMSType');
 
     it('should validate conforming hostnames', () =>
-      validateHostname(cmsInstallerFixtures.validHostname).then(result => {
+      validateHostname(validHostname).then(result => {
         assert(result === true);
       }));
     it('should reject invalid hostnames', () =>
-      validateHostname(cmsInstallerFixtures.invalidHostname)
+      validateHostname(invalidHostname)
         .then(() => Promise.reject(new Error('Expected method to reject.')))
         .catch(err => {
           assert(err === 'Project Name is Invalid.');
@@ -27,11 +34,11 @@ describe('cms-installer', () => {
           assert(err === 'Project Name Cannot Be Blank.');
         }));
     it('should validate supported CMS types', () =>
-      validateCMSType(cmsInstallerFixtures.validCMSType).then(result => {
+      validateCMSType(validCMSType).then(result => {
         assert(result === true);
       }));
     it('should reject unsupported CMS types', () =>
-      validateCMSType(cmsInstallerFixtures.invalidCMSType)
+      validateCMSType(invalidCMSType)
         .then(() => Promise.reject(new Error('Expected method to reject.')))
         .catch(err => {
           assert(err === 'CMS Type is Invalid.');
@@ -50,12 +57,12 @@ describe('cms-installer', () => {
 
   describe('#Filesystem Operations', () => {
     beforeEach(done => {
-      mockFS(cmsInstallerFixtures.mockFileSystem);
+      mockFS(mockFileSystem);
       done();
     });
 
     afterEach(done => {
-      mockFS.restore();
+      restore();
       done();
     });
 
@@ -78,6 +85,6 @@ describe('cms-installer', () => {
           );
         }));
 
-    mockFS.restore();
+    restore();
   });
 });

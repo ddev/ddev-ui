@@ -4,19 +4,27 @@ import electron from 'electron';
 import ProjectTypeIcon from './ProjectTypeIcon';
 import ProjectStatusIcon from './ProjectStatusIcon';
 
-import ddevShell from '../modules/ddev-shell';
+import { showLoadingScreen, showErrorScreen } from '../modules/helpers';
+import { start, restart, stop, remove } from '../modules/ddev-shell';
 
 class ProjectHeader extends React.PureComponent {
   processStart = e => {
     e.preventDefault();
     console.log('starting');
-    ddevShell.start(
+    showLoadingScreen(true, 'Starting Project');
+    start(
       this.props.approot,
       data => {
-        console.log(data);
+        const res = data.toString();
+        if (res.includes('Process Exited')) {
+          showLoadingScreen(false);
+        } else {
+          showLoadingScreen(true, res);
+        }
       },
-      error => {
-        console.log(error);
+      err => {
+        console.error(err);
+        showErrorScreen(true, err.toString());
       }
     );
   };
@@ -24,13 +32,20 @@ class ProjectHeader extends React.PureComponent {
   processRestart = e => {
     e.preventDefault();
     console.log('restarting');
-    ddevShell.restart(
+    showLoadingScreen(true, 'Restarting Project');
+    restart(
       this.props.approot,
       data => {
-        console.log(data);
+        const res = data.toString();
+        if (res.includes('Process Exited')) {
+          showLoadingScreen(false);
+        } else {
+          showLoadingScreen(true, res);
+        }
       },
-      error => {
-        console.log(error);
+      err => {
+        console.error(err);
+        showErrorScreen(true, err.toString());
       }
     );
   };
@@ -38,13 +53,20 @@ class ProjectHeader extends React.PureComponent {
   processStop = e => {
     e.preventDefault();
     console.log('stopping');
-    ddevShell.stop(
+    showLoadingScreen(true, 'Stopping Project');
+    stop(
       this.props.approot,
       data => {
-        console.log(data);
+        const res = data.toString();
+        if (res.includes('Process Exited')) {
+          showLoadingScreen(false);
+        } else {
+          showLoadingScreen(true, res);
+        }
       },
-      error => {
-        console.log(error);
+      err => {
+        console.error(err);
+        showErrorScreen(true, err.toString());
       }
     );
   };
@@ -52,14 +74,17 @@ class ProjectHeader extends React.PureComponent {
   processRemove = e => {
     e.preventDefault();
     console.log('stopping');
-    ddevShell.remove(
+    showLoadingScreen(true, 'Removing Project');
+    remove(
       this.props.name,
       false, // TODO: Need to remove
       data => {
-        console.log(data);
+        const res = data.toString();
+        showLoadingScreen(true, res);
       },
-      error => {
-        console.log(error);
+      err => {
+        console.error(err);
+        showErrorScreen(true, err.toString());
       }
     );
   };

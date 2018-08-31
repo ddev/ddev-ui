@@ -9,8 +9,4 @@ const mockFileSystem = {
   },
 };
 
-module.exports.mockFileSystem = mockFileSystem;
-module.exports.validHostname = validHostname;
-module.exports.invalidHostname = invalidHostname;
-module.exports.validCMSType = validCMSType;
-module.exports.invalidCMSType = invalidCMSType;
+export { validHostname, invalidHostname, validCMSType, invalidCMSType, mockFileSystem };

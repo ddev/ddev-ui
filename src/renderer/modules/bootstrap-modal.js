@@ -6,7 +6,7 @@
  * @param footer {string} - optional - content of new modal footer
  * @returns {string} - markup for a boostrap modal
  */
-function createModal(id, title, body, footer) {
+export function createModal(id, title, body, footer) {
   const markup = `<div class="modal fade" id="${id}" tabindex="-1" role="dialog" aria-labelledby="${id}Label" aria-hidden="true">
           <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -28,6 +28,3 @@ function createModal(id, title, body, footer) {
 
   return markup;
 }
-
-const _createModal = createModal;
-export { _createModal as createModal };

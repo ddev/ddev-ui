@@ -1,11 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import electron from 'electron';
-
 import ReactDataGrid from 'react-data-grid';
-import ddevShell from '../modules/ddev-shell';
+
+import { showLoadingScreen, showErrorScreen } from '../modules/helpers';
+import { start, restart, stop, remove } from '../modules/ddev-shell';
 
 import ProjectStatusIcon from './ProjectStatusIcon';
+import Status from './Status';
 
 class ProjectList extends React.PureComponent {
   state = {
@@ -114,15 +116,22 @@ class ProjectList extends React.PureComponent {
   processStart = e => {
     e.preventDefault();
     console.log('starting');
-    ddevShell.start(
+    showLoadingScreen(true, 'Starting Project');
+    start(
       $(e.target)
         .closest('.actions')
         .data('path'),
       data => {
-        console.log(data);
+        const res = data.toString();
+        if (res.includes('Process Exited')) {
+          showLoadingScreen(false);
+        } else {
+          showLoadingScreen(true, res);
+        }
       },
-      error => {
-        console.log(error);
+      err => {
+        console.error(err);
+        showErrorScreen(true, err.toString());
       }
     );
   };
@@ -130,15 +139,22 @@ class ProjectList extends React.PureComponent {
   processRestart = e => {
     e.preventDefault();
     console.log('restarting');
-    ddevShell.restart(
+    showLoadingScreen(true, 'Restarting Project');
+    restart(
       $(e.target)
         .closest('.actions')
         .data('path'),
       data => {
-        console.log(data);
+        const res = data.toString();
+        if (res.includes('Process Exited')) {
+          showLoadingScreen(false);
+        } else {
+          showLoadingScreen(true, res);
+        }
       },
-      error => {
-        console.log(error);
+      err => {
+        console.error(err);
+        showErrorScreen(true, err.toString());
       }
     );
   };
@@ -146,15 +162,22 @@ class ProjectList extends React.PureComponent {
   processStop = e => {
     e.preventDefault();
     console.log('stopping');
-    ddevShell.stop(
+    showLoadingScreen(true, 'Stopping Project');
+    stop(
       $(e.target)
         .closest('.actions')
         .data('path'),
       data => {
-        console.log(data);
+        const res = data.toString();
+        if (res.includes('Process Exited')) {
+          showLoadingScreen(false);
+        } else {
+          showLoadingScreen(true, res);
+        }
       },
-      error => {
-        console.log(error);
+      err => {
+        console.error(err);
+        showErrorScreen(true, err.toString());
       }
     );
   };
@@ -162,7 +185,8 @@ class ProjectList extends React.PureComponent {
   processRemove = e => {
     e.preventDefault();
     console.log('removing');
-    ddevShell.remove(
+    showLoadingScreen(true, 'Removing Project');
+    remove(
       $(e.target)
         .closest('.actions')
         .data('sitename'),
@@ -180,6 +204,7 @@ class ProjectList extends React.PureComponent {
   render() {
     return (
       <section className="my-projects">
+        <Status />
         <h1>My Projects</h1>
         <div className="project-grid">
           {this.state.rows &&

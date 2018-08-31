@@ -12,7 +12,7 @@ import Alerts from './Alerts';
 
 // non componentized JS
 import { init } from '../modules/ui';
-import ddevShell from '../modules/ddev-shell';
+import { list } from '../modules/ddev-shell';
 import { getErrorResponseType } from '../modules/helpers';
 
 // app styling
@@ -39,8 +39,7 @@ class Dashboard extends React.Component {
   }
 
   fetchProjects = () => {
-    ddevShell
-      .list()
+    list()
       .then(newProjects => {
         const projects = {};
         Object.keys(newProjects).forEach(key => {

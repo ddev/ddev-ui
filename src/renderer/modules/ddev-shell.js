@@ -1,7 +1,7 @@
-const childProcess = require('child_process');
-const os = require('os');
-const fixPath = require('fix-path');
-const sudoPrompt = require('sudo-prompt');
+import { spawn } from 'child_process';
+import { homedir } from 'os';
+import fixPath from 'fix-path';
+import { exec } from 'sudo-prompt';
 
 // quirk with electron's pathing. without this, / is symlinked to application working directory root
 fixPath();
@@ -16,7 +16,7 @@ fixPath();
  * @param errorCallback {function} - function to execute or error
  * @param stream {bool} - if true, success callback will be called with every update to stdout.
  */
-const ddevShell = (command, args, path, callback, errorCallback, stream) => {
+export function ddevShell(command, args, path, callback, errorCallback, stream) {
   let opts = {};
 
   let ddevCommand = command;
@@ -31,11 +31,11 @@ const ddevShell = (command, args, path, callback, errorCallback, stream) => {
 
   if (path) {
     opts = {
-      cwd: path.replace('~', os.homedir()),
+      cwd: path.replace('~', homedir()),
     };
   }
 
-  const currentCommand = childProcess.spawn('ddev', ddevCommand, opts);
+  const currentCommand = spawn('ddev', ddevCommand, opts);
 
   let outputBuffer = '';
 
@@ -63,13 +63,13 @@ const ddevShell = (command, args, path, callback, errorCallback, stream) => {
       callback(outputBuffer);
     }
   });
-};
+}
 
 /**
  * wrapper for `ddev list` - parses array of site objects from raw or returns empty array if none
  * @returns {Promise} - resolves with an array of sites, or an empty array if none found
  */
-const list = () => {
+export function list() {
   const promise = new Promise((resolve, reject) => {
     function getRaw(output) {
       const objs = output.split('\n');
@@ -99,7 +99,7 @@ const list = () => {
     ddevShell('list', ['-j'], null, getRaw, reject);
   });
   return promise;
-};
+}
 
 /**
  * wrapper for `ddev start`
@@ -107,9 +107,9 @@ const list = () => {
  * @param callback {function} - function called on stdout update
  * @param errorCallback {function} - function called on error
  */
-const start = (path, callback, errorCallback) => {
+export function start(path, callback, errorCallback) {
   ddevShell('start', null, path, callback, errorCallback, true);
-};
+}
 
 /**
  * wrapper for `ddev stop`
@@ -117,9 +117,9 @@ const start = (path, callback, errorCallback) => {
  * @param callback {function} - function called on stdout update
  * @param errorCallback {function} - function called on error
  */
-const stop = (path, callback, errorCallback) => {
+export function stop(path, callback, errorCallback) {
   ddevShell('stop', null, path, callback, errorCallback, true);
-};
+}
 
 /**
  * wrapper for `ddev restart`
@@ -127,23 +127,23 @@ const stop = (path, callback, errorCallback) => {
  * @param callback {function} - function called on stdout update
  * @param errorCallback {function} - function called on error
  */
-const restart = (path, callback, errorCallback) => {
+export function restart(path, callback, errorCallback) {
   ddevShell('restart', null, path, callback, errorCallback, true);
-};
+}
 
 /**
  * wrapper for `ddev remove`
  * @param name {string} - name of site to remove
  * @param shouldRemoveData {boolean} - if data should be removed as well as project containers
  */
-const remove = (name, shouldRemoveData) => {
+export function remove(name, shouldRemoveData) {
   const args = shouldRemoveData ? ['-j', '--remove-data'] : ['-j'];
   args.push(name);
   const promise = new Promise((resolve, reject) => {
     ddevShell('remove', args, '', resolve, reject, false);
   });
   return promise;
-};
+}
 
 /**
  * wrapper for `ddev config`, run with --sitename --docroot flags to prevent cli from prompting
@@ -153,7 +153,7 @@ const remove = (name, shouldRemoveData) => {
  * @param callback {function} - function to call on execution completion
  * @param errorCallback - function to call on failure
  */
-const config = (path, name, docroot, callback, errorCallback) => {
+export function config(path, name, docroot, callback, errorCallback) {
   ddevShell(
     'config',
     ['-j', '--sitename', name, '--docroot', docroot],
@@ -161,7 +161,7 @@ const config = (path, name, docroot, callback, errorCallback) => {
     callback,
     errorCallback
   );
-};
+}
 
 /**
  * wrapper for `ddev hostname`, attempts to run as sudo
@@ -169,14 +169,14 @@ const config = (path, name, docroot, callback, errorCallback) => {
  * @param domain - optional - domain to create sitename subdomain
  * @returns {Promise} - resolves on successful execution with stdout text
  */
-const hostname = (siteName, domain = 'ddev.local') => {
+export function hostname(siteName, domain = 'ddev.local') {
   const promise = new Promise((resolve, reject) => {
     const options = {
       name: 'DDEV UI',
     };
 
     const command = `ddev hostname ${siteName}.${domain} 127.0.0.1 -j`;
-    sudoPrompt.exec(command, options, (error, stdout, stderr) => {
+    exec(command, options, (error, stdout, stderr) => {
       if (error) {
         console.log(stderr);
         reject(error);
@@ -186,14 +186,14 @@ const hostname = (siteName, domain = 'ddev.local') => {
     });
   });
   return promise;
-};
+}
 
 /**
  * wrapper for `ddev describe` and formats output (creates links) as needed by the UI
  * @param siteName {string} - target site to get details of
  * @returns {Promise} - resolves with object containing formatted links and sections for the UI
  */
-const describe = siteName => {
+export function describe(siteName) {
   const promise = new Promise((resolve, reject) => {
     function parseJSONOutput(describeJSON) {
       const objs = describeJSON.split('\n');
@@ -218,57 +218,7 @@ const describe = siteName => {
   });
 
   return promise;
-};
-
-/**
- * wrapper for `ddev describe` and formats output (creates links) as needed by the UI
- * @param siteName {string} - target site to get details of
- * @returns {Promise} - resolves with object containing formatted links and sections for the UI
- */
-const describeModal = siteName => {
-  const promise = new Promise((resolve, reject) => {
-    function parseJSONOutput(describeJSON) {
-      const objs = describeJSON.split('\n');
-
-      objs.forEach(obj => {
-        const modalData = {};
-        if (obj) {
-          try {
-            const rawData = JSON.parse(obj);
-
-            if (rawData.level === 'info') {
-              const siteDetails = rawData.raw;
-
-              if (siteDetails.dbinfo) {
-                modalData['MySQL Credentials'] = siteDetails.dbinfo;
-              }
-              if (siteDetails.mailhog_url || siteDetails.phpmyadmin_url) {
-                modalData['Other Services'] = {};
-                if (siteDetails.mailhog_url) {
-                  modalData['Other Services'].MailHog = `<a class='open-site' data-url='${
-                    siteDetails.mailhog_url
-                  }' href="#">${siteDetails.mailhog_url}</a>`;
-                }
-                if (siteDetails.phpmyadmin_url) {
-                  modalData['Other Services'].phpMyAdmin = `<a class='open-site' data-url='${
-                    siteDetails.phpmyadmin_url
-                  }' href="#">${siteDetails.phpmyadmin_url}</a>`;
-                }
-              }
-              resolve(modalData);
-            }
-          } catch (e) {
-            reject(modalData);
-          }
-        }
-        return promise;
-      });
-    }
-    ddevShell('describe', [siteName, '-j'], null, parseJSONOutput, reject, false);
-  });
-
-  return promise;
-};
+}
 
 /**
  * priv escalation - only allows whitelisted commands to be run as sudo, and bans dangerous characters
@@ -276,12 +226,7 @@ const describeModal = siteName => {
  * @param promptOptions {object} - sudo prompt options such as application name and prompt icon
  * @returns {promise} - resolves if escalation is successful with stdout text
  */
-const sudo = (
-  command,
-  promptOptions = {
-    name: 'DDEV UI',
-  }
-) => {
+export function sudo(command, promptOptions = { name: 'DDEV UI' }) {
   const bannedCharacters = [';', '|', '&'];
   const whitelistedCommands = ['version'];
   const ddevCommand = `ddev ${command}`;
@@ -295,7 +240,7 @@ const sudo = (
       }
     });
     const promise = new Promise((resolve, reject) => {
-      sudoPrompt.exec(ddevCommand, promptOptions, (error, stdout, stderr) => {
+      exec(ddevCommand, promptOptions, (error, stdout, stderr) => {
         if (error) {
           console.log(stderr);
           reject(new Error('Unable to escalate permissions.'));
@@ -308,15 +253,4 @@ const sudo = (
     return promise;
   }
   return Promise.reject(new Error(`${ddevCommand} is not allowed to be run as sudo`));
-};
-
-module.exports.list = list;
-module.exports.start = start;
-module.exports.hostname = hostname;
-module.exports.stop = stop;
-module.exports.restart = restart;
-module.exports.remove = remove;
-module.exports.config = config;
-module.exports.describe = describe;
-module.exports.describeModal = describeModal;
-module.exports.sudo = sudo;
+}
