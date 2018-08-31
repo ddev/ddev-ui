@@ -1,7 +1,7 @@
 {
   "name": "ddev-ui",
   "description": "A GUI to complement the DDEV CLI",
-  "version": "v0.4.0-alpha.0",
+  "version": "v0.4.0-alpha.1",
   "main": "src/main/index.js",
   "homepage": "https://github.com/drud/ddev",
   "author": {
@@ -27,16 +27,18 @@
     "build-darwin": "yarn compile && electron-builder --mac",
     "test": "mocha --require babel-register --require ignore-styles",
     "postinstall": "electron-builder install-app-deps",
-    "publish": "yarn compile && build -p always"
+    "release": "yarn compile && build -p always"
   },
   "build": {
     "productName": "DDEV UI",
     "appId": "com.github.drud.ddev-ui",
-    "publish": [{
+    "publish": [
+      {
         "provider": "github",
         "owner": "alkymst",
         "repo": "ddev-ui"
-    }],
+      }
+    ],
     "mac": {
       "category": "your.app.category.type",
       "target": [
