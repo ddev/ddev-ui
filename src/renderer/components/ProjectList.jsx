@@ -192,11 +192,16 @@ class ProjectList extends React.PureComponent {
         .data('sitename'),
       false,
       data => {
-        // TODO: Need to remove
-        console.log(data);
+        const res = data.toString();
+        if (res.includes('Process Exited')) {
+          showLoadingScreen(false);
+        } else {
+          showLoadingScreen(true, res);
+        }
       },
-      error => {
-        console.log(error);
+      err => {
+        console.error(err);
+        showErrorScreen(true, err.toString());
       }
     );
   };
