@@ -80,7 +80,12 @@ class ProjectHeader extends React.PureComponent {
       false, // TODO: Need to remove
       data => {
         const res = data.toString();
-        showLoadingScreen(true, res);
+        if (res.includes('Process Exited')) {
+          showLoadingScreen(false);
+          this.props.push('/');
+        } else {
+          showLoadingScreen(true, res);
+        }
       },
       err => {
         console.error(err);

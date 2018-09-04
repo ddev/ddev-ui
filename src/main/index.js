@@ -1,7 +1,10 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from 'electron-log';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
+import defaultMenu from 'electron-default-menu';
 
 if (process.env.NODE_ENV !== 'development') {
   global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\');
@@ -9,13 +12,48 @@ if (process.env.NODE_ENV !== 'development') {
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
+//-------------------------------------------------------------------
+// Logging
+//-------------------------------------------------------------------
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+log.info('App starting...');
+
+//-------------------------------------------------------------------
+// Define the menu
+//-------------------------------------------------------------------
+const template = [];
+if (process.platform === 'darwin') {
+  // OS X
+  const name = app.getName();
+  template.unshift({
+    label: name,
+    submenu: [
+      {
+        label: `About ${name}`,
+        role: 'about',
+      },
+      {
+        label: 'Quit',
+        accelerator: 'Command+Q',
+        click() {
+          app.quit();
+        },
+      },
+    ],
+  });
+}
+
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow;
 
+const sendStatusToWindow = text => {
+  log.info(text);
+  window.webContents.send('message', text);
+};
+
 const createMainWindow = () => {
   const window = new BrowserWindow({
-    width: 800,
-    height: 600,
     titleBarStyle: 'hidden',
   });
 
@@ -45,6 +83,28 @@ const createMainWindow = () => {
   return window;
 };
 
+autoUpdater.on('checking-for-update', () => {
+  sendStatusToWindow('Checking for update...');
+});
+autoUpdater.on('update-available', info => {
+  sendStatusToWindow('Update available.');
+});
+autoUpdater.on('update-not-available', info => {
+  sendStatusToWindow('Update not available.');
+});
+autoUpdater.on('error', err => {
+  sendStatusToWindow(`Error in auto-updater. ${err}`);
+});
+autoUpdater.on('download-progress', progressObj => {
+  let logMessage = `Download speed: ${progressObj.bytesPerSecond}`;
+  logMessage = `${logMessage} - Downloaded ${progressObj.percent}%`;
+  logMessage = `${logMessage} (${progressObj.transferred}/${progressObj.total})`;
+  sendStatusToWindow(logMessage);
+});
+autoUpdater.on('update-downloaded', info => {
+  sendStatusToWindow('Update downloaded');
+});
+
 // quit application when all windows are closed
 app.on('window-all-closed', () => {
   // on macOS it is common for applications to stay open until the user explicitly quits
@@ -61,12 +121,18 @@ app.on('activate', () => {
 });
 
 // create main BrowserWindow when electron is ready
-app.on('ready', async () => {
+app.on('ready', () => {
+  const menu = defaultMenu(app, shell);
+  // Set top-level application menu, using modified template
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menu));
   mainWindow = createMainWindow();
-
   if (isDevelopment) {
-    await installExtension(REACT_DEVELOPER_TOOLS)
+    installExtension(REACT_DEVELOPER_TOOLS)
       .then(name => console.log(`Added Extension:  ${name}`))
       .catch(err => console.log('An error occurred: ', err));
   }
+});
+
+app.on('ready', () => {
+  autoUpdater.checkForUpdatesAndNotify();
 });

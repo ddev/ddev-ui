@@ -136,13 +136,16 @@ export function restart(path, callback, errorCallback) {
  * @param name {string} - name of site to remove
  * @param shouldRemoveData {boolean} - if data should be removed as well as project containers
  */
-export function remove(name, shouldRemoveData) {
-  const args = shouldRemoveData ? ['-j', '--remove-data'] : ['-j'];
+export function remove(name, shouldRemoveData, callback, errorCallback) {
+  const args = shouldRemoveData ? ['--remove-data'] : [];
   args.push(name);
-  const promise = new Promise((resolve, reject) => {
-    ddevShell('remove', args, '', resolve, reject, false);
-  });
-  return promise;
+
+  ddevShell('remove', args, '', callback, errorCallback, true);
+
+  // const promise = new Promise((resolve, reject) => {
+  //   ddevShell('remove', args, '', resolve, reject, false);
+  // });
+  // return promise;
 }
 
 /**
