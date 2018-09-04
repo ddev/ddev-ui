@@ -1,9 +1,10 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, Menu, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
+import defaultMenu from 'electron-default-menu';
 
 if (process.env.NODE_ENV !== 'development') {
   global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\');
@@ -13,11 +14,6 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 
 //-------------------------------------------------------------------
 // Logging
-//
-// THIS SECTION IS NOT REQUIRED
-//
-// This logging setup is not required for auto-updates to work,
-// but it sure makes debugging easier :)
 //-------------------------------------------------------------------
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
@@ -25,8 +21,6 @@ log.info('App starting...');
 
 //-------------------------------------------------------------------
 // Define the menu
-//
-// THIS SECTION IS NOT REQUIRED
 //-------------------------------------------------------------------
 const template = [];
 if (process.platform === 'darwin') {
@@ -60,8 +54,6 @@ const sendStatusToWindow = text => {
 
 const createMainWindow = () => {
   const window = new BrowserWindow({
-    width: 800,
-    height: 600,
     titleBarStyle: 'hidden',
   });
 
@@ -104,10 +96,10 @@ autoUpdater.on('error', err => {
   sendStatusToWindow(`Error in auto-updater. ${err}`);
 });
 autoUpdater.on('download-progress', progressObj => {
-  let log_message = `Download speed: ${progressObj.bytesPerSecond}`;
-  log_message = `${log_message} - Downloaded ${progressObj.percent}%`;
-  log_message = `${log_message} (${progressObj.transferred}/${progressObj.total})`;
-  sendStatusToWindow(log_message);
+  let logMessage = `Download speed: ${progressObj.bytesPerSecond}`;
+  logMessage = `${logMessage} - Downloaded ${progressObj.percent}%`;
+  logMessage = `${logMessage} (${progressObj.transferred}/${progressObj.total})`;
+  sendStatusToWindow(logMessage);
 });
 autoUpdater.on('update-downloaded', info => {
   sendStatusToWindow('Update downloaded');
@@ -129,15 +121,13 @@ app.on('activate', () => {
 });
 
 // create main BrowserWindow when electron is ready
-app.on('ready', async () => {
-  // Create the Menu
-  const menu = Menu.buildFromTemplate(template);
-  Menu.setApplicationMenu(menu);
-
+app.on('ready', () => {
+  const menu = defaultMenu(app, shell);
+  // Set top-level application menu, using modified template
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menu));
   mainWindow = createMainWindow();
-
   if (isDevelopment) {
-    await installExtension(REACT_DEVELOPER_TOOLS)
+    installExtension(REACT_DEVELOPER_TOOLS)
       .then(name => console.log(`Added Extension:  ${name}`))
       .catch(err => console.log('An error occurred: ', err));
   }
