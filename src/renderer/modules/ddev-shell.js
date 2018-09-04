@@ -141,11 +141,6 @@ export function remove(name, shouldRemoveData, callback, errorCallback) {
   args.push(name);
 
   ddevShell('remove', args, '', callback, errorCallback, true);
-
-  // const promise = new Promise((resolve, reject) => {
-  //   ddevShell('remove', args, '', resolve, reject, false);
-  // });
-  // return promise;
 }
 
 /**
