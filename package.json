@@ -35,12 +35,12 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "alkymst",
+        "owner": "drud",
         "repo": "ddev-ui"
       }
     ],
     "mac": {
-      "category": "your.app.category.type",
+      "category": "public.app-category.developer-tools",
       "target": [
         "zip",
         "dmg"
