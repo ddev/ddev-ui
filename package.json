@@ -70,6 +70,7 @@
     "babel-loader": "^8.0.0-beta",
     "bootstrap": "4.1.x",
     "compare-versions": "3.x",
+    "electron-default-menu": "^1.0.1",
     "electron-devtools-installer": "2.2.x",
     "electron-is-dev": "0.3.x",
     "electron-log": "^2.2.17",

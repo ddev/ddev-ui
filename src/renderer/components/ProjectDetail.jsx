@@ -11,7 +11,7 @@ class ProjectDetail extends React.PureComponent {
         <Status />
         {this.props.project && (
           <div className="project-details">
-            <ProjectHeader {...this.props.project} />
+            <ProjectHeader {...this.props.project} {...this.props.history} />
             <ProjectInfo {...this.props.project} />
           </div>
         )}

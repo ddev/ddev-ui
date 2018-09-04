@@ -195,6 +195,7 @@ class ProjectList extends React.PureComponent {
         const res = data.toString();
         if (res.includes('Process Exited')) {
           showLoadingScreen(false);
+          this.props.history.push('/');
         } else {
           showLoadingScreen(true, res);
         }

@@ -82,6 +82,7 @@ class ProjectHeader extends React.PureComponent {
         const res = data.toString();
         if (res.includes('Process Exited')) {
           showLoadingScreen(false);
+          this.props.push('/');
         } else {
           showLoadingScreen(true, res);
         }
