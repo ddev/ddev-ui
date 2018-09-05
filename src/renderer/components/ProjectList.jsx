@@ -7,7 +7,6 @@ import { showLoadingScreen, showErrorScreen } from '../modules/helpers';
 import { start, restart, stop, remove } from '../modules/ddev-shell';
 
 import ProjectStatusIcon from './ProjectStatusIcon';
-import Status from './Status';
 
 class ProjectList extends React.PureComponent {
   state = {
@@ -210,7 +209,6 @@ class ProjectList extends React.PureComponent {
   render() {
     return (
       <section className="my-projects">
-        <Status />
         <h1>My Projects</h1>
         <div className="project-grid">
           {this.state.rows &&

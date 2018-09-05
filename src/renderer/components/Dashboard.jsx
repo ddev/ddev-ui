@@ -9,6 +9,7 @@ import Sidebar from './Sidebar';
 import Footer from './Footer';
 import ViewRouter from './ViewRouter';
 import Alerts from './Alerts';
+import Status from './Status';
 
 // non componentized JS
 import { init } from '../modules/ui';
@@ -103,6 +104,7 @@ class Dashboard extends React.Component {
           <div className="row h-100">
             <Sidebar projects={this.state.projects} />
             <main className="content h-100 col-md-8">
+              <Status />
               <Alerts errors={this.state.errors} />
               <ViewRouter
                 addError={this.addError}
