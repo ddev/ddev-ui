@@ -15,9 +15,8 @@ $fa-font-path: "~font-awesome/fonts";
 @import "common/layout";
 
 @import "components/buttons";
-@import "components/card";
-@import "components/footer";
 @import "components/header";
+@import "components/footer";
 @import "components/sidebar";
 @import "components/createProject";
-@import "components/modals";
+@import "components/status";
