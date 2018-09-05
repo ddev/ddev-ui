@@ -71,9 +71,21 @@ While developing and testing casually locally (not for formal reviews), you may 
 
 This will launch the ddev-ui electron app without requiring building disk images and closing/reopening the binary.
 
+## Alpha Release
+- This is an initial alpha release. We fully expect there to be bugs and we have a backlog of features we are working on. We'll respond as quickly as we can to new requests.
+- We would love your suggestions, contributions, and help! Please review our [Guidelines for Contributing](https://github.com/drud/ddev/blob/master/CONTRIBUTING.md).
+
+## Known Issues
+- This version only supports Mac OS. We are working on getting Linux and Windows support and testing in by the next release.
+- While existing TYPO3, Drupal 6, and Backdrop sites will work, the Create New Project functionality currently only works from Drupal 7, Drupal 8, and WordPress. We are working hard on adding support for Typo3, Drupal 6, and Backdrop in the next release.
+- We are still working on the code signature so you’ll need to right-click to bypass Mac security settings when opening the app the first time.
+
+
 ## Initial Roadmap
 
 The planned roadmap can be found at
 https://github.com/drud/ddev-ui/wiki/Roadmap.
 
-DDEV-UI is currently at V0.3.0
+DDEV-UI is currently at V0.4.1-alpha
+
+As always, thank for your support, feedback, and contributions!
