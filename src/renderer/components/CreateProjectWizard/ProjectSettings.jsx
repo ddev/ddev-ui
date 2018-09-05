@@ -121,7 +121,7 @@ class ProjectSettings extends React.PureComponent {
                       // disabled="disabled"
                       readOnly
                       className="form-control"
-                      placeholder="~/Sites/my-new-project/docroot"
+                      // placeholder="~/Sites/my-new-project/docroot"
                       value={this.props.docroot}
                       id="localDocroot"
                     />

@@ -22,7 +22,6 @@ import ProjectSettings from './CreateProjectWizard/ProjectSettings';
 import ContainerSettings from './CreateProjectWizard/ContainerSettings';
 import CmsSettings from './CreateProjectWizard/CmsSettings';
 import WizardSteps from './CreateProjectWizard/WizardSteps';
-import Status from './Status';
 
 const remote = _remote || electron;
 const { dialog } = remote;
@@ -407,8 +406,6 @@ class CreateProjectWizard extends React.Component {
     return (
       <div className="create-project-wizard">
         <form className="" onSubmit={this.handleProjectCreation} key="createProjectForm">
-          <Status />
-
           {/* Step 1 */}
           {this.state.step === '1' && (
             <ProjectSettings
