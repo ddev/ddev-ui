@@ -8,15 +8,12 @@ export function checkIfExistingConfig(path) {
   const promise = new Promise((resolve, reject) => {
     try {
       config(path, 'validName', 'totally invalid docroot that does not exist', null, messages => {
+        console.log(messages);
         if (messages.includes('existing configuration')) {
           const proceed = window.confirm(
-            `An existing DDEV configuration was found in ${path}. By proceeding, the existing configuration will be updated and replaced.`
+            `An existing DDEV config was found! \n\nClick Cancel to use the existing or OK to generate a new one.`
           );
-          if (proceed) {
-            resolve(true);
-          } else {
-            reject(new Error('User Canceled'));
-          }
+          resolve(proceed);
         } else {
           resolve(false);
         }

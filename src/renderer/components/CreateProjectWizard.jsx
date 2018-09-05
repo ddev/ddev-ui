@@ -227,9 +227,12 @@ export function addCMSFromExisting(name, targetPath, docroot = '', history = {})
   showLoadingScreen(true);
   validateExistingFilesInputs(name, targetPath, docroot)
     .then(() => checkIfExistingConfig(targetPath))
-    .then(() => {
-      showLoadingScreen(true, 'Configuring Project');
-      return configureSite(name, targetPath, docroot);
+    .then(shouldConfig => {
+      if (shouldConfig) {
+        showLoadingScreen(true, 'Configuring Project');
+        return configureSite(name, targetPath, docroot);
+      }
+      return Promise.resolve(true);
     })
     .then(() => {
       showLoadingScreen(true, 'Updating Hosts File');
