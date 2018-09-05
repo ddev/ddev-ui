@@ -87,7 +87,6 @@ class ProjectSettings extends React.PureComponent {
                     readOnly
                     required="required"
                     className="form-control disabled"
-                    placeholder="~/Sites/"
                     value={this.props.path}
                     id="localPath"
                     name="path"
