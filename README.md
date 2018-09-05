@@ -2,6 +2,9 @@
 
 A Graphical User Interface for the DDEV CLI (https://github.com/drud/ddev)
 
+[![CircleCI](https://circleci.com/gh/drud/ddev-ui.svg?style=shield)](https://circleci.com/gh/drud/ddev-ui) ![project is maintained](https://img.shields.io/maintenance/yes/2018.svg)
+
+
 ## Prerequisites
 
 If you are looking to contribute to the project you will need to make sure you have the below prerequisites.
