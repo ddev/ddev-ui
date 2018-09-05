@@ -1,0 +1,48 @@
+/*
+  Loading and error overlays
+ */
+.loading-overlay,
+.error-overlay {
+  text-align: center;
+  display: none;
+  z-index: 3;
+  margin-top: -15px;
+  margin-left: -15px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(100, 100, 100, 0.8);
+  align-items: center;
+  justify-content: center;
+}
+
+.error-overlay {
+  padding: 50px;
+}
+
+.error-overlay div {
+  margin: 10px 0;
+}
+
+.loading-spinner {
+  font-size: 150px !important;
+  color: color("primary");
+}
+
+.error-icon {
+  color: color("red");
+}
+
+.loading-text {
+  width: 55%;
+  margin-left: 20px;
+  color: color("primary");
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.error-text {
+  color: color("primary");
+  font-weight: bold;
+  font-size: 20px;
+}

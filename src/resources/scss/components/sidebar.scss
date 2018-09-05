@@ -30,6 +30,27 @@
   }
   .ListViewFooter {
     background: transparent;
+    border-top: 1px solid rgba(0, 58, 112, 0.6) !important;
+
+    ul {
+      li {
+        height: 50px;
+        margin-right: 0;
+        width: auto;
+
+        &.col:not(:last-child) {
+          border-right: 1px solid rgba(0, 58, 112, 0.6);
+        }
+
+        img {
+          height: 20px;
+        }
+
+        &.open-docs {
+          font-size: 0.8rem;
+        }
+      }
+    }
   }
 
   .ListViewRow {

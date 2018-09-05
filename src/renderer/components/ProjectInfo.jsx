@@ -1,5 +1,4 @@
 import React from 'react';
-// import ProjectConsole from './ProjectConsole';
 
 // define the ProjectTab sub-component
 const ProjectTab = props => (
@@ -37,8 +36,6 @@ class ProjectInfo extends React.PureComponent {
           ) : null}
           {/* Database */}
           {this.props.dbinfo ? <ProjectTab title="Database" id="site-db" /> : null}
-          {/* Console */}
-          {/* <ProjectTab title="Console" id="console" /> */}
           {/* config */}
           <ProjectTab title="Config" id="config" />
         </ul>
@@ -82,24 +79,6 @@ class ProjectInfo extends React.PureComponent {
               </dl>
             </div>
           ) : null}
-          {/* Console */}
-          {/*
-          <div className="tab-pane fade" id="console" role="tabpanel" aria-labelledby="console-tab">
-            <dl className="list-group list-group-flush">
-              <div
-                className="row h-100"
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <ProjectConsole />
-              </div>
-            </dl>
-          </div>
-          */}
-
           {/* config */}
           <div className="tab-pane fade" id="config" role="tabpanel" aria-labelledby="config-tab">
             <dl className="list-group list-group-flush">

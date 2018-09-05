@@ -1,5 +1,24 @@
 import React from 'react';
 
+const issue = require(`${__static}/img/Issue.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
+
+const Alpha = props => (
+  <div className="alert alert-info alert-dismissible fade show" role="alert">
+    Thanks for testing out the Alpha and pardon the mess!
+    <br />
+    <br />
+    <small>
+      If you find any issues, something seems off, or is just flat out not working let us know. We
+      are also looking for your feedback for future releases. Look for the{' '}
+      <img alt="Open Issue" src={issue} className="" /> icon in the bottom of the sidebar to submit
+      any issues or feedback you might have.
+    </small>
+    <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+);
+
 // define the Alert component
 const Alert = props => (
   <div className={`alert alert-${props.type} alert-dismissible fade show`} role="alert">
@@ -43,7 +62,12 @@ class Alerts extends React.PureComponent {
       alerts = Object.keys(this.props.errors).map(type => this.renderAlertType(type));
     }
 
-    return <div className="alerts mt-3">{alerts}</div>;
+    return (
+      <div className="alerts mt-3">
+        {alerts}
+        <Alpha />
+      </div>
+    );
   }
 }
 
