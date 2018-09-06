@@ -79,6 +79,7 @@
     "font-awesome": "4.7.x",
     "jquery": "3.3.x",
     "lodash": "4.17.x",
+    "node-fetch": "^2.2.0",
     "popper.js": "1.14.x",
     "prop-types": "15.x",
     "react": "16.x",
