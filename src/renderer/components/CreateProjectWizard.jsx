@@ -4,8 +4,8 @@ import { x } from 'tar';
 import { readdir, mkdir } from 'fs';
 import { homedir } from 'os';
 
-import { start, hostname as _hostname } from '../modules/ddev-shell';
-import { getLocalDistros } from '../modules/distro-updater';
+import { start, hostname as _hostname } from '../ddev-shell';
+import { getLocalDistros } from '../distro-updater';
 
 import {
   showLoadingScreen,
@@ -16,7 +16,7 @@ import {
   validateDocroot,
   configureSite,
   checkIfExistingConfig,
-} from '../modules/helpers';
+} from '../helpers';
 
 import ProjectSettings from './CreateProjectWizard/ProjectSettings';
 import ContainerSettings from './CreateProjectWizard/ContainerSettings';

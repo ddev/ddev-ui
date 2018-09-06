@@ -12,9 +12,9 @@ import Alerts from './Alerts';
 import Status from './Status';
 
 // non componentized JS
-import { init } from '../modules/ui';
-import { list } from '../modules/ddev-shell';
-import { getErrorResponseType } from '../modules/helpers';
+import { updateDistros } from '../distro-updater';
+import { list } from '../ddev-shell';
+import { getErrorResponseType } from '../helpers';
 
 // app styling
 import '~/src/resources/scss/main.scss'; // eslint-disable-line import/no-unresolved
@@ -27,11 +27,12 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount() {
-    // TODO: Remove this once everything is moved over
-    init();
+    // update the CMS distros
+    updateDistros();
     // Initial state load
     this.fetchProjects();
-    // TODO: this could be reduced/removed once state is updated everywhere.
+    // Set heartbeat to check for updates
+    // TODO: Work with local team to refine `ddev list -j --continuous` and start using that instead
     this.timerID = setInterval(() => this.heartBeat(), 2500); // 2.5s
   }
 
