@@ -1,5 +1,6 @@
 import React from 'react';
 import electron from 'electron';
+import fetch from 'node-fetch';
 
 import ProjectTypeIcon from './ProjectTypeIcon';
 import ProjectStatusIcon from './ProjectStatusIcon';
@@ -109,7 +110,12 @@ class ProjectHeader extends React.PureComponent {
                   className="open-site"
                   onClick={e => {
                     e.preventDefault();
-                    electron.shell.openExternal(this.props.httpurl);
+                    fetch(this.props.httpurl).then(res => {
+                      if (res.statusText.includes('Service unavailable')) {
+                        return electron.shell.openExternal(`${this.props.httpurl}/install.php`);
+                      }
+                      return electron.shell.openExternal(this.props.httpurl);
+                    });
                   }}
                 >
                   {this.props.name}
@@ -169,21 +175,26 @@ class ProjectHeader extends React.PureComponent {
               className="btn btn-outline-secondary"
               onClick={e => {
                 e.preventDefault();
-                electron.shell.openExternal(this.props.httpurl);
+                fetch(this.props.httpurl).then(res => {
+                  if (res.statusText.includes('Service unavailable')) {
+                    return electron.shell.openExternal(`${this.props.httpurl}/install.php`);
+                  }
+                  return electron.shell.openExternal(this.props.httpurl);
+                });
               }}
             >
               View Site
             </button>
-            <button
+            {/* <button
               type="button"
               className="btn btn-outline-secondary"
               onClick={e => {
                 e.preventDefault();
-                electron.shell.openExternal(this.props.httpurl);
+                electron.shell.openExternal(this.props.phpmyadmin_url);
               }}
             >
-              Site Admin
-            </button>
+              phpMyAdmin
+            </button> */}
           </div>
         </div>
       </header>

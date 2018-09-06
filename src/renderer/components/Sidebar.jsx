@@ -55,7 +55,7 @@ class Sidebar extends React.Component {
                 className="h-100 d-flex align-content-center align-items-center justify-content-center"
                 onClick={e => {
                   e.preventDefault();
-                  electron.shell.openExternal('https://github.com/drud/ddev-ui-support/issues');
+                  electron.shell.openExternal('https://github.com/drud/ddev-ui/issues');
                 }}
               >
                 <img alt="Open Issue" src={issue} className="" />
