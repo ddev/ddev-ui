@@ -1,5 +1,5 @@
 import { canReadAndWrite } from './distro-updater';
-import { config, start, hostname as _hostname } from './ddev-shell';
+import { config, start } from './ddev-shell';
 
 /**
  * Checks if site has an existing configuration

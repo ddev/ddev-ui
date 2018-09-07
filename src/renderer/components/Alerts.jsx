@@ -2,7 +2,7 @@ import React from 'react';
 
 const issue = require(`${__static}/img/Issue.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
 
-const Alpha = props => (
+const Alpha = () => (
   <div className="alert alert-info alert-dismissible fade show" role="alert">
     Thanks for testing out the Alpha and pardon the mess!
     <br />

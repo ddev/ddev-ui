@@ -16,7 +16,6 @@ const Name = props => (
       id="projectName"
       onChange={props.handleInputChange}
       key="projectName"
-      autoFocus
     />
     <small className="form-text text-muted">
       Name or Domain of your project. (In a url friendly format.)

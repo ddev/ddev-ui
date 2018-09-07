@@ -367,7 +367,7 @@ class CreateProjectWizard extends React.Component {
     });
   };
 
-  handleEnableXDebugUpdate = e => {
+  handleEnableXDebugUpdate = () => {
     this.setState(prevState => ({ enableXDebug: !prevState.enableXDebug }));
   };
 
