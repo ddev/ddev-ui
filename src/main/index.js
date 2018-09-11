@@ -6,10 +6,6 @@ import * as path from 'path';
 import { format as formatUrl } from 'url';
 import defaultMenu from 'electron-default-menu';
 
-if (process.env.NODE_ENV !== 'development') {
-  global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\');
-}
-
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 //-------------------------------------------------------------------
