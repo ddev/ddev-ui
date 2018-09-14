@@ -1,29 +1,27 @@
 import React from 'react';
 import { Window } from 'react-desktop/macOs';
-import { isObject } from 'util';
 import _ from 'lodash';
+import { toast } from 'react-toastify';
+import ErrorBoundary from 'react-error-boundary';
 
 // components
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 import ViewRouter from './ViewRouter';
+import Alpha from './Alpha';
 import Alerts from './Alerts';
 import Status from './Status';
 
 // non componentized JS
 import { updateDistros } from '../distro-updater';
 import { list } from '../ddev-shell';
-import { getErrorResponseType } from '../helpers';
-
-// app styling
-import '~/src/resources/scss/main.scss'; // eslint-disable-line import/no-unresolved
 
 class Dashboard extends React.Component {
   state = {
     projects: {},
     errors: {},
-    router: '',
+    router: 'Not Running - No Running DDEV Applications.',
   };
 
   componentDidMount() {
@@ -51,10 +49,10 @@ class Dashboard extends React.Component {
         });
         this.updateProjects(projects);
         this.updateRouterStatus(projects);
+        this.errorResolve();
       })
       .catch(e => {
-        console.log(e);
-        this.addError(e);
+        this.errorCapture(e);
       });
   };
 
@@ -67,7 +65,9 @@ class Dashboard extends React.Component {
   updateRouterStatus = projects => {
     let routerStatusText = 'Not Running - No Running DDEV Applications.';
     const validRouterStates = ['starting', 'healthy'];
-    const routerStatus = Object.values(projects)[0].router_status;
+    const routerStatus = _.isSet(Object.values(projects)[0].router_status)
+      ? Object.values(projects)[0].router_status
+      : -1;
 
     routerStatusText =
       validRouterStates.indexOf(routerStatus) !== -1
@@ -83,39 +83,102 @@ class Dashboard extends React.Component {
     this.fetchProjects();
   };
 
-  addError = error => {
-    // 1. Take a copy of the existing state
-    const errors = { ...this.state.errors };
-    // 2. Add our new error to that errors variable
-    const newError = JSON.parse(error);
-    newError.type = getErrorResponseType(newError);
-    if (!isObject(errors[newError.type])) {
-      errors[newError.type] = {};
+  errorCapture = (e, info) => {
+    let error = {};
+
+    try {
+      error = JSON.parse(e);
+    } catch (e) {
+      console.log(e);
     }
-    errors[newError.type][Date.now()] = newError;
-    // 3. Set the new errors object to state
-    this.setState({ errors });
+
+    let {
+      msg = ' 🦄 There was a problem!',
+      level = 'info',
+      type = 'general',
+      time = Date.now(),
+      id = Date.now(),
+    } = error;
+
+    // Docker error
+    if (msg.includes('Docker')) {
+      msg = ` 🐳 ${msg}`;
+      type = 'docker';
+      id = 'docker';
+    }
+
+    if (_.isUndefined(_.find(this.state.errors, ['id', id]))) {
+      // set to state to check against
+      this.setState(prevState => {
+        const { errors } = prevState;
+
+        if (_.isUndefined(_.find(errors, id))) {
+          // console.log(errors);
+          errors[id] = { msg, info, id, level, type, time };
+
+          // log error for now
+          console.table({ msg, info, id, level, type, time });
+
+          // update state
+          return { errors };
+        }
+      });
+    }
+  };
+
+  errorResolve = () => {
+    if (_.find(this.state.errors, e => e.id === 'docker')) {
+      this.setState(prevState => {
+        const { errors } = prevState;
+        const nonDockerErrors = _.find(errors, e => e.id !== 'docker');
+        if (toast.isActive('docker')) {
+          toast.dismiss('docker');
+        }
+        if (_.isUndefined(nonDockerErrors)) {
+          return { errors: {} };
+        }
+        return { errors: nonDockerErrors };
+      });
+    }
+  };
+
+  errorRemove = id => {
+    if (_.find(this.state.errors, e => !_.isUndefined(e.id) && e.id === id)) {
+      this.setState(prevState => {
+        const { errors } = prevState;
+        const otherErrors = _.find(errors, e => e.id !== id);
+        if (_.isUndefined(otherErrors)) {
+          return { errors: {} };
+        }
+        return { errors: otherErrors };
+      });
+    }
   };
 
   render() {
     return (
       <Window chrome padding="0px" className="Window">
-        <Header {...this.props} />
+        <ErrorBoundary onError={this.errorCapture}>
+          <Header {...this.props} />
+        </ErrorBoundary>
         <section className="app-container container-fluid">
           <div className="row h-100">
-            <Sidebar projects={this.state.projects} />
-            <main className="content h-100 col-md-8">
-              <Status />
-              <Alerts errors={this.state.errors} />
-              <ViewRouter
-                addError={this.addError}
-                projects={this.state.projects}
-                errors={this.state.errors}
-              />
-            </main>
+            <ErrorBoundary onError={this.errorCapture}>
+              <Sidebar projects={this.state.projects} />
+            </ErrorBoundary>
+            <ErrorBoundary onError={this.errorCapture}>
+              <main className="content h-100 col-md-8">
+                <Status />
+                <Alpha />
+                <Alerts errorRemove={this.errorRemove} errors={this.state.errors} />
+                <ViewRouter projects={this.state.projects} />
+              </main>
+            </ErrorBoundary>
           </div>
         </section>
-        <Footer projects={this.state.projects} router={this.state.router} />
+        <ErrorBoundary onError={this.errorCapture}>
+          <Footer projects={this.state.projects} router={this.state.router} />
+        </ErrorBoundary>
       </Window>
     );
   }

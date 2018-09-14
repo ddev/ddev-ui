@@ -51,15 +51,6 @@ export function startSite(workingPath) {
   return promise;
 }
 
-// parse stdout/stderr to determine error "type"
-export function getErrorResponseType(error) {
-  // console.log(error.msg);
-  if (error.msg === 'Could not connect to docker. Please ensure Docker is installed and running.') {
-    return 'docker';
-  }
-  return 'general';
-}
-
 /**
  * Display or hide a loading screen over the modal
  * @param display {boolean} - if the screen is to be displayed or hidden

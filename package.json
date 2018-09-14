@@ -89,6 +89,7 @@
     "react-hot-loader": "4.x",
     "react-router": "4.x",
     "react-router-dom": "4.x",
+    "react-toastify": "^4.3.1",
     "request": "2.x",
     "source-map-support": "0.5.x",
     "sudo-prompt": "8.x",
