@@ -9,7 +9,7 @@ class Alerts extends React.Component {
     // find errors stored in state
     if (this.props.errors) {
       _.forEach(this.props.errors, value => {
-        if (!_.isUndefined(value.msg)) {
+        if (!_.isUndefined(value) && !_.isUndefined(value.msg)) {
           toast(value.msg, {
             toastId: value.id,
             onClose: () => this.props.errorRemove(value.id),

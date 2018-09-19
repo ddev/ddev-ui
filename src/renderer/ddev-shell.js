@@ -219,6 +219,35 @@ export function describe(siteName) {
 }
 
 /**
+ * wrapper for `ddev version`
+ */
+export function version() {
+  const promise = new Promise((resolve, reject) => {
+    function parseJSONOutput(describeJSON) {
+      const objs = describeJSON.split('\n');
+
+      objs.forEach(obj => {
+        let ddevDetails = {};
+        if (obj) {
+          try {
+            const rawData = JSON.parse(obj);
+            if (rawData.level === 'info') {
+              ddevDetails = rawData.raw;
+              resolve(ddevDetails);
+            }
+          } catch (e) {
+            reject(e);
+          }
+        }
+        return promise;
+      });
+    }
+    ddevShell('version', ['-j'], null, parseJSONOutput, reject, false);
+  });
+  return promise;
+}
+
+/**
  * priv escalation - only allows whitelisted commands to be run as sudo, and bans dangerous characters
  * @param command {string} - ddev command to run
  * @param promptOptions {object} - sudo prompt options such as application name and prompt icon

@@ -88,8 +88,8 @@ class Dashboard extends React.Component {
 
     try {
       error = JSON.parse(e);
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      console.log(err);
     }
 
     let {
@@ -143,7 +143,7 @@ class Dashboard extends React.Component {
   };
 
   errorRemove = id => {
-    if (_.find(this.state.errors, e => !_.isUndefined(e.id) && e.id === id)) {
+    if (_.find(this.state.errors, e => !_.isUndefined(e) && !_.isUndefined(e.id) && e.id === id)) {
       this.setState(prevState => {
         const { errors } = prevState;
         const otherErrors = _.find(errors, e => e.id !== id);

@@ -1,0 +1,52 @@
+.system-check {
+  height: 100vh;
+  background: $white;
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $gray-800;
+  }
+  p {
+    font-size: 0.8rem;
+    color: $gray-700;
+    font-weight: 300;
+  }
+
+  .figure-img {
+    width: 30%;
+    margin: 1rem auto;
+    @include media-breakpoint-up(md) {
+      width: 80%;
+    }
+  }
+  .figure-caption > div {
+    margin: 1.4rem auto;
+  }
+  .status {
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    border-width: 5px !important;
+    margin: 1rem auto;
+    i.fa {
+      vertical-align: middle;
+    }
+  }
+  .pulse {
+    /*animation-delay: 2s;*/
+    animation: pulse 1.5s infinite;
+    animation-direction: alternate;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}

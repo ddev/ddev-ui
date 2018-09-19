@@ -161,3 +161,12 @@ export function validateDocroot(path, docroot) {
   });
   return promise;
 }
+
+// simple pause to chain events together
+export function pause(duration) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, duration);
+  });
+}
