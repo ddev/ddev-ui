@@ -20,6 +20,10 @@ class App extends React.Component {
     this.setState({ completedChecks: true });
   };
 
+  triggerChecks = () => {
+    this.setState({ completedChecks: false });
+  };
+
   render() {
     return (
       <HashRouter>
