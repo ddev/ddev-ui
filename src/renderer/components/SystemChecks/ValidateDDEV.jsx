@@ -23,11 +23,11 @@ class ValidateDDEV extends React.Component {
   }
 
   validate = () => {
-    pause(2000)
+    pause(1500)
       .then(() => version())
       .then(result => {
         this.setState({ validInstall: true });
-        return pause(2000);
+        return pause(1500);
       })
       .then(() => this.props.validateView('DDEV'))
       .catch(err => {
@@ -52,10 +52,10 @@ class ValidateDDEV extends React.Component {
                   case true:
                     return (
                       <figure className="system-check-media">
-                        <img src={icon} className="figure-img img-fluid logo" alt="DDEV" />
-                        <figcaption className="figure-caption">
+                        <img src={icon} className="figure-img img-fluid logo faded" alt="DDEV" />
+                        <figcaption className="figure-caption float">
                           <div className="status text-success border border-success rounded-circle">
-                            <i className="fa fa-5x fa-check" aria-hidden="true" />
+                            <i className="fa fa-2x fa-check" aria-hidden="true" />
                           </div>
                         </figcaption>
                       </figure>
@@ -63,10 +63,10 @@ class ValidateDDEV extends React.Component {
                   case false:
                     return (
                       <figure className="system-check-media">
-                        <img src={icon} className="figure-img img-fluid logo" alt="DDEV" />
-                        <figcaption className="figure-caption">
+                        <img src={icon} className="figure-img img-fluid logo faded" alt="DDEV" />
+                        <figcaption className="figure-caption float">
                           <div className="status text-danger border border-danger rounded-circle">
-                            <i className="fa fa-5x fa-exclamation" aria-hidden="true" />
+                            <i className="fa fa-2x fa-exclamation" aria-hidden="true" />
                           </div>
                         </figcaption>
                       </figure>

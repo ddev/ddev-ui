@@ -27,15 +27,9 @@ class App extends React.Component {
           <Route
             render={routeProps => {
               if (this.state.completedChecks) {
-                return <Dashboard {...routeProps} />;
+                return <Dashboard {...routeProps} triggerChecks={this.triggerChecks} />;
               }
-              return (
-                <AppLoading
-                  {...routeProps}
-                  completedChecks={this.state.completedChecks}
-                  completeChecks={this.completeChecks}
-                />
-              );
+              return <AppLoading {...routeProps} completeChecks={this.completeChecks} />;
             }}
           />
         </Switch>

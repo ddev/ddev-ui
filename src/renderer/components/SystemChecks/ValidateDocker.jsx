@@ -27,11 +27,11 @@ class ValidateDocker extends React.Component {
   }
 
   validate = () => {
-    pause(2000)
+    pause(1500)
       .then(() => list())
       .then(result => {
         this.setState({ validInstall: true });
-        return pause(2000);
+        return pause(1500);
       })
       .then(() => this.props.validateView('Docker'))
       .then(() => this.props.completeChecks())
@@ -45,12 +45,6 @@ class ValidateDocker extends React.Component {
       });
   };
 
-  uintToString = uintArray => {
-    const encodedString = String.fromCharCode.apply(null, uintArray);
-    const decodedString = decodeURIComponent(escape(encodedString));
-    return decodedString;
-  };
-
   render() {
     return (
       <div className="system-check-panel h-100 row align-items-center justify-content-md-center">
@@ -62,21 +56,29 @@ class ValidateDocker extends React.Component {
                   case true:
                     return (
                       <figure className="system-check-media">
-                        <img src={docker} className="figure-img img-fluid logo" alt="DDEV" />
-                        <figcaption className="figure-caption">
+                        <img
+                          src={docker}
+                          className="figure-img img-fluid logo faded"
+                          alt="Docker"
+                        />
+                        <figcaption className="figure-caption float">
                           <div className="status text-success border border-success rounded-circle">
-                            <i className="fa fa-5x fa-check" aria-hidden="true" />
+                            <i className="fa fa-2x fa-check" aria-hidden="true" />
                           </div>
                         </figcaption>
                       </figure>
                     );
                   case false:
                     return (
-                      <figure className="system-check-media">
-                        <img src={docker} className="figure-img img-fluid logo" alt="DDEV" />
-                        <figcaption className="figure-caption">
+                      <figure className="system-check-media float">
+                        <img
+                          src={docker}
+                          className="figure-img img-fluid logo faded"
+                          alt="Docker"
+                        />
+                        <figcaption className="figure-caption float">
                           <div className="status text-danger border border-danger rounded-circle">
-                            <i className="fa fa-5x fa-exclamation" aria-hidden="true" />
+                            <i className="fa fa-2x fa-exclamation" aria-hidden="true" />
                           </div>
                         </figcaption>
                       </figure>

@@ -170,3 +170,20 @@ export function pause(duration) {
     }, duration);
   });
 }
+
+// test for JSON string
+export function isJson(str) {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
+
+// convert buffer to str
+export function uintToString(uintArray) {
+  const encodedString = String.fromCharCode.apply(null, uintArray);
+  const decodedString = decodeURIComponent(escape(encodedString));
+  return decodedString;
+}

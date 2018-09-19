@@ -16,6 +16,7 @@ import Status from './Status';
 // non componentized JS
 import { updateDistros } from '../distro-updater';
 import { list } from '../ddev-shell';
+import { isJson } from '../helpers';
 
 class Dashboard extends React.Component {
   state = {
@@ -83,28 +84,26 @@ class Dashboard extends React.Component {
     this.fetchProjects();
   };
 
-  errorCapture = (e, info) => {
+  errorCapture = (e, details) => {
     let error = {};
-
-    try {
+    if (isJson(e)) {
       error = JSON.parse(e);
-    } catch (err) {
-      console.log(err);
+    } else if (_.isString(e)) {
+      error.msg = e;
     }
 
-    let {
+    const {
       msg = ' 🦄 There was a problem!',
       level = 'info',
       type = 'general',
+      info = details || null,
       time = Date.now(),
       id = Date.now(),
     } = error;
 
     // Docker error
     if (msg.includes('Docker')) {
-      msg = ` 🐳 ${msg}`;
-      type = 'docker';
-      id = 'docker';
+      this.props.triggerChecks();
     }
 
     if (_.isUndefined(_.find(this.state.errors, ['id', id]))) {
