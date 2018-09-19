@@ -455,7 +455,7 @@ class CreateProjectWizard extends React.Component {
           )}
         </form>
         {/* Steps */}
-        <WizardSteps />
+        <WizardSteps activeStep={this.state.step} />
       </div>
     );
   }

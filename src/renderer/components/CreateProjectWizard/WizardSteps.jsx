@@ -7,23 +7,35 @@ class WizardSteps extends React.PureComponent {
         <div className="stepwizard-row form-row h-100 btn-breadcrumb align-items-center setup-panel clearfix">
           {/* Step 1 */}
           <div className="stepwizard-step col-4">
-            <a href="#step-1" className="btn btn-outline-primary btn-circle">
+            <span
+              className={`border ${
+                this.props.activeStep === '1' ? 'border-primary' : 'border-secondary'
+              } btn-circle`}
+            >
               1
-            </a>
+            </span>
             <span>Project Setup</span>
           </div>
           {/* Step 2 */}
           <div className="stepwizard-step col-4">
-            <a href="#step-2" className="btn btn-outline-secondary btn-circle" disabled>
+            <span
+              className={`border ${
+                this.props.activeStep === '2' ? 'border-primary' : 'border-secondary'
+              } btn-circle`}
+            >
               2
-            </a>
+            </span>
             <span>Container Settings</span>
           </div>
           {/* Step 3 */}
           <div className="stepwizard-step col-4">
-            <a href="#step-3" className="btn btn-outline-secondary btn-circle" disabled>
+            <span
+              className={`border ${
+                this.props.activeStep === '3' ? 'border-primary' : 'border-secondary'
+              } btn-circle`}
+            >
               3
-            </a>
+            </span>
             <span>Platform Setup</span>
           </div>
         </div>
