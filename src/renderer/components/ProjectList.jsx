@@ -51,7 +51,7 @@ class ProjectList extends React.PureComponent {
         }
         rows.push({
           id: (
-            <NavLink to={`/project/${project.name}/`}>
+            <NavLink title={project.name} to={`/project/${project.name}/`}>
               <i className={`fa fa-${platformIcon} fa-2 mr-2`} aria-hidden="true" /> {project.name}
             </NavLink>
           ),
@@ -59,6 +59,7 @@ class ProjectList extends React.PureComponent {
             <div className="actions" data-path={project.approot} data-sitename={project.name}>
               {/* Browse Files */}
               <a
+                title="Browse Files"
                 className="mx-1 text-secondary"
                 data-app-path={project.approot}
                 onClick={e => {
@@ -71,6 +72,7 @@ class ProjectList extends React.PureComponent {
               </a>
               {/* View */}
               <a
+                title="View"
                 className="mx-1 text-secondary"
                 data-url={project.httpurl}
                 onClick={e => {
@@ -83,22 +85,32 @@ class ProjectList extends React.PureComponent {
               </a>
               {/* Start */}
               {project.status === 'stopped' && (
-                <a className="mx-1 text-secondary" onClick={this.processStart} href="#!">
+                <a
+                  title="Start"
+                  className="mx-1 text-secondary"
+                  onClick={this.processStart}
+                  href="#!"
+                >
                   <i className="fa fa-play-circle" aria-hidden="true" />
                 </a>
               )}
               {/* Restart */}
               {project.status !== 'stopped' && (
-                <a className="mx-1 text-secondary" onClick={this.processRestart} href="#!">
+                <a
+                  title="Restart"
+                  className="mx-1 text-secondary"
+                  onClick={this.processRestart}
+                  href="#!"
+                >
                   <i className="fa fa-retweet" aria-hidden="true" />
                 </a>
               )}
               {/* Stop */}
-              <a className="mx-1 text-secondary" onClick={this.processStop} href="#!">
+              <a title="Stop" className="mx-1 text-secondary" onClick={this.processStop} href="#!">
                 <i className="fa fa-stop-circle-o" aria-hidden="true" />
               </a>
               {/* Remove */}
-              <a className="mx-1 text-danger" onClick={this.processRemove} href="#!">
+              <a title="Remove" className="mx-1 text-danger" onClick={this.processRemove} href="#!">
                 <i className="fa fa-trash-o" aria-hidden="true" />
               </a>
             </div>
@@ -215,7 +227,12 @@ class ProjectList extends React.PureComponent {
             this.state.rows.length !== 0 && (
               <ReactDataGrid
                 columns={[
-                  { key: 'id', name: 'ID', cellClass: '' },
+                  {
+                    key: 'id',
+                    name: 'ID',
+                    cellClass: '',
+                    // formatter: () => null,
+                  },
                   {
                     key: 'actions',
                     name: 'Actions',

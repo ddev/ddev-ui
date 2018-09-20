@@ -1,7 +1,6 @@
 import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 
-import ProjectList from './ProjectList';
 import ProjectDetail from './ProjectDetail';
 import CreateProjectWizard from './CreateProjectWizard';
 
@@ -24,7 +23,9 @@ class ViewRouter extends React.PureComponent {
             )}
           />
           <Route
-            render={routeProps => <ProjectList {...routeProps} projects={this.props.projects} />}
+            render={routeProps => (
+              <CreateProjectWizard {...routeProps} addError={this.props.addError} />
+            )}
           />
         </Switch>
       </HashRouter>
