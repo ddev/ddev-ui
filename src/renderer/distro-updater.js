@@ -22,7 +22,7 @@ import { dirname } from 'path';
  * @param majorVersion {number} major version number i.e. 7 or 8
  * @return {promise} an object containing the latest version and URI at which the tarball can be downloaded
  */
-export function getNewestDrupalVersion(majorVersion) {
+function getNewestDrupalVersion(majorVersion) {
   const promise = new Promise((resolve, reject) => {
     const options = {
       url: `https://updates.drupal.org/release-history/drupal/${majorVersion}.x`,
@@ -54,7 +54,7 @@ export function getNewestDrupalVersion(majorVersion) {
  * Get newest version of wordpress and the URI that the tarball can be found
  * @return {promise/object} an object containing the latest version and URI at which the tarball can be downloaded
  */
-export function getNewestWordpressVersion() {
+function getNewestWordpressVersion() {
   const promise = new Promise((resolve, reject) => {
     const options = {
       url: 'https://api.github.com/repos/wordpress/wordpress/tags',
@@ -110,7 +110,7 @@ export function getLocalDistros(localPath) {
  * @param majorVersion {number} optional - the major version number to check for drupal
  * @return {promise} an object containing the version number for local CMS distro tarballs, or 0.0 if not found.
  */
-export function getLocalVersion(distro, localPath, majorVersion = null) {
+function getLocalVersion(distro, localPath, majorVersion = null) {
   const promise = new Promise((resolve, reject) => {
     getLocalDistros(localPath)
       .then(fileList => {
@@ -177,7 +177,7 @@ export function canReadAndWrite(targetPath) {
  * @param filePath {string} filePath to save downloaded file
  * @return {promise} resolves if file is successfully downloaded and written
  */
-export function downloadFile(url, filePath) {
+function downloadFile(url, filePath) {
   const promise = new Promise((resolve, reject) => {
     request({ uri: url })
       .pipe(createWriteStream(filePath))
@@ -197,7 +197,7 @@ export function downloadFile(url, filePath) {
  * @param filePath {string} path of file to delete
  * @return {promise} resolves if file deletion is successful
  */
-export function deleteFile(filePath) {
+function deleteFile(filePath) {
   const promise = new Promise((resolve, reject) => {
     unlink(filePath, err => {
       if (err) {

@@ -6,10 +6,6 @@ import * as path from 'path';
 import { format as formatUrl } from 'url';
 import defaultMenu from 'electron-default-menu';
 
-if (process.env.NODE_ENV !== 'development') {
-  global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\');
-}
-
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 //-------------------------------------------------------------------
@@ -86,10 +82,10 @@ const createMainWindow = () => {
 autoUpdater.on('checking-for-update', () => {
   sendStatusToWindow('Checking for update...');
 });
-autoUpdater.on('update-available', info => {
+autoUpdater.on('update-available', () => {
   sendStatusToWindow('Update available.');
 });
-autoUpdater.on('update-not-available', info => {
+autoUpdater.on('update-not-available', () => {
   sendStatusToWindow('Update not available.');
 });
 autoUpdater.on('error', err => {
@@ -101,7 +97,7 @@ autoUpdater.on('download-progress', progressObj => {
   logMessage = `${logMessage} (${progressObj.transferred}/${progressObj.total})`;
   sendStatusToWindow(logMessage);
 });
-autoUpdater.on('update-downloaded', info => {
+autoUpdater.on('update-downloaded', () => {
   sendStatusToWindow('Update downloaded');
 });
 

@@ -1,5 +1,5 @@
 import { canReadAndWrite } from './distro-updater';
-import { config, start, hostname as _hostname } from './ddev-shell';
+import { config, start } from './ddev-shell';
 
 /**
  * Checks if site has an existing configuration
@@ -49,15 +49,6 @@ export function startSite(workingPath) {
     start(workingPath, resolve, reject);
   });
   return promise;
-}
-
-// parse stdout/stderr to determine error "type"
-export function getErrorResponseType(error) {
-  // console.log(error.msg);
-  if (error.msg === 'Could not connect to docker. Please ensure Docker is installed and running.') {
-    return 'docker';
-  }
-  return 'general';
 }
 
 /**
@@ -169,4 +160,30 @@ export function validateDocroot(path, docroot) {
       });
   });
   return promise;
+}
+
+// simple pause to chain events together
+export function pause(duration) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, duration);
+  });
+}
+
+// test for JSON string
+export function isJson(str) {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
+
+// convert buffer to str
+export function uintToString(uintArray) {
+  const encodedString = String.fromCharCode.apply(null, uintArray);
+  const decodedString = decodeURIComponent(escape(encodedString));
+  return decodedString;
 }

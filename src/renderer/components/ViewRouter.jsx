@@ -12,9 +12,7 @@ class ViewRouter extends React.PureComponent {
         <Switch>
           <Route
             path="/project/create"
-            render={routeProps => (
-              <CreateProjectWizard {...routeProps} addError={this.props.addError} />
-            )}
+            render={routeProps => <CreateProjectWizard {...routeProps} />}
           />
           <Route
             path="/project/:projectID"
@@ -22,18 +20,11 @@ class ViewRouter extends React.PureComponent {
               <ProjectDetail
                 {...routeProps}
                 project={this.props.projects[routeProps.match.params.projectID]}
-                addError={this.props.addError}
               />
             )}
           />
           <Route
-            render={routeProps => (
-              <ProjectList
-                {...routeProps}
-                projects={this.props.projects}
-                addError={this.props.addError}
-              />
-            )}
+            render={routeProps => <ProjectList {...routeProps} projects={this.props.projects} />}
           />
         </Switch>
       </HashRouter>
