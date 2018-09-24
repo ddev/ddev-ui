@@ -122,9 +122,15 @@
 }
 
 .stepwizard {
-  width: 100%;
   min-height: 50px;
   bottom: 26px;
+  background: #f9f9f9;
+  @include make-col(7);
+  @include make-col-offset(5);
+  @include media-breakpoint-up(md) {
+    @include make-col(8);
+    @include make-col-offset(4);
+  }
 
   .stepwizard-step {
     text-align: center;

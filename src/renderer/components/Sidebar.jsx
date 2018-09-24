@@ -14,7 +14,7 @@ const settings = require(`${__static}/img/SettingsBlue.svg`); // eslint-disable-
 class Sidebar extends React.Component {
   render() {
     return (
-      <ListView className="projectSidebar h-md-100 col-md-4 p-0">
+      <ListView className={this.props.className}>
         <ListViewHeader
           padding="0.8rem 1rem 0.8rem 1rem"
           className="ListViewHeader align-items-center d-flex flex-row w-100"

@@ -51,6 +51,9 @@ const sendStatusToWindow = text => {
 const createMainWindow = () => {
   const window = new BrowserWindow({
     titleBarStyle: 'hidden',
+    minWidth: 800,
+    minHeight: 400,
+    zoomFactor: 0.8,
   });
 
   if (isDevelopment) {
