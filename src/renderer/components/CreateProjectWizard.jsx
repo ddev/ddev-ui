@@ -69,6 +69,9 @@ export function getCMSTarballPath(cmsType, cmsPath) {
       case 'wordpress':
         targetCMS = 'wordpress';
         break;
+      case 'drupal6':
+        targetCMS = 'drupal-6';
+        break;
       case 'drupal7':
         targetCMS = 'drupal-7';
         break;
@@ -170,7 +173,7 @@ export function extractCMSImageToTargetPath(siteName, cmsType, cmsPath, targetFo
 /**
  * public function - calls private functions to validate inputs, unpack files, and configure/start site
  * @param name {string} name of site to create
- * @param type {string} type of CMS to install (drupal7, drupal8, wordpress)
+ * @param type {string} type of CMS to install (drupal6, drupal7, drupal8, wordpress)
  * @param targetPath {string} path to unpack CMS and install site
  */
 export function addCMS(name, type, targetPath, history = {}) {
