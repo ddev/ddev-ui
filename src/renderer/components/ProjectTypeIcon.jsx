@@ -16,6 +16,7 @@ const ProjectTypeIcon = props => {
       case 'wordpress':
         platformImg = wordpress;
         break;
+      case 'drupal6':
       case 'drupal7':
         platformImg = drupal7;
         break;
