@@ -7,7 +7,6 @@ const logo = require(`${__static}/img/Logo.svg`);
 const stack = require(`${__static}/img/stack.svg`);
 const ddevIcon = require(`${__static}/img/Icon.svg`);
 const cloud = require(`${__static}/img/cloud.svg`);
-// const account = require(`${__static}/img/account.svg`);
 const settings = require(`${__static}/img/settings.svg`);
 /* eslint-enable no-undef,global-require,import/no-dynamic-require */
 
@@ -38,52 +37,51 @@ class Header extends React.Component {
             <div className="app-nav d-flex flex-row">
               <div className="history-nav col-4 d-none d-sm-flex flex-row justify-content-start justify-content-md-end pr-0">
                 <ToolbarNav className="btn-group btn-group-sm">
-                  <ToolbarNavItem
-                    icon={<i className="fa fa-chevron-left" aria-hidden="true" />}
-                    selected={this.state.selected === 1}
-                    onClick={() => this.props.history.goBack()}
-                    className="m-0 text-muted"
-                  />
+                  <div className="nav-item" title="Go Back">
+                    <ToolbarNavItem
+                      icon={<i className="fa fa-chevron-left" aria-hidden="true" />}
+                      onClick={() => this.props.history.goBack()}
+                      className="m-0 text-muted"
+                    />
+                  </div>
                 </ToolbarNav>
                 <ToolbarNav className="btn-group btn-group-sm d-flex">
-                  <ToolbarNavItem
-                    icon={<i className="fa fa-chevron-right" aria-hidden="true" />}
-                    selected={this.state.selected === 1}
-                    onClick={() => this.props.history.goForward()}
-                    className="m-0 text-light"
-                  />
+                  <div className="nav-item" title="Go Forward">
+                    <ToolbarNavItem
+                      icon={<i className="fa fa-chevron-right" aria-hidden="true" />}
+                      onClick={() => this.props.history.goForward()}
+                      className="m-0 text-light"
+                    />
+                  </div>
                 </ToolbarNav>
               </div>
 
               <div className="primary-nav d-flex flex-row col-sm-8 justify-content-center justify-content-md-start pl-1">
                 <ToolbarNav className="btn-group btn-group-sm mr-3">
-                  <div className="nav-item">
+                  <div className="nav-item" title="DDEV Local">
                     <NavLink className="m-0 d-flex flex-column align-items-center" to="/projects">
                       <div className="h-100  d-flex align-content-center align-items-center justify-content-center">
                         <img alt="DDEV Local" src={stack} className="" />
                       </div>
                     </NavLink>
                   </div>
-                  <ToolbarNavItem
-                    icon={<img alt="DDEV Live" src={cloud} className="" />}
-                    onClick={() => this.setState({ selected: 2 })}
-                    className="m-0"
-                  />
-                  {/*
+                  <div className="nav-item" title="DDEV Live - Coming Soon">
                     <ToolbarNavItem
-                      icon={<img alt="My Account" src={account} className="" />}
-                      onClick={() => this.setState({ selected: 3 })}
+                      icon={<img alt="DDEV Live" src={cloud} className="" />}
+                      onClick={() => this.setState({ selected: 2 })}
                       className="m-0"
                     />
-                  */}
-                  <ToolbarNavItem
-                    icon={<img alt="Settings" src={settings} className="" />}
-                    onClick={() => this.setState({ selected: 4 })}
-                    className="m-0"
-                  />
+                  </div>
+                  <div className="nav-item" title="Settings - Coming Soon">
+                    <ToolbarNavItem
+                      icon={<img alt="Settings" src={settings} className="" />}
+                      onClick={() => this.setState({ selected: 4 })}
+                      className="m-0"
+                    />
+                  </div>
                 </ToolbarNav>
                 <ToolbarNav className="btn-group btn-group-sm">
-                  <div className="nav-item">
+                  <div className="nav-item" title="Create Project">
                     <NavLink
                       className="m-0 d-flex flex-column align-items-center"
                       to="/project/create"
