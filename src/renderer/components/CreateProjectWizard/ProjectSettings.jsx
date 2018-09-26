@@ -35,11 +35,7 @@ class ProjectSettings extends React.PureComponent {
       <div className="setup-content" id="step-1" key="createProjectStep1">
         <div className="row">
           <div className="col-md-12">
-            <h3 className="text-center">Project Setup</h3>
             <div className="form-group form-row" key="installType">
-              <label className="control-label mx-auto" htmlFor="installType">
-                Is your project new or existing
-              </label>
               <div className="btn-group w-100" id="installType">
                 <button
                   className={`btn btn-outline-secondary btn-lg ${
@@ -49,7 +45,7 @@ class ProjectSettings extends React.PureComponent {
                   type="button"
                   onClick={this.props.handleInstallTypeUpdate}
                 >
-                  New Install
+                  New Project
                 </button>
                 <button
                   className={`btn btn-outline-secondary btn-lg ${
@@ -59,12 +55,12 @@ class ProjectSettings extends React.PureComponent {
                   type="button"
                   onClick={this.props.handleInstallTypeUpdate}
                 >
-                  Existing Install
+                  Existing Project
                 </button>
               </div>
               <div className="form-row w-100 mt-2">
                 <p className="col text-center small mb-1">Create a fresh project</p>
-                <p className="col text-center small mb-1">Connect existing project</p>
+                <p className="col text-center small mb-1">Connect an existing project</p>
               </div>
             </div>
             <div className="form-group form-row" key="installPaths">
