@@ -66,9 +66,9 @@ class Dashboard extends React.Component {
   updateRouterStatus = projects => {
     let routerStatusText = 'Not Running - No Running DDEV Applications.';
     const validRouterStates = ['starting', 'healthy'];
-    const routerStatus = _.isSet(Object.values(projects)[0].router_status)
+    const routerStatus = _.isObject(projects)
       ? Object.values(projects)[0].router_status
-      : -1;
+      : 'not-running';
 
     routerStatusText =
       validRouterStates.indexOf(routerStatus) !== -1
@@ -162,17 +162,19 @@ class Dashboard extends React.Component {
         </ErrorBoundary>
         <section className="app-container container-fluid">
           <div className="row h-100">
-            <ErrorBoundary onError={this.errorCapture}>
-              <Sidebar projects={this.state.projects} />
-            </ErrorBoundary>
-            <ErrorBoundary onError={this.errorCapture}>
-              <main className="content h-100 col-md-8">
-                <Status />
-                <Alpha />
-                <Alerts errorRemove={this.errorRemove} errors={this.state.errors} />
-                <ViewRouter projects={this.state.projects} />
-              </main>
-            </ErrorBoundary>
+            <Sidebar
+              className="projectSidebar col col-sm-5 col-md-4 p-0"
+              projects={this.state.projects}
+            />
+            <main className="content col col-sm-7 col-md-8">
+              <Status />
+              <Alerts errors={this.state.errors} />
+              <ViewRouter
+                addError={this.addError}
+                projects={this.state.projects}
+                errors={this.state.errors}
+              />
+            </main>
           </div>
         </section>
         <ErrorBoundary onError={this.errorCapture}>
