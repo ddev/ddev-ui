@@ -168,7 +168,7 @@ class Dashboard extends React.Component {
             />
             <main className="content col col-sm-7 col-md-8">
               <Status />
-              <Alerts errors={this.state.errors} />
+              <Alerts errorRemove={this.errorRemove} errors={this.state.errors} />
               <ViewRouter
                 addError={this.addError}
                 projects={this.state.projects}
