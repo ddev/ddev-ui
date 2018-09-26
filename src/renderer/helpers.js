@@ -103,7 +103,12 @@ export function validateHostname(hostname) {
 export function validateCMSType(cmsType) {
   const promise = new Promise((resolve, reject) => {
     const cmsString = cmsType.toLowerCase();
-    if (cmsString === 'wordpress' || cmsString === 'drupal7' || cmsString === 'drupal8') {
+    if (
+      cmsString === 'wordpress' ||
+      cmsString === 'drupal6' ||
+      cmsString === 'drupal7' ||
+      cmsString === 'drupal8'
+    ) {
       resolve(true);
     } else {
       const error = cmsType ? 'CMS Type is Invalid.' : 'Please select a CMS type.';
