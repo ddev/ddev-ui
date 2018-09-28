@@ -4,6 +4,7 @@ out
 .DS_Store
 dist/
 .idea/
+.env
 
 # Temporary build-tools artifacts to be ignored
 /.go/

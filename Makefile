@@ -2,7 +2,7 @@
 
 ##### These variables need to be adjusted in most repositories #####
 
-ELECTRON_BUILDER_VERSION := 19.33.0
+ELECTRON_BUILDER_VERSION := 20.28.4
 DDEV_UI_VERSION := $(VERSION)
 
 COMPANY_NAME := Drudtech
