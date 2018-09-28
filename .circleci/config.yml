@@ -1,59 +1,49 @@
 version: 2
-stages:
+jobs:
   build:
     macos:
-      xcode: "9.0"
-
+      xcode: '9.0'
     environment:
       ARTIFACTS: /artifacts
-
     working_directory: ~/ddev-ui
-
     steps:
-      - checkout
-
-      - run:
-          name: xquartz setup
-          command: brew cask install xquartz  # dependency of wine
-
-      - run: brew update && brew info --json=v1 wine >>/tmp/info.txt && brew info --json=v1 node >>/tmp/info.txt
-
       - restore_cache:
           keys:
-            - homebrew-v3-{{ checksum "/tmp/info.txt" }}
+            - 'homebrew-v3-{{ checksum "/tmp/info.txt" }}'
             - homebrew-v3-
-            
+      - checkout
+      - run:
+          name: xquartz setup
+          command: brew cask install xquartz
+      - run: >-
+          brew update && brew info --json=v1 wine >>/tmp/info.txt && brew info
+          --json=v1 node >>/tmp/info.txt
       - run:
           name: Homebrew install of node --lts
           command: |
             brew unlink node || true
             brew install node@8 || true
             brew link --overwrite --force node@8
-                        
       - run:
           name: Homebrew install of wine
           command: |
             brew install wine || true
             brew unlink wine && brew link --overwrite wine
-
-      - save-cache:
-          key: homebrew-v3-{{ checksum "/tmp/info.txt" }}
+      - save_cache:
+          key: 'homebrew-v3-{{ checksum "/tmp/info.txt" }}'
           paths:
             - /usr/local/Cellar/wine
             - /usr/local/Cellar/node
-
       - run:
           name: Installed tool versions
-          command: echo "git commit=$(make version) node version=$(node --version) npm version=$(npm --version) wine version=$(wine --version) HOME=$HOME USER=$(whoami) PWD=$PWD"
-
+          command: >-
+            echo "git commit=$(make version) node version=$(node --version) npm
+            version=$(npm --version) wine version=$(wine --version) HOME=$HOME
+            USER=$(whoami) PWD=$PWD"
       - run: make clean all
-
       - run: make test
-
       - run:
           command: ./.circleci/generate_artifacts.sh $ARTIFACTS
           name: tar/zip up artifacts and make hashes
-
       - store_artifacts:
           path: /artifacts
-          name: Artifact storage
