@@ -1,0 +1,14 @@
+appId: com.github.drud.ddev-ui
+copyright: Copyright © 2018 Drud Technologies
+productName: DDEV UI
+publish:
+  provider: github
+  owner: drud
+  repo: ddev-ui
+mac:
+  category: public.app-category.developer-tools
+  target:
+    - zip
+    - dmg
+linux:
+  category: development
