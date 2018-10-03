@@ -83,7 +83,7 @@
     "babel-eslint": "^v9.0.0",
     "babel-plugin-root-import": "6.x",
     "cypress": "3.x",
-    "electron": "2.x",
+    "electron": "3.x",
     "electron-builder": "20.x",
     "electron-webpack": "2.1.x",
     "eslint": "5.x",
