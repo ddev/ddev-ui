@@ -85,9 +85,6 @@ class Dashboard extends React.Component {
   };
 
   errorCapture = (e, details) => {
-    // console.log(e);
-    // console.log(details);
-
     let error = {};
     if (isJson(e)) {
       error = JSON.parse(e);
