@@ -1,5 +1,6 @@
 import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
+import ErrorBoundary from 'react-error-boundary';
 
 import 'popper.js';
 import 'bootstrap';
@@ -31,9 +32,17 @@ class App extends React.Component {
           <Route
             render={routeProps => {
               if (this.state.completedChecks) {
-                return <Dashboard {...routeProps} triggerChecks={this.triggerChecks} />;
+                return (
+                  <ErrorBoundary>
+                    <Dashboard {...routeProps} triggerChecks={this.triggerChecks} />
+                  </ErrorBoundary>
+                );
               }
-              return <AppLoading {...routeProps} completeChecks={this.completeChecks} />;
+              return (
+                <ErrorBoundary>
+                  <AppLoading {...routeProps} completeChecks={this.completeChecks} />
+                </ErrorBoundary>
+              );
             }}
           />
         </Switch>
