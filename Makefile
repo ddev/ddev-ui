@@ -92,5 +92,5 @@ clean: package.json
 	yarn install
 
 test:
-	# yarn run test
 	@echo "Skipping $@ for Now 🙈"
+	yarn run test
