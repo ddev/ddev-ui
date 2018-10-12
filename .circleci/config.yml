@@ -123,6 +123,7 @@ workflows:
                 - master
       - release:
           requires:
+<<<<<<< HEAD
             - build
             - test
           filters:
@@ -139,3 +140,12 @@ workflows:
                 - master
     jobs:
       - test
+=======
+            - build_app_dependencies
+      - upload_application_artifacts:
+          requires:
+            - build_app_dependencies
+      - upload_application_release:
+          requires:
+            - build_app_dependencies
+>>>>>>> remove nightly for now
