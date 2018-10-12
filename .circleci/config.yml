@@ -1,20 +1,38 @@
-version: 2
+version: 2.0
 jobs:
-  build:
+  # checkout code base
+  checkout_code:
     macos:
       xcode: "9.0"
     environment:
       ARTIFACTS: /artifacts
     working_directory: ~/ddev-ui
     steps:
+      # checkout
       - checkout
+      # cache codebase
+      - save_cache:
+          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/ddev-ui
+
+  # build env dependancies
+  build_env_dependencies:
+    macos:
+      xcode: "9.0"
+    environment:
+      ARTIFACTS: /artifacts
+    working_directory: ~/ddev-ui
+    steps:
+      # restore codebase
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      # restore brew cache
       - restore_cache:
           keys:
             - 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
             - homebrew-v3-
-            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - yarn-packages-v1-{{ .Branch }}-
-            - yarn-packages-v1-
       - run:
           name: xquartz setup
           command: brew cask install xquartz
@@ -43,14 +61,206 @@ jobs:
           paths:
             - /usr/local/Cellar/wine
             - /usr/local/Cellar/node
-      - run: make clean all
+
+  # build app dependancies
+  build_app_dependencies:
+    macos:
+      xcode: "9.0"
+    environment:
+      ARTIFACTS: /artifacts
+    working_directory: ~/ddev-ui
+    steps:
+      # restore codebase
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      # restore brew cache
+      - restore_cache:
+          keys:
+            - 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
+            - homebrew-v3-
+      # yarn install
+      - restore_cache:
+          keys:
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}-
+            - yarn-packages-v1-
+      # yarn cache
+      - run:
+          name: Yarn Install
+          command: yarn install
       - save_cache:
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
-      # - run: make test
+
+  # build application
+  # TODO: breakout into w seperate work-flows
+  build_application:
+    macos:
+      xcode: "9.0"
+    environment:
+      ARTIFACTS: /artifacts
+    working_directory: ~/ddev-ui
+    steps:
+      # restore codebase
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      # restore brew cache
+      - restore_cache:
+          keys:
+            - 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
+            - homebrew-v3-
+      # yarn cache
+      - restore_cache:
+          keys:
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}-
+            - yarn-packages-v1-
+      - run: make clean all
+      # cache built apps
+      - save_cache:
+          key: app-dist-v1-{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
+          paths:
+            - ~/dist
+
+  # run tests
+  # TODO: breakout into w seperate work-flows
+  run_application_tests:
+    macos:
+      xcode: "9.0"
+    environment:
+      ARTIFACTS: /artifacts
+    working_directory: ~/ddev-ui
+    steps:
+      # restore codebase
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      # restore brew cache
+      - restore_cache:
+          keys:
+            - 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
+            - homebrew-v3-
+      # yarn cache
+      - restore_cache:
+          keys:
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}-
+            - yarn-packages-v1-
+      # app cache
+      - restore_cache:
+          keys:
+            - app-dist-v1-{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
+            - app-dist-v1-
+      # run tests
+      - run: make test
+      # TODO: cache results
+
+  # upload artifacts to circle * if not master
+  upload_application_artifacts:
+    macos:
+      xcode: "9.0"
+    environment:
+      ARTIFACTS: /artifacts
+    working_directory: ~/ddev-ui
+    steps:
+      # restore codebase
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      # restore brew cache
+      - restore_cache:
+          keys:
+            - 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
+            - homebrew-v3-
+      # yarn cache
+      - restore_cache:
+          keys:
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}-
+            - yarn-packages-v1-
+      # app cache
+      - restore_cache:
+          keys:
+            - app-dist-v1-{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
+            - app-dist-v1-
       - run:
-          command: ./.circleci/generate_artifacts.sh $ARTIFACTS
           name: tar/zip up artifacts and make hashes
+          command: ./.circleci/generate_artifacts.sh $ARTIFACTS
       - store_artifacts:
           path: /artifacts
+
+  # build release - * if master branch
+  upload_application_release:
+    macos:
+      xcode: "9.0"
+    environment:
+      ARTIFACTS: /artifacts
+    working_directory: ~/ddev-ui
+    steps:
+      # restore codebase
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      # restore brew cache
+      - restore_cache:
+          keys:
+            - 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
+            - homebrew-v3-
+      # yarn cache
+      - restore_cache:
+          keys:
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}-
+            - yarn-packages-v1-
+      # app cache
+      - restore_cache:
+          keys:
+            - app-dist-v1-{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
+            - app-dist-v1-
+      - run:
+          name: upload release
+          command: yarn run release
+
+  # TODO: nightly_build
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - checkout_code
+      - build_env_dependencies:
+          requires:
+            - checkout_code
+      - build_app_dependencies:
+          requires:
+            - build_env_dependencies
+      - build_application:
+          requires:
+            - build_app_dependencies
+      - run_application_tests:
+          requires:
+            - build_app_dependencies
+      - upload_application_artifacts:
+          requires:
+            - build_app_dependencies
+      - upload_application_release:
+          requires:
+            - build_app_dependencies
+  # nightly_build:
+  #   jobs:
+  #     - checkout_code
+  #     - build_env_dependencies:
+  #         requires:
+  #           - checkout_code
+  #     - build_app_dependencies:
+  #         requires:
+  #           - build_env_dependencies
+  #     - build_application:
+  #         requires:
+  #           - build_app_dependencies
+  #     - run_application_tests:
+  #         requires:
+  #           - build_app_dependencies
