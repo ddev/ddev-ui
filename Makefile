@@ -79,11 +79,11 @@ all: appsetup
 	@echo "Building for $@ platforms"
 	yarn build:all
 
-darwin: appsetup
+darwin:
 	@echo "Building $@"
 	yarn build:darwin
 
-windows: appsetup
+windows:
 	@echo "Building $@"
 	yarn build:windows
 
