@@ -249,18 +249,3 @@ workflows:
       - upload_application_release:
           requires:
             - build_app_dependencies
-  # nightly_build:
-  #   jobs:
-  #     - checkout_code
-  #     - build_env_dependencies:
-  #         requires:
-  #           - checkout_code
-  #     - build_app_dependencies:
-  #         requires:
-  #           - build_env_dependencies
-  #     - build_application:
-  #         requires:
-  #           - build_app_dependencies
-  #     - run_application_tests:
-  #         requires:
-  #           - build_app_dependencies
