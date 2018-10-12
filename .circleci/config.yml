@@ -89,8 +89,8 @@ jobs:
 
       # upload artifacts to circleci
       - run:
-          command: ./.circleci/generate_artifacts.sh $ARTIFACTS
           name: tar/zip up artifacts and make hashes
+          command: ./.circleci/generate_artifacts.sh $ARTIFACTS
       - store_artifacts:
           path: /artifacts
 
