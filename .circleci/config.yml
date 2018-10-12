@@ -2,16 +2,20 @@ version: 2
 jobs:
   build:
     macos:
-      xcode: '9.0'
+      xcode: "9.0"
     environment:
       ARTIFACTS: /artifacts
     working_directory: ~/ddev-ui
     steps:
+      - checkout
       - restore_cache:
           keys:
-            - 'homebrew-v3-{{ checksum "/tmp/info.txt" }}'
+            - 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
             - homebrew-v3-
-      - checkout
+            # when lock file changes, use increasingly general patterns to restore cache
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}-
+            - yarn-packages-v1-
       - run:
           name: xquartz setup
           command: brew cask install xquartz
@@ -29,18 +33,22 @@ jobs:
           command: |
             brew install wine || true
             brew unlink wine && brew link --overwrite wine
-      - save_cache:
-          key: 'homebrew-v3-{{ checksum "/tmp/info.txt" }}'
-          paths:
-            - /usr/local/Cellar/wine
-            - /usr/local/Cellar/node
       - run:
           name: Installed tool versions
           command: >-
             echo "git commit=$(make version) node version=$(node --version) npm
             version=$(npm --version) wine version=$(wine --version) HOME=$HOME
             USER=$(whoami) PWD=$PWD"
+      - save_cache:
+          key: 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
+          paths:
+            - /usr/local/Cellar/wine
+            - /usr/local/Cellar/node
       - run: make clean all
+      - save_cache:
+          key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
       - run: make test
       - run:
           command: ./.circleci/generate_artifacts.sh $ARTIFACTS
