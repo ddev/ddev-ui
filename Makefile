@@ -69,19 +69,18 @@ all: darwin
 appstart: appsetup
 	yarn run start
 
-package: appsetup
-	@echo "Building $@"
+package: @echo "Building $@"
 	yarn run dist
 
-linux: appsetup
+linux:
 	@echo "Building $@"
 	yarn run build-linux
 
-darwin: appsetup
+darwin:
 	@echo "Building $@"
 	yarn run build-darwin
 
-windows: appsetup
+windows:
 	@echo "Building $@"
 	yarn run build-windows
 
