@@ -11,7 +11,7 @@ PRODUCT_NAME := ddevui
 # This repo's root import path (under GOPATH).
 PKG := github.com/drud/ddev-ui
 
-# Docker repo for a push
+# Docker repo for a pushcode
 # DOCKER_REPO ?= drud/docker_repo_name
 
 # Upstream repo used in the Dockerfile
