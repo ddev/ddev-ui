@@ -12,16 +12,12 @@ jobs:
           keys:
             - 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
             - homebrew-v3-
-            # when lock file changes, use increasingly general patterns to restore cache
             - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
             - yarn-packages-v1-{{ .Branch }}-
             - yarn-packages-v1-
       - run:
           name: xquartz setup
           command: brew cask install xquartz
-      - run: >-
-          brew update && brew info --json=v1 wine >>/tmp/info.txt && brew info
-          --json=v1 node >>/tmp/info.txt
       - run:
           name: Homebrew install of node --lts
           command: |
@@ -39,6 +35,9 @@ jobs:
             echo "git commit=$(make version) node version=$(node --version) npm
             version=$(npm --version) wine version=$(wine --version) HOME=$HOME
             USER=$(whoami) PWD=$PWD"
+      - run: >-
+          brew update && brew info --json=v1 wine >>/tmp/info.txt && brew info
+          --json=v1 node >>/tmp/info.txt
       - save_cache:
           key: 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
           paths:
@@ -49,7 +48,7 @@ jobs:
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
-      - run: make test
+      # - run: make test
       - run:
           command: ./.circleci/generate_artifacts.sh $ARTIFACTS
           name: tar/zip up artifacts and make hashes
