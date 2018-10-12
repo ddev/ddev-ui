@@ -79,11 +79,11 @@ all: appsetup
 	@echo "Building for $@ platforms"
 	yarn build:all -p never
 
-darwin: appsetup
+darwin:
 	@echo "Building $@"
 	yarn build:darwin -c.mac.identity=null -p never
 
-windows: appsetup
+windows:
 	@echo "Building $@"
 	yarn build:windows -p never
 
