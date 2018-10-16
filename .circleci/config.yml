@@ -165,8 +165,6 @@ jobs:
     environment:
       ARTIFACTS: /artifacts
     working_directory: ~/ddev-ui
-    branches:
-      ignore: master
     steps:
       # restore codebase
       - restore_cache:
@@ -201,8 +199,6 @@ jobs:
     environment:
       ARTIFACTS: /artifacts
     working_directory: ~/ddev-ui
-    branches:
-      only: master
     steps:
       # restore codebase
       - restore_cache:
