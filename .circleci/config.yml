@@ -31,7 +31,7 @@ jobs:
       # restore brew cache
       - restore_cache:
           keys:
-            - 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
+            - 'homebrew-v3-{{ .Branch }}-{{ checksum "~/tmp/info.txt" }}'
             - homebrew-v3-
       - run:
           name: xquartz setup
@@ -54,10 +54,10 @@ jobs:
             version=$(npm --version) wine version=$(wine --version) HOME=$HOME
             USER=$(whoami) PWD=$PWD"
       - run: >-
-          brew update && brew info --json=v1 wine >>/tmp/info.txt && brew info
-          --json=v1 node >>/tmp/info.txt
+          brew update && brew info --json=v1 wine >>~/tmp/info.txt && brew info
+          --json=v1 node >>~/tmp/info.txt
       - save_cache:
-          key: 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
+          key: 'homebrew-v3-{{ .Branch }}-{{ checksum "~/tmp/info.txt" }}'
           paths:
             - /usr/local/Cellar/wine
             - /usr/local/Cellar/node
@@ -77,7 +77,7 @@ jobs:
       # restore brew cache
       - restore_cache:
           keys:
-            - 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
+            - 'homebrew-v3-{{ .Branch }}-{{ checksum "~/tmp/info.txt" }}'
             - homebrew-v3-
       # yarn install
       - restore_cache:
@@ -110,7 +110,7 @@ jobs:
       # restore brew cache
       - restore_cache:
           keys:
-            - 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
+            - 'homebrew-v3-{{ .Branch }}-{{ checksum "~/tmp/info.txt" }}'
             - homebrew-v3-
       # yarn cache
       - restore_cache:
@@ -141,7 +141,7 @@ jobs:
       # restore brew cache
       - restore_cache:
           keys:
-            - 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
+            - 'homebrew-v3-{{ .Branch }}-{{ checksum "~/tmp/info.txt" }}'
             - homebrew-v3-
       # yarn cache
       - restore_cache:
@@ -165,6 +165,8 @@ jobs:
     environment:
       ARTIFACTS: /artifacts
     working_directory: ~/ddev-ui
+    branches:
+      ignore: master
     steps:
       # restore codebase
       - restore_cache:
@@ -173,7 +175,7 @@ jobs:
       # restore brew cache
       - restore_cache:
           keys:
-            - 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
+            - 'homebrew-v3-{{ .Branch }}-{{ checksum "~/tmp/info.txt" }}'
             - homebrew-v3-
       # yarn cache
       - restore_cache:
@@ -199,6 +201,8 @@ jobs:
     environment:
       ARTIFACTS: /artifacts
     working_directory: ~/ddev-ui
+    branches:
+      only: master
     steps:
       # restore codebase
       - restore_cache:
@@ -207,7 +211,7 @@ jobs:
       # restore brew cache
       - restore_cache:
           keys:
-            - 'homebrew-v3-{{ .Branch }}-{{ checksum "/tmp/info.txt" }}'
+            - 'homebrew-v3-{{ .Branch }}-{{ checksum "~/tmp/info.txt" }}'
             - homebrew-v3-
       # yarn cache
       - restore_cache:
