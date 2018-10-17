@@ -28,19 +28,20 @@ jobs:
       # restore codebase
       - restore_cache:
           keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-
-      # create homebrew text file
-      - run:
-          name: homebrew setup
-          command: brew update && brew info --json=v1 wine >>homebrew.txt && brew info --json=v1 node >>homebrew.txt
+            - repo-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - repo-v1-
 
       # restore brew cache
       - restore_cache:
           keys:
-            - homebrew-v3-{{ .Branch }}-{{ checksum "homebrew.txt" }}
-            - homebrew-v3-{{ .Branch }}-
-            - homebrew-v3-
+            - homebrew-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - homebrew-v1-{{ .Branch }}-
+            - homebrew-v1-
+
+      # homebrew update
+      - run:
+          name: homebrew setup
+          command: brew update
 
       # xquartz setup
       - run:
@@ -63,11 +64,8 @@ jobs:
             echo "git commit=$(make version) node version=$(node --version) npm
             version=$(npm --version) wine version=$(wine --version) HOME=$HOME
             USER=$(whoami) PWD=$PWD"
-      - run: >-
-          brew update && brew info --json=v1 wine >>homebrew.txt && brew info
-          --json=v1 node >>homebrew.txt
       - save_cache:
-          key: 'homebrew-v3-{{ .Branch }}-{{ checksum "homebrew.txt" }}'
+          key: homebrew-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - /usr/local/Homebrew
             - /usr/local/Caskroom/xquartz
@@ -85,13 +83,15 @@ jobs:
       # restore codebase
       - restore_cache:
           keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+            - repo-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - repo-v1-
+
       # restore brew cache
       - restore_cache:
           keys:
-            - homebrew-v3-{{ .Branch }}-{{ checksum "homebrew.txt" }}
-            - homebrew-v3-{{ .Branch }}-
-            - homebrew-v3-
+            - homebrew-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - homebrew-v1-{{ .Branch }}-
+            - homebrew-v1-
       # yarn install
       - restore_cache:
           keys:
@@ -119,13 +119,15 @@ jobs:
       # restore codebase
       - restore_cache:
           keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+            - repo-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - repo-v1-
+
       # restore brew cache
       - restore_cache:
           keys:
-            - homebrew-v3-{{ .Branch }}-{{ checksum "homebrew.txt" }}
-            - homebrew-v3-{{ .Branch }}-
-            - homebrew-v3-
+            - homebrew-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - homebrew-v1-{{ .Branch }}-
+            - homebrew-v1-
       # yarn cache
       - restore_cache:
           keys:
@@ -151,13 +153,15 @@ jobs:
       # restore codebase
       - restore_cache:
           keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+            - repo-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - repo-v1-
+
       # restore brew cache
       - restore_cache:
           keys:
-            - homebrew-v3-{{ .Branch }}-{{ checksum "homebrew.txt" }}
-            - homebrew-v3-{{ .Branch }}-
-            - homebrew-v3-
+            - homebrew-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - homebrew-v1-{{ .Branch }}-
+            - homebrew-v1-
       # yarn cache
       - restore_cache:
           keys:
@@ -184,13 +188,15 @@ jobs:
       # restore codebase
       - restore_cache:
           keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+            - repo-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - repo-v1-
+
       # restore brew cache
       - restore_cache:
           keys:
-            - homebrew-v3-{{ .Branch }}-{{ checksum "homebrew.txt" }}
-            - homebrew-v3-{{ .Branch }}-
-            - homebrew-v3-
+            - homebrew-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - homebrew-v1-{{ .Branch }}-
+            - homebrew-v1-
       # yarn cache
       - restore_cache:
           keys:
@@ -219,13 +225,15 @@ jobs:
       # restore codebase
       - restore_cache:
           keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+            - repo-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - repo-v1-
+
       # restore brew cache
       - restore_cache:
           keys:
-            - homebrew-v3-{{ .Branch }}-{{ checksum "homebrew.txt" }}
-            - homebrew-v3-{{ .Branch }}-
-            - homebrew-v3-
+            - homebrew-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - homebrew-v1-{{ .Branch }}-
+            - homebrew-v1-
       # yarn cache
       - restore_cache:
           keys:
