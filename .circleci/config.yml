@@ -1,13 +1,17 @@
 version: 2.1
 
-jobs:
-  # checkout code base
-  checkout_code:
+executors:
+  mac-executor:
     macos:
       xcode: "9.0"
     environment:
       ARTIFACTS: /artifacts
     working_directory: ~/ddev-ui
+
+jobs:
+  # checkout code base
+  checkout_code:
+    executor: mac-executor
     steps:
       # checkout
       - checkout
@@ -19,11 +23,7 @@ jobs:
 
   # build env dependancies
   build_env_dependencies:
-    macos:
-      xcode: "9.0"
-    environment:
-      ARTIFACTS: /artifacts
-    working_directory: ~/ddev-ui
+    executor: mac-executor
     steps:
       # restore codebase
       - restore_cache:
@@ -74,11 +74,7 @@ jobs:
 
   # build app dependancies
   build_app_dependencies:
-    macos:
-      xcode: "9.0"
-    environment:
-      ARTIFACTS: /artifacts
-    working_directory: ~/ddev-ui
+    executor: mac-executor
     steps:
       # restore codebase
       - restore_cache:
@@ -110,11 +106,7 @@ jobs:
   # build application
   # TODO: breakout into w seperate work-flows
   build_application:
-    macos:
-      xcode: "9.0"
-    environment:
-      ARTIFACTS: /artifacts
-    working_directory: ~/ddev-ui
+    executor: mac-executor
     steps:
       # restore codebase
       - restore_cache:
@@ -144,11 +136,7 @@ jobs:
   # run tests
   # TODO: breakout into w seperate work-flows
   run_application_tests:
-    macos:
-      xcode: "9.0"
-    environment:
-      ARTIFACTS: /artifacts
-    working_directory: ~/ddev-ui
+    executor: mac-executor
     steps:
       # restore codebase
       - restore_cache:
@@ -179,11 +167,7 @@ jobs:
 
   # upload artifacts to circle * if not master
   upload_application_artifacts:
-    macos:
-      xcode: "9.0"
-    environment:
-      ARTIFACTS: /artifacts
-    working_directory: ~/ddev-ui
+    executor: mac-executor
     steps:
       # restore codebase
       - restore_cache:
@@ -216,11 +200,7 @@ jobs:
 
   # build release - * if master branch
   upload_application_release:
-    macos:
-      xcode: "9.0"
-    environment:
-      ARTIFACTS: /artifacts
-    working_directory: ~/ddev-ui
+    executor: mac-executor
     steps:
       # restore codebase
       - restore_cache:
