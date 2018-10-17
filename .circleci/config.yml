@@ -14,10 +14,20 @@ jobs:
     executor: mac-executor
     steps:
       # checkout
+      - restore_cache:
+          keys:
+            - v1-source-{{ .Branch }}-{{ .Revision }}
+            - v1-source-{{ .Branch }}-
+            - v1-source-
       - checkout
+      - save_cache:
+          key: v1-source-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ".git"
+
       # cache codebase
       - save_cache:
-          key: repo-v1-{{ .Environment.CIRCLE_SHA1 }}
+          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - ~/ddev-ui
 
@@ -28,15 +38,15 @@ jobs:
       # restore codebase
       - restore_cache:
           keys:
-            - repo-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - repo-v1-
+            - v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-repo-
 
       # restore brew cache
       - restore_cache:
           keys:
-            - homebrew-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - homebrew-v1-{{ .Branch }}-
-            - homebrew-v1-
+            - v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-homebrew-{{ .Branch }}-
+            - v1-homebrew-
 
       # homebrew update
       - run:
@@ -47,30 +57,26 @@ jobs:
       - run:
           name: xquartz setup
           command: brew cask install xquartz
-      - run:
-          name: Homebrew install of node --lts
-          command: |
-            brew unlink node || true
-            brew install node@8 || true
-            brew link --overwrite --force node@8
+      # wine setup
       - run:
           name: Homebrew install of wine
           command: |
             brew install wine || true
             brew unlink wine && brew link --overwrite wine
+      # echo installed tools
       - run:
           name: Installed tool versions
           command: >-
             echo "git commit=$(make version) node version=$(node --version) npm
             version=$(npm --version) wine version=$(wine --version) HOME=$HOME
             USER=$(whoami) PWD=$PWD"
+      # save cache
       - save_cache:
-          key: homebrew-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+          key: v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - /usr/local/Homebrew
             - /usr/local/Caskroom/xquartz
             - /usr/local/Cellar/wine
-            - /usr/local/Cellar/node
 
   # build app dependancies
   build_app_dependencies:
@@ -79,27 +85,27 @@ jobs:
       # restore codebase
       - restore_cache:
           keys:
-            - repo-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - repo-v1-
+            - v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-repo-
 
       # restore brew cache
       - restore_cache:
           keys:
-            - homebrew-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - homebrew-v1-{{ .Branch }}-
-            - homebrew-v1-
+            - v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-homebrew-{{ .Branch }}-
+            - v1-homebrew-
       # yarn install
       - restore_cache:
           keys:
-            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - yarn-packages-v1-{{ .Branch }}-
-            - yarn-packages-v1-
+            - v1-yarn-packages{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-yarn-packages{{ .Branch }}-
+            - v1-yarn-packages
       # yarn cache
       - run:
           name: Yarn Install
           command: yarn install
       - save_cache:
-          key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          key: v1-yarn-packages{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
 
@@ -111,25 +117,25 @@ jobs:
       # restore codebase
       - restore_cache:
           keys:
-            - repo-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - repo-v1-
+            - v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-repo-
 
       # restore brew cache
       - restore_cache:
           keys:
-            - homebrew-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - homebrew-v1-{{ .Branch }}-
-            - homebrew-v1-
+            - v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-homebrew-{{ .Branch }}-
+            - v1-homebrew-
       # yarn cache
       - restore_cache:
           keys:
-            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - yarn-packages-v1-{{ .Branch }}-
-            - yarn-packages-v1-
+            - v1-yarn-packages{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-yarn-packages{{ .Branch }}-
+            - v1-yarn-packages
       - run: make clean all
       # cache built apps
       - save_cache:
-          key: app-dist-v1-{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
+          key: v1-app-dist{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
           paths:
             - ~/dist
 
@@ -141,26 +147,26 @@ jobs:
       # restore codebase
       - restore_cache:
           keys:
-            - repo-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - repo-v1-
+            - v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-repo-
 
       # restore brew cache
       - restore_cache:
           keys:
-            - homebrew-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - homebrew-v1-{{ .Branch }}-
-            - homebrew-v1-
+            - v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-homebrew-{{ .Branch }}-
+            - v1-homebrew-
       # yarn cache
       - restore_cache:
           keys:
-            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - yarn-packages-v1-{{ .Branch }}-
-            - yarn-packages-v1-
+            - v1-yarn-packages{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-yarn-packages{{ .Branch }}-
+            - v1-yarn-packages
       # app cache
       - restore_cache:
           keys:
-            - app-dist-v1-{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
-            - app-dist-v1-
+            - v1-app-dist{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
+            - v1-app-dist
       # run tests
       - run: make test
       # TODO: cache results
@@ -172,26 +178,26 @@ jobs:
       # restore codebase
       - restore_cache:
           keys:
-            - repo-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - repo-v1-
+            - v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-repo-
 
       # restore brew cache
       - restore_cache:
           keys:
-            - homebrew-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - homebrew-v1-{{ .Branch }}-
-            - homebrew-v1-
+            - v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-homebrew-{{ .Branch }}-
+            - v1-homebrew-
       # yarn cache
       - restore_cache:
           keys:
-            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - yarn-packages-v1-{{ .Branch }}-
-            - yarn-packages-v1-
+            - v1-yarn-packages{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-yarn-packages{{ .Branch }}-
+            - v1-yarn-packages
       # app cache
       - restore_cache:
           keys:
-            - app-dist-v1-{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
-            - app-dist-v1-
+            - v1-app-dist{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
+            - v1-app-dist
       - run:
           name: tar/zip up artifacts and make hashes
           command: ./.circleci/generate_artifacts.sh $ARTIFACTS
@@ -205,26 +211,26 @@ jobs:
       # restore codebase
       - restore_cache:
           keys:
-            - repo-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - repo-v1-
+            - v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-repo-
 
       # restore brew cache
       - restore_cache:
           keys:
-            - homebrew-v1-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - homebrew-v1-{{ .Branch }}-
-            - homebrew-v1-
+            - v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-homebrew-{{ .Branch }}-
+            - v1-homebrew-
       # yarn cache
       - restore_cache:
           keys:
-            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - yarn-packages-v1-{{ .Branch }}-
-            - yarn-packages-v1-
+            - v1-yarn-packages{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-yarn-packages{{ .Branch }}-
+            - v1-yarn-packages
       # app cache
       - restore_cache:
           keys:
-            - app-dist-v1-{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
-            - app-dist-v1-
+            - v1-app-dist{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
+            - v1-app-dist
       - run:
           name: upload release
           command: yarn run release
