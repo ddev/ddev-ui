@@ -42,7 +42,6 @@ aliases:
         USER=$(whoami) PWD=$PWD"
 
 version: 2.0
-
 jobs:
   build:
     <<: *defaults
@@ -90,8 +89,8 @@ jobs:
 
       # upload artifacts to circleci
       - run:
-          name: tar/zip up artifacts and make hashes
           command: ./.circleci/generate_artifacts.sh $ARTIFACTS
+          name: tar/zip up artifacts and make hashes
       - store_artifacts:
           path: /artifacts
 
