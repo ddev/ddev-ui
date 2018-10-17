@@ -13,7 +13,7 @@ jobs:
       - checkout
       # cache codebase
       - save_cache:
-          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+          key: repo-v1-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - ~/ddev-ui
 
