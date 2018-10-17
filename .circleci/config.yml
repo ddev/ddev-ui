@@ -3,7 +3,7 @@ version: 2.1
 executors:
   mac-executor:
     macos:
-      xcode: "9.0"
+      xcode: "9.4.1"
     environment:
       ARTIFACTS: /artifacts
     working_directory: ~/ddev-ui
