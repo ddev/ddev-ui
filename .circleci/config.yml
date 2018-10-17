@@ -42,6 +42,7 @@ aliases:
         USER=$(whoami) PWD=$PWD"
 
 version: 2.0
+
 jobs:
   build:
     <<: *defaults
