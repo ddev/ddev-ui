@@ -9,8 +9,8 @@ executors:
     working_directory: ~/ddev-ui
 
 jobs:
-  # checkout code base
-  checkout_code:
+  # build environment
+  build_environment:
     executor: mac-executor
     steps:
       # checkout
@@ -19,6 +19,13 @@ jobs:
             - v1-source-{{ .Branch }}-{{ .Revision }}
             - v1-source-{{ .Branch }}-
             - v1-source-
+
+      # restore codebase
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-repo-
+
       - checkout
       - save_cache:
           key: v1-source-{{ .Branch }}-{{ .Revision }}
@@ -27,19 +34,9 @@ jobs:
 
       # cache codebase
       - save_cache:
-          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+          key: v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - ~/ddev-ui
-
-  # build env dependancies
-  build_env_dependencies:
-    executor: mac-executor
-    steps:
-      # restore codebase
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-repo-
 
       # restore brew cache
       - restore_cache:
@@ -78,22 +75,7 @@ jobs:
             - /usr/local/Caskroom/xquartz
             - /usr/local/Cellar/wine
 
-  # build app dependancies
-  build_app_dependencies:
-    executor: mac-executor
-    steps:
-      # restore codebase
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-repo-
-
-      # restore brew cache
-      - restore_cache:
-          keys:
-            - v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-homebrew-{{ .Branch }}-
-            - v1-homebrew-
+      # build app dependancies
       # yarn install
       - restore_cache:
           keys:
@@ -241,22 +223,16 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - checkout_code
-      - build_env_dependencies:
-          requires:
-            - checkout_code
-      - build_app_dependencies:
-          requires:
-            - build_env_dependencies
+      - build_environment
       - build_application:
           requires:
-            - build_app_dependencies
+            - build_environment
       - run_application_tests:
           requires:
-            - build_app_dependencies
+            - build_application
       - upload_application_artifacts:
           requires:
-            - build_app_dependencies
+            - run_application_tests
       - upload_application_release:
           requires:
-            - build_app_dependencies
+            - run_application_tests
