@@ -79,9 +79,9 @@ jobs:
       # yarn install
       - restore_cache:
           keys:
-            - v1-yarn-packages{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - v1-yarn-packages{{ .Branch }}-
-            - v1-yarn-packages
+            - v1-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-yarn-packages-{{ .Branch }}-
+            - v1-yarn-packages-
       # yarn cache
       - run:
           name: Yarn Install
@@ -111,13 +111,13 @@ jobs:
       # yarn cache
       - restore_cache:
           keys:
-            - v1-yarn-packages{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - v1-yarn-packages{{ .Branch }}-
-            - v1-yarn-packages
+            - v1-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-yarn-packages-{{ .Branch }}-
+            - v1-yarn-packages-
       - run: make clean all
       # cache built apps
       - save_cache:
-          key: v1-app-dist{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
+          key: v1-app-dist-{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
           paths:
             - ~/dist
 
@@ -141,14 +141,15 @@ jobs:
       # yarn cache
       - restore_cache:
           keys:
-            - v1-yarn-packages{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - v1-yarn-packages{{ .Branch }}-
-            - v1-yarn-packages
-      # app cache
+            - v1-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-yarn-packages-{{ .Branch }}-
+            - v1-yarn-packages-
+      # dist cache
       - restore_cache:
           keys:
-            - v1-app-dist{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
-            - v1-app-dist
+            - v1-app-dist-{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
+            - v1-app-dist-{{ .Branch }}-
+            - v1-app-dist-
       # run tests
       - run: make test
       # TODO: cache results
@@ -230,9 +231,9 @@ workflows:
       - run_application_tests:
           requires:
             - build_application
-      - upload_application_artifacts:
-          requires:
-            - run_application_tests
-      - upload_application_release:
-          requires:
-            - run_application_tests
+      # - upload_application_artifacts:
+      #     requires:
+      #       - run_application_tests
+      # - upload_application_release:
+      #     requires:
+      #       - run_application_tests
