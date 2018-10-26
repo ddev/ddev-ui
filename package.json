@@ -16,17 +16,18 @@
     }
   ],
   "scripts": {
+    "foo": "build clean",
     "start": "electron-webpack dev",
     "compile": "electron-webpack",
-    "dist": "yarn compile && electron-builder",
+    "dist": "yarn compile && build",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "lint": "eslint --cache --color --ext .jsx,.js src",
     "lint:tests": "eslint --cache --color --ext .jsx,.js test",
-    "build-linux": "yarn compile && electron-builder --linux --x64",
-    "build-windows": "yarn compile && electron-builder --win",
-    "build-darwin": "yarn compile && electron-builder --mac",
+    "build-linux": "yarn compile && build --linux --x64",
+    "build-windows": "yarn compile && build --win",
+    "build-darwin": "yarn compile && build --mac",
     "test": "mocha --require babel-register --require ignore-styles",
-    "postinstall": "electron-builder install-app-deps",
+    "postinstall": "build install-app-deps",
     "release": "yarn compile && build -p always"
   },
   "electronWebpack": {
@@ -44,7 +45,7 @@
     "compare-versions": "3.x",
     "electron-default-menu": "^1.0.1",
     "electron-devtools-installer": "2.2.x",
-    "electron-is-dev": "0.3.x",
+    "electron-is-dev": "1.x",
     "electron-log": "^2.2.17",
     "electron-updater": "^3.1.2",
     "fix-path": "2.1.x",
@@ -55,7 +56,6 @@
     "popper.js": "1.14.x",
     "prop-types": "15.x",
     "react": "16.x",
-    "react-data-grid": "4.x",
     "react-desktop": "0.3.x",
     "react-dom": "16.x",
     "react-hot-loader": "4.x",
@@ -80,12 +80,12 @@
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
-    "babel-eslint": "^v9.0.0",
+    "babel-eslint": "^v10.x",
     "babel-plugin-root-import": "6.x",
     "cypress": "3.x",
     "electron": "3.x",
     "electron-builder": "20.x",
-    "electron-webpack": "2.1.x",
+    "electron-webpack": "2.x",
     "eslint": "5.x",
     "eslint-config-airbnb": "17.x",
     "eslint-config-prettier": "3.x",
@@ -97,18 +97,13 @@
     "file-loader": "1.x",
     "ignore-styles": "5.x",
     "jest": "23.x",
-    "mocha": "5.x",
-    "mock-fs": "4.x",
-    "nock": "9.x",
     "node-sass": "4.x",
     "prettier": "1.x",
     "react-error-boundary": "^1.2.3",
-    "rewire": "4.x",
     "sass-loader": "7.x",
-    "stub-spawn-once": "2.3.x",
     "webpack": "4.x"
   },
   "resolutions": {
-    "webpack-sources": "1.x"
+    "browserslist": "^4.1"
   }
 }
