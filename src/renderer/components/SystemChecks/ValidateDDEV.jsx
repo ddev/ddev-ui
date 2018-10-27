@@ -3,7 +3,7 @@ import { BarLoader } from 'react-spinners';
 import { version } from '../../ddev-shell';
 import { pause } from '../../helpers';
 
-const icon = require(`${__static}/img/Icon.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
+const icon = require('../../../resources/imgs/Icon.svg');
 
 class ValidateDDEV extends React.Component {
   state = {

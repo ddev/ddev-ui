@@ -1,12 +1,12 @@
 import React from 'react';
 import electron from 'electron';
 
-const placeholder = require(`${__static}/img/placeholder.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const wordpress = require(`${__static}/img/wordpress.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const drupal6 = require(`${__static}/img/drupal6.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const drupal7 = require(`${__static}/img/drupal7.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const drupal8 = require(`${__static}/img/drupal8.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const php = require(`${__static}/img/php.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
+const placeholder = require('../../resources/imgs/placeholder.png');
+const wordpress = require('../../resources/imgs/wordpress.png');
+const drupal6 = require('../../resources/imgs/drupal6.png');
+const drupal7 = require('../../resources/imgs/drupal7.png');
+const drupal8 = require('../../resources/imgs/drupal8.png');
+const php = require('../../resources/imgs/php.png');
 
 // project type Icon
 const ProjectTypeIcon = props => {

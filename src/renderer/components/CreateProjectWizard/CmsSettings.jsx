@@ -1,12 +1,10 @@
 import React from 'react';
 
-/* eslint-disable no-undef,global-require,import/no-dynamic-require */
-const drupalLogo = require(`${__static}/img/druplicon-vector.svg`);
-const wordpressLogo = require(`${__static}/img/wordpress-vector.svg`);
-const typo3Logo = require(`${__static}/img/typo3.svg`);
-const backdropLogo = require(`${__static}/img/Backdrop-vector.svg`);
-const phpLogo = require(`${__static}/img/PHPApp.svg`);
-/* eslint-enable no-undef,global-require,import/no-dynamic-require */
+const drupalLogo = require('../../../resources/imgs/druplicon-vector.svg');
+const wordpressLogo = require('../../../resources/imgs/wordpress-vector.svg');
+const typo3Logo = require('../../../resources/imgs/typo3.svg');
+const backdropLogo = require('../../../resources/imgs/Backdrop-vector.svg');
+const phpLogo = require('../../../resources/imgs/PHPApp.svg');
 
 class CmsSettings extends React.PureComponent {
   render() {

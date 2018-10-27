@@ -48,23 +48,20 @@ VERSION := $(shell git describe --tags --always --dirty)
 # include. That way the base components can easily be updated as our general needs
 # change.
 #include build-tools/makefile_components/base_build_go.mak
-include build-tools/makefile_components/base_build_python-docker.mak
+# include build-tools/makefile_components/base_build_python-docker.mak
 #include build-tools/makefile_components/base_container.mak
 #include build-tools/makefile_components/base_push.mak
 #include build-tools/makefile_components/base_test_go.mak
-include build-tools/makefile_components/base_test_python.mak
-
+# include build-tools/makefile_components/base_test_python.mak
 
 # Additional targets can be added here
 # Also, existing targets can be overridden by copying and customizing them.
-
-.PHONY: build clean
-
-# all: darwin linux windows
-all: darwin
-
 # Build requirements
 # - wine and mono must be available to build Windows on another platform (brew install wine mono )
+
+default: all
+
+all: darwin linux windows
 
 appstart: appsetup
 	yarn run start
@@ -88,9 +85,9 @@ appsetup: package.json
 	yarn install
 
 clean: package.json
-	rm -rf js/dist node_modules
+	rm -rf dist node_modules
 	yarn install
 
-test:
+run-test:
 	@echo "Skipping $@ for Now 🙈"
-	yarn run test
+	# yarn run test

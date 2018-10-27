@@ -1,6 +1,6 @@
 import React from 'react';
 
-const issue = require(`${__static}/img/Issue.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
+const issue = require('../../resources/imgs/Issue.svg');
 
 const Alpha = () => (
   <div className="alpha mt-3">

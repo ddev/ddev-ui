@@ -5,11 +5,11 @@ import { NavLink } from 'react-router-dom';
 
 import ProjectNavItem from './ProjectNavItem';
 
-const stack = require(`${__static}/img/stack.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const icon = require(`${__static}/img/Icon.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const issue = require(`${__static}/img/Issue.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const addSite = require(`${__static}/img/AddSite.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const settings = require(`${__static}/img/SettingsBlue.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
+const stack = require('../../resources/imgs/stack.svg');
+const icon = require('../../resources/imgs/Icon.svg');
+const issue = require('../../resources/imgs/Issue.svg');
+const addSite = require('../../resources/imgs/AddSite.svg');
+const settings = require('../../resources/imgs/SettingsBlue.svg');
 
 class Sidebar extends React.Component {
   render() {
