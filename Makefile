@@ -70,6 +70,10 @@ clean: package.json
 appsetup: package.json
 	yarn install
 
+default: all
+
+all: darwin linux windows
+
 appstart: appsetup
 	yarn dev
 
