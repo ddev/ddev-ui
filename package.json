@@ -16,18 +16,16 @@
     }
   ],
   "scripts": {
-    "foo": "build clean",
-    "start": "electron-webpack dev",
+    "dev": "electron-webpack dev",
     "compile": "electron-webpack",
     "dist": "yarn compile && build",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "lint": "eslint --cache --color --ext .jsx,.js src",
     "lint:tests": "eslint --cache --color --ext .jsx,.js test",
-    "build-linux": "yarn compile && build --linux --x64",
-    "build-windows": "yarn compile && build --win",
-    "build-darwin": "yarn compile && build --mac",
-    "postinstall": "build install-app-deps",
-    "release": "yarn compile && build -p always"
+    "build-linux": "yarn dist --linux --x64",
+    "build-windows": "yarn dist --win",
+    "build-darwin": "yarn dist --mac",
+    "release": "yarn dist -p always"
   },
   "electronWebpack": {
     "renderer": {

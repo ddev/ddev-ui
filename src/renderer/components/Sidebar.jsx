@@ -5,11 +5,11 @@ import { NavLink } from 'react-router-dom';
 
 import ProjectNavItem from './ProjectNavItem';
 
-const stack = require('../../resources/imgs/stack.svg');
-const icon = require('../../resources/imgs/Icon.svg');
-const issue = require('../../resources/imgs/Issue.svg');
-const addSite = require('../../resources/imgs/AddSite.svg');
-const settings = require('../../resources/imgs/SettingsBlue.svg');
+import * as stack from '../../resources/imgs/stack.svg';
+import * as icon from '../../resources/imgs/Icon.svg';
+import * as issue from '../../resources/imgs/Issue.svg';
+import * as addSite from '../../resources/imgs/AddSite.svg';
+import * as settings from '../../resources/imgs/SettingsBlue.svg';
 
 class Sidebar extends React.Component {
   render() {

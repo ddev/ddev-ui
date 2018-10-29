@@ -5,7 +5,7 @@ import { BarLoader } from 'react-spinners';
 import { list } from '../../ddev-shell';
 import { pause } from '../../helpers';
 
-const docker = require('../../../resources/imgs/Docker.svg');
+import * as docker from '../../../resources/imgs/Docker.svg';
 
 class ValidateDocker extends React.Component {
   state = {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const issue = require('../../resources/imgs/Issue.svg');
+import * as issue from '../../resources/imgs/Issue.svg';
 
 const Alpha = () => (
   <div className="alpha mt-3">

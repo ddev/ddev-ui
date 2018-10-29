@@ -1,12 +1,12 @@
 import React from 'react';
 import electron from 'electron';
 
-const placeholder = require('../../resources/imgs/placeholder.png');
-const wordpress = require('../../resources/imgs/wordpress.png');
-const drupal6 = require('../../resources/imgs/drupal6.png');
-const drupal7 = require('../../resources/imgs/drupal7.png');
-const drupal8 = require('../../resources/imgs/drupal8.png');
-const php = require('../../resources/imgs/php.png');
+import * as placeholder from '../../resources/imgs/placeholder.png';
+import * as wordpress from '../../resources/imgs/wordpress.png';
+import * as drupal6 from '../../resources/imgs/drupal6.png';
+import * as drupal7 from '../../resources/imgs/drupal7.png';
+import * as drupal8 from '../../resources/imgs/drupal8.png';
+import * as php from '../../resources/imgs/php.png';
 
 // project type Icon
 const ProjectTypeIcon = props => {

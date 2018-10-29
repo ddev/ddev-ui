@@ -3,7 +3,7 @@ import { BarLoader } from 'react-spinners';
 import { version } from '../../ddev-shell';
 import { pause } from '../../helpers';
 
-const icon = require('../../../resources/imgs/Icon.svg');
+import * as icon from '../../../resources/imgs/Icon.svg';
 
 class ValidateDDEV extends React.Component {
   state = {

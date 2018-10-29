@@ -5,13 +5,13 @@ module.exports = {
         test: /\.jsx?$/,
         loader: 'babel-loader',
         options: {
-          presets: ['@babel/env', '@babel/react']
+          presets: ['@babel/env', '@babel/react'],
         },
       },
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
   devServer: {
     historyApiFallback: true,
