@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "baseUrl": "./",
+    "paths": {
+      "main/*": ["src/main/*"],
+      "components/*": ["src/renderer/components/*"],
+      "renderer/*": ["src/renderer/*"],
+      "resources/*": ["src/resources/*"],
+      "app/*": ["src/*"],
+      "*": ["src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

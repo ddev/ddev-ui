@@ -83,6 +83,7 @@
     "eslint": "5.8.x",
     "eslint-config-airbnb": "17.x",
     "eslint-config-prettier": "3.x",
+    "eslint-import-resolver-webpack": "^0.10.1",
     "eslint-plugin-babel": "5.x",
     "eslint-plugin-import": "2.x",
     "eslint-plugin-jsx-a11y": "6.x",

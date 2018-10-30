@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   module: {
     rules: [
@@ -11,7 +13,15 @@ module.exports = {
     ],
   },
   resolve: {
+    alias: {
+      main: path.resolve(__dirname, 'src', 'main'),
+      components: path.resolve(__dirname, 'src', 'renderer', 'components'),
+      renderer: path.resolve(__dirname, 'src', 'renderer'),
+      resources: path.resolve(__dirname, 'src', 'resources'),
+      app: path.join(__dirname, 'src'),
+    },
     extensions: ['.js', '.jsx'],
+    // modules: [path.join(__dirname, 'src'), 'node_modules'],
   },
   devServer: {
     historyApiFallback: true,
