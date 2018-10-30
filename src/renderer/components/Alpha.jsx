@@ -1,5 +1,5 @@
 import React from 'react';
-import * as issue from 'resources/imgs/Issue.svg';
+import * as issue from 'Media/Issue.svg';
 
 const Alpha = () => (
   <div className="alpha mt-3">

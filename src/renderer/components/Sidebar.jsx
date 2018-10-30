@@ -3,13 +3,13 @@ import electron from 'electron';
 import { ListView, ListViewHeader, ListViewFooter, ListViewSection } from 'react-desktop/macOs';
 import { NavLink } from 'react-router-dom';
 
-import * as stack from 'resources/imgs/stack.svg';
-import * as icon from 'resources/imgs/Icon.svg';
-import * as issue from 'resources/imgs/Issue.svg';
-import * as addSite from 'resources/imgs/AddSite.svg';
-import * as settings from 'resources/imgs/SettingsBlue.svg';
+import * as stack from 'Media/stack.svg';
+import * as icon from 'Media/Icon.svg';
+import * as issue from 'Media/Issue.svg';
+import * as addSite from 'Media/AddSite.svg';
+import * as settings from 'Media/SettingsBlue.svg';
 
-import ProjectNavItem from './ProjectNavItem';
+import ProjectNavItem from 'Components/ProjectNavItem';
 
 class Sidebar extends React.Component {
   render() {

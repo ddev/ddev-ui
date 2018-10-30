@@ -5,8 +5,8 @@ import ErrorBoundary from 'react-error-boundary';
 import 'popper.js';
 import 'bootstrap';
 
-import Dashboard from './Dashboard';
-import AppLoading from './AppLoading';
+import Dashboard from 'Components/Dashboard';
+import AppLoading from 'Components/AppLoading';
 
 // app styling
 import '~/src/resources/scss/main.scss'; // eslint-disable-line import/no-unresolved

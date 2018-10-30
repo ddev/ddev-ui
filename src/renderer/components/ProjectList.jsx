@@ -3,10 +3,10 @@ import { NavLink } from 'react-router-dom';
 import electron from 'electron';
 // import ReactDataGrid from 'react-data-grid';
 
-import { showLoadingScreen, showErrorScreen } from '../helpers';
-import { start, restart, stop, remove } from '../ddev-shell';
+import { showLoadingScreen, showErrorScreen } from 'helpers';
+import { start, restart, stop, remove } from 'ddev-shell';
 
-import ProjectStatusIcon from './ProjectStatusIcon';
+import ProjectStatusIcon from 'Components/ProjectStatusIcon';
 
 class ProjectList extends React.PureComponent {
   state = {

@@ -4,19 +4,20 @@ import _ from 'lodash';
 import { toast } from 'react-toastify';
 import ErrorBoundary from 'react-error-boundary';
 
+import { updateDistros } from 'distro-updater';
+import { list } from 'ddev-shell';
+import { isJson } from 'helpers';
+
 // components
-import Header from './Header';
-import Sidebar from './Sidebar';
-import Footer from './Footer';
-import ViewRouter from './ViewRouter';
-import Alpha from './Alpha';
-import Alerts from './Alerts';
-import Status from './Status';
+import Header from 'Components/Header';
+import Sidebar from 'Components/Sidebar';
+import Footer from 'Components/Footer';
+import ViewRouter from 'Components/ViewRouter';
+// import Alpha from 'Components/Alpha';
+import Alerts from 'Components/Alerts';
+import Status from 'Components/Status';
 
 // non componentized JS
-import { updateDistros } from '../distro-updater';
-import { list } from '../ddev-shell';
-import { isJson } from '../helpers';
 
 class Dashboard extends React.Component {
   state = {

@@ -14,14 +14,17 @@ module.exports = {
   },
   resolve: {
     alias: {
-      main: path.resolve(__dirname, 'src', 'main'),
-      components: path.resolve(__dirname, 'src', 'renderer', 'components'),
-      renderer: path.resolve(__dirname, 'src', 'renderer'),
-      resources: path.resolve(__dirname, 'src', 'resources'),
-      app: path.join(__dirname, 'src'),
+      Main: path.resolve(__dirname, 'src', 'main'),
+      Components: path.resolve(__dirname, 'src', 'renderer', 'components'),
+      Media: path.resolve(__dirname, 'src', 'resources', 'media'),
     },
     extensions: ['.js', '.jsx'],
-    // modules: [path.join(__dirname, 'src'), 'node_modules'],
+    modules: [
+      path.join(__dirname, 'src'),
+      path.join(__dirname, 'src', 'renderer'),
+      path.join(__dirname, 'src', 'resources', 'media'),
+      'node_modules',
+    ],
   },
   devServer: {
     historyApiFallback: true,

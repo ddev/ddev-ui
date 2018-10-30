@@ -1,8 +1,8 @@
 import React from 'react';
 import electron from 'electron';
 
-import { showLoadingScreen, showErrorScreen } from '../modules/helpers';
-import { start, restart, stop, remove } from '../modules/ddev-shell';
+import { showLoadingScreen, showErrorScreen } from 'helpers';
+import { start, restart, stop, remove } from 'ddev-shell';
 
 class ProjectActions extends React.PureComponent {
   processStart = e => {

@@ -1,12 +1,12 @@
 import React from 'react';
 import electron from 'electron';
 
-import * as placeholder from 'resources/imgs/placeholder.png';
-import * as wordpress from 'resources/imgs/wordpress.png';
-import * as drupal6 from 'resources/imgs/drupal6.png';
-import * as drupal7 from 'resources/imgs/drupal7.png';
-import * as drupal8 from 'resources/imgs/drupal8.png';
-import * as php from 'resources/imgs/php.png';
+import * as placeholder from 'Media/placeholder.png';
+import * as wordpress from 'Media/wordpress.png';
+import * as drupal6 from 'Media/drupal6.png';
+import * as drupal7 from 'Media/drupal7.png';
+import * as drupal8 from 'Media/drupal8.png';
+import * as php from 'Media/php.png';
 
 // project type Icon
 const ProjectTypeIcon = props => {

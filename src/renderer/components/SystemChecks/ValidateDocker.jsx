@@ -2,9 +2,10 @@ import React from 'react';
 import electron from 'electron';
 
 import { BarLoader } from 'react-spinners';
-import * as docker from 'resources/imgs/Docker.svg';
-import { list } from 'renderer/ddev-shell';
-import { pause } from 'renderer/helpers';
+import { list } from 'ddev-shell';
+import { pause } from 'helpers';
+
+import * as docker from 'Media/Docker.svg';
 
 class ValidateDocker extends React.Component {
   state = {

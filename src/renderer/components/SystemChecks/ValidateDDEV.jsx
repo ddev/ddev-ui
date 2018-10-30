@@ -1,8 +1,9 @@
 import React from 'react';
 import { BarLoader } from 'react-spinners';
-import * as icon from 'resources/imgs/Icon.svg';
-import { version } from 'renderer/ddev-shell';
-import { pause } from 'renderer/helpers';
+import { version } from 'ddev-shell';
+import { pause } from 'helpers';
+
+import * as icon from 'Media/Icon.svg';
 
 class ValidateDDEV extends React.Component {
   state = {
