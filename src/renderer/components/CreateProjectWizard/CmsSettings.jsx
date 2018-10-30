@@ -1,10 +1,10 @@
 import React from 'react';
 
-import * as drupalLogo from '../../../resources/imgs/druplicon-vector.svg';
-import * as wordpressLogo from '../../../resources/imgs/wordpress-vector.svg';
-import * as typo3Logo from '../../../resources/imgs/typo3.svg';
-import * as backdropLogo from '../../../resources/imgs/Backdrop-vector.svg';
-import * as phpLogo from '../../../resources/imgs/PHPApp.svg';
+import * as drupalLogo from 'resources/imgs/druplicon-vector.svg';
+import * as wordpressLogo from 'resources/imgs/wordpress-vector.svg';
+import * as typo3Logo from 'resources/imgs/typo3.svg';
+import * as backdropLogo from 'resources/imgs/Backdrop-vector.svg';
+import * as phpLogo from 'resources/imgs/PHPApp.svg';
 
 class CmsSettings extends React.PureComponent {
   render() {

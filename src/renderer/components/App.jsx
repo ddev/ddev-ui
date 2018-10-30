@@ -7,6 +7,7 @@ import 'bootstrap';
 
 import Dashboard from './Dashboard';
 import AppLoading from './AppLoading';
+
 // app styling
 import '~/src/resources/scss/main.scss'; // eslint-disable-line import/no-unresolved
 
