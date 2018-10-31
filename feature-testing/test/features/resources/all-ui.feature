@@ -30,22 +30,9 @@ And Docker is running
 When I stop Docker
 Then DDEV UI will update and indicate Docker is no longer running
 
-Scenario: DDEV-UI lists all DDEV projects and their status
-
-Scenario: I can start, stop and restart a DDEV project
-
-Scenario: I can create a blank WordPress project
-
-Scenario: I can create a blank Drupal 6, 7 or 8 project
-
-Scenario: I can setup a DDEV project from an existing project
-
-Scenario: I can remove a DDEV project
-
 Scenario: DDEV UI will direct me to the correct GitHub location to submit feedback
 
 Scenario: DDEV UI will direct me to the correct location for documentation
-
 
 Scenario: DDEV UI will autoupdate when an update is available 
 

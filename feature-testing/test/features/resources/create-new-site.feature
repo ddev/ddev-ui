@@ -13,6 +13,7 @@ Scenario Outline: Create a blank project
     ## Had to enter computer password
     Then the <site-name> site is created
     And the status is "running"
+    And the project <site-name> is visible in the left hand nav
 
     Examples:
     | site-name      | site-type  |
