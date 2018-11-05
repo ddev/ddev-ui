@@ -72,7 +72,8 @@ appsetup: package.json
 
 default: all
 
-all: darwin linux windows
+appsetup: package.json
+	yarn install
 
 appstart: appsetup
 	yarn dev
@@ -83,11 +84,11 @@ all: appsetup
 	@echo "Building for $@ platforms"
 	yarn build:all -p never
 
-darwin:
+darwin: appsetup
 	@echo "Building $@"
 	yarn build:darwin -c.mac.identity=null -p never
 
-windows:
+windows: appsetup
 	@echo "Building $@"
 	yarn build:windows -p never
 
