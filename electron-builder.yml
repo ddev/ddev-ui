@@ -1,14 +1,39 @@
-appId: com.github.drud.ddev-ui
-copyright: Copyright © 2018 Drud Technologies
 productName: DDEV UI
+appId: 3BAN66AG5M.com.github.drud.ddev-ui
+copyright: Copyright © 2018 Drud Technologies
 publish:
   provider: github
   owner: drud
   repo: ddev-ui
+
+# directories:
+#   output: release
+
+# files:
+#   - main.js,
+#   - node_modules/**/*,
+#   - app/**/*,
+#   - package.json,
+#   - embedded.provisionprofile
+
+# files:
+#   - dist/
+#   - from: dist/
+#     to: "."
+#     filter: index.js
+#   - resources/
+#   - index.html
+#   - embedded.provisionprofile
+
 mac:
   category: public.app-category.developer-tools
   target:
-    - zip
+    - pkg
     - dmg
+    - zip
+    - mas
+mas:
+  type: distribution
+  category: public.app-category.developer-tools
 linux:
   category: development

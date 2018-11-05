@@ -10,11 +10,7 @@ If you are looking to contribute to the project you will need to make sure you h
 
 #### DDEV CLI
 
-DDEV CLI is installed and properly working.
-
-#### Yarn
-
-Yarn is installed globally `npm install -g yarn`.
+[DDEV CLI](https://github.com/drud/ddev/blob/master/CONTRIBUTING.md) is installed and properly working.
 
 #### Node
 
@@ -50,12 +46,23 @@ node -v
 npm -v
 ```
 
-<sub>Should be **node** = `v8.11.x` and **npm** = `5.6.x`</sub>
+<sub>Should be **node** = `v8.x` and **npm** = `5.x`</sub>
+
+#### Yarn
+
+##### Install with NPM
+
+- To install Yarn globally `npm install -g yarn`.
+
+##### Install with Homebrew
+
+- [Setup Homebrew](https://ddev.readthedocs.io/en/latest/)
+- To install Yarn globally `brew install yarn`.
 
 ## Run Instructions
 
 - Ensure DDEV is installed and properly working via CLI and you have valid projects installed.
-  - `make clean package` - To test with packaged app.
+  - `make clean` - To test with packaged app.
   - `make clean appstart` - To test with DevTools and HMR.
 
 ## Build Instructions
@@ -69,6 +76,15 @@ DDEV UI has been tested on macOS, Win7/8/10, Ubuntu 16.04+ and Fedora 25+. The f
 While developing and testing casually locally (not for formal reviews), you may wish to skip building the full binary by running `make clean appstart` or using yarn `yarn install && yarn start` in the main ddev-ui directory.
 
 This will launch the ddev-ui electron app without requiring building disk images and closing/reopening the binary.
+
+## Build Release Instructions
+
+DDEV UI has been tested on macOS, Win7/8/10, Ubuntu 16.04+ and Fedora 25+. The following commands will output the compiled binary to /release-builds .
+
+- All: `make clean release`
+- macOS: `make release-darwin`
+- windows: `make clean release-windows`
+- linux: `make clean release-linux`
 
 ## Alpha Release
 

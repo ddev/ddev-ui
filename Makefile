@@ -59,35 +59,51 @@ VERSION := $(shell git describe --tags --always --dirty)
 # Build requirements
 # - wine and mono must be available to build Windows on another platform (brew install wine mono )
 
-default: all
-
-all: darwin linux windows
-
-appstart: appsetup
-	yarn run start
-
-package: @echo "Building $@"
-	yarn run dist
-
-linux:
+default: appsetup
 	@echo "Building $@"
-	yarn run build-linux
+	yarn build
 
-darwin:
-	@echo "Building $@"
-	yarn run build-darwin
-
-windows:
-	@echo "Building $@"
-	yarn run build-windows
+clean: package.json
+	@echo "Clean Project"
+	yarn clean
 
 appsetup: package.json
 	yarn install
 
-clean: package.json
-	rm -rf dist node_modules
-	yarn install
+appstart: appsetup
+	yarn dev
 
-run-test:
+dev: appstart
+
+all: appsetup
+	@echo "Building for $@ platforms"
+	yarn build:all
+
+darwin: appsetup
+	@echo "Building $@"
+	yarn build:darwin
+
+windows: appsetup
+	@echo "Building $@"
+	yarn build:windows
+
+linux: appsetup
+	@echo "Building $@"
+	yarn build:linux
+
+test: appsetup
 	@echo "Skipping $@ for Now 🙈"
-	# yarn run test
+	yarn test:all
+test-cli: appsetup
+	yarn test:cli
+test-interface: appsetup
+	yarn test:interface
+
+release: appsetup
+	yarn release:all
+release-linux: appsetup
+	yarn release:linux
+release-windows: appsetup
+	yarn release:windows
+release-darwin: appsetup
+	yarn release:darwin
