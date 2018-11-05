@@ -1,73 +1,48 @@
+defaults: &defaults
+  macos:
+    xcode: "9.4.1"
+  environment:
+    ARTIFACTS: /artifacts
+  working_directory: ~/ddev-ui
+
 version: 2.1
-
-executors:
-  mac-executor:
-    macos:
-      xcode: "9.4.1"
-    environment:
-      ARTIFACTS: /artifacts
-    working_directory: ~/ddev-ui
-
 jobs:
-  # build environment
-  build_environment:
-    executor: mac-executor
+  build:
+    <<: *defaults
     steps:
-      # checkout
+      # Checkout the codebase
       - restore_cache:
           keys:
             - v1-source-{{ .Branch }}-{{ .Revision }}
             - v1-source-{{ .Branch }}-
-            - v1-source-
-
-      # restore codebase
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-repo-
-
       - checkout
       - save_cache:
           key: v1-source-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
-
-      # cache codebase
-      - save_cache:
-          key: v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
             - ~/ddev-ui
 
-      # restore brew cache
+      # Homebrew Setup
       - restore_cache:
           keys:
             - v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
             - v1-homebrew-{{ .Branch }}-
-            - v1-homebrew-
-
-      # homebrew update
+      ## homebrew update
       - run:
           name: homebrew setup
           command: brew update
 
-      # xquartz setup
+      ## xquartz setup
       - run:
           name: xquartz setup
           command: brew cask install xquartz
-      # wine setup
+      ## wine setup
       - run:
           name: Homebrew install of wine
           command: |
             brew install wine || true
             brew unlink wine && brew link --overwrite wine
-      # echo installed tools
-      - run:
-          name: Installed tool versions
-          command: >-
-            echo "git commit=$(make version) node version=$(node --version) npm
-            version=$(npm --version) wine version=$(wine --version) HOME=$HOME
-            USER=$(whoami) PWD=$PWD"
-      # save cache
+      ## save cache
       - save_cache:
           key: v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
@@ -76,164 +51,55 @@ jobs:
             - /usr/local/Cellar/wine
 
       # build app dependancies
-      # yarn install
+      ## yarn install
       - restore_cache:
           keys:
             - v1-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
             - v1-yarn-packages-{{ .Branch }}-
-            - v1-yarn-packages-
-      # yarn cache
       - run:
           name: Yarn Install
           command: yarn install
+      ## yarn cache
       - save_cache:
           key: v1-yarn-packages{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
 
-  # build application
-  # TODO: breakout into w seperate work-flows
-  build_application:
-    executor: mac-executor
-    steps:
-      # restore codebase
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-repo-
-
-      # restore brew cache
-      - restore_cache:
-          keys:
-            - v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-homebrew-{{ .Branch }}-
-            - v1-homebrew-
-      # yarn cache
-      - restore_cache:
-          keys:
-            - v1-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - v1-yarn-packages-{{ .Branch }}-
-            - v1-yarn-packages-
-      - run: make clean all
-      # cache built apps
-      - save_cache:
-          key: v1-app-dist-{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
-          paths:
-            - ~/dist
-
-  # run tests
-  # TODO: breakout into w seperate work-flows
-  run_application_tests:
-    executor: mac-executor
-    steps:
-      # restore codebase
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-repo-
-
-      # restore brew cache
-      - restore_cache:
-          keys:
-            - v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-homebrew-{{ .Branch }}-
-            - v1-homebrew-
-      # yarn cache
-      - restore_cache:
-          keys:
-            - v1-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - v1-yarn-packages-{{ .Branch }}-
-            - v1-yarn-packages-
-      # dist cache
-      - restore_cache:
-          keys:
-            - v1-app-dist-{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
-            - v1-app-dist-{{ .Branch }}-
-            - v1-app-dist-
-      # run tests
-      - run: make test
-      # TODO: cache results
-
-  # upload artifacts to circle * if not master
-  upload_application_artifacts:
-    executor: mac-executor
-    steps:
-      # restore codebase
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-repo-
-
-      # restore brew cache
-      - restore_cache:
-          keys:
-            - v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-homebrew-{{ .Branch }}-
-            - v1-homebrew-
-      # yarn cache
-      - restore_cache:
-          keys:
-            - v1-yarn-packages{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - v1-yarn-packages{{ .Branch }}-
-            - v1-yarn-packages
-      # app cache
-      - restore_cache:
-          keys:
-            - v1-app-dist{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
-            - v1-app-dist
+      ## echo installed tools
       - run:
-          name: tar/zip up artifacts and make hashes
+          name: Installed tool versions
+          command: >-
+            echo "git commit=$(make version) node version=$(node --version) npm
+            version=$(npm --version) wine version=$(wine --version) HOME=$HOME
+            USER=$(whoami) PWD=$PWD"
+
+      # build apps
+      - run: make all
+
+      - run:
           command: ./.circleci/generate_artifacts.sh $ARTIFACTS
+          name: tar/zip up artifacts and make hashes
+
       - store_artifacts:
           path: /artifacts
 
-  # build release - * if master branch
-  upload_application_release:
-    executor: mac-executor
-    steps:
-      # restore codebase
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-repo-
+      - run: make test
 
-      # restore brew cache
-      - restore_cache:
-          keys:
-            - v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-homebrew-{{ .Branch }}-
-            - v1-homebrew-
-      # yarn cache
-      - restore_cache:
-          keys:
-            - v1-yarn-packages{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - v1-yarn-packages{{ .Branch }}-
-            - v1-yarn-packages
-      # app cache
-      - restore_cache:
-          keys:
-            - v1-app-dist{{ .Branch }}-{{ checksum "dist/latest-mac.yml" }}
-            - v1-app-dist
-      - run:
-          name: upload release
-          command: yarn run release
+      # only release Darwin for now
+      - run: make release-darwin
+      # - run: make release
 
-  # TODO: nightly_build
-
-workflows:
-  version: 2
-  build-and-deploy:
-    jobs:
-      - build_environment
-      - build_application:
-          requires:
-            - build_environment
-      - run_application_tests:
-          requires:
-            - build_application
-      # - upload_application_artifacts:
-      #     requires:
-      #       - run_application_tests
-      # - upload_application_release:
-      #     requires:
-      #       - run_application_tests
+      # all other test jobs will run AFTER this build job finishes
+      # to avoid reinstalling dependencies, we persist the source folder "app"
+      # and the Cypress binary to workspace, which is the fastest way
+      # for Circle jobs to pass files
+      # - persist_to_workspace:
+      #     root: ~/
+      #     paths:
+      #       - ddev-ui
+      #       - dist
+      #       - .npm
+      #       - .cache
+      #       - /usr/local/Homebrew
+      #       - /usr/local/Caskroom/xquartz
+      #       - /usr/local/Cellar/wine
