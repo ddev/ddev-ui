@@ -5,7 +5,7 @@ defaults: &defaults
     ARTIFACTS: /artifacts
   working_directory: ~/ddev-ui
 
-version: 2.1
+version: 2.0
 jobs:
   build:
     <<: *defaults
@@ -13,11 +13,11 @@ jobs:
       # Checkout the codebase
       - restore_cache:
           keys:
-            - v1-source-{{ .Branch }}-{{ .Revision }}
-            - v1-source-{{ .Branch }}-
+            - v2-source-{{ .Branch }}-{{ .Revision }}
+            - v2-source-{{ .Branch }}-
       - checkout
       - save_cache:
-          key: v1-source-{{ .Branch }}-{{ .Revision }}
+          key: v2-source-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
             - ~/ddev-ui
@@ -25,11 +25,11 @@ jobs:
       # Homebrew Setup
       - restore_cache:
           keys:
-            - v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-homebrew-{{ .Branch }}-
-      ## homebrew update
+            - v2-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v2-homebrew-{{ .Branch }}-
+      ## Homebrew update
       - run:
-          name: homebrew setup
+          name: Homebrew setup
           command: brew update
 
       ## xquartz setup
@@ -44,7 +44,7 @@ jobs:
             brew unlink wine && brew link --overwrite wine
       ## save cache
       - save_cache:
-          key: v1-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+          key: v2-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - /usr/local/Homebrew
             - /usr/local/Caskroom/xquartz
@@ -54,16 +54,16 @@ jobs:
       ## yarn install
       - restore_cache:
           keys:
-            - v1-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - v1-yarn-packages-{{ .Branch }}-
+            - v2-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v2-yarn-packages-{{ .Branch }}-
       - run:
           name: Yarn Install
           command: yarn install
       ## yarn cache
       - save_cache:
-          key: v1-yarn-packages{{ .Branch }}-{{ checksum "yarn.lock" }}
+          key: v2-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
-            - ~/.cache/yarn
+            - ~/ddev-ui/node_modules
 
       ## echo installed tools
       - run:
@@ -76,30 +76,57 @@ jobs:
       # build apps
       - run: make all
 
-      - run:
-          command: ./.circleci/generate_artifacts.sh $ARTIFACTS
-          name: tar/zip up artifacts and make hashes
+      # - run:
+      #     command: ./.circleci/generate_artifacts.sh $ARTIFACTS
+      #     name: tar/zip up artifacts and make hashes
 
-      - store_artifacts:
-          path: /artifacts
+      # - store_artifacts:
+      #     path: /artifacts
 
-      - run: make test
+      # - run: make test
 
-      # only release Darwin for now
-      - run: make release-darwin
-      # - run: make release
+      # # only release Darwin for now
+      # - run: make release-darwin
+      # # - run: make release
 
       # all other test jobs will run AFTER this build job finishes
       # to avoid reinstalling dependencies, we persist the source folder "app"
       # and the Cypress binary to workspace, which is the fastest way
       # for Circle jobs to pass files
-      # - persist_to_workspace:
-      #     root: ~/
-      #     paths:
-      #       - ddev-ui
-      #       - dist
-      #       - .npm
-      #       - .cache
-      #       - /usr/local/Homebrew
-      #       - /usr/local/Caskroom/xquartz
-      #       - /usr/local/Cellar/wine
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - ddev-ui
+            - .cache
+
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ~/
+
+      # Homebrew Setup
+      - restore_cache:
+          keys:
+            - v2-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v2-homebrew-{{ .Branch }}-
+
+      ## echo installed tools
+      - run:
+          name: Installed tool versions
+          command: >-
+            echo "git commit=$(make version) node version=$(node --version) npm
+            version=$(npm --version) wine version=$(wine --version) HOME=$HOME
+            USER=$(whoami) PWD=$PWD"
+
+      - run: make test
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
