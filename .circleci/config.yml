@@ -122,6 +122,29 @@ jobs:
 
       - run: make test
 
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ~/
+
+      # Homebrew Setup
+      - restore_cache:
+          keys:
+            - v2-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v2-homebrew-{{ .Branch }}-
+
+      ## echo installed tools
+      - run:
+          name: Installed tool versions
+          command: >-
+            echo "git commit=$(make version) node version=$(node --version) npm
+            version=$(npm --version) wine version=$(wine --version) HOME=$HOME
+            USER=$(whoami) PWD=$PWD"
+
+      - run: make test
+
 workflows:
   version: 2
   workflow:
@@ -130,3 +153,7 @@ workflows:
       - test:
           requires:
             - build
+      - deploy:
+          requires:
+            - build
+            - test
