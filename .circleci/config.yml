@@ -86,7 +86,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/ddev-ui
-
+<<<<<<< HEAD
       # upload artifacts to circleci
       - run:
           command: ./.circleci/generate_artifacts.sh $ARTIFACTS
@@ -94,17 +94,49 @@ jobs:
       - store_artifacts:
           path: /artifacts
 
-  release:
+      # - store_artifacts:
+      #     path: /artifacts
+
+      # - run: make test
+
+      # # only release Darwin for now
+      # - run: make release-darwin
+      # # - run: make release
+
+      # all other test jobs will run AFTER this build job finishes
+      # to avoid reinstalling dependencies, we persist the source folder "app"
+      # and the Cypress binary to workspace, which is the fastest way
+      # for Circle jobs to pass files
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - ddev-ui
+            - .cache
+
+  test:
     <<: *defaults
     steps:
-      - *restore_source
-      - checkout
-      - *restore_yarn
-      - run: yarn install
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ~/
 
-      # make release
-      - run: make release-darwin
+      # Homebrew Setup
+      - restore_cache:
+          keys:
+            - v2-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v2-homebrew-{{ .Branch }}-
 
+      ## echo installed tools
+      - run:
+          name: Installed tool versions
+          command: >-
+            echo "git commit=$(make version) node version=$(node --version) npm
+            version=$(npm --version) wine version=$(wine --version) HOME=$HOME
+            USER=$(whoami) PWD=$PWD"
+
+      - run: make test
+
+>>>>>>> update circle config to get workflow bug fixed
 workflows:
   version: 2
   workflow:
