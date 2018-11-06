@@ -74,20 +74,8 @@ jobs:
             USER=$(whoami) PWD=$PWD"
 
       # build apps
-      - run: make all
-
-      # - run:
-      #     command: ./.circleci/generate_artifacts.sh $ARTIFACTS
-      #     name: tar/zip up artifacts and make hashes
-
-      # - store_artifacts:
-      #     path: /artifacts
-
-      # - run: make test
-
-      # # only release Darwin for now
-      # - run: make release-darwin
-      # # - run: make release
+      # - run: make all
+      - run: make
 
       # all other test jobs will run AFTER this build job finishes
       # to avoid reinstalling dependencies, we persist the source folder "app"
@@ -122,6 +110,34 @@ jobs:
 
       - run: make test
 
+  artifacts:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ~/
+
+      # Homebrew Setup
+      - restore_cache:
+          keys:
+            - v2-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v2-homebrew-{{ .Branch }}-
+
+      ## echo installed tools
+      - run:
+          name: Installed tool versions
+          command: >-
+            echo "git commit=$(make version) node version=$(node --version) npm
+            version=$(npm --version) wine version=$(wine --version) HOME=$HOME
+            USER=$(whoami) PWD=$PWD"
+
+      - run:
+          command: ./.circleci/generate_artifacts.sh $ARTIFACTS
+          name: tar/zip up artifacts and make hashes
+
+      - store_artifacts:
+          path: /artifacts
+
   deploy:
     <<: *defaults
     steps:
@@ -143,7 +159,9 @@ jobs:
             version=$(npm --version) wine version=$(wine --version) HOME=$HOME
             USER=$(whoami) PWD=$PWD"
 
-      - run: make test
+      # only release Darwin for now
+      - run: make release-darwin
+      # - run: make release
 
 workflows:
   version: 2
@@ -153,6 +171,10 @@ workflows:
       - test:
           requires:
             - build
+      - artifacts:
+          requires:
+            - build
+            - test
       - deploy:
           requires:
             - build
