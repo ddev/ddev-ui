@@ -30,11 +30,11 @@ jobs:
       ## xquartz setup
       - run:
           name: xquartz setup
-          command: brew cask install xquartz
+          command: brew cask install xquartz || true
       ## wine setup
       - run:
           name: Homebrew install of wine
-          command: brew install wine
+          command: brew install wine || true
       ## save cache
       - save_cache:
           key: v2-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
@@ -83,7 +83,7 @@ jobs:
           keys:
             - v2-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
             - v2-homebrew-{{ .Branch }}-
-      - run: brew update
+      - run: brew update || brew update || true
       # Yarn setup
       - restore_cache:
           keys:
