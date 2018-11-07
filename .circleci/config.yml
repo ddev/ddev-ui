@@ -1,6 +1,6 @@
 defaults: &defaults
   macos:
-    xcode: "10.0.0"
+    xcode: "10.0.1"
   environment:
     ARTIFACTS: /artifacts
   working_directory: ~/ddev-ui
@@ -10,12 +10,12 @@ aliases:
   - &restore_source
     restore_cache:
       keys:
-        - v2-source-{{ .Branch }}-{{ .Revision }}
-        - v2-source-{{ .Branch }}-
+        - v4-source-{{ .Branch }}-{{ .Revision }}
+        - v4-source-{{ .Branch }}-
   # Source: cache
   - &cache_source
     save_cache:
-      key: v2-source-{{ .Branch }}-{{ .Revision }}
+      key: v4-source-{{ .Branch }}-{{ .Revision }}
       paths:
         - ".git"
         - ~/ddev-ui
@@ -24,25 +24,31 @@ aliases:
   - &restore_brew
     restore_cache:
       keys:
-        - v2-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-        - v2-homebrew-{{ .Branch }}-
+        - v4-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+        - v4-homebrew-{{ .Branch }}-
   # Brew: cache
   - &cache_brew
     save_cache:
-      key: v2-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+      key: v4-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
       paths:
-        - /usr/local/Cellar/rpm
+        - /usr/local/Cellar
+
+  # Brew: link
+  - &link_brew
+    run:
+      name: Link brew packages
+      command: brew list | xargs -I % sh -c 'brew unlink %; brew link % || true
 
   # Yarn: restore
   - &restore_yarn
     restore_cache:
       keys:
-        - v2-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-        - v2-yarn-packages-{{ .Branch }}-
+        - v4-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+        - v4-yarn-packages-{{ .Branch }}-
   # Yarn: cache
   - &cache_yarn
     save_cache:
-      key: v2-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      key: v4-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
       paths:
         - ~/ddev-ui/node_modules
 
@@ -67,8 +73,11 @@ jobs:
 
       # Homebrew Setup
       - *restore_brew
-      - run: brew doctor
-      - run: brew install rpm
+      - run:
+          name: Homebrew Setup
+          command: |
+            brew install rpm || true
+            brew doctor || true
       - *cache_brew
 
       # build app dependancies
@@ -91,7 +100,7 @@ jobs:
       - *restore_source
       - checkout
       - *restore_brew
-      - run: brew update
+      - *link_brew
       - *restore_yarn
       - run: yarn install
       - *log_tools
@@ -105,7 +114,7 @@ jobs:
       - *restore_source
       - checkout
       - *restore_brew
-      - run: brew update
+      - *link_brew
       - *restore_yarn
       - run: yarn install
       - *log_tools
@@ -123,7 +132,7 @@ jobs:
       - *restore_source
       - checkout
       - *restore_brew
-      - run: brew update
+      - *link_brew
       - *restore_yarn
       - run: yarn install
       - *log_tools
