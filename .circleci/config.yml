@@ -37,7 +37,7 @@ aliases:
   - &link_brew
     run:
       name: Link brew packages
-      command: brew list | xargs -I % sh -c 'brew unlink %; brew link % || true
+      command: brew list | xargs -I % sh -c 'brew unlink %; brew link %' || true
 
   # Yarn: restore
   - &restore_yarn
@@ -94,6 +94,11 @@ jobs:
       - run: make
       # - run: make all
 
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - dist
+
   test:
     <<: *defaults
     steps:
@@ -113,11 +118,8 @@ jobs:
     steps:
       - *restore_source
       - checkout
-      - *restore_brew
-      - *link_brew
-      - *restore_yarn
-      - run: yarn install
-      - *log_tools
+      - attach_workspace:
+          at: ~/ddev-ui/dist
 
       # upload artifacts to circleci
       - run:
