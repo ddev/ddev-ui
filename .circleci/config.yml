@@ -6,24 +6,54 @@ defaults: &defaults
   working_directory: ~/ddev-ui
 
 aliases:
+  # Source: restore
   - &restore_source
     restore_cache:
       keys:
         - v2-source-{{ .Branch }}-{{ .Revision }}
         - v2-source-{{ .Branch }}-
+  # Source: cache
+  - &cache_source
+    save_cache:
+      key: v2-source-{{ .Branch }}-{{ .Revision }}
+      paths:
+        - ".git"
+        - ~/ddev-ui
 
+  # Brew: restore
   - &restore_brew
     restore_cache:
       keys:
         - v2-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
         - v2-homebrew-{{ .Branch }}-
-  # - run: brew update
-  # Yarn setup
+  # Brew: cache
+  - &cache_brew
+    save_cache:
+      key: v2-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+      paths:
+        - /usr/local/Cellar/rpm
+
+  # Yarn: restore
   - &restore_yarn
     restore_cache:
       keys:
         - v2-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
         - v2-yarn-packages-{{ .Branch }}-
+  # Yarn: cache
+  - &cache_yarn
+    save_cache:
+      key: v2-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      paths:
+        - ~/ddev-ui/node_modules
+
+  # Display installed tools
+  - &log_tools
+    run:
+      name: Installed tool versions
+      command: >-
+        echo "git commit=$(make version) node version=$(node --version) npm
+        version=$(npm --version) wine version=$(wine --version) HOME=$HOME
+        USER=$(whoami) PWD=$PWD"
 
 version: 2.0
 jobs:
@@ -33,47 +63,27 @@ jobs:
       # Checkout the codebase
       - *restore_source
       - checkout
-      - save_cache:
-          key: v2-source-{{ .Branch }}-{{ .Revision }}
-          paths:
-            - ".git"
-            - ~/ddev-ui
+      - *cache_source
 
       # Homebrew Setup
       - *restore_brew
-      - run: brew update
-      - run:
-          name: Homebrew install of rpm
-          command: brew install rpm
-      ## save cache
-      - save_cache:
-          key: v2-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - /usr/local/Cellar/rpm
+      - run: brew doctor
+      - run: brew install rpm
+      - *cache_brew
 
       # build app dependancies
-      ## yarn install
       - *restore_yarn
       - run:
           name: Yarn Install
           command: yarn install
-      ## yarn cache
-      - save_cache:
-          key: v2-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/ddev-ui/node_modules
+      - *cache_yarn
 
       ## echo installed tools
-      - run:
-          name: Installed tool versions
-          command: >-
-            echo "git commit=$(make version) node version=$(node --version) npm
-            version=$(npm --version) wine version=$(wine --version) HOME=$HOME
-            USER=$(whoami) PWD=$PWD"
+      - *log_tools
 
       # build apps
-      # - run: make all
       - run: make
+      # - run: make all
 
   test:
     <<: *defaults
@@ -84,6 +94,8 @@ jobs:
       - run: brew update
       - *restore_yarn
       - run: yarn install
+      - *log_tools
+
       # run tests
       - run: make test
 
@@ -96,6 +108,9 @@ jobs:
       - run: brew update
       - *restore_yarn
       - run: yarn install
+      - *log_tools
+
+      # upload artifacts to circleci
       - run:
           command: ./.circleci/generate_artifacts.sh $ARTIFACTS
           name: tar/zip up artifacts and make hashes
@@ -111,8 +126,10 @@ jobs:
       - run: brew update
       - *restore_yarn
       - run: yarn install
+      - *log_tools
+
+      # make release
       - run: make release-darwin
-      # - run: make release
 
 workflows:
   version: 2
