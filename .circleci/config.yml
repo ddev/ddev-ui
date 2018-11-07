@@ -1,6 +1,6 @@
 defaults: &defaults
   macos:
-    xcode: "9.4.1"
+    xcode: "10.0.0"
   environment:
     ARTIFACTS: /artifacts
   working_directory: ~/ddev-ui
