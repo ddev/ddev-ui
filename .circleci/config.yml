@@ -19,6 +19,14 @@ aliases:
       paths:
         - ~/ddev-ui
 
+  # Brew: Setup
+  - &setup_brew
+    run:
+      name: Homebrew Setup
+      command: |
+        brew install rpm || true
+        brew doctor || true
+
   # Brew: restore
   - &restore_brew
     restore_cache:
@@ -71,13 +79,9 @@ jobs:
       - *cache_source
 
       # Homebrew Setup
-      - *restore_brew
-      - run:
-          name: Homebrew Setup
-          command: |
-            brew install rpm || true
-            brew doctor || true
-      - *cache_brew
+      # - *restore_brew
+      - *setup_brew
+      # - *cache_brew
 
       # build app dependancies
       - *restore_yarn
@@ -103,8 +107,9 @@ jobs:
     steps:
       - *restore_source
       - checkout
-      - *restore_brew
-      - *link_brew
+      # - *restore_brew
+      - *setup_brew
+      # - *link_brew
       - *restore_yarn
       - run: yarn install
       - *log_tools
