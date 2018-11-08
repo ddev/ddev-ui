@@ -82,6 +82,8 @@ jobs:
   artifacts:
     <<: *defaults
     steps:
+      - *restore_source
+      - checkout
       - attach_workspace:
           at: ~/ddev-ui
 
