@@ -8,15 +8,25 @@ A Graphical User Interface for the DDEV CLI (https://github.com/drud/ddev)
 
 If you are looking to contribute to the project you will need to make sure you have the below prerequisites.
 
-#### DDEV CLI
+### DDEV CLI
 
 [DDEV CLI](https://github.com/drud/ddev/blob/master/CONTRIBUTING.md) is installed and properly working.
 
-#### Node
+### Node
 
-Node -lts (v8.11.3) is installed and configured in your path.
+```sh
+node -v
+```
 
-NVM - Node version manager https://github.com/creationix/nvm
+- Node-lts/dubnium (v10.11+) is installed and configured in your path.
+
+#### Install with Homebrew
+
+```sh
+brew install node
+```
+
+#### Install with NVM if you want muliptle versions of node. - https://github.com/creationix/nvm
 
 To install NVM
 
@@ -31,12 +41,12 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 ```
 
-To Install Node -lts
+To Install Node stable
 
 ```sh
-nvm install --lts
-nvm use lts/*
-nvm alias default lts/*
+nvm install stable
+nvm use stable
+nvm alias default stable
 ```
 
 To Verify
@@ -46,18 +56,18 @@ node -v
 npm -v
 ```
 
-<sub>Should be **node** = `v8.x` and **npm** = `5.x`</sub>
+<sub>Should be **node** >= `v10.x` and **npm** = `6.x`</sub>
 
-#### Yarn
+### Yarn
 
-##### Install with NPM
+#### Install with NPM
 
 - To install Yarn globally `npm install -g yarn`.
 
-##### Install with Homebrew
+#### Install with Homebrew
 
 - [Setup Homebrew](https://ddev.readthedocs.io/en/latest/)
-- To install Yarn globally `brew install yarn`.
+- To install Yarn globally `brew install yarn --without-node`.
 
 ## Run Instructions
 
@@ -102,6 +112,6 @@ DDEV UI has been tested on macOS, Win7/8/10, Ubuntu 16.04+ and Fedora 25+. The f
 The planned roadmap can be found at
 https://github.com/drud/ddev-ui/wiki/Roadmap.
 
-DDEV-UI is currently at v0.4.1-alpha
+DDEV-UI is currently at v0.6.0-alpha
 
 As always, thank for your support, feedback, and contributions!
