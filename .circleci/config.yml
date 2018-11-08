@@ -17,7 +17,6 @@ aliases:
     save_cache:
       key: v4-source-{{ .Branch }}-{{ .Revision }}
       paths:
-        - ".git"
         - ~/ddev-ui
 
   # Brew: restore
@@ -121,7 +120,7 @@ jobs:
       - *restore_source
       - checkout
       - attach_workspace:
-          at: ~/ddev-ui/dist
+          at: ~/ddev-ui
 
       # upload artifacts to circleci
       - run:
@@ -136,7 +135,7 @@ jobs:
       - *restore_source
       - checkout
       - attach_workspace:
-          at: ~/ddev-ui/dist
+          at: ~/ddev-ui
 
       # make release
       - run: make release-darwin --prepackaged dist
