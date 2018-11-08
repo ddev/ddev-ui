@@ -25,26 +25,6 @@ aliases:
       name: Homebrew Setup
       command: |
         brew install rpm || true
-        brew doctor || true
-
-  # Brew: restore
-  - &restore_brew
-    restore_cache:
-      keys:
-        - v4-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-        - v4-homebrew-{{ .Branch }}-
-  # Brew: cache
-  - &cache_brew
-    save_cache:
-      key: v4-homebrew-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-      paths:
-        - /usr/local/Cellar
-
-  # Brew: link
-  - &link_brew
-    run:
-      name: Link brew packages
-      command: brew list | xargs -I % sh -c 'brew unlink %; brew link %' || true
 
   # Yarn: restore
   - &restore_yarn
@@ -77,19 +57,12 @@ jobs:
       - *restore_source
       - checkout
       - *cache_source
-
       # Homebrew Setup
-      # - *restore_brew
       - *setup_brew
-      # - *cache_brew
-
       # build app dependancies
       - *restore_yarn
-      - run:
-          name: Yarn Install
-          command: yarn install
+      - run: yarn install
       - *cache_yarn
-
       ## echo installed tools
       - *log_tools
 
@@ -107,12 +80,9 @@ jobs:
     steps:
       - *restore_source
       - checkout
-      # - *restore_brew
       - *setup_brew
-      # - *link_brew
       - *restore_yarn
       - run: yarn install
-      - *log_tools
 
       # Build unpacked dir. Useful to test.
       - run: yarn dist:dir
@@ -122,8 +92,6 @@ jobs:
   artifacts:
     <<: *defaults
     steps:
-      - *restore_source
-      - checkout
       - attach_workspace:
           at: ~/ddev-ui
 
@@ -139,11 +107,12 @@ jobs:
     steps:
       - *restore_source
       - checkout
-      - attach_workspace:
-          at: ~/ddev-ui
+      - *setup_brew
+      - *restore_yarn
+      - run: yarn install
 
       # make release
-      - run: make release-darwin --prepackaged dist
+      - run: make release-darwin
 
 workflows:
   version: 2
