@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import { canReadAndWrite } from './distro-updater';
 import { config, start } from './ddev-shell';
 
