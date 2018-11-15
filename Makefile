@@ -60,7 +60,8 @@ include build-tools/makefile_components/base_test_python.mak
 
 .PHONY: build clean
 
-all: darwin linux windows
+# all: darwin linux windows
+all: darwin
 
 # Build requirements
 # - wine and mono must be available to build Windows on another platform (brew install wine mono )

@@ -111,7 +111,7 @@ class ProjectHeader extends React.PureComponent {
                   onClick={e => {
                     e.preventDefault();
                     fetch(this.props.httpurl).then(res => {
-                      if (res.statusText.includes('Service unavailable')) {
+                      if (res.statusText.includes('Service unavailable') || !res.ok) {
                         return electron.shell.openExternal(`${this.props.httpurl}/install.php`);
                       }
                       return electron.shell.openExternal(this.props.httpurl);
@@ -176,7 +176,7 @@ class ProjectHeader extends React.PureComponent {
               onClick={e => {
                 e.preventDefault();
                 fetch(this.props.httpurl).then(res => {
-                  if (res.statusText.includes('Service unavailable')) {
+                  if (res.statusText.includes('Service unavailable') || !res.ok) {
                     return electron.shell.openExternal(`${this.props.httpurl}/install.php`);
                   }
                   return electron.shell.openExternal(this.props.httpurl);

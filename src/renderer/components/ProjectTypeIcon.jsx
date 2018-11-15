@@ -3,6 +3,7 @@ import electron from 'electron';
 
 const placeholder = require(`${__static}/img/placeholder.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
 const wordpress = require(`${__static}/img/wordpress.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
+const drupal6 = require(`${__static}/img/drupal6.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
 const drupal7 = require(`${__static}/img/drupal7.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
 const drupal8 = require(`${__static}/img/drupal8.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
 const php = require(`${__static}/img/php.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
@@ -15,6 +16,9 @@ const ProjectTypeIcon = props => {
     switch (type) {
       case 'wordpress':
         platformImg = wordpress;
+        break;
+      case 'drupal6':
+        platformImg = drupal6;
         break;
       case 'drupal7':
         platformImg = drupal7;

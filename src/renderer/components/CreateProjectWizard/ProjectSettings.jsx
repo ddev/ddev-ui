@@ -36,6 +36,7 @@ class ProjectSettings extends React.PureComponent {
         <div className="row">
           <div className="col-md-12">
             <div className="form-group form-row" key="installType">
+              <h3 className="text-center w-100 mb-3">Create a new project</h3>
               <div className="btn-group w-100" id="installType">
                 <button
                   className={`btn btn-outline-secondary btn-lg ${

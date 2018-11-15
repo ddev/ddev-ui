@@ -85,6 +85,7 @@ class CmsSettings extends React.PureComponent {
                         onChange={this.props.handleInputChange}
                       >
                         <option value="">latest</option>
+                        <option value="6">6</option>
                         <option value="7">7</option>
                         <option value="8">8</option>
                       </select>
