@@ -19,7 +19,7 @@ Scenario: Can stop a DDEV project
 Scenario: Can restart a DDEV project
     And the user has a project running
     When the user clicks the "Restart" button
-    ##TODO whats a good way to tell that the project has been restarted? 
+    Then the user will see the project stop and restart in the UI
 
 Scenario: DDEV-UI lists all DDEV projects and their status
 

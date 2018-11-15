@@ -17,12 +17,12 @@ Scenario: DDEV-UI requires and checks that Docker is running
 Given I have DDEV UI installed
 And Docker is running
 When I open up DDEV UI
-Then the command line Docker check passes
+Then I can interact with DDEV UI
 
 Given I have DDEV UI installed
 And Docker is not running
 When I open up DDEV UI
-Then the command line Docker check fails
+Then I see buttons to Retry and Install Docker
 
 Scenario: Docker can be stopped or restarted and DDEV-UI will respond
 Given I have DDEV UI opened
