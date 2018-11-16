@@ -83,7 +83,7 @@ class ContainerSettings extends React.PureComponent {
             <div className="clearix">
               <p>
                 <a
-                  className="d-none"
+                  className=""
                   data-toggle="collapse"
                   href="#advancedContainerOptions"
                   role="button"

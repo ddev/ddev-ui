@@ -3,6 +3,7 @@ import electron, { remote as _remote } from 'electron';
 import { x } from 'tar';
 import { readdir, mkdir } from 'fs';
 import { homedir } from 'os';
+import $ from 'jquery';
 
 import { start, hostname as _hostname } from 'ddev-shell';
 import { getLocalDistros } from 'distro-updater';
