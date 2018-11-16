@@ -44,7 +44,7 @@ export default class AdvancedOptions extends Component {
                         </Label>
                         <Input
                           type="number"
-                          size="sm"
+                          // size="sm"
                           bsSize="sm"
                           placeholder="80"
                           maxLength="3"
@@ -61,7 +61,7 @@ export default class AdvancedOptions extends Component {
                         </Label>
                         <Input
                           type="number"
-                          size="sm"
+                          // size="sm"
                           bsSize="sm"
                           placeholder="443"
                           id="httpsPort"
