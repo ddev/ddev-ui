@@ -21,7 +21,7 @@ const InstallProfile = props => {
 
   return (
     <Col xs={12} lg={6} xl={4} className="mb-4">
-      <Card className="h-100">
+      <Card className={`h-100 ${props.support !== 'full' ? 'coming-soon' : null}`}>
         <Row noGutters className="h-100">
           <Col xs={{ size: 'auto' }} className="rounded-left p-3 text-center" style={style}>
             <img src={img} alt={title} className="img-fluid" style={{ maxWidth: '40px' }} />
@@ -35,20 +35,22 @@ const InstallProfile = props => {
               <Row form noGutters>
                 <Col className="p-2">
                   <FormGroup className="mx-auto mb-0 d-flex align-items-center flex-column flex-xl-row">
-                    <Label for="exampleSelect" className="d-none" size="sm">
+                    <Label for="cmsVersion" className="d-none" size="sm">
                       Select
                     </Label>
                     <Input
-                      name="select"
-                      id="exampleSelect"
+                      name="cmsVersion"
+                      id="cmsVersion"
                       type="select"
                       bsSize="sm"
-                      // value={this.props.phpVersion}
-                      // onChange={this.props.handleInputChange}
+                      value={props.cmsVersion}
+                      onChange={props.handleInputChange}
                     >
                       <option value="latest">Latest Version</option>
                       {versions.map(version => (
-                        <option key={`${title}_${version}`}>{version}</option>
+                        <option key={`${title}_${version}`} value={version}>
+                          {version}
+                        </option>
                       ))}
                     </Input>
                   </FormGroup>
@@ -59,7 +61,7 @@ const InstallProfile = props => {
                     className="h-100 rounded-0 px-3"
                     onClick={e => {
                       e.preventDefault();
-                      props.setInstallType(slug);
+                      props.handleInstallProfileUpdate(slug, props.cmsVersion);
                     }}
                   >
                     {props.btnTxt ? props.btnTxt : 'Create'}

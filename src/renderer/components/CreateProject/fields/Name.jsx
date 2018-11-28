@@ -15,7 +15,7 @@ const Name = props => (
           value={props.projectName}
           name="name"
           id="projectName"
-          // onChange={props.handleInputChange}
+          onChange={props.handleInputChange}
         />
         <FormText color="muted">
           Name or Domain of your project. (In a url friendly format.)

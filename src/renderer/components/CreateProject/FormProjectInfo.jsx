@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardFooter, Form, FormGroup, Container, Row, Col } from 'reactstrap';
 
-import * as phpLogo from 'Media/PHPLogo.png';
+import profiles from 'Resources/InstallProfiles.yaml';
+
 import Name from './fields/Name';
 import Paths from './fields/Paths';
 import AdvancedOptions from './AdvancedOptions';
@@ -9,25 +10,28 @@ import ContainerOptions from './ContainerOptions';
 
 export default class FormProjectInfo extends Component {
   render() {
+    const { projectTypes } = profiles;
+    const { title = '', logo = 'server.svg', color = '#8892BF' } = projectTypes[this.props.cmsType];
+
+    // eslint-disable-next-line global-require,import/no-dynamic-require
+    const img = require(`Media/${logo}`);
     return (
       <Container fluid>
         <Row>
           <Col className="mb-4">
             <Card id="connect-project" className="container-setup my-4">
               <Row noGutters>
-                <Col
-                  xs={{ size: 'auto' }}
-                  className="bg-primary text-white text-center rounded-left p-3"
-                >
-                  <img
-                    src={phpLogo}
-                    alt="PHP Application"
-                    className="text-white"
-                    style={{ maxWidth: '40px' }}
-                  />
-                </Col>
+                {this.props.installtype !== 'existing' && (
+                  <Col
+                    xs={{ size: 'auto' }}
+                    className="text-center rounded-left p-3"
+                    style={{ backgroundColor: color }}
+                  >
+                    <img src={img} alt={title} style={{ maxWidth: '40px' }} />
+                  </Col>
+                )}
                 <Col>
-                  <Form onSubmit={this.handleProjectCreation}>
+                  <Form onSubmit={this.props.handleProjectCreation}>
                     <CardBody>
                       <FormGroup row>
                         <Col>

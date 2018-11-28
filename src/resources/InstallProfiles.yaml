@@ -23,9 +23,9 @@ projectTypes:
   wordpress:
     name: WordPress
     versions:
-      - 5
+      # - 5
       - 4.9
-      - 4.8
+      # - 4.8
     color: "#21759B"
     logo: "WordPressCms.png"
     support: full
@@ -56,7 +56,7 @@ projectTypes:
       also be executed with a command-line interface (CLI) and can be used to implement
       standalone graphical applications.
   static:
-    name: "Static Sites / Flat file CMS"
+    name: "Static / Flat file CMS"
     # versions: []
     color: "#CB3837"
     logo: "NPM.png"
@@ -88,13 +88,3 @@ projectTypes:
       model-view-controller design pattern. Laravel reuses the existing components of
       different frameworks which helps in creating a web application. The web application thus
       designed is more structured and pragmatic.
-  symfony:
-    name: Symfony
-    # versions: []
-    color: "#000000"
-    logo: "Symfony.png"
-    support: alpha
-    summary: >
-      An Open Source PHP framework for developing web applications. It was originally
-      conceived by the interactive agency SensioLabs for the development of web sites for its
-      own customers.
