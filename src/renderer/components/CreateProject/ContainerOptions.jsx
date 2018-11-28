@@ -1,21 +1,15 @@
 import React, { Component } from 'react';
 import { Label, Input, FormGroup, Button, Row, Col } from 'reactstrap';
-
-const supported = {
-  servers: { nginx: 'nGinx', apache: 'Apache' },
-  phpVersions: [7.2, 7.1, 5.6],
-  wpVersions: [5.0, 4.9, 4.8],
-  drupalVersions: [8, 7, 6],
-};
+import supported from 'Resources/supported.yaml';
 
 export default class ContainerOptions extends Component {
   render() {
     return (
       <div id="ContainerOptions small">
         <Row form noGutters>
-          <Col className="form-inline text-center">
-            <FormGroup className="mx-auto">
-              <Label for="webServer" className="mr-1" size="sm">
+          <Col className="p-2">
+            <FormGroup className="mx-auto mb-0 d-flex align-items-center flex-column flex-xl-row">
+              <Label for="webServer" className="mr-1 mb-0 p-0 pl-1 col-xl-auto" size="sm">
                 Web Server:{' '}
               </Label>
               <Input type="select" id="webServer" name="webServer" bsSize="sm">
@@ -28,14 +22,14 @@ export default class ContainerOptions extends Component {
             </FormGroup>
           </Col>
 
-          {supported.phpVersions && (
-            <Col className="form-inline text-center">
-              <FormGroup className="mx-auto">
-                <Label for="phpVersion" className="mr-1" size="sm">
+          {supported.php && (
+            <Col className="p-2">
+              <FormGroup className="mx-auto mb-0 d-flex align-items-center flex-column flex-xl-row">
+                <Label for="phpVersion" className="mr-1 mb-0 p-0 pl-1 col-xl-auto" size="sm">
                   PHP Version:{' '}
                 </Label>
                 <Input type="select" name="phpVersion" id="phpVersion" bsSize="sm">
-                  {supported.phpVersions.map(key => (
+                  {supported.php.map(key => (
                     <option key={key} value={key}>
                       {key}
                     </option>
@@ -46,14 +40,14 @@ export default class ContainerOptions extends Component {
           )}
 
           {false && // TODO: add check for cms
-            supported.wpVersions && (
-              <Col className="form-inline text-center">
-                <FormGroup className="mx-auto">
-                  <Label for="phpVersion" className="mr-1" size="sm">
+            supported.projectTypes.wordpress.versions && (
+              <Col className="p-2">
+                <FormGroup className="mx-auto mb-0 d-flex align-items-center flex-column flex-xl-row">
+                  <Label for="phpVersion" className="mr-1 mb-0 p-0 pl-1 col-xl-auto" size="sm">
                     WP Version:{' '}
                   </Label>
                   <Input type="select" name="phpVersion" id="phpVersion" bsSize="sm">
-                    {supported.wpVersions.map(key => (
+                    {supported.projectTypes.wordpress.versions.map(key => (
                       <option key={key} value={key}>
                         {key}
                       </option>
@@ -65,7 +59,11 @@ export default class ContainerOptions extends Component {
 
           <Col xs="auto" className="form-inline text-right">
             {!this.props.children ? (
-              <Button color="primary" onClick={this.props.handleNextStep} className="rounded-0">
+              <Button
+                color="primary"
+                onClick={this.props.handleNextStep}
+                className="h-100 rounded-0 px-3"
+              >
                 {this.props.btnTxt ? this.props.btnTxt : 'Connect'}
               </Button>
             ) : (

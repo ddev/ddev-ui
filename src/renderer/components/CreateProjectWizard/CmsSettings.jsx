@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as drupalLogo from 'Media/druplicon-vector.svg';
 import * as wordpressLogo from 'Media/wordpress-vector.svg';
-import * as typo3Logo from 'Media/typo3.svg';
+import * as typo3Logo from 'Media/typo.svg';
 import * as backdropLogo from 'Media/Backdrop-vector.svg';
 import * as phpLogo from 'Media/PHPApp.svg';
 

@@ -12,11 +12,10 @@ const Name = props => (
           required="required"
           className="form-control form-control-lg"
           placeholder="my-new-project"
-          // value={props.projectName}
+          value={props.projectName}
           name="name"
           id="projectName"
           // onChange={props.handleInputChange}
-          key="projectName"
         />
         <FormText color="muted">
           Name or Domain of your project. (In a url friendly format.)

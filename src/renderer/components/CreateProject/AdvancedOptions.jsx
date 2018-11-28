@@ -24,15 +24,7 @@ export default class AdvancedOptions extends Component {
         </p>
         <Collapse isOpen={this.state.collapse}>
           <Row form>
-            <Col className="form-inline text-center">
-              <FormGroup className="mx-auto">
-                <Label for="enableXDebug" className="mr-1" check>
-                  Enable XDebug:
-                </Label>
-                <Input type="checkbox" id="enableXDebug" name="enableXDebug" />
-              </FormGroup>
-            </Col>
-            <Col className="">
+            <Col xs={12} md={6}>
               <Row form className="align-items-center">
                 <Col xs="auto">Ports:</Col>
                 <Col>
@@ -74,6 +66,14 @@ export default class AdvancedOptions extends Component {
                   </Row>
                 </Col>
               </Row>
+            </Col>
+            <Col xs={12} md={6} className="form-inline text-md-center">
+              <FormGroup className="mx-auto">
+                <Label for="enableXDebug" className="mr-1" check>
+                  Enable XDebug:
+                </Label>
+                <Input type="checkbox" id="enableXDebug" name="enableXDebug" />
+              </FormGroup>
             </Col>
           </Row>
         </Collapse>

@@ -15,7 +15,7 @@ export default class Paths extends Component {
   render() {
     return (
       <Row>
-        <Col>
+        <Col xs={12} md={6}>
           <FormGroup>
             <Label for="localPath">Local Path</Label>
             <InputGroup
@@ -49,7 +49,7 @@ export default class Paths extends Component {
             </FormText>
           </FormGroup>
         </Col>
-        <Col>
+        <Col xs={12} md={6}>
           <FormGroup>
             <Label for="localDocroot">Project Docroot</Label>
             <InputGroup

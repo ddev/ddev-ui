@@ -166,10 +166,10 @@ class Dashboard extends React.Component {
         <section className="app-container container-fluid">
           <div className="row h-100">
             <Sidebar
-              className="projectSidebar col col-sm-5 col-md-4 p-0"
+              className="projectSidebar col col-sm-4 col-lg-3 p-0"
               projects={this.state.projects}
             />
-            <main className="content col col-sm-7 col-md-8">
+            <main className="content col col-sm-8 col-lg-9">
               <Status />
               <Alerts errorRemove={this.errorRemove} errors={this.state.errors} />
               <ViewRouter

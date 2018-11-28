@@ -10,6 +10,10 @@ module.exports = {
           presets: ['@babel/env', '@babel/react'],
         },
       },
+      {
+        test: /\.ya?ml$/,
+        use: 'js-yaml-loader',
+      },
     ],
   },
   resolve: {

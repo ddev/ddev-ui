@@ -2,7 +2,7 @@ import React from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
 
-import SingleClickApps from './SingleClickApps';
+import InstallProfiles from './InstallProfiles';
 import CleanContainer from './CleanContainer';
 import ConnectContainer from './ConnectContainer';
 
@@ -21,10 +21,11 @@ class CreateProject extends React.PureComponent {
     httpsPort: 443,
     cmsType: 'wordpress',
     cmsVersion: 'latest',
-    activeTab: '1',
+    activeTab: 'installProfiles',
   };
 
-  toggle = tab => {
+  // toggle the ui tab
+  toggleTab = tab => {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab,
@@ -39,19 +40,19 @@ class CreateProject extends React.PureComponent {
         <Nav tabs>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === '1' })}
+              className={classnames({ active: this.state.activeTab === 'installProfiles' })}
               onClick={() => {
-                this.toggle('1');
+                this.toggleTab('installProfiles');
               }}
             >
-              One-Click App
+              Install Profiles
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === '2' })}
+              className={classnames({ active: this.state.activeTab === 'clean' })}
               onClick={() => {
-                this.toggle('2');
+                this.toggleTab('clean');
               }}
             >
               Clean PHP Container
@@ -59,9 +60,9 @@ class CreateProject extends React.PureComponent {
           </NavItem>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === '3' })}
+              className={classnames({ active: this.state.activeTab === 'existing' })}
               onClick={() => {
-                this.toggle('3');
+                this.toggleTab('existing');
               }}
             >
               Connect Existing
@@ -69,21 +70,21 @@ class CreateProject extends React.PureComponent {
           </NavItem>
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
-          <TabPane tabId="1">
+          <TabPane tabId="installProfiles">
             <Row>
               <Col sm="12">
-                <SingleClickApps />
+                <InstallProfiles />
               </Col>
             </Row>
           </TabPane>
-          <TabPane tabId="2">
+          <TabPane tabId="clean">
             <Row>
               <Col sm="12">
                 <CleanContainer />
               </Col>
             </Row>
           </TabPane>
-          <TabPane tabId="3">
+          <TabPane tabId="existing">
             <Row>
               <Col sm="12">
                 <ConnectContainer {...this.state} />

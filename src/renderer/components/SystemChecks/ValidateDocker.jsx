@@ -31,7 +31,7 @@ class ValidateDocker extends React.Component {
       .then(() => list())
       .then(result => {
         this.setState({ validInstall: true });
-        return pause(1500);
+        return pause(500);
       })
       .then(() => this.props.validateView('Docker'))
       .then(() => this.props.completeChecks())

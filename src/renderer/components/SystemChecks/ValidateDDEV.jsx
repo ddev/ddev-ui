@@ -27,7 +27,7 @@ class ValidateDDEV extends React.Component {
       .then(() => version())
       .then(result => {
         this.setState({ validInstall: true });
-        return pause(1500);
+        return pause(500);
       })
       .then(() => this.props.validateView('DDEV'))
       .catch(err => {
