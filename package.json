@@ -21,7 +21,7 @@
     "clean": "rm -rf dist node_modules",
     "clean:node": "rm -rf node_modules",
     "clean:dist": "rm -rf dist",
-    "dist": "yarn compile && build --dir -c.compression=store -c.mac.identity=null",
+    "dist": "yarn compile && build",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "lint": "eslint --cache --color --ext .jsx,.js src",
     "lint:tests": "eslint --cache --color --ext .jsx,.js test",
