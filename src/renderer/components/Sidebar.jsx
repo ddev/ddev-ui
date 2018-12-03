@@ -3,13 +3,13 @@ import electron from 'electron';
 import { ListView, ListViewHeader, ListViewFooter, ListViewSection } from 'react-desktop/macOs';
 import { NavLink } from 'react-router-dom';
 
-import ProjectNavItem from './ProjectNavItem';
+import * as stack from 'Media/stack.svg';
+import * as icon from 'Media/Icon.svg';
+import * as issue from 'Media/Issue.svg';
+import * as addSite from 'Media/AddSite.svg';
+import * as settings from 'Media/SettingsBlue.svg';
 
-const stack = require(`${__static}/img/stack.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const icon = require(`${__static}/img/Icon.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const issue = require(`${__static}/img/Issue.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const addSite = require(`${__static}/img/AddSite.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const settings = require(`${__static}/img/SettingsBlue.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
+import ProjectNavItem from 'Components/ProjectNavItem';
 
 class Sidebar extends React.Component {
   render() {

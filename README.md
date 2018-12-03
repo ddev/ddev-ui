@@ -8,19 +8,25 @@ A Graphical User Interface for the DDEV CLI (https://github.com/drud/ddev)
 
 If you are looking to contribute to the project you will need to make sure you have the below prerequisites.
 
-#### DDEV CLI
+### DDEV CLI
 
-DDEV CLI is installed and properly working.
+[DDEV CLI](https://github.com/drud/ddev/blob/master/CONTRIBUTING.md) is installed and properly working.
 
-#### Yarn
+### Node
 
-Yarn is installed globally `npm install -g yarn`.
+```sh
+node -v
+```
 
-#### Node
+- Node-lts/dubnium (v10.11+) is installed and configured in your path.
 
-Node -lts (v8.11.3) is installed and configured in your path.
+#### Install with Homebrew
 
-NVM - Node version manager https://github.com/creationix/nvm
+```sh
+brew install node
+```
+
+#### Install with NVM if you want muliptle versions of node. - https://github.com/creationix/nvm
 
 To install NVM
 
@@ -35,12 +41,12 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 ```
 
-To Install Node -lts
+To Install Node stable
 
 ```sh
-nvm install --lts
-nvm use lts/*
-nvm alias default lts/*
+nvm install stable
+nvm use stable
+nvm alias default stable
 ```
 
 To Verify
@@ -50,12 +56,23 @@ node -v
 npm -v
 ```
 
-<sub>Should be **node** = `v8.11.x` and **npm** = `5.6.x`</sub>
+<sub>Should be **node** >= `v10.x` and **npm** = `6.x`</sub>
+
+### Yarn
+
+#### Install with NPM
+
+- To install Yarn globally `npm install -g yarn`.
+
+#### Install with Homebrew
+
+- [Setup Homebrew](https://ddev.readthedocs.io/en/latest/)
+- To install Yarn globally `brew install yarn --without-node`.
 
 ## Run Instructions
 
 - Ensure DDEV is installed and properly working via CLI and you have valid projects installed.
-  - `make clean package` - To test with packaged app.
+  - `make clean` - To test with packaged app.
   - `make clean appstart` - To test with DevTools and HMR.
 
 ## Build Instructions
@@ -69,6 +86,15 @@ DDEV UI has been tested on macOS, Win7/8/10, Ubuntu 16.04+ and Fedora 25+. The f
 While developing and testing casually locally (not for formal reviews), you may wish to skip building the full binary by running `make clean appstart` or using yarn `yarn install && yarn start` in the main ddev-ui directory.
 
 This will launch the ddev-ui electron app without requiring building disk images and closing/reopening the binary.
+
+## Build Release Instructions
+
+DDEV UI has been tested on macOS, Win7/8/10, Ubuntu 16.04+ and Fedora 25+. The following commands will output the compiled binary to /release-builds .
+
+- All: `make clean release`
+- macOS: `make release-darwin`
+- windows: `make clean release-windows`
+- linux: `make clean release-linux`
 
 ## Alpha Release
 
@@ -86,6 +112,6 @@ This will launch the ddev-ui electron app without requiring building disk images
 The planned roadmap can be found at
 https://github.com/drud/ddev-ui/wiki/Roadmap.
 
-DDEV-UI is currently at v0.4.1-alpha
+DDEV-UI is currently at v0.6.0-alpha
 
 As always, thank for your support, feedback, and contributions!

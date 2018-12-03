@@ -1,12 +1,12 @@
 import React from 'react';
 import electron from 'electron';
 
-const placeholder = require(`${__static}/img/placeholder.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const wordpress = require(`${__static}/img/wordpress.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const drupal6 = require(`${__static}/img/drupal6.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const drupal7 = require(`${__static}/img/drupal7.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const drupal8 = require(`${__static}/img/drupal8.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
-const php = require(`${__static}/img/php.png`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
+import * as placeholder from 'Media/placeholder.png';
+import * as wordpress from 'Media/wordpress.png';
+import * as drupal6 from 'Media/drupal6.png';
+import * as drupal7 from 'Media/drupal7.png';
+import * as drupal8 from 'Media/drupal8.png';
+import * as php from 'Media/php.png';
 
 // project type Icon
 const ProjectTypeIcon = props => {

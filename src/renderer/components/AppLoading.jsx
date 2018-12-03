@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ValidateDDEV from './SystemChecks/ValidateDDEV';
-import ValidateDocker from './SystemChecks/ValidateDocker';
+import ValidateDDEV from 'Components/SystemChecks/ValidateDDEV';
+import ValidateDocker from 'Components/SystemChecks/ValidateDocker';
 
 class AppLoading extends React.Component {
   state = {

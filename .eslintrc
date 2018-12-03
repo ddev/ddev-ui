@@ -47,6 +47,7 @@
     "import/prefer-default-export": 0,
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "import": 0,
+    "import/no-unresolved": [2, { "caseSensitive": false }],
     "func-names": 0,
     "space-before-function-paren": 0,
     "comma-dangle": 0,
@@ -113,5 +114,22 @@
       }
     ]
   },
-  "plugins": ["babel", "prettier"]
+  "plugins": ["babel", "prettier"],
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "webpack.renderer.config.js",
+        "extensions": [".js", ".jsx"]
+      },
+      "node": {
+        "extensions": [".js", ".jsx"],
+        "moduleDirectory": [
+          "node_modules",
+          "src",
+          "src/renderer",
+          "src/resources"
+        ]
+      }
+    }
+  }
 }

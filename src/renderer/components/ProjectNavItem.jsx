@@ -2,7 +2,7 @@ import React from 'react';
 import { ListViewRow } from 'react-desktop/macOs';
 import { NavLink } from 'react-router-dom';
 
-import ProjectStatusIcon from './ProjectStatusIcon';
+import ProjectStatusIcon from 'Components/ProjectStatusIcon';
 
 class ProjectNavItem extends React.Component {
   render() {

@@ -4,8 +4,8 @@ import { x } from 'tar';
 import { readdir, mkdir } from 'fs';
 import { homedir } from 'os';
 
-import { start, hostname as _hostname } from '../ddev-shell';
-import { getLocalDistros } from '../distro-updater';
+import { start, hostname as _hostname } from 'ddev-shell';
+import { getLocalDistros } from 'distro-updater';
 
 import {
   showLoadingScreen,
@@ -16,12 +16,12 @@ import {
   validateDocroot,
   configureSite,
   checkIfExistingConfig,
-} from '../helpers';
+} from 'helpers';
 
-import ProjectSettings from './CreateProjectWizard/ProjectSettings';
-import ContainerSettings from './CreateProjectWizard/ContainerSettings';
-import CmsSettings from './CreateProjectWizard/CmsSettings';
-import WizardSteps from './CreateProjectWizard/WizardSteps';
+import ProjectSettings from 'Components/CreateProjectWizard/ProjectSettings';
+import ContainerSettings from 'Components/CreateProjectWizard/ContainerSettings';
+import CmsSettings from 'Components/CreateProjectWizard/CmsSettings';
+import WizardSteps from 'Components/CreateProjectWizard/WizardSteps';
 
 const remote = _remote || electron;
 const { dialog } = remote;

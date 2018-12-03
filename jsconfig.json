@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "baseUrl": "./",
+    "paths": {
+      "Main/*": ["src/main/*"],
+      "Components/*": ["src/renderer/components/*"],
+      "Media/*": ["src/resources/media/*"],
+      "*": ["src/*"]
+    }
+  },
+  "include": ["src", "src/renderer", "src/resources"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -2,11 +2,11 @@ import React from 'react';
 import electron from 'electron';
 import fetch from 'node-fetch';
 
-import ProjectTypeIcon from './ProjectTypeIcon';
-import ProjectStatusIcon from './ProjectStatusIcon';
+import ProjectTypeIcon from 'Components/ProjectTypeIcon';
+import ProjectStatusIcon from 'Components/ProjectStatusIcon';
 
-import { showLoadingScreen, showErrorScreen } from '../helpers';
-import { start, restart, stop, remove } from '../ddev-shell';
+import { showLoadingScreen, showErrorScreen } from 'helpers';
+import { start, restart, stop, remove } from 'ddev-shell';
 
 class ProjectHeader extends React.PureComponent {
   processStart = e => {

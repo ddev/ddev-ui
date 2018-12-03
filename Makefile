@@ -2,7 +2,7 @@
 
 ##### These variables need to be adjusted in most repositories #####
 
-ELECTRON_BUILDER_VERSION := 19.33.0
+ELECTRON_BUILDER_VERSION := 20.28.4
 DDEV_UI_VERSION := $(VERSION)
 
 COMPANY_NAME := Drudtech
@@ -48,50 +48,62 @@ VERSION := $(shell git describe --tags --always --dirty)
 # include. That way the base components can easily be updated as our general needs
 # change.
 #include build-tools/makefile_components/base_build_go.mak
-include build-tools/makefile_components/base_build_python-docker.mak
+# include build-tools/makefile_components/base_build_python-docker.mak
 #include build-tools/makefile_components/base_container.mak
 #include build-tools/makefile_components/base_push.mak
 #include build-tools/makefile_components/base_test_go.mak
-include build-tools/makefile_components/base_test_python.mak
-
+# include build-tools/makefile_components/base_test_python.mak
 
 # Additional targets can be added here
 # Also, existing targets can be overridden by copying and customizing them.
-
-.PHONY: build clean
-
-# all: darwin linux windows
-all: darwin
-
 # Build requirements
 # - wine and mono must be available to build Windows on another platform (brew install wine mono )
 
-appstart: appsetup
-	yarn run start
-
-package: appsetup
+default: appsetup
 	@echo "Building $@"
-	yarn run dist
+	yarn build
 
-linux: appsetup
-	@echo "Building $@"
-	yarn run build-linux
-
-darwin: appsetup
-	@echo "Building $@"
-	yarn run build-darwin
-
-windows: appsetup
-	@echo "Building $@"
-	yarn run build-windows
+clean: package.json
+	@echo "Clean Project"
+	yarn clean
 
 appsetup: package.json
 	yarn install
 
-clean: package.json
-	rm -rf js/dist node_modules
-	yarn install
+appstart: appsetup
+	yarn dev
 
-test:
-	# yarn run test
+dev: appstart
+
+all: appsetup
+	@echo "Building for $@ platforms"
+	yarn build:all
+
+darwin: appsetup
+	@echo "Building $@"
+	yarn build:darwin
+
+windows: appsetup
+	@echo "Building $@"
+	yarn build:windows
+
+linux: appsetup
+	@echo "Building $@"
+	yarn build:linux
+
+test: appsetup
 	@echo "Skipping $@ for Now 🙈"
+	yarn test:all
+test-cli: appsetup
+	yarn test:cli
+test-interface: appsetup
+	yarn test:interface
+
+release: appsetup
+	yarn release:all
+release-linux: appsetup
+	yarn release:linux
+release-windows: appsetup
+	yarn release:windows
+release-darwin: appsetup
+	yarn release:darwin

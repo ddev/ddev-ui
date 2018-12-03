@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ProjectCount from './ProjectCount';
-import RouterStatus from './RouterStatus';
+import ProjectCount from 'Components/ProjectCount';
+import RouterStatus from 'Components/RouterStatus';
 
 class Footer extends React.PureComponent {
   render() {

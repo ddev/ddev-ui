@@ -1,11 +1,13 @@
 import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
+import ErrorBoundary from 'react-error-boundary';
 
 import 'popper.js';
 import 'bootstrap';
 
-import Dashboard from './Dashboard';
-import AppLoading from './AppLoading';
+import Dashboard from 'Components/Dashboard';
+import AppLoading from 'Components/AppLoading';
+
 // app styling
 import '~/src/resources/scss/main.scss'; // eslint-disable-line import/no-unresolved
 
@@ -31,9 +33,17 @@ class App extends React.Component {
           <Route
             render={routeProps => {
               if (this.state.completedChecks) {
-                return <Dashboard {...routeProps} triggerChecks={this.triggerChecks} />;
+                return (
+                  <ErrorBoundary>
+                    <Dashboard {...routeProps} triggerChecks={this.triggerChecks} />
+                  </ErrorBoundary>
+                );
               }
-              return <AppLoading {...routeProps} completeChecks={this.completeChecks} />;
+              return (
+                <ErrorBoundary>
+                  <AppLoading {...routeProps} completeChecks={this.completeChecks} />
+                </ErrorBoundary>
+              );
             }}
           />
         </Switch>

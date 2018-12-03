@@ -2,10 +2,10 @@ import React from 'react';
 import electron from 'electron';
 
 import { BarLoader } from 'react-spinners';
-import { list } from '../../ddev-shell';
-import { pause } from '../../helpers';
+import { list } from 'ddev-shell';
+import { pause } from 'helpers';
 
-const docker = require(`${__static}/img/Docker.svg`); // eslint-disable-line no-undef,global-require,import/no-dynamic-require
+import * as docker from 'Media/Docker.svg';
 
 class ValidateDocker extends React.Component {
   state = {

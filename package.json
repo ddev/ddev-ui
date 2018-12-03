@@ -1,9 +1,9 @@
 {
   "name": "ddev-ui",
   "description": "A GUI to complement the DDEV CLI",
-  "version": "v0.5.0",
+  "version": "v0.6.0",
   "main": "src/main/index.js",
-  "homepage": "https://github.com/drud/ddev",
+  "homepage": "https://github.com/drud/ddev-ui",
   "author": {
     "name": "DRUD Tech",
     "email": "support@drud.com"
@@ -16,81 +16,60 @@
     }
   ],
   "scripts": {
-    "start": "electron-webpack dev",
+    "dev": "yarn compile dev",
     "compile": "electron-webpack",
-    "dist": "yarn compile && electron-builder",
+    "clean": "rm -rf dist node_modules",
+    "clean:node": "rm -rf node_modules",
+    "clean:dist": "rm -rf dist",
+    "dist": "yarn compile && build",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "lint": "eslint --cache --color --ext .jsx,.js src",
     "lint:tests": "eslint --cache --color --ext .jsx,.js test",
-    "build-linux": "yarn compile && electron-builder --linux --x64",
-    "build-windows": "yarn compile && electron-builder --win",
-    "build-darwin": "yarn compile && electron-builder --mac",
-    "test": "mocha --require babel-register --require ignore-styles",
-    "postinstall": "electron-builder install-app-deps",
-    "release": "yarn compile && build -p always"
-  },
-  "build": {
-    "productName": "DDEV UI",
-    "appId": "com.github.drud.ddev-ui",
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "drud",
-        "repo": "ddev-ui"
-      }
-    ],
-    "mac": {
-      "category": "public.app-category.developer-tools",
-      "target": [
-        "zip",
-        "dmg"
-      ]
-    },
-    "linux": {
-      "target": [
-        "AppImage"
-      ],
-      "category": "development"
-    },
-    "win": {
-      "target": "nsis",
-      "icon": "build/icon.ico"
-    }
+    "build": "yarn dist",
+    "build:all": "yarn dist -mwl",
+    "build:linux": "yarn dist --linux --x64",
+    "build:windows": "yarn dist --win",
+    "build:darwin": "yarn dist --mac",
+    "release": "yarn dist -p always",
+    "release:all": "yarn build:all -p always",
+    "release:linux": "yarn build:linux -p always",
+    "release:windows": "yarn build:windows -p always",
+    "release:darwin": "yarn build:darwin -p always",
+    "test": "echo \"Tests are in Development\"",
+    "test:all": "echo \"This would run all tests\"",
+    "test:cli": "echo \"This would run functional/unit cli tests\"",
+    "test:interface": "echo \"This would run UI interface tests\""
   },
   "electronWebpack": {
     "renderer": {
       "webpackConfig": "webpack.renderer.config.js"
-    },
-    "main": {
-      "webpackConfig": "webpack.main.config.js"
     }
   },
   "dependencies": {
-    "app-root-path": "2.1.x",
-    "babel-loader": "^8.0.0-beta",
+    "app-root-path": "2.x",
+    "babel-loader": "8.0.x",
     "bootstrap": "4.1.x",
     "compare-versions": "3.x",
-    "electron-default-menu": "^1.0.1",
-    "electron-devtools-installer": "2.2.x",
-    "electron-is-dev": "0.3.x",
-    "electron-log": "^2.2.17",
+    "electron-default-menu": "1.x",
+    "electron-devtools-installer": "2.x",
+    "electron-is-dev": "1.x",
+    "electron-log": "2.2.x",
     "electron-updater": "^3.1.2",
     "fix-path": "2.1.x",
     "font-awesome": "4.7.x",
     "jquery": "3.3.x",
     "lodash": "4.17.x",
-    "node-fetch": "^2.2.0",
+    "node-fetch": "2.x",
     "popper.js": "1.14.x",
     "prop-types": "15.x",
     "react": "16.x",
-    "react-data-grid": "4.x",
     "react-desktop": "0.3.x",
     "react-dom": "16.x",
     "react-hot-loader": "4.x",
     "react-router": "4.x",
     "react-router-dom": "4.x",
-    "react-spinners": "^0.4.5",
-    "react-toastify": "^4.3.1",
+    "react-spinners": "0.4.x",
+    "react-toastify": "4.x",
     "request": "2.x",
     "source-map-support": "0.5.x",
     "sudo-prompt": "8.x",
@@ -98,25 +77,26 @@
     "xml2js": "0.4.x"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/node": "^7.0.0",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/plugin-proposal-json-strings": "^7.0.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
-    "@babel/plugin-syntax-import-meta": "^7.0.0",
-    "@babel/plugin-transform-react-jsx-source": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/register": "^7.0.0",
-    "babel-eslint": "^v9.0.0",
+    "@babel/core": "7.x",
+    "@babel/node": "7.x",
+    "@babel/plugin-proposal-class-properties": "7.x",
+    "@babel/plugin-proposal-json-strings": "7.x",
+    "@babel/plugin-syntax-dynamic-import": "7.x",
+    "@babel/plugin-syntax-import-meta": "7.x",
+    "@babel/plugin-transform-react-jsx-source": "7.x",
+    "@babel/preset-env": "7.x",
+    "@babel/preset-react": "7.x",
+    "@babel/register": "7.x",
+    "babel-eslint": "v10.0.x",
     "babel-plugin-root-import": "6.x",
-    "cypress": "3.x",
-    "electron": "2.x",
+    "cypress": "3.1.x",
+    "electron": "3.0.x",
     "electron-builder": "20.x",
-    "electron-webpack": "2.1.x",
-    "eslint": "5.x",
+    "electron-webpack": "2.3.x",
+    "eslint": "5.8.x",
     "eslint-config-airbnb": "17.x",
     "eslint-config-prettier": "3.x",
+    "eslint-import-resolver-webpack": "^0.10.1",
     "eslint-plugin-babel": "5.x",
     "eslint-plugin-import": "2.x",
     "eslint-plugin-jsx-a11y": "6.x",
@@ -124,19 +104,13 @@
     "eslint-plugin-react": "7.x",
     "file-loader": "1.x",
     "ignore-styles": "5.x",
-    "jest": "23.x",
-    "mocha": "5.x",
-    "mock-fs": "4.x",
-    "nock": "9.x",
     "node-sass": "4.x",
     "prettier": "1.x",
     "react-error-boundary": "^1.2.3",
-    "rewire": "4.x",
     "sass-loader": "7.x",
-    "stub-spawn-once": "2.3.x",
     "webpack": "4.x"
   },
   "resolutions": {
-    "webpack-sources": "1.x"
+    "browserslist": "^4.1"
   }
 }

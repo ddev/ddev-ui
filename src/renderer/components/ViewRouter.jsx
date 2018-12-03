@@ -1,8 +1,8 @@
 import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 
-import ProjectDetail from './ProjectDetail';
-import CreateProjectWizard from './CreateProjectWizard';
+import ProjectDetail from 'Components/ProjectDetail';
+import CreateProjectWizard from 'Components/CreateProjectWizard';
 
 class ViewRouter extends React.PureComponent {
   render() {

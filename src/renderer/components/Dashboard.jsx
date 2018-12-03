@@ -4,19 +4,20 @@ import _ from 'lodash';
 import { toast } from 'react-toastify';
 import ErrorBoundary from 'react-error-boundary';
 
+import { updateDistros } from 'distro-updater';
+import { list } from 'ddev-shell';
+import { isJson } from 'helpers';
+
 // components
-import Header from './Header';
-import Sidebar from './Sidebar';
-import Footer from './Footer';
-import ViewRouter from './ViewRouter';
-import Alpha from './Alpha';
-import Alerts from './Alerts';
-import Status from './Status';
+import Header from 'Components/Header';
+import Sidebar from 'Components/Sidebar';
+import Footer from 'Components/Footer';
+import ViewRouter from 'Components/ViewRouter';
+// import Alpha from 'Components/Alpha';
+import Alerts from 'Components/Alerts';
+import Status from 'Components/Status';
 
 // non componentized JS
-import { updateDistros } from '../distro-updater';
-import { list } from '../ddev-shell';
-import { isJson } from '../helpers';
 
 class Dashboard extends React.Component {
   state = {
@@ -66,7 +67,7 @@ class Dashboard extends React.Component {
   updateRouterStatus = projects => {
     let routerStatusText = 'Not Running - No Running DDEV Applications.';
     const validRouterStates = ['starting', 'healthy'];
-    const routerStatus = _.isObject(projects)
+    const routerStatus = _.isObject(projects[0])
       ? Object.values(projects)[0].router_status
       : 'not-running';
 
@@ -90,19 +91,21 @@ class Dashboard extends React.Component {
       error = JSON.parse(e);
     } else if (_.isString(e)) {
       error.msg = e;
+    } else if (_.isError(e)) {
+      error.msg = e.message;
     }
 
     const {
       msg = ' 🦄 There was a problem!',
       level = 'info',
       type = 'general',
-      info = details || null,
+      info = _.isError(e) ? e.stack : details || null,
       time = Date.now(),
       id = Date.now(),
     } = error;
 
     // Docker error
-    if (msg.includes('Docker')) {
+    if (_.isString(msg) && msg.includes('Docker')) {
       this.props.triggerChecks();
     }
 

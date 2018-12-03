@@ -1,59 +1,141 @@
-version: 2
-stages:
+defaults: &defaults
+  macos:
+    xcode: "10.1.0"
+  environment:
+    ARTIFACTS: /artifacts
+  working_directory: ~/ddev-ui
+
+aliases:
+  # Source: restore
+  - &restore_source
+    restore_cache:
+      keys:
+        - v4-source-{{ .Branch }}-{{ .Revision }}
+        - v4-source-{{ .Branch }}-
+  # Source: cache
+  - &cache_source
+    save_cache:
+      key: v4-source-{{ .Branch }}-{{ .Revision }}
+      paths:
+        - ~/ddev-ui
+
+  # Yarn: restore
+  - &restore_yarn
+    restore_cache:
+      keys:
+        - v4-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+        - v4-yarn-packages-{{ .Branch }}-
+  # Yarn: cache
+  - &cache_yarn
+    save_cache:
+      key: v4-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      paths:
+        - ~/ddev-ui/node_modules
+
+  # Display installed tools
+  - &log_tools
+    run:
+      name: Installed tool versions
+      command: >-
+        echo "git commit=$(make version) node version=$(node --version) npm
+        version=$(npm --version) wine version=$(wine --version) HOME=$HOME
+        USER=$(whoami) PWD=$PWD"
+
+version: 2.0
+jobs:
   build:
-    macos:
-      xcode: "9.0"
-
-    environment:
-      ARTIFACTS: /artifacts
-
-    working_directory: ~/ddev-ui
-
+    <<: *defaults
     steps:
+      # Checkout the codebase
+      - *restore_source
       - checkout
+      - *cache_source
+      # build app dependancies
+      - *restore_yarn
+      - run: yarn install
+      - *cache_yarn
+      ## echo installed tools
+      - *log_tools
 
-      - run:
-          name: xquartz setup
-          command: brew cask install xquartz  # dependency of wine
+      # build apps
+      - run: make darwin
+      # - run: make all
 
-      - run: brew update && brew info --json=v1 wine >>/tmp/info.txt && brew info --json=v1 node >>/tmp/info.txt
-
-      - restore_cache:
-          keys:
-            - homebrew-v3-{{ checksum "/tmp/info.txt" }}
-            - homebrew-v3-
-            
-      - run:
-          name: Homebrew install of node --lts
-          command: |
-            brew unlink node || true
-            brew install node@8 || true
-            brew link --overwrite --force node@8
-                        
-      - run:
-          name: Homebrew install of wine
-          command: |
-            brew install wine || true
-            brew unlink wine && brew link --overwrite wine
-
-      - save-cache:
-          key: homebrew-v3-{{ checksum "/tmp/info.txt" }}
+      - persist_to_workspace:
+          root: ./
           paths:
-            - /usr/local/Cellar/wine
-            - /usr/local/Cellar/node
+            - dist
 
-      - run:
-          name: Installed tool versions
-          command: echo "git commit=$(make version) node version=$(node --version) npm version=$(npm --version) wine version=$(wine --version) HOME=$HOME USER=$(whoami) PWD=$PWD"
+  test:
+    <<: *defaults
+    steps:
+      - *restore_source
+      - checkout
+      - *restore_yarn
+      - run: yarn install
 
-      - run: make clean all
-
+      # Build unpacked dir. Useful to test.
+      - run: yarn dist:dir
+      # run tests
       - run: make test
 
+  artifacts:
+    <<: *defaults
+    steps:
+      - *restore_source
+      - checkout
+      - attach_workspace:
+          at: ~/ddev-ui
+
+      # upload artifacts to circleci
       - run:
           command: ./.circleci/generate_artifacts.sh $ARTIFACTS
           name: tar/zip up artifacts and make hashes
-
       - store_artifacts:
           path: /artifacts
-          name: Artifact storage
+
+  release:
+    <<: *defaults
+    steps:
+      - *restore_source
+      - checkout
+      - *restore_yarn
+      - run: yarn install
+
+      # make release
+      - run: make release-darwin
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - artifacts:
+          requires:
+            - build
+            - test
+          filters:
+            branches:
+              ignore:
+                - master
+      - release:
+          requires:
+            - build
+            - test
+          filters:
+            branches:
+              only:
+                - master
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - test
