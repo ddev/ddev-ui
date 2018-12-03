@@ -54,7 +54,7 @@
     "electron-devtools-installer": "2.x",
     "electron-is-dev": "1.x",
     "electron-log": "2.2.x",
-    "electron-updater": "^3.1.2",
+    "electron-updater": "4.0.x",
     "fix-path": "2.1.x",
     "font-awesome": "4.7.x",
     "jquery": "3.3.x",
