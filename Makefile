@@ -77,19 +77,19 @@ dev: appstart
 
 all: appsetup
 	@echo "Building for $@ platforms"
-	yarn build:all
+	yarn build:all -p never
 
 darwin: appsetup
 	@echo "Building $@"
-	yarn build:darwin -c.mac.identity=null
+	yarn build:darwin -c.mac.identity=null -p never
 
 windows: appsetup
 	@echo "Building $@"
-	yarn build:windows
+	yarn build:windows -p never
 
 linux: appsetup
 	@echo "Building $@"
-	yarn build:linux
+	yarn build:linux -p never
 
 test: appsetup
 	@echo "Skipping $@ for Now 🙈"
