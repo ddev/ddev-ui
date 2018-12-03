@@ -81,7 +81,7 @@ all: appsetup
 
 darwin: appsetup
 	@echo "Building $@"
-	yarn build:darwin
+	yarn build:darwin -c.mac.identity=null
 
 windows: appsetup
 	@echo "Building $@"
@@ -106,4 +106,4 @@ release-linux: appsetup
 release-windows: appsetup
 	yarn release:windows
 release-darwin: appsetup
-	yarn release:darwin
+	yarn release:darwin -c.mac.identity=null
