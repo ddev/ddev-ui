@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import electron from 'electron';
+import $ from 'jquery';
 // import ReactDataGrid from 'react-data-grid';
 
 import { showLoadingScreen, showErrorScreen } from 'helpers';

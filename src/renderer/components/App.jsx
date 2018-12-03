@@ -2,16 +2,10 @@ import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import ErrorBoundary from 'react-error-boundary';
 
-import 'popper.js';
-import 'bootstrap';
-
 import Dashboard from 'Components/Dashboard';
 import AppLoading from 'Components/AppLoading';
 
-// app styling
-import '~/src/resources/scss/main.scss'; // eslint-disable-line import/no-unresolved
-
-window.$ = window.jQuery = require('jquery'); // eslint-disable-line no-multi-assign
+import 'Resources/scss/main.scss';
 
 class App extends React.Component {
   state = {

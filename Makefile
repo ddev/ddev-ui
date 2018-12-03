@@ -11,7 +11,7 @@ PRODUCT_NAME := ddevui
 # This repo's root import path (under GOPATH).
 PKG := github.com/drud/ddev-ui
 
-# Docker repo for a push
+# Docker repo for a pushcode
 # DOCKER_REPO ?= drud/docker_repo_name
 
 # Upstream repo used in the Dockerfile
@@ -81,7 +81,7 @@ all: appsetup
 
 darwin: appsetup
 	@echo "Building $@"
-	yarn build:darwin
+	yarn build:darwin -c.mac.identity=null
 
 windows: appsetup
 	@echo "Building $@"
@@ -106,4 +106,4 @@ release-linux: appsetup
 release-windows: appsetup
 	yarn release:windows
 release-darwin: appsetup
-	yarn release:darwin
+	yarn release:darwin -c.mac.identity=null

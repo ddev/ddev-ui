@@ -6,7 +6,7 @@ import * as path from 'path';
 import { format as formatUrl } from 'url';
 import defaultMenu from 'electron-default-menu';
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
+import isDev from 'electron-is-dev';
 
 //-------------------------------------------------------------------
 // Logging
@@ -56,7 +56,7 @@ const createMainWindow = () => {
     zoomFactor: 0.8,
   });
 
-  if (isDevelopment) {
+  if (isDev) {
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
   } else {
     window.loadURL(
@@ -125,7 +125,7 @@ app.on('ready', () => {
   // Set top-level application menu, using modified template
   Menu.setApplicationMenu(Menu.buildFromTemplate(menu));
   mainWindow = createMainWindow();
-  if (isDevelopment) {
+  if (isDev) {
     installExtension(REACT_DEVELOPER_TOOLS)
       .then(name => console.log(`Added Extension:  ${name}`))
       .catch(err => console.log('An error occurred: ', err));

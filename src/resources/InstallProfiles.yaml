@@ -1,0 +1,90 @@
+servers:
+  nginx: nGinx
+  apache: Apache
+php:
+  - 7.2
+  - 7.1
+  - 5.6
+projectTypes:
+  drupal:
+    name: Drupal
+    versions:
+      - 8
+      - 7
+      - 6
+    color: "#3877AF"
+    logo: "Drupal.png"
+    support: full
+    summary: >
+      Drupal is free, open source software that can be used by individuals or groups of
+      users -- even those lacking technical skills -- to easily create and manage many types
+      of Web sites. The application includes a content management platform and a development
+      framework.
+  wordpress:
+    name: WordPress
+    versions:
+      # - 5
+      - 4.9
+      # - 4.8
+    color: "#21759B"
+    logo: "WordPressCms.png"
+    support: full
+    summary: >
+      WordPress is software designed for everyone, emphasizing accessibility, performance,
+      security, and ease of use. We believe great software should work with minimum set up, so
+      you can focus on sharing your story, product, or services freely. The basic WordPress
+      software is simple and predictable so you can easily get started. It also offers
+      powerful features for growth and success.
+  typo3:
+    name: Typo3
+    # versions: []
+    color: "#F49800"
+    logo: "Typo3.png"
+    support: alpha
+    summary: >
+      TYPO3 CMS is an Open Source Enterprise Content Management System with a large global
+      community, backed by the approximately 900 members of the TYPO3 Association.
+  none:
+    name: "Vanilla PHP Application"
+    # versions: []
+    color: "#8892BF"
+    logo: "PHPLogo.png"
+    support: "beta"
+    summary: >
+      Hypertext Preprocessor (or simply PHP) is a server-side scripting language designed for
+      Web development, but also used as a general-purpose programming language. PHP code may
+      also be executed with a command-line interface (CLI) and can be used to implement
+      standalone graphical applications.
+  static:
+    name: "Static / Flat file CMS"
+    # versions: []
+    color: "#CB3837"
+    logo: "NPM.png"
+    support: "beta"
+    summary: >
+      A Static Site Generator takes a different approach and generates all the pages of the
+      website once when there's actually changes to the site. This means there's no moving
+      parts in the deployed website. Caching gets much easier, performance goes up and static
+      sites are far more secure.
+  backdrop:
+    name: "Backdrop CMS"
+    # versions: []
+    color: "#CFDE56"
+    logo: "Backdrop.png"
+    support: "alpha"
+    summary: >
+      The core Backdrop CMS package aims to include many useful features, but only those that
+      are necessary for the majority of sites using it. Backdrop's world of Add-Ons can be
+      used to meet less common needs. Backdrop can be easily extended with the addition of
+      modules, themes, and layouts.
+  laravel:
+    name: Laravel
+    # versions: []
+    color: "#EF533F"
+    logo: "Laravel.png"
+    support: alpha
+    summary: >
+      An open-source PHP framework, which is robust and easy to understand. It follows a
+      model-view-controller design pattern. Laravel reuses the existing components of
+      different frameworks which helps in creating a web application. The web application thus
+      designed is more structured and pragmatic.

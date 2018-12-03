@@ -1,5 +1,6 @@
 import React from 'react';
 import electron from 'electron';
+import $ from 'jquery';
 
 import { showLoadingScreen, showErrorScreen } from 'helpers';
 import { start, restart, stop, remove } from 'ddev-shell';

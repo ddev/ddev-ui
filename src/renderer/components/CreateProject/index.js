@@ -1,9 +1,11 @@
 import React from 'react';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
+import classnames from 'classnames';
+
 import electron, { remote as _remote } from 'electron';
 import { x } from 'tar';
 import { readdir, mkdir } from 'fs';
 import { homedir } from 'os';
-import $ from 'jquery';
 
 import { start, hostname as _hostname } from 'ddev-shell';
 import { getLocalDistros } from 'distro-updater';
@@ -19,10 +21,9 @@ import {
   checkIfExistingConfig,
 } from 'helpers';
 
-import ProjectSettings from 'Components/CreateProjectWizard/ProjectSettings';
-import ContainerSettings from 'Components/CreateProjectWizard/ContainerSettings';
-import CmsSettings from 'Components/CreateProjectWizard/CmsSettings';
-import WizardSteps from 'Components/CreateProjectWizard/WizardSteps';
+import InstallProfiles from './InstallProfiles';
+import CleanContainer from './CleanContainer';
+import ConnectContainer from './ConnectContainer';
 
 const remote = _remote || electron;
 const { dialog } = remote;
@@ -267,9 +268,8 @@ export function addCMSFromExisting(name, targetPath, docroot = '', history = {})
     });
 }
 
-class CreateProjectWizard extends React.Component {
+class CreateProject extends React.PureComponent {
   state = {
-    step: '1',
     name: '',
     installtype: 'new',
     path: '',
@@ -281,10 +281,21 @@ class CreateProjectWizard extends React.Component {
     enableXDebug: false,
     httpPort: 80,
     httpsPort: 443,
-    cmsType: 'wordpress',
+    cmsType: 'none',
     cmsVersion: 'latest',
+    activeTab: 'installProfiles',
   };
 
+  // toggle the ui tab
+  toggleTab = tab => {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab,
+      });
+    }
+  };
+
+  // generic input handler
   handleInputChange = e => {
     const { target } = e;
     const { type, checked, name } = target;
@@ -297,35 +308,22 @@ class CreateProjectWizard extends React.Component {
     });
   };
 
-  handleNextStep = e => {
-    const curStep = $(e.currentTarget).closest('.setup-content');
-    const curInputs = curStep.find("input[type='text'],input[type='url'],select");
-    let isValid = true;
-
-    $('.form-group').removeClass('has-error');
-    for (let i = 0; i < curInputs.length; i += 1) {
-      if (!curInputs[i].validity.valid) {
-        isValid = false;
-        $(curInputs[i])
-          .closest('.form-group')
-          .addClass('has-error');
-      }
-    }
-
-    if (isValid) {
-      this.setState({ step: e.currentTarget.getAttribute('step') });
-    }
-  };
-
-  handlePrevStep = e => {
-    this.setState({ step: e.currentTarget.getAttribute('step') });
-  };
-
-  handleInstallTypeUpdate = e => {
-    const type = e.currentTarget.getAttribute('installtype');
+  handleInstallTypeUpdate = type => {
     this.setState(prevState => {
       if (prevState.installtype !== type) {
         return { installtype: type };
+      }
+      return { prevState };
+    });
+  };
+
+  handleInstallProfileUpdate = (type = this.state.cmsType, version = this.state.cmsVersion) => {
+    this.setState(prevState => {
+      if (prevState.cmsType !== type) {
+        return { cmsType: type };
+      }
+      if (prevState.cmsVersion !== version) {
+        return { cmsVersion: version };
       }
       return { prevState };
     });
@@ -411,58 +409,138 @@ class CreateProjectWizard extends React.Component {
 
   render() {
     return (
-      <div className="create-project-wizard">
-        <form className="" onSubmit={this.handleProjectCreation} key="createProjectForm">
-          {/* Step 1 */}
-          {this.state.step === '1' && (
-            <ProjectSettings
-              path={this.state.path}
-              projectName={this.state.name}
-              installtype={this.state.installtype}
-              docroot={this.state.docroot}
-              history={this.props.history}
-              handleInputChange={this.handleInputChange}
-              handleNextStep={this.handleNextStep}
-              handlePathSetting={this.handlePathSetting}
-              handleDocrootSetting={this.handleDocrootSetting}
-              handleInstallTypeUpdate={this.handleInstallTypeUpdate}
-            />
-          )}
-
-          {/* Step 2 */}
-          {this.state.step === '2' && (
-            <ContainerSettings
-              containerType={this.state.containerType}
-              phpVersion={this.state.phpVersion}
-              webServer={this.state.webServer}
-              dbType={this.state.dbType}
-              enableXDebug={this.state.enableXDebug}
-              httpPort={this.state.httpPort}
-              httpsPort={this.state.httpsPort}
-              handleInputChange={this.handleInputChange}
-              handleNextStep={this.handleNextStep}
-              handlePrevStep={this.handlePrevStep}
-              handleContainerTypeUpdate={this.handleContainerTypeUpdate}
-              handleEnableXDebugUpdate={this.handleEnableXDebugUpdate}
-            />
-          )}
-
-          {/* Step 3 */}
-          {this.state.step === '3' && (
-            <CmsSettings
-              cmsType={this.state.cmsType}
-              cmsVersion={this.state.cmsVersion}
-              handleInputChange={this.handleInputChange}
-              handlePrevStep={this.handlePrevStep}
-              handleCmsUpdate={this.handleCmsUpdate}
-            />
-          )}
-        </form>
-        {/* Steps */}
-        <WizardSteps activeStep={this.state.step} />
+      <div className="create-project">
+        <h1 className="mt-1 mb-4">Create a new project</h1>
+        <Nav tabs>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === 'installProfiles' })}
+              onClick={() => {
+                this.handleInstallTypeUpdate('new');
+                this.toggleTab('installProfiles');
+              }}
+            >
+              Install Profiles
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === 'clean' })}
+              onClick={() => {
+                this.handleInstallTypeUpdate('new');
+                this.handleInstallProfileUpdate('none', 'latest');
+                this.toggleTab('clean');
+              }}
+            >
+              Clean PHP Container
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === 'existing' })}
+              onClick={() => {
+                this.handleInstallTypeUpdate('existing');
+                this.handleInstallProfileUpdate('none', 'latest');
+                this.toggleTab('existing');
+              }}
+            >
+              Connect Existing
+            </NavLink>
+          </NavItem>
+        </Nav>
+        <TabContent activeTab={this.state.activeTab}>
+          <TabPane tabId="installProfiles">
+            <Row>
+              <Col sm="12">
+                <InstallProfiles
+                  path={this.state.path}
+                  projectName={this.state.name}
+                  installtype={this.state.installtype}
+                  docroot={this.state.docroot}
+                  containerType={this.state.containerType}
+                  phpVersion={this.state.phpVersion}
+                  webServer={this.state.webServer}
+                  dbType={this.state.dbType}
+                  enableXDebug={this.state.enableXDebug}
+                  httpPort={this.state.httpPort}
+                  httpsPort={this.state.httpsPort}
+                  cmsType={this.state.cmsType}
+                  cmsVersion={this.state.cmsVersion}
+                  handleCmsUpdate={this.handleCmsUpdate}
+                  handleInputChange={this.handleInputChange}
+                  handlePathSetting={this.handlePathSetting}
+                  handleDocrootSetting={this.handleDocrootSetting}
+                  handleInstallTypeUpdate={this.handleInstallTypeUpdate}
+                  handleContainerTypeUpdate={this.handleContainerTypeUpdate}
+                  handleEnableXDebugUpdate={this.handleEnableXDebugUpdate}
+                  handleProjectCreation={this.handleProjectCreation}
+                  handleInstallProfileUpdate={this.handleInstallProfileUpdate}
+                />
+              </Col>
+            </Row>
+          </TabPane>
+          <TabPane tabId="clean">
+            <Row>
+              <Col sm="12">
+                <CleanContainer
+                  path={this.state.path}
+                  projectName={this.state.name}
+                  installtype={this.state.installtype}
+                  docroot={this.state.docroot}
+                  containerType={this.state.containerType}
+                  phpVersion={this.state.phpVersion}
+                  webServer={this.state.webServer}
+                  dbType={this.state.dbType}
+                  enableXDebug={this.state.enableXDebug}
+                  httpPort={this.state.httpPort}
+                  httpsPort={this.state.httpsPort}
+                  cmsType={this.state.cmsType}
+                  cmsVersion={this.state.cmsVersion}
+                  handleCmsUpdate={this.handleCmsUpdate}
+                  handleInputChange={this.handleInputChange}
+                  handlePathSetting={this.handlePathSetting}
+                  handleDocrootSetting={this.handleDocrootSetting}
+                  handleInstallTypeUpdate={this.handleInstallTypeUpdate}
+                  handleContainerTypeUpdate={this.handleContainerTypeUpdate}
+                  handleEnableXDebugUpdate={this.handleEnableXDebugUpdate}
+                  handleProjectCreation={this.handleProjectCreation}
+                />
+              </Col>
+            </Row>
+          </TabPane>
+          <TabPane tabId="existing">
+            <Row>
+              <Col sm="12">
+                <ConnectContainer
+                  path={this.state.path}
+                  projectName={this.state.name}
+                  installtype={this.state.installtype}
+                  docroot={this.state.docroot}
+                  containerType={this.state.containerType}
+                  phpVersion={this.state.phpVersion}
+                  webServer={this.state.webServer}
+                  dbType={this.state.dbType}
+                  enableXDebug={this.state.enableXDebug}
+                  httpPort={this.state.httpPort}
+                  httpsPort={this.state.httpsPort}
+                  cmsType={this.state.cmsType}
+                  cmsVersion={this.state.cmsVersion}
+                  handleCmsUpdate={this.handleCmsUpdate}
+                  handleInputChange={this.handleInputChange}
+                  handlePathSetting={this.handlePathSetting}
+                  handleDocrootSetting={this.handleDocrootSetting}
+                  handleInstallTypeUpdate={this.handleInstallTypeUpdate}
+                  handleContainerTypeUpdate={this.handleContainerTypeUpdate}
+                  handleEnableXDebugUpdate={this.handleEnableXDebugUpdate}
+                  handleProjectCreation={this.handleProjectCreation}
+                />
+              </Col>
+            </Row>
+          </TabPane>
+        </TabContent>
       </div>
     );
   }
 }
 
-export default CreateProjectWizard;
+export default CreateProject;
