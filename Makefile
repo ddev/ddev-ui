@@ -70,11 +70,6 @@ clean: package.json
 appsetup: package.json
 	yarn install
 
-default: all
-
-appsetup: package.json
-	yarn install
-
 appstart: appsetup
 	yarn dev
 
