@@ -21,7 +21,7 @@ const InstallProfile = props => {
 
   return (
     <Col xs={12} lg={6} xl={4} className="mb-4">
-      <Card className={`h-100 ${props.support !== 'full' ? 'coming-soon' : null}`}>
+      <Card className={`h-100 ${props.support !== 'full' ? 'coming-soon' : null} ${props.support}`}>
         <Row noGutters className="h-100">
           <Col xs={{ size: 'auto' }} className="rounded-left p-3 text-center" style={style}>
             <img src={img} alt={title} className="img-fluid" style={{ maxWidth: '40px' }} />

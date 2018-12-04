@@ -13,7 +13,7 @@ import Header from 'Components/Header';
 import Sidebar from 'Components/Sidebar';
 import Footer from 'Components/Footer';
 import ViewRouter from 'Components/ViewRouter';
-// import Alpha from 'Components/Alpha';
+import Alpha from 'Components/Alpha';
 import Alerts from 'Components/Alerts';
 import Status from 'Components/Status';
 
@@ -43,9 +43,9 @@ class Dashboard extends React.Component {
   fetchProjects = () => {
     list()
       .then(newProjects => {
-        const projects = !_.isEmpty(newProjects) ? _.mapKeys(newProjects, value => value.name) : [];
+        const projects = !_.isEmpty(newProjects) ? _.mapKeys(newProjects, value => value.name) : {};
         this.updateProjects(projects);
-        this.updateRouterStatus(projects);
+        this.updateRouterStatus(newProjects);
         this.errorResolve();
       })
       .catch(e => {
@@ -60,7 +60,7 @@ class Dashboard extends React.Component {
   };
 
   updateRouterStatus = projects => {
-    let routerStatusText = 'Not Running - No Running DDEV Applications.';
+    let routerStatusText = 'Not Running';
     const validRouterStates = ['starting', 'healthy'];
     const routerStatus = _.isObject(projects[0])
       ? Object.values(projects)[0].router_status
@@ -166,6 +166,7 @@ class Dashboard extends React.Component {
             />
             <main className="content col col-sm-8 col-lg-9">
               <Status />
+              <Alpha />
               <Alerts errorRemove={this.errorRemove} errors={this.state.errors} />
               <ViewRouter
                 addError={this.addError}

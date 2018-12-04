@@ -22,10 +22,7 @@ projectTypes:
       framework.
   wordpress:
     name: WordPress
-    versions:
-      # - 5
-      - 4.9
-      # - 4.8
+    # versions: []
     color: "#21759B"
     logo: "WordPressCms.png"
     support: full
@@ -40,7 +37,7 @@ projectTypes:
     # versions: []
     color: "#F49800"
     logo: "Typo3.png"
-    support: alpha
+    support: beta
     summary: >
       TYPO3 CMS is an Open Source Enterprise Content Management System with a large global
       community, backed by the approximately 900 members of the TYPO3 Association.
@@ -71,7 +68,7 @@ projectTypes:
     # versions: []
     color: "#CFDE56"
     logo: "Backdrop.png"
-    support: "alpha"
+    support: "beta"
     summary: >
       The core Backdrop CMS package aims to include many useful features, but only those that
       are necessary for the majority of sites using it. Backdrop's world of Add-Ons can be
