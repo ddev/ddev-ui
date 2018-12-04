@@ -35,8 +35,17 @@ export default class FormProjectInfo extends Component {
                     <CardBody>
                       <FormGroup row>
                         <Col>
-                          <Name {...this.props} />
-                          <Paths {...this.props} />
+                          {this.props.installtype === 'existing' ? (
+                            <div>
+                              <Paths {...this.props} />
+                              <Name {...this.props} />
+                            </div>
+                          ) : (
+                            <div>
+                              <Name {...this.props} />
+                              <Paths {...this.props} />
+                            </div>
+                          )}
                           <AdvancedOptions {...this.props} />
                         </Col>
                       </FormGroup>
