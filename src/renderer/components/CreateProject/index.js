@@ -410,7 +410,7 @@ class CreateProject extends React.PureComponent {
   render() {
     return (
       <div className="create-project">
-        <h1 className="mt-1 mb-4">Create a new project</h1>
+        <h1 className="mt-1 mb-4">Start new project</h1>
         <Nav tabs>
           <NavItem>
             <NavLink
@@ -432,7 +432,7 @@ class CreateProject extends React.PureComponent {
                 this.toggleTab('clean');
               }}
             >
-              Clean PHP Container
+              Clean Container
             </NavLink>
           </NavItem>
           <NavItem>

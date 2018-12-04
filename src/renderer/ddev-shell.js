@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
 import { homedir } from 'os';
 import fixPath from 'fix-path';
-import { exec } from 'sudo-prompt';
+import * as prompt from 'sudo-prompt';
 
 // quirk with electron's pathing. without this, / is symlinked to application working directory root
 fixPath();
@@ -174,7 +174,7 @@ export function hostname(siteName, domain = 'ddev.local') {
     };
 
     const command = `ddev hostname ${siteName}.${domain} 127.0.0.1 -j`;
-    exec(command, options, (error, stdout, stderr) => {
+    prompt.exec(command, options, (error, stdout, stderr) => {
       if (error) {
         console.log(stderr);
         reject(error);
@@ -267,7 +267,7 @@ export function sudo(command, promptOptions = { name: 'DDEV UI' }) {
       }
     });
     const promise = new Promise((resolve, reject) => {
-      exec(ddevCommand, promptOptions, (error, stdout, stderr) => {
+      prompt.exec(ddevCommand, promptOptions, (error, stdout, stderr) => {
         if (error) {
           console.log(stderr);
           reject(new Error('Unable to escalate permissions.'));
