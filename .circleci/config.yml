@@ -9,12 +9,14 @@ aliases:
   # Source: restore
   - &restore_source
     restore_cache:
+      name: Restore Source
       keys:
         - v4-source-{{ .Branch }}-{{ .Revision }}
         - v4-source-{{ .Branch }}-
   # Source: cache
   - &cache_source
     save_cache:
+      name: Cache Source
       key: v4-source-{{ .Branch }}-{{ .Revision }}
       paths:
         - ~/ddev-ui
@@ -22,12 +24,14 @@ aliases:
   # Yarn: restore
   - &restore_yarn
     restore_cache:
+      name: Yarn Restore
       keys:
         - v4-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
         - v4-yarn-packages-{{ .Branch }}-
   # Yarn: cache
   - &cache_yarn
     save_cache:
+      name: Cache Yarn
       key: v4-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
       paths:
         - ~/ddev-ui/node_modules
