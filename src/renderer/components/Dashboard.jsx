@@ -43,12 +43,7 @@ class Dashboard extends React.Component {
   fetchProjects = () => {
     list()
       .then(newProjects => {
-        const projects = {};
-        Object.keys(newProjects).forEach(key => {
-          if (Object.prototype.hasOwnProperty.call(newProjects, key)) {
-            projects[newProjects[key].name] = newProjects[key];
-          }
-        });
+        const projects = !_.isEmpty(newProjects) ? _.mapKeys(newProjects, value => value.name) : [];
         this.updateProjects(projects);
         this.updateRouterStatus(projects);
         this.errorResolve();
