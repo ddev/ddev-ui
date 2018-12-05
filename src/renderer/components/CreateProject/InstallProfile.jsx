@@ -20,7 +20,7 @@ const InstallProfile = props => {
   const img = require(`Media/${logo}`);
 
   return (
-    <Col xs={12} lg={6} xl={4} className="mb-4">
+    <Col className="install-profile mb-4">
       <Card className={`h-100 ${props.support !== 'full' ? 'coming-soon' : null} ${props.support}`}>
         <Row noGutters className="h-100">
           <Col xs={{ size: 'auto' }} className="rounded-left p-3 text-center" style={style}>

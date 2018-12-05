@@ -21,12 +21,11 @@ log.info('App starting...');
 const template = [];
 if (process.platform === 'darwin') {
   // OS X
-  const name = app.getName();
   template.unshift({
-    label: name,
+    label: app.getName(),
     submenu: [
       {
-        label: `About ${name}`,
+        label: `About DDEV-UI`,
         role: 'about',
       },
       {
@@ -53,6 +52,8 @@ const createMainWindow = () => {
     titleBarStyle: 'hidden',
     minWidth: 800,
     minHeight: 400,
+    width: 1200,
+    height: 800,
     zoomFactor: 0.8,
   });
 

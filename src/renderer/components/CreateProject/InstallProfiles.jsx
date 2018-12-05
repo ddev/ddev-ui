@@ -12,7 +12,7 @@ export default class InstallProfiles extends Component {
       <FormProjectInfo {...this.props} />
     ) : (
       <Container fluid>
-        <Row className="py-4">
+        <Row className="install-profiles py-4">
           {Object.keys(projectTypes).map(type => {
             if (type !== 'none') {
               return (

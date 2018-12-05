@@ -1,10 +1,7 @@
-.create-project-wizard {
+.create-project {
   form {
-    margin-bottom: 4rem;
-
     .has-error {
       color: $danger;
-
       input {
         border-color: $danger;
       }
@@ -81,132 +78,16 @@
     }
   }
 
-  .card-deck {
-    .card {
-      border-width: 1.5px;
-      overflow: hidden;
-      &.active {
-        border-color: $primary;
-        &:before {
-          content: "\2713 ";
-          position: absolute;
-          top: 0;
-          right: 2px;
-          color: $white;
-          z-index: 3;
-        }
-        &:after {
-          content: "";
-          position: absolute;
-          width: 0;
-          height: 0;
-          border-top: 55px solid transparent;
-          border-bottom: 55px solid transparent;
-          border-left: 55px solid $primary;
-          transform: rotate(-45deg);
-          top: -55px;
-          right: -22.5px;
-          z-index: 2;
-        }
-      }
-      a {
-        display: block;
-        padding: 1rem;
-        height: 100%;
-      }
-      img {
-        @include img-fluid;
-      }
-    }
+  .install-profiles[min-width~="0px"] .install-profile {
+    flex: 0 0 100%;
+    max-width: 100%;
   }
-}
-
-.stepwizard {
-  min-height: 50px;
-  bottom: 26px;
-  background: #f9f9f9;
-  @include make-col(7);
-  @include make-col-offset(5);
-  @include media-breakpoint-up(md) {
-    @include make-col(8);
-    @include make-col-offset(4);
+  .install-profiles[min-width~="576px"] .install-profile {
+    flex: 0 0 50%;
+    max-width: 50%;
   }
-
-  .stepwizard-step {
-    text-align: center;
-    position: relative;
-    font-size: 0.8rem;
-    & > * {
-      display: block;
-      margin: auto;
-      white-space: pre-wrap;
-
-      @include media-breakpoint-up(lg) {
-        display: inline-block;
-
-        &.btn {
-          margin-right: 0.5rem;
-        }
-      }
-    }
-  }
-  .btn-circle {
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    padding: 6px 0;
-    font-size: 12px;
-    line-height: 1.428571429;
-    border-radius: 15px;
-    // margin-right: 0.5rem;
-    // float: left;
-  }
-  .stepwizard-step button[disabled] {
-    opacity: 1 !important;
-    filter: alpha(opacity=100) !important;
-  }
-
-  /** The Magic **/
-  .btn-breadcrumb .stepwizard-step:not(:last-child):after {
-    content: " ";
-    display: block;
-    width: 0;
-    height: 0;
-    border-top: 17px solid transparent;
-    border-bottom: 17px solid transparent;
-    border-left: 10px solid #f9f9f9;
-    position: absolute;
-    top: 50%;
-    margin-top: -17px;
-    left: 100%;
-    z-index: 3;
-  }
-  .btn-breadcrumb .stepwizard-step:not(:last-child):before {
-    content: " ";
-    display: block;
-    width: 0;
-    height: 0;
-    border-top: 17px solid transparent;
-    border-bottom: 17px solid transparent;
-    border-left: 10px solid rgb(173, 173, 173);
-    position: absolute;
-    top: 50%;
-    margin-top: -17px;
-    margin-left: 1px;
-    left: 100%;
-    z-index: 3;
-  }
-
-  /** The Spacing **/
-  .btn-breadcrumb .stepwizard-step {
-    padding: 6px 12px 6px 24px;
-  }
-  .btn-breadcrumb .stepwizard-step:first-child {
-    // padding: 6px 6px 6px 10px;
-    padding-left: 12px;
-  }
-  .btn-breadcrumb .stepwizard-step:last-child {
-    // padding: 6px 18px 6px 24px;
-    padding-right: 12px;
+  .install-profiles[min-width~="992px"] .install-profile {
+    flex: 0 0 33%;
+    max-width: 33%;
   }
 }
