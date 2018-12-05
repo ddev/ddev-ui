@@ -9,10 +9,10 @@ export default class InstallProfiles extends Component {
   render() {
     const { projectTypes } = profiles;
     return this.props.cmsType !== 'none' ? (
-      <FormProjectInfo {...this.props} />
+      <FormProjectInfo className="InstallProfiles" {...this.props} />
     ) : (
       <Container fluid>
-        <Row className="py-4">
+        <Row className="install-profiles py-4">
           {Object.keys(projectTypes).map(type => {
             if (type !== 'none') {
               return (

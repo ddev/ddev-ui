@@ -2,55 +2,19 @@
   Header styles
  */
 
-.TitleBar > div {
-  padding-right: 0px !important;
-}
-.app-title {
-  height: 1.7rem !important;
-  margin-bottom: 0.1rem;
+.app-header {
+  background: #15283b;
+  border-right: 1px solid rgba(0, 58, 112, 0.6) !important;
+  position: relative;
 
-  h1 {
-    font-size: 0.8rem;
-    margin-bottom: 0;
-    color: $gray-700;
+  .app-logo {
+    width: 50px;
   }
-  img {
-    height: 16px;
-  }
-}
-.app-nav {
-  margin-bottom: 0.4rem;
-  width: 100%;
 
-  .btn-group {
-    background: #ffffff;
-    box-shadow: 0 1px 1px 0 #e0e0e0;
-    border-radius: 5px;
-    margin-left: 4px;
-    margin-right: 4px;
-
-    &,
-    & > div {
-      height: 1.7rem !important;
-    }
-
-    a {
-      width: auto !important;
-      min-width: 30px !important;
-      margin-left: 0.3rem !important;
-      margin-right: 0.3rem !important;
-      height: 100%;
-      display: block;
-      vertical-align: middle;
-      text-decoration: none;
-
-      img {
-        max-height: 0.8rem;
-      }
+  .app-nav {
+    img {
+      width: 45%;
+      margin-bottom: 0.4rem;
     }
   }
-}
-.ddev-logo {
-  position: absolute;
-  right: 20px;
 }

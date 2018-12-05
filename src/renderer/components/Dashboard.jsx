@@ -3,6 +3,9 @@ import { Window } from 'react-desktop/macOs';
 import _ from 'lodash';
 import { toast } from 'react-toastify';
 import ErrorBoundary from 'react-error-boundary';
+import { Container, Row, Col } from 'reactstrap';
+import SplitPane from 'react-split-pane';
+import ElementQueries from 'css-element-queries/src/ElementQueries';
 
 import { updateDistros } from 'distro-updater';
 import { list } from 'ddev-shell';
@@ -11,19 +14,17 @@ import { isJson } from 'helpers';
 // components
 import Header from 'Components/Header';
 import Sidebar from 'Components/Sidebar';
-import Footer from 'Components/Footer';
-import ViewRouter from 'Components/ViewRouter';
-// import Alpha from 'Components/Alpha';
+import Alpha from 'Components/Alpha';
 import Alerts from 'Components/Alerts';
 import Status from 'Components/Status';
+import ViewRouter from 'Components/ViewRouter';
 
-// non componentized JS
+ElementQueries.listen();
 
 class Dashboard extends React.Component {
   state = {
     projects: {},
     errors: {},
-    router: 'Not Running - No Running DDEV Applications.',
   };
 
   componentDidMount() {
@@ -43,9 +44,8 @@ class Dashboard extends React.Component {
   fetchProjects = () => {
     list()
       .then(newProjects => {
-        const projects = !_.isEmpty(newProjects) ? _.mapKeys(newProjects, value => value.name) : [];
+        const projects = !_.isEmpty(newProjects) ? _.mapKeys(newProjects, value => value.name) : {};
         this.updateProjects(projects);
-        this.updateRouterStatus(projects);
         this.errorResolve();
       })
       .catch(e => {
@@ -56,23 +56,6 @@ class Dashboard extends React.Component {
   updateProjects = projects => {
     if (JSON.stringify(this.state.projects) !== JSON.stringify(projects)) {
       this.setState({ projects });
-    }
-  };
-
-  updateRouterStatus = projects => {
-    let routerStatusText = 'Not Running - No Running DDEV Applications.';
-    const validRouterStates = ['starting', 'healthy'];
-    const routerStatus = _.isObject(projects[0])
-      ? Object.values(projects)[0].router_status
-      : 'not-running';
-
-    routerStatusText =
-      validRouterStates.indexOf(routerStatus) !== -1
-        ? _.upperFirst(routerStatus)
-        : routerStatusText;
-
-    if (this.state.router !== routerStatusText) {
-      this.setState({ router: routerStatusText });
     }
   };
 
@@ -91,7 +74,7 @@ class Dashboard extends React.Component {
     }
 
     const {
-      msg = ' 🦄 There was a problem!',
+      msg = 'There was a problem!',
       level = 'info',
       type = 'general',
       info = _.isError(e) ? e.stack : details || null,
@@ -154,31 +137,32 @@ class Dashboard extends React.Component {
 
   render() {
     return (
-      <Window chrome padding="0px" className="Window">
-        <ErrorBoundary onError={this.errorCapture}>
-          <Header {...this.props} />
-        </ErrorBoundary>
-        <section className="app-container container-fluid">
-          <div className="row h-100">
-            <Sidebar
-              className="projectSidebar col col-sm-4 col-lg-3 p-0"
-              projects={this.state.projects}
-            />
-            <main className="content col col-sm-8 col-lg-9">
-              <Status />
-              <Alerts errorRemove={this.errorRemove} errors={this.state.errors} />
-              <ViewRouter
-                addError={this.addError}
-                projects={this.state.projects}
-                errors={this.state.errors}
-              />
-            </main>
-          </div>
-        </section>
-        <ErrorBoundary onError={this.errorCapture}>
-          <Footer projects={this.state.projects} router={this.state.router} />
-        </ErrorBoundary>
-      </Window>
+      <ErrorBoundary onError={this.errorCapture}>
+        <Container fluid className="app-container">
+          <Row className="h-100">
+            <Header />
+            <Col>
+              <SplitPane split="vertical" minSize={260} maxSize={700} defaultSize={300}>
+                <Sidebar className="projectSidebar p-0 h-100" projects={this.state.projects} />
+                <Col className="content h-100">
+                  <Container fluid className="main h-100">
+                    <Row>
+                      <Status />
+                      <Alpha />
+                      <Alerts errorRemove={this.errorRemove} errors={this.state.errors} />
+                      <ViewRouter
+                        addError={this.addError}
+                        projects={this.state.projects}
+                        errors={this.state.errors}
+                      />
+                    </Row>
+                  </Container>
+                </Col>
+              </SplitPane>
+            </Col>
+          </Row>
+        </Container>
+      </ErrorBoundary>
     );
   }
 }

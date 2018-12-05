@@ -14,8 +14,8 @@ import {
 export default class Paths extends Component {
   render() {
     return (
-      <Row>
-        <Col xs={12} md={this.props.installtype === 'new' ? 12 : 6}>
+      <Row className="project-paths">
+        <Col className="localPath">
           <FormGroup>
             <Label for="localPath">Local Path</Label>
             <InputGroup
@@ -50,7 +50,7 @@ export default class Paths extends Component {
           </FormGroup>
         </Col>
         {this.props.installtype === 'existing' && (
-          <Col xs={12} md={6}>
+          <Col className="localDocroot">
             <FormGroup>
               <Label for="localDocroot">Project Docroot</Label>
               <InputGroup

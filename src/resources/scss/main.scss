@@ -3,6 +3,7 @@
  */
 
 @import "common/variables";
+@import "common/mixins";
 
 // node modules
 $fa-font-path: "~font-awesome/fonts";
@@ -15,6 +16,7 @@ $fa-font-path: "~font-awesome/fonts";
 @import "common/layout";
 
 @import "components/buttons";
+@import "components/card";
 @import "components/header";
 @import "components/footer";
 @import "components/sidebar";

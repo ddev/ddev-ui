@@ -6,7 +6,7 @@ import ProjectInfo from 'Components/ProjectInfo';
 class ProjectDetail extends React.PureComponent {
   render() {
     return (
-      <section className="project-info">
+      <section className="project-info w-100">
         {this.props.project && (
           <div className="project-details">
             <ProjectHeader {...this.props.project} {...this.props.history} />

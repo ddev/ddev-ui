@@ -6,7 +6,6 @@ import { NavLink } from 'react-router-dom';
 import * as stack from 'Media/stack.svg';
 import * as icon from 'Media/Icon.svg';
 import * as issue from 'Media/Issue.svg';
-import * as addSite from 'Media/AddSite.svg';
 import * as settings from 'Media/SettingsBlue.svg';
 
 import ProjectNavItem from 'Components/ProjectNavItem';
@@ -60,14 +59,6 @@ class Sidebar extends React.Component {
               >
                 <img alt="Open Issue" src={issue} className="" />
               </a>
-            </li>
-            <li className="add-site col text-center">
-              <NavLink
-                className="h-100 d-flex align-content-center align-items-center justify-content-center"
-                to="/project/create"
-              >
-                <img alt="Add Site" src={addSite} className="" />
-              </NavLink>
             </li>
             <li className="settings col text-center">
               <NavLink
