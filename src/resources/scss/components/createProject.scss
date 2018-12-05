@@ -78,16 +78,48 @@
     }
   }
 
-  .install-profiles[min-width~="0px"] .install-profile {
+  .install-profiles {
+    &[min-width~="0px"] .install-profile {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+    &[min-width~="576px"] .install-profile {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+    &[min-width~="992px"] .install-profile {
+      flex: 0 0 33%;
+      max-width: 33%;
+    }
+  }
+
+  .project-paths {
+    &[min-width~="0px"] .col {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+    &[min-width~="576px"] .col {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+  }
+
+  .AdvancedOptions {
+    &[min-width~="0px"] .col {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+    &[min-width~="576px"] .col {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+  }
+}
+
+.CleanContainer,
+.InstallProfiles {
+  .project-paths[min-width~="576px"] .col {
     flex: 0 0 100%;
     max-width: 100%;
-  }
-  .install-profiles[min-width~="576px"] .install-profile {
-    flex: 0 0 50%;
-    max-width: 50%;
-  }
-  .install-profiles[min-width~="992px"] .install-profile {
-    flex: 0 0 33%;
-    max-width: 33%;
   }
 }

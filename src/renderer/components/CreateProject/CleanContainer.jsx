@@ -3,6 +3,6 @@ import FormProjectInfo from './FormProjectInfo';
 
 export default class CleanContainer extends Component {
   render() {
-    return <FormProjectInfo {...this.props} />;
+    return <FormProjectInfo className="CleanContainer" {...this.props} />;
   }
 }

@@ -16,7 +16,7 @@ export default class FormProjectInfo extends Component {
     // eslint-disable-next-line global-require,import/no-dynamic-require
     const img = require(`Media/${logo}`);
     return (
-      <Container fluid>
+      <Container fluid className={this.props.className}>
         <Row>
           <Col className="mb-4">
             <Card id="connect-project" className="container-setup my-4">

@@ -11,8 +11,8 @@ export default class AdvancedOptions extends Component {
 
   render() {
     return (
-      <div className="clearfix">
-        <p className="text-center mt-3">
+      <div className="AdvancedOptions clearfix">
+        <p className="trigger text-center mt-3">
           <a onClick={this.toggle} href="#!">
             Advanced Options{' '}
             {this.state.collapse ? (
@@ -22,9 +22,9 @@ export default class AdvancedOptions extends Component {
             )}
           </a>
         </p>
-        <Collapse isOpen={this.state.collapse}>
+        <Collapse isOpen={this.state.collapse} className="options">
           <Row form>
-            <Col xs={12} md={6}>
+            <Col>
               <Row form className="align-items-center">
                 <Col xs="auto">Ports:</Col>
                 <Col>
@@ -67,7 +67,7 @@ export default class AdvancedOptions extends Component {
                 </Col>
               </Row>
             </Col>
-            <Col xs={12} md={6} className="form-inline text-md-center">
+            <Col className="form-inline text-md-center">
               <FormGroup className="mx-auto">
                 <Label for="enableXDebug" className="mr-1" check>
                   Enable XDebug:

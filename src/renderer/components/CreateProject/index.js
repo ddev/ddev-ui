@@ -409,7 +409,7 @@ class CreateProject extends React.PureComponent {
 
   render() {
     return (
-      <div className="create-project">
+      <div className="create-project w-100">
         <h1 className="mt-1 mb-4">Start new project</h1>
         <Nav tabs>
           <NavItem>
@@ -451,7 +451,7 @@ class CreateProject extends React.PureComponent {
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="installProfiles">
             <Row>
-              <Col sm="12">
+              <Col>
                 <InstallProfiles
                   path={this.state.path}
                   projectName={this.state.name}
@@ -481,7 +481,7 @@ class CreateProject extends React.PureComponent {
           </TabPane>
           <TabPane tabId="clean">
             <Row>
-              <Col sm="12">
+              <Col>
                 <CleanContainer
                   path={this.state.path}
                   projectName={this.state.name}
@@ -510,7 +510,7 @@ class CreateProject extends React.PureComponent {
           </TabPane>
           <TabPane tabId="existing">
             <Row>
-              <Col sm="12">
+              <Col>
                 <ConnectContainer
                   path={this.state.path}
                   projectName={this.state.name}
