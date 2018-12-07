@@ -1,5 +1,6 @@
 import { spawn } from 'child_process';
 import { homedir } from 'os';
+import _ from 'lodash';
 import fixPath from 'fix-path';
 import * as prompt from 'sudo-prompt';
 
@@ -144,21 +145,32 @@ export function remove(name, shouldRemoveData, callback, errorCallback) {
 }
 
 /**
- * wrapper for `ddev config`, run with --sitename --docroot flags to prevent cli from prompting
+ * wrapper for `ddev config`, run with --projectname --docroot flags to prevent cli from prompting
  * @param path {string} - working directory of project to configure
- * @param name {string} - name of newly created site
- * @param docroot {string} - docroot of target project
+ * @param args {obj}
+ *    --docroot,
+ *    --projectname,
+ *    --projecttype,
+ *    --php-version,
+ *    --webserver,
+ *    --http-port,
+ *    --https-port,
+ *    --xdebug-enabled,
+ *    --create-docroot
  * @param callback {function} - function to call on execution completion
  * @param errorCallback - function to call on failure
  */
-export function config(path, name, docroot, callback, errorCallback) {
-  ddevShell(
-    'config',
-    ['-j', '--sitename', name, '--docroot', docroot],
-    path,
-    callback,
-    errorCallback
-  );
+// export function config(path, name, docroot, args = {}, callback, errorCallback) {
+export function config(path, args = {}, callback, errorCallback) {
+  const argsArr = [];
+  const finalArgs = _.merge({ '-j': null }, _.isObjectLike(args) ? args : {});
+
+  _.forEach(finalArgs, (value, key) => {
+    argsArr.push(key);
+    if (!_.isEmpty(value)) argsArr.push(value);
+  });
+
+  ddevShell('config', argsArr, path, callback, errorCallback);
 }
 
 /**

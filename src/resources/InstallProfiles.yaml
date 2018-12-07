@@ -1,6 +1,6 @@
 servers:
-  nginx: nGinx
-  apache: Apache
+  nginx-fpm: nGinx
+  apache-fpm: Apache
 php:
   - 7.2
   - 7.1
@@ -41,7 +41,7 @@ projectTypes:
     summary: >
       TYPO3 CMS is an Open Source Enterprise Content Management System with a large global
       community, backed by the approximately 900 members of the TYPO3 Association.
-  none:
+  php:
     name: "Vanilla PHP Application"
     # versions: []
     color: "#8892BF"

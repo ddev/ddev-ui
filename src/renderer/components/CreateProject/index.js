@@ -1,6 +1,7 @@
 import React from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
+import _ from 'lodash';
 
 import electron, { remote as _remote } from 'electron';
 import { x } from 'tar';
@@ -178,20 +179,23 @@ export function extractCMSImageToTargetPath(siteName, cmsType, cmsPath, targetFo
  * @param type {string} type of CMS to install (drupal6, drupal7, drupal8, wordpress)
  * @param targetPath {string} path to unpack CMS and install site
  */
-export function addCMS(name, type, targetPath, history = {}) {
+export function addCMS(name, type, targetPath, args = {}, history = {}) {
   let cmsPath = '~/.ddev/CMS';
   let workingPath = cmsPath;
   cmsPath = cmsPath.replace('~', homedir());
   showLoadingScreen(true);
   validateNewProjectInputs(name, type, targetPath)
     .then(() => {
-      showLoadingScreen(true, 'Unzipping files');
-      return extractCMSImageToTargetPath(name, type, cmsPath, targetPath);
+      if (type !== 'php') {
+        showLoadingScreen(true, 'Unzipping files');
+        return extractCMSImageToTargetPath(name, type, cmsPath, targetPath);
+      }
+      return Promise.resolve(targetPath);
     })
     .then(newWorkingPath => {
       showLoadingScreen(true, 'Configuring Project');
       workingPath = newWorkingPath;
-      return configureSite(name, workingPath, '');
+      return configureSite(workingPath, args);
     })
     .then(() => {
       showLoadingScreen(true, 'Updating Hosts File');
@@ -228,14 +232,14 @@ export function addCMS(name, type, targetPath, history = {}) {
  * @param targetPath {string} path to existing project files
  * @param docroot {string} - optional - application docroot relative to targetPath
  */
-export function addCMSFromExisting(name, targetPath, docroot = '', history = {}) {
+export function addCMSFromExisting(name, targetPath, docroot, args = {}, history = {}) {
   showLoadingScreen(true);
   validateExistingFilesInputs(name, targetPath, docroot)
     .then(() => checkIfExistingConfig(targetPath))
     .then(shouldConfig => {
       if (shouldConfig) {
         showLoadingScreen(true, 'Configuring Project');
-        return configureSite(name, targetPath, docroot);
+        return configureSite(targetPath, args);
       }
       return Promise.resolve(true);
     })
@@ -274,14 +278,13 @@ class CreateProject extends React.PureComponent {
     installtype: 'new',
     path: '',
     docroot: '',
-    containerType: 'default',
     phpVersion: '7.1',
-    webServer: 'nginx',
+    webServer: 'nginx-fpm',
     dbType: 'MariaDB',
     enableXDebug: false,
-    httpPort: 80,
-    httpsPort: 443,
-    cmsType: 'none',
+    httpPort: '80',
+    httpsPort: '443',
+    cmsType: 'php',
     cmsVersion: 'latest',
     activeTab: 'installProfiles',
   };
@@ -325,6 +328,7 @@ class CreateProject extends React.PureComponent {
       if (prevState.cmsVersion !== version) {
         return { cmsVersion: version };
       }
+      // TODO: some general input resetting between tabs
       return { prevState };
     });
   };
@@ -359,51 +363,71 @@ class CreateProject extends React.PureComponent {
     }
   };
 
-  handleContainerTypeUpdate = e => {
-    const type = e.currentTarget.getAttribute('containertype');
-    this.setState(prevState => {
-      if (prevState.containerType !== type) {
-        return { containerType: type };
-      }
-      return { prevState };
-    });
-  };
-
-  handleEnableXDebugUpdate = () => {
-    this.setState(prevState => ({ enableXDebug: !prevState.enableXDebug }));
-  };
-
-  handleCmsUpdate = e => {
-    e.preventDefault();
-    const cms = e.currentTarget.getAttribute('cms');
-    this.setState(prevState => {
-      if (prevState.cmsType !== cms) {
-        return { cmsType: cms };
-      }
-      return { prevState };
-    });
-  };
-
   handleProjectCreation = e => {
     e.preventDefault();
-    if (this.state.installtype === 'new') {
+    const args = {};
+    const { history } = this.props;
+    let { docroot } = this.state;
+    const {
+      path,
+      name,
+      installtype,
+      cmsType,
+      cmsVersion,
+      phpVersion,
+      webServer,
+      httpPort,
+      httpsPort,
+      enableXDebug,
+    } = this.state;
+
+    // --projectname
+    args['--projectname'] = name;
+
+    // --php-version
+    args['--php-version'] = phpVersion;
+
+    // --webserver
+    args['--webserver-type'] = webServer;
+
+    // --http-port
+    args['--http-port'] = httpPort;
+    // --https-port
+    args['--https-port'] = httpsPort;
+
+    // --xdebug-enabled
+    if (enableXDebug) args['--xdebug-enabled'] = null;
+
+    if (installtype === 'new') {
       // Temp filter for drupal
       // TODO: make the version allow for any version of a CMS
       let cms = '';
-      if (this.state.cmsType === 'drupal') {
-        const version = this.state.cmsVersion === 'latest' ? '8' : this.state.cmsVersion;
-        cms = this.state.cmsType + version;
+
+      if (cmsType === 'drupal') {
+        const version = cmsVersion === 'latest' ? '8' : cmsVersion;
+        cms = cmsType + version;
       } else {
-        cms = this.state.cmsType;
+        cms = cmsType;
       }
-      addCMS(this.state.name, cms, this.state.path, this.props.history);
+
+      // --projecttype
+      args['--projecttype'] = cms;
+
+      //
+      addCMS(name, cms, path, args, history);
     } else {
-      let { docroot } = this.state;
-      docroot = docroot.replace(this.state.path, '');
-      if (docroot[0] === '/') {
-        docroot = docroot.substr(1);
+      if (!_.isEmpty(docroot)) {
+        docroot = docroot.replace(path, '');
+        if (docroot[0] === '/') {
+          docroot = docroot.substr(1);
+        }
       }
-      addCMSFromExisting(this.state.name, this.state.path, docroot, this.props.history);
+
+      // --docroot
+      args['--docroot'] = docroot;
+
+      //
+      addCMSFromExisting(name, path, docroot, args, history);
     }
   };
 
@@ -428,7 +452,7 @@ class CreateProject extends React.PureComponent {
               className={classnames({ active: this.state.activeTab === 'clean' })}
               onClick={() => {
                 this.handleInstallTypeUpdate('new');
-                this.handleInstallProfileUpdate('none', 'latest');
+                this.handleInstallProfileUpdate('php', 'latest');
                 this.toggleTab('clean');
               }}
             >
@@ -440,7 +464,7 @@ class CreateProject extends React.PureComponent {
               className={classnames({ active: this.state.activeTab === 'existing' })}
               onClick={() => {
                 this.handleInstallTypeUpdate('existing');
-                this.handleInstallProfileUpdate('none', 'latest');
+                this.handleInstallProfileUpdate('php', 'latest');
                 this.toggleTab('existing');
               }}
             >
@@ -453,26 +477,12 @@ class CreateProject extends React.PureComponent {
             <Row>
               <Col>
                 <InstallProfiles
-                  path={this.state.path}
+                  {...this.state}
                   projectName={this.state.name}
-                  installtype={this.state.installtype}
-                  docroot={this.state.docroot}
-                  containerType={this.state.containerType}
-                  phpVersion={this.state.phpVersion}
-                  webServer={this.state.webServer}
-                  dbType={this.state.dbType}
-                  enableXDebug={this.state.enableXDebug}
-                  httpPort={this.state.httpPort}
-                  httpsPort={this.state.httpsPort}
-                  cmsType={this.state.cmsType}
-                  cmsVersion={this.state.cmsVersion}
-                  handleCmsUpdate={this.handleCmsUpdate}
                   handleInputChange={this.handleInputChange}
                   handlePathSetting={this.handlePathSetting}
                   handleDocrootSetting={this.handleDocrootSetting}
                   handleInstallTypeUpdate={this.handleInstallTypeUpdate}
-                  handleContainerTypeUpdate={this.handleContainerTypeUpdate}
-                  handleEnableXDebugUpdate={this.handleEnableXDebugUpdate}
                   handleProjectCreation={this.handleProjectCreation}
                   handleInstallProfileUpdate={this.handleInstallProfileUpdate}
                 />
@@ -483,26 +493,12 @@ class CreateProject extends React.PureComponent {
             <Row>
               <Col>
                 <CleanContainer
-                  path={this.state.path}
+                  {...this.state}
                   projectName={this.state.name}
-                  installtype={this.state.installtype}
-                  docroot={this.state.docroot}
-                  containerType={this.state.containerType}
-                  phpVersion={this.state.phpVersion}
-                  webServer={this.state.webServer}
-                  dbType={this.state.dbType}
-                  enableXDebug={this.state.enableXDebug}
-                  httpPort={this.state.httpPort}
-                  httpsPort={this.state.httpsPort}
-                  cmsType={this.state.cmsType}
-                  cmsVersion={this.state.cmsVersion}
-                  handleCmsUpdate={this.handleCmsUpdate}
                   handleInputChange={this.handleInputChange}
                   handlePathSetting={this.handlePathSetting}
                   handleDocrootSetting={this.handleDocrootSetting}
                   handleInstallTypeUpdate={this.handleInstallTypeUpdate}
-                  handleContainerTypeUpdate={this.handleContainerTypeUpdate}
-                  handleEnableXDebugUpdate={this.handleEnableXDebugUpdate}
                   handleProjectCreation={this.handleProjectCreation}
                 />
               </Col>
@@ -512,26 +508,12 @@ class CreateProject extends React.PureComponent {
             <Row>
               <Col>
                 <ConnectContainer
-                  path={this.state.path}
+                  {...this.state}
                   projectName={this.state.name}
-                  installtype={this.state.installtype}
-                  docroot={this.state.docroot}
-                  containerType={this.state.containerType}
-                  phpVersion={this.state.phpVersion}
-                  webServer={this.state.webServer}
-                  dbType={this.state.dbType}
-                  enableXDebug={this.state.enableXDebug}
-                  httpPort={this.state.httpPort}
-                  httpsPort={this.state.httpsPort}
-                  cmsType={this.state.cmsType}
-                  cmsVersion={this.state.cmsVersion}
-                  handleCmsUpdate={this.handleCmsUpdate}
                   handleInputChange={this.handleInputChange}
                   handlePathSetting={this.handlePathSetting}
                   handleDocrootSetting={this.handleDocrootSetting}
                   handleInstallTypeUpdate={this.handleInstallTypeUpdate}
-                  handleContainerTypeUpdate={this.handleContainerTypeUpdate}
-                  handleEnableXDebugUpdate={this.handleEnableXDebugUpdate}
                   handleProjectCreation={this.handleProjectCreation}
                 />
               </Col>

@@ -42,7 +42,8 @@ export default class AdvancedOptions extends Component {
                           maxLength="3"
                           id="httpPort"
                           name="httpPort"
-                          // onChange={this.props.handleInputChange}
+                          value={this.props.httpPort}
+                          onChange={this.props.handleInputChange}
                         />
                       </FormGroup>
                     </Col>
@@ -59,7 +60,8 @@ export default class AdvancedOptions extends Component {
                           id="httpsPort"
                           name="httpsPort"
                           maxLength="3"
-                          // onChange={this.props.handleInputChange}
+                          value={this.props.httpsPort}
+                          onChange={this.props.handleInputChange}
                         />
                       </FormGroup>
                     </Col>
@@ -72,7 +74,13 @@ export default class AdvancedOptions extends Component {
                 <Label for="enableXDebug" className="mr-1" check>
                   Enable XDebug:
                 </Label>
-                <Input type="checkbox" id="enableXDebug" name="enableXDebug" />
+                <Input
+                  type="checkbox"
+                  id="enableXDebug"
+                  name="enableXDebug"
+                  value={this.props.enableXDebug}
+                  onChange={this.props.handleInputChange}
+                />
               </FormGroup>
             </Col>
           </Row>
