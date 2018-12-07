@@ -190,7 +190,7 @@ export function addCMS(name, type, targetPath, args = {}, history = {}) {
         showLoadingScreen(true, 'Unzipping files');
         return extractCMSImageToTargetPath(name, type, cmsPath, targetPath);
       }
-      return Promise.resolve(targetPath);
+      return Promise.resolve(`${targetPath}/${name}`);
     })
     .then(newWorkingPath => {
       showLoadingScreen(true, 'Configuring Project');
