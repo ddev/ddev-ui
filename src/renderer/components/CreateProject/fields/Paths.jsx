@@ -17,7 +17,11 @@ export default class Paths extends Component {
       <Row className="project-paths">
         <Col className="localPath">
           <FormGroup>
-            <Label for="localPath">Local Path</Label>
+            {this.props.installtype === 'new' ? (
+              <Label for="localPath">Select Install Path</Label>
+            ) : (
+              <Label for="localPath">Select Path to Install</Label>
+            )}
             <InputGroup
               onClick={this.props.handlePathSetting}
               onKeyPress={this.props.handlePathSetting}
@@ -26,11 +30,8 @@ export default class Paths extends Component {
             >
               <Input
                 id="localPath"
-                // name="path"
                 name="localPath"
-                maxLength="100"
                 type="text"
-                // disabled="disabled"
                 readOnly
                 required="required"
                 className="form-control disabled"
@@ -52,7 +53,7 @@ export default class Paths extends Component {
         {this.props.installtype === 'existing' && (
           <Col className="localDocroot">
             <FormGroup>
-              <Label for="localDocroot">Project Docroot</Label>
+              <Label for="localDocroot">Select Project Docroot</Label>
               <InputGroup
                 onClick={this.props.handleDocrootSetting}
                 onKeyPress={this.props.handleDocrootSetting}
@@ -61,11 +62,8 @@ export default class Paths extends Component {
               >
                 <Input
                   id="localDocroot"
-                  // name="path"
                   name="localDocroot"
-                  maxLength="100"
                   type="text"
-                  // disabled="disabled"
                   readOnly
                   required="required"
                   className="form-control disabled"
@@ -78,8 +76,7 @@ export default class Paths extends Component {
                 </InputGroupAddon>
               </InputGroup>
               <FormText color="muted">
-                Select the directory from which your site is served. You may skip this field if your
-                site files are in the project root.
+                Select the projects's webroot if it's different from the project root.
               </FormText>
             </FormGroup>
           </Col>

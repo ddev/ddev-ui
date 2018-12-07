@@ -8,17 +8,26 @@ import { config, start } from './ddev-shell';
 export function checkIfExistingConfig(path) {
   const promise = new Promise((resolve, reject) => {
     try {
-      config(path, 'validName', 'totally invalid docroot that does not exist', null, messages => {
-        console.log(messages);
-        if (messages.includes('existing configuration')) {
-          const proceed = window.confirm(
-            `An existing DDEV config was found! \n\nClick Cancel to use the existing or OK to generate a new one.`
-          );
-          resolve(proceed);
-        } else {
-          resolve(false);
+      // TODO: work w/ local team to come up with a better way to check if a config exists
+      config(
+        path,
+        {
+          '--projectname': 'validName',
+          '--docroot': 'totally invalid docroot that does not exist',
+        },
+        null,
+        messages => {
+          console.log(messages);
+          if (messages.includes('existing configuration')) {
+            const proceed = window.confirm(
+              'An existing DDEV config was found! \n\nWould you like to update the local config?'
+            );
+            resolve(proceed);
+          } else {
+            resolve(false);
+          }
         }
-      });
+      );
     } catch (err) {
       reject(err);
     }
@@ -28,14 +37,22 @@ export function checkIfExistingConfig(path) {
 
 /**
  * wrapper for ddev config
- * @param siteName {string} name of site to configure
  * @param workingPath {string} the path of the extracted files to run ddev config in
- * @param docroot {string} path to the working directory of project
+ * @param args {obj}
+ *    --docroot,
+ *    --projectname,
+ *    --projecttype,
+ *    --php-version,
+ *    --webserver-type,
+ *    --http-port,
+ *    --https-port,
+ *    --xdebug-enabled,
+ *    --create-docroot
  * @return {promise} resolves with a successful terminal output from ddev config, rejects with ddev error output
  */
-export function configureSite(siteName, workingPath, docroot) {
+export function configureSite(workingPath, args = {}) {
   const promise = new Promise((resolve, reject) => {
-    config(workingPath, siteName, docroot, resolve, reject);
+    config(workingPath, args, resolve, reject);
   });
   return promise;
 }
@@ -108,7 +125,8 @@ export function validateCMSType(cmsType) {
       cmsString === 'wordpress' ||
       cmsString === 'drupal6' ||
       cmsString === 'drupal7' ||
-      cmsString === 'drupal8'
+      cmsString === 'drupal8' ||
+      cmsString === 'php'
     ) {
       resolve(true);
     } else {

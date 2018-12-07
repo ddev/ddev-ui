@@ -8,13 +8,13 @@ import InstallProfile from './InstallProfile';
 export default class InstallProfiles extends Component {
   render() {
     const { projectTypes } = profiles;
-    return this.props.cmsType !== 'none' ? (
+    return this.props.cmsType !== 'php' ? (
       <FormProjectInfo className="InstallProfiles" {...this.props} />
     ) : (
       <Container fluid>
         <Row className="install-profiles py-4">
           {Object.keys(projectTypes).map(type => {
-            if (type !== 'none') {
+            if (type !== 'php') {
               return (
                 <InstallProfile
                   key={`app_${type}`}

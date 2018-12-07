@@ -19,8 +19,6 @@ class ProjectHeader extends React.PureComponent {
         const res = data.toString();
         if (res.includes('Process Exited')) {
           showLoadingScreen(false);
-        } else {
-          showLoadingScreen(true, res);
         }
       },
       err => {
@@ -40,8 +38,6 @@ class ProjectHeader extends React.PureComponent {
         const res = data.toString();
         if (res.includes('Process Exited')) {
           showLoadingScreen(false);
-        } else {
-          showLoadingScreen(true, res);
         }
       },
       err => {
@@ -61,8 +57,6 @@ class ProjectHeader extends React.PureComponent {
         const res = data.toString();
         if (res.includes('Process Exited')) {
           showLoadingScreen(false);
-        } else {
-          showLoadingScreen(true, res);
         }
       },
       err => {
@@ -84,8 +78,6 @@ class ProjectHeader extends React.PureComponent {
         if (res.includes('Process Exited')) {
           showLoadingScreen(false);
           this.props.push('/');
-        } else {
-          showLoadingScreen(true, res);
         }
       },
       err => {
@@ -170,7 +162,7 @@ class ProjectHeader extends React.PureComponent {
         </div>
         <div className="project-buttons col-sm-4">
           <div className="btn-group" role="group" aria-label="View Site">
-            <button
+            {/* <button
               type="button"
               className="btn btn-outline-secondary"
               onClick={e => {
@@ -184,7 +176,7 @@ class ProjectHeader extends React.PureComponent {
               }}
             >
               View Site
-            </button>
+            </button> */}
             {/* <button
               type="button"
               className="btn btn-outline-secondary"
