@@ -211,8 +211,6 @@ export function addCMS(name, type, targetPath, args = {}, history = {}) {
             history.push(`/project/${name}`);
           } else if (res.includes('Process Exited')) {
             showLoadingScreen(false);
-          } else if (!res.includes('[1A')) {
-            showLoadingScreen(true, res);
           }
         },
         err => {
@@ -257,8 +255,6 @@ export function addCMSFromExisting(name, targetPath, docroot, args = {}, history
             history.push(`/project/${name}`);
           } else if (res.includes('Process Exited')) {
             showLoadingScreen(false);
-          } else if (!res.includes('[1A')) {
-            showLoadingScreen(true, res);
           }
         },
         err => {
