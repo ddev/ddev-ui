@@ -59,7 +59,7 @@
     "electron-updater": "4.0.x",
     "fix-path": "2.1.x",
     "font-awesome": "4.7.x",
-    "jquery": "3.4.x",
+    "jquery": "3.5.x",
     "js-yaml-loader": "^1.0.1",
     "lodash": "4.17.x",
     "node-fetch": "2.x",
